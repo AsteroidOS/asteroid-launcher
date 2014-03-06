@@ -26,7 +26,12 @@ PKGCONFIG += lipstick-qt5
 
 OTHER_FILES += qml/*.qml \
     qml/MainScreen.qml \
-    qml/compositor.qml
+    qml/compositor.qml \
+    qml/LauncherItemDelegate.qml \
+    qml/Lockscreen.qml \
+    qml/LockscreenClock.qml \
+    qml/AppSwitcher.qml \
+    qml/AppLauncher.qml
 
 config.files = lipstick.conf
 config.path = /usr/share/lipstick

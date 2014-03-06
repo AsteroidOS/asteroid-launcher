@@ -4,5 +4,12 @@
         <file>qml/compositor/ScreenGestureArea.qml</file>
         <file>qml/compositor/WindowWrapperAlpha.qml</file>
         <file>qml/compositor/WindowWrapperBase.qml</file>
+        <file>qml/AppLauncher.qml</file>
+        <file>qml/AppSwitcher.qml</file>
+        <file>qml/compositor.qml</file>
+        <file>qml/LauncherItemDelegate.qml</file>
+        <file>qml/Lockscreen.qml</file>
+        <file>qml/LockscreenClock.qml</file>
+        <file>qml/Pager.qml</file>
     </qresource>
 </RCC>

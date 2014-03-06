@@ -50,26 +50,59 @@ ApplicationWindow {
             } else { Qt.quit(); }
         }
     }
-    ListModel {
-        id: pageModel
-        ListElement {
-            title: "Live-Coding Arena"
-            page: "content/LiveCoding.qml"
-        }
-    }
     initialPage: Page {
-        id: pageItem
+        Item {
+            id: desktop
+            property bool isPortrait: width < height
 
-        tools: ToolBarLayoutExample { title: "Glacier UI" }
-
-        ListView {
-            model: pageModel
             anchors.fill: parent
-            clip: true
-            delegate: AndroidDelegate {
-                text: title
-                onClicked: pageItem.Stack.view.push(Qt.resolvedUrl(page))
+
+            // Pager for swiping between different pages of the home screen
+            Pager {
+                id: pager
+
+                scale: 0.7 + 0.3 * lockScreen.openingState
+                opacity: lockScreen.openingState
+
+                anchors.fill: parent
+
+                model: VisualItemModel {
+                    AppLauncher {
+                        id: launcher
+                        height: pager.height
+                    }
+                    AppSwitcher {
+                        id: switcher
+                        width: pager.width
+                        height: pager.height
+                        visibleInHome: x > -width && x < desktop.width
+                    }
+                }
+
+                // Initial view should be the AppLauncher
+                currentIndex: 1
+            }
+            Lockscreen {
+                id: lockScreen
+
+                width: parent.width
+                height: parent.height
+
+                z: 200
+
+                onOpeningStateChanged: {
+                    // When fully closed, reset the current page
+                    if (openingState !== 0)
+                        return
+
+                    // Focus the switcher if any applications are running, otherwise the launcher
+                    if (switcher.runningAppsCount > 0) {
+                        pager.currentIndex = 2
+                    } else {
+                        pager.currentIndex = 1
+                    }
+                }
             }
         }
-    }
+        tools: ToolBarLayoutExample { title: "Glacier UI" }
 }
