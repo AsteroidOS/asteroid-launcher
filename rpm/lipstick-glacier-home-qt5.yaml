@@ -1,0 +1,32 @@
+Name: lipstick-glacier-home-qt5
+Summary: A nice homescreen for Glacier experience
+Version: 0.0.0
+Release: 1
+Group: System/GUI/Other
+License: BSD
+URL: https://github.com/locusf/glacier-home
+Sources:
+    - "%{name}-%{version}.tar.bz2"
+    - lipstick.desktop
+Description: A homescreen for Nemo Mobile
+Builder: qmake5
+Requires:
+    - lipstick-qt5 >= 0.17.0
+    - nemo-qml-plugin-configuration-qt5
+    - nemo-qml-plugin-time-qt5
+    - qt-components-qt5 >= 2.0.2
+    - qt5-qtdeclarative-import-window2 # TODO: components dep?
+PkgConfigBR:
+    - Qt5Core
+    - Qt5Quick
+    - lipstick-qt5 >= 0.12.0
+ExtraSources:
+  - lipstick.service;%{_libdir}/systemd/user/
+Conflicts:
+  - lipstick-example-home
+Files:
+    - "%{_bindir}/lipstick"
+    - "%{_libdir}/systemd/user/lipstick.service"
+    - "%config /etc/xdg/autostart/*.desktop"
+    - "%{_datadir}/lipstick/lipstick.conf"
+    - "%{_libdir}/systemd/user/user-session.target.wants/lipstick.service"

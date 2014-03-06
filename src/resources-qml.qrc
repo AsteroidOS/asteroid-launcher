@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/MainScreen.qml</file>
+        <file>qml/compositor/ScreenGestureArea.qml</file>
+        <file>qml/compositor/WindowWrapperAlpha.qml</file>
+        <file>qml/compositor/WindowWrapperBase.qml</file>
+    </qresource>
+</RCC>
