@@ -11,5 +11,17 @@
         <file>qml/Lockscreen.qml</file>
         <file>qml/LockscreenClock.qml</file>
         <file>qml/Pager.qml</file>
+        <file>qml/ToolBarLayoutExample.qml</file>
+        <file>qml/SwitcherItem.qml</file>
+        <file>qml/CloseButton.qml</file>
+        <file>qml/images/button_default.png</file>
+        <file>qml/images/button_pressed.png</file>
+        <file>qml/images/navigation_next_item.png</file>
+        <file>qml/images/navigation_previous_item.png</file>
+        <file>qml/images/tab_selected.png</file>
+        <file>qml/images/tabs_standard.png</file>
+        <file>qml/images/textinput.png</file>
+        <file>qml/images/toolbar.png</file>
+        <file>qml/images/graphics-wallpaper-home.jpg</file>
     </qresource>
 </RCC>
