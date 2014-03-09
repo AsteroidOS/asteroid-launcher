@@ -37,7 +37,7 @@ import QtQuick.Window 2.1
 import org.nemomobile.time 1.0
 import org.nemomobile.configuration 1.0
 
-ApplicationWindow {
+Page {
 
     // This is used in the favorites page and in the lock screen
     WallClock {
@@ -51,9 +51,7 @@ ApplicationWindow {
         key: desktop.isPortrait ? "/desktop/meego/background/portrait/picture_filename" : "/desktop/meego/background/landscape/picture_filename"
         defaultValue: "images/graphics-wallpaper-home.jpg"
     }
-    id: appWindow
-
-    contentOrientation: Screen.orientation
+    id: desktop
 
     // Implements back key navigation
     Keys.onReleased: {
@@ -64,112 +62,49 @@ ApplicationWindow {
             } else { Qt.quit(); }
         }
     }
-    initialPage: Page {
-        Item {
-            id: desktop
-            property bool isPortrait: width < height
+    Pager {
+        id: pager
 
-            anchors.fill: parent
+        scale: 0.7 + 0.3 * lockScreen.openingState
+        opacity: lockScreen.openingState
 
-            // Pager for swiping between different pages of the home screen
-            Pager {
-                id: pager
+        anchors.fill: parent
 
-                scale: 0.7 + 0.3 * lockScreen.openingState
-                opacity: lockScreen.openingState
-
-                anchors.fill: parent
-
-                model: VisualItemModel {
-                    AppLauncher {
-                        id: launcher
-                        height: pager.height
-                    }
-                    AppSwitcher {
-                        id: switcher
-                        width: pager.width
-                        height: pager.height
-                        visibleInHome: x > -width && x < desktop.width
-                    }
-                }
-
-                // Initial view should be the AppLauncher
-                currentIndex: 1
+        model: VisualItemModel {
+            AppLauncher {
+                id: launcher
+                height: pager.height
             }
-            Lockscreen {
-                id: lockScreen
-
-                width: parent.width
-                height: parent.height
-
-                z: 200
-
-                onOpeningStateChanged: {
-                    // When fully closed, reset the current page
-                    if (openingState !== 0)
-                        return
-
-                    // Focus the switcher if any applications are running, otherwise the launcher
-                    if (switcher.runningAppsCount > 0) {
-                        pager.currentIndex = 2
-                    } else {
-                        pager.currentIndex = 1
-                    }
-                }
-            }
-        }
-        tools: Item {
-            id: toolsLayoutItem
-
-            anchors.fill: parent
-
-            property string title: "Glacier UI"
-            property StackView pageStack: findStackView(toolsLayoutItem)
-
-            //XXX: TEMPORARY CODE, MIGHT CAUSE LAG WHEN PUSHING A PAGE ON THE STACK
-            function findStackView(startingItem) {
-                var myStack = startingItem
-                while (myStack) {
-                    if (myStack.hasOwnProperty("currentItem") && myStack.hasOwnProperty("initialItem"))
-                            return myStack
-                    myStack = myStack.parent
-                }
-                return null
-            }
-
-            Rectangle {
-                id: backButton
-                width: opacity ? 60 : 0
-                anchors.left: parent.left
-                anchors.leftMargin: 20
-                //check if Stack.view has already been initialized as well
-                opacity: (pageStack && (pageStack.depth > 1)) ? 1 : 0
-                anchors.verticalCenter: parent.verticalCenter
-                antialiasing: true
-                height: 60
-                radius: 4
-                color: backmouse.pressed ? "#222" : "transparent"
-                Behavior on opacity { NumberAnimation{} }
-                Image {
-                    anchors.verticalCenter: parent.verticalCenter
-                    source: "images/navigation_previous_item.png"
-                }
-                MouseArea {
-                    id: backmouse
-                    anchors.fill: parent
-                    anchors.margins: -10
-                    onClicked: pageStack.pop()
-                }
-            }
-
-            Label {
-                font.pixelSize: 42
-                Behavior on x { NumberAnimation { easing.type: Easing.OutCubic } }
-                x: backButton.x + backButton.width + 20
-                anchors.verticalCenter: parent.verticalCenter
-                text: parent.title
+            AppSwitcher {
+                id: switcher
+                width: pager.width
+                height: pager.height
+                visibleInHome: x > -width && x < desktop.width
             }
         }
 
+        // Initial view should be the AppLauncher
+        currentIndex: 1
+    }
+    Lockscreen {
+        id: lockScreen
+
+        width: parent.width
+        height: parent.height
+
+        z: 200
+
+        onOpeningStateChanged: {
+            // When fully closed, reset the current page
+            if (openingState !== 0)
+                return
+
+            // Focus the switcher if any applications are running, otherwise the launcher
+            if (switcher.runningAppsCount > 0) {
+                pager.currentIndex = 2
+            } else {
+                pager.currentIndex = 1
+            }
+        }
     }
 }
