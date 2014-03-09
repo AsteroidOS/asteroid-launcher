@@ -62,6 +62,7 @@ Page {
             } else { Qt.quit(); }
         }
     }
+    orientation: Qt.PortraitOrientation
     Pager {
         id: pager
 
