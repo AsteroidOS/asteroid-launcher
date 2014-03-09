@@ -159,7 +159,7 @@ Item {
 
     // Empty switcher indicator
     Label {
-        enabled: switcherModel.itemCount === 0
+        visible: switcherModel.itemCount === 0
 
         text: "No apps open"
     }
