@@ -66,16 +66,20 @@ Page {
     Connections {
         target: batterystatus
         onValueChanged: {
-            batterylbl.text = "Battery status: " + batterystatus.value
-        }
-    }
-    Connections {
-        target: onbattery
-        onValueChanged: {
-            if (onbattery.value) {
-                charging.text = "On battery"
-            } else {
-                charging.text = "On wall"
+            if(batterystatus.value > 85) {
+                batteryimg.source = "images/battery6.png"
+            } else if (batterystatus.value <= 70) {
+                batteryimg.source = "images/battery5.png"
+            } else if (batterystatus.value <= 55) {
+                batteryimg.source = "images/battery4.png"
+            } else if (batterystatus.value <= 40) {
+                batteryimg.source = "images/battery3.png"
+            } else if (batterystatus.value <= 25) {
+                batteryimg.source = "images/battery2.png"
+            } else if (batterystatus.value <= 10) {
+                batteryimg.source = "images/battery1.png"
+            } else if (batterystatus.value <= 5) {
+                batteryimg.source = "images/battery0.png"
             }
         }
     }
@@ -85,22 +89,12 @@ Page {
         key: "Battery.ChargePercentage"
         value: "100"
     }
-    ContextProperty {
-        id: onbattery
-        key: "Battery.OnBattery"
-    }
 
     tools: Item {
-        Label {
-            id: batterylbl
+        Image {
+            id: batteryimg
             font.pointSize: 8
             color: "black"
-        }
-        Label {
-            id: charging
-            font.pointSize: 8
-            color: "black"
-            anchors.right: batterylbl.left
         }
     }
 

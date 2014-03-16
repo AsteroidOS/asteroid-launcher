@@ -23,5 +23,12 @@
         <file>qml/images/textinput.png</file>
         <file>qml/images/toolbar.png</file>
         <file>qml/images/graphics-wallpaper-home.jpg</file>
+        <file>qml/images/battery0.png</file>
+        <file>qml/images/battery1.png</file>
+        <file>qml/images/battery2.png</file>
+        <file>qml/images/battery3.png</file>
+        <file>qml/images/battery4.png</file>
+        <file>qml/images/battery5.png</file>
+        <file>qml/images/battery6.png</file>
     </qresource>
 </RCC>
