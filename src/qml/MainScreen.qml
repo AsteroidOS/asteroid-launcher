@@ -36,6 +36,7 @@ import QtQuick.Controls.Styles.Nemo 1.0
 import QtQuick.Window 2.1
 import org.nemomobile.time 1.0
 import org.nemomobile.configuration 1.0
+import org.freedesktop.contextkit 1.0
 
 Page {
 
@@ -62,7 +63,47 @@ Page {
             } else { Qt.quit(); }
         }
     }
-    orientation: Qt.PortraitOrientation
+    Connections {
+        target: batterystatus
+        onValueChanged: {
+            batterylbl.text = "Battery status: " + batterystatus.value
+        }
+    }
+    Connections {
+        target: onbattery
+        onValueChanged: {
+            if (onbattery.value) {
+                charging.text = "On battery"
+            } else {
+                charging.text = "On wall"
+            }
+        }
+    }
+
+    ContextProperty {
+        id: batterystatus
+        key: "Battery.ChargePercentage"
+        value: "100"
+    }
+    ContextProperty {
+        id: onbattery
+        key: "Battery.OnBattery"
+    }
+
+    tools: Item {
+        Label {
+            id: batterylbl
+            font.pointSize: 8
+            color: "black"
+        }
+        Label {
+            id: charging
+            font.pointSize: 8
+            color: "black"
+            anchors.right: batterylbl.left
+        }
+    }
+
     Pager {
         id: pager
 
