@@ -81,6 +81,7 @@ Page {
             } else if (batterystatus.value <= 5) {
                 batteryimg.source = "images/battery0.png"
             }
+            batterylbl.text = batterystatus.value + "%"
         }
     }
 
@@ -93,8 +94,14 @@ Page {
     tools: Item {
         Image {
             id: batteryimg
-            font.pointSize: 8
+            width: 32
+            height: 32
+        }
+        Label {
+            anchors.left: batteryimg.right
+            id: batterylbl
             color: "black"
+            font.pointSize: 8
         }
     }
 
