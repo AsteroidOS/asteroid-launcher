@@ -213,6 +213,11 @@ Compositor {
         WindowWrapperAlpha { }
     }
 
+    Component {
+        id: mysticWrapper
+        WindowWrapperMystic { }
+    }
+
     onWindowAdded: {
         if (debug) console.log("Compositor: Window added \"" + window.title + "\"")
 
@@ -242,6 +247,8 @@ Compositor {
             setCurrentWindow(homeWindow)
         } else if (isNotificationWindow || isOverlayWindow) {
         } else {
+            w = mysticWrapper.createObject(parent, {window: window})
+            window.userData = w
             setCurrentWindow(w)
         }
     }

@@ -35,6 +35,10 @@ OTHER_FILES += qml/*.qml \
     qml/AppLauncher.qml \
     qml/ToolBarLayoutExample.qml \
     qml/SwitcherItem.qml \
-    qml/CloseButton.qml
+    qml/CloseButton.qml \
+    qml/compositor/WindowWrapperMystic.qml \
+    qml/compositor/WindowWrapperBase.qml \
+    qml/compositor/WindowWrapperAlpha.qml \
+    qml/compositor/ScreenGestureArea.qml
 
 

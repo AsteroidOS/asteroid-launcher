@@ -30,5 +30,6 @@
         <file>qml/images/battery4.png</file>
         <file>qml/images/battery5.png</file>
         <file>qml/images/battery6.png</file>
+        <file>qml/compositor/WindowWrapperMystic.qml</file>
     </qresource>
 </RCC>

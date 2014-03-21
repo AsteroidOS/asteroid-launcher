@@ -17,7 +17,6 @@ Requires:
     - qt5-qtdeclarative-import-window2 # TODO: components dep?
     - qt5-qtquickcontrols-nemo
     - nemo-qml-plugin-contextkit-qt5
-    - statefs-provider-bme
 PkgConfigBR:
     - Qt5Core
     - Qt5Quick

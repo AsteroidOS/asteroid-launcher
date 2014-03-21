@@ -1,4 +1,5 @@
-// Copyright (C) 2013 Jolla Ltd.
+// Copyright (C) 2013 Jolla Ltd, Robin Burchell: <robin.burchell@jolla.com>
+// Copyright (C) 2014 Aleksi Suomalainen: <suomalainen.aleksi@gmail.com>
 //
 // This file is part of colorful-home, a nice user experience for touchscreens.
 //
@@ -20,17 +21,38 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import QtQuick 2.0
+import QtQuick 2.1
+import QtQuick.Window 2.1
+import org.nemomobile.lipstick 0.1
 
-Item {
+WindowWrapperBase {
     id: wrapper
 
-    property Item window
-    width: window.width
-    height: window.height
-    NumberAnimation on opacity { id: fadeInAnimation; running: false; from: 0; to: 1 }
+    ShaderEffect {
+        anchors.fill: parent
+        z: 2
+        /*hasCover: coverWindowId.value != undefined ? true : false
+                WindowProperty {
+                    id: coverWindowId
+                    windowId: window.windowId
+                    property: "SAILFISH_COVER_WINDOW"
+                }*/
+        // source Item must be a texture provider
+        property Item source: wrapper.window
 
-    function animateIn() { fadeInAnimation.start(); }
-
-    Component.onCompleted: window.parent = wrapper
+        fragmentShader: "
+           uniform sampler2D source;
+           uniform mediump float qt_Opacity;
+           varying highp vec2 qt_TexCoord0;
+           void main() {
+               gl_FragColor = qt_Opacity * vec4(texture2D(source, qt_TexCoord0).rgb, 1);
+           }"
+    }
+    onWindowChanged: {
+        if (window != null) {
+            // do not paint the QWaylandSurfaceItem, just use it as
+            // a texture provider
+            window.setPaintEnabled(false)
+        }
+    }
 }

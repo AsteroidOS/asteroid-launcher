@@ -1,4 +1,4 @@
-// Copyright (C) 2013 Jolla Ltd.
+// Copyright (C) 2013 Jolla Ltd, Robin Burchell: <robin.burchell@jolla.com>
 //
 // This file is part of colorful-home, a nice user experience for touchscreens.
 //
