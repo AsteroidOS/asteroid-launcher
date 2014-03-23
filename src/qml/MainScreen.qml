@@ -68,18 +68,18 @@ Page {
         onValueChanged: {
             if(batterystatus.value > 85) {
                 batteryimg.source = "images/battery6.png"
-            } else if (batterystatus.value <= 70) {
-                batteryimg.source = "images/battery5.png"
-            } else if (batterystatus.value <= 55) {
-                batteryimg.source = "images/battery4.png"
-            } else if (batterystatus.value <= 40) {
-                batteryimg.source = "images/battery3.png"
-            } else if (batterystatus.value <= 25) {
-                batteryimg.source = "images/battery2.png"
-            } else if (batterystatus.value <= 10) {
-                batteryimg.source = "images/battery1.png"
             } else if (batterystatus.value <= 5) {
                 batteryimg.source = "images/battery0.png"
+            } else if (batterystatus.value <= 10) {
+                batteryimg.source = "images/battery1.png"
+            } else if (batterystatus.value <= 25) {
+                batteryimg.source = "images/battery2.png"
+            } else if (batterystatus.value <= 40) {
+                batteryimg.source = "images/battery3.png"
+            } else if (batterystatus.value <= 65) {
+                batteryimg.source = "images/battery4.png"
+            } else if (batterystatus.value <= 80) {
+                batteryimg.source = "images/battery5.png"
             }
             batterylbl.text = batterystatus.value + "%"
         }
