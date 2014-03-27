@@ -27,7 +27,7 @@ Image {
     id: closeButton
     signal clicked()
 
-    source: 'image://theme/icon-m-framework-close-thumbnail'
+    source: 'theme/icon-m-framework-close-thumbnail.png'
 
     MouseArea {
         anchors.fill: parent
