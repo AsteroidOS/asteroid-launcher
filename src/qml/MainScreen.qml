@@ -91,7 +91,9 @@ Page {
         value: "100"
     }
 
-    tools: Item {
+    tools: Rectangle {
+        color: "black"
+        anchors.fill: parent
         Image {
             id: batteryimg
             width: 32
@@ -100,7 +102,7 @@ Page {
         Label {
             anchors.left: batteryimg.right
             id: batterylbl
-            color: "black"
+            color: "white"
             font.pointSize: 8
         }
     }
