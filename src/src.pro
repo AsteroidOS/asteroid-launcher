@@ -11,7 +11,6 @@ config.files = lipstick.conf
 config.path = /usr/share/lipstick
 INSTALLS += config
 
-
 CONFIG += qt link_pkgconfig
 QT += quick
 
@@ -39,6 +38,7 @@ OTHER_FILES += qml/*.qml \
     qml/compositor/WindowWrapperMystic.qml \
     qml/compositor/WindowWrapperBase.qml \
     qml/compositor/WindowWrapperAlpha.qml \
-    qml/compositor/ScreenGestureArea.qml
+    qml/compositor/ScreenGestureArea.qml \
+    qml/NotificationPreview.qml
 
 
