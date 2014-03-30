@@ -53,7 +53,7 @@ Item {
         property int notificationHeight: 102
         property int notificationMargin: 14
         property int notificationIconSize: 60
-        anchors.top: parent.top
+        anchors.bottom: parent.bottom
         anchors.left: parent.left
         width: isPortrait ? notificationWindow.height : notificationWindow.width
         height: notificationArea.notificationHeight
@@ -85,14 +85,9 @@ Item {
             id: notificationPreview
             anchors {
                 fill: parent
-                margins: 10
             }
-            color: "black"
+            color: "transparent"
             radius: 5
-            border {
-                color: "gray"
-                width: 2
-            }
 
             opacity: 0
 
@@ -128,7 +123,20 @@ Item {
                     }
                 }
             ]
+            Rectangle {
+                id: dimmer
 
+                height: 15
+
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+
+                gradient: Gradient {
+                    GradientStop { position: 0; color: "black" }
+                    GradientStop { position: 1.0; color: "transparent" }
+                }
+            }
             transitions: [
                 Transition {
                     to: "show"
@@ -158,21 +166,12 @@ Item {
                 anchors {
                     top: parent.top
                     left: parent.left
-                    topMargin: notificationArea.notificationMargin - 3
+                    topMargin: notificationArea.notificationMargin
                     leftMargin: notificationArea.notificationMargin
                 }
                 width: notificationArea.notificationIconSize
                 height: width
-                source: {
-                    var icon = ""
-                    if (notificationPreviewPresenter.notification != null) {
-                        icon = notificationPreviewPresenter.notification.previewIcon ? notificationPreviewPresenter.notification.previewIcon : notificationPreviewPresenter.notification.icon
-                        if (icon) {
-                            icon = ((icon.indexOf("/") == 0 ? "file://" : "image://theme/") + icon)
-                        }
-                    }
-                    icon
-                }
+                source: "images/notification-circle.png"
             }
 
             Text {
@@ -186,7 +185,7 @@ Item {
                     rightMargin: notificationArea.notificationMargin
                 }
                 font {
-                    pixelSize: 22
+                    pixelSize: 36
                 }
                 text: notificationPreviewPresenter.notification != null ? notificationPreviewPresenter.notification.previewSummary : ""
                 color: "white"
@@ -202,7 +201,8 @@ Item {
                     right: summary.right
                 }
                 font {
-                    pixelSize: 22
+                    pixelSize: 18
+                    bold: true
                 }
                 text: notificationPreviewPresenter.notification != null ? notificationPreviewPresenter.notification.previewBody : ""
                 color: "white"

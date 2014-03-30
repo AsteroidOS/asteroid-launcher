@@ -33,5 +33,6 @@
         <file>qml/compositor/WindowWrapperMystic.qml</file>
         <file>qml/theme/icon-m-framework-close-thumbnail.png</file>
         <file>qml/NotificationPreview.qml</file>
+        <file>qml/images/notification-circle.png</file>
     </qresource>
 </RCC>
