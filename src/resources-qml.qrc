@@ -32,5 +32,6 @@
         <file>qml/images/battery6.png</file>
         <file>qml/compositor/WindowWrapperMystic.qml</file>
         <file>qml/theme/icon-m-framework-close-thumbnail.png</file>
+        <file>qml/NotificationPreview.qml</file>
     </qresource>
 </RCC>
