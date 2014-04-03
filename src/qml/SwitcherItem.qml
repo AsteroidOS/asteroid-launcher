@@ -28,7 +28,7 @@ import org.nemomobile.lipstick 0.1
 MouseArea {
     id: switcherItemRoot
 
-    property bool rotateWindowContent: (screen.frameBufferRotation === 90) ? desktop.isPortrait : !desktop.isPortrait
+    property bool rotateWindowContent: desktop.isPortrait
 
     WindowPixmapItem {
         id: windowPixmap
