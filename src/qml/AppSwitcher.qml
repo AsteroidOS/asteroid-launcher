@@ -26,6 +26,7 @@ import QtQuick 2.0
 import org.nemomobile.lipstick 0.1
 import QtQuick.Controls.Nemo 1.0
 import QtQuick.Controls.Styles.Nemo 1.0
+import org.nemomobile.glacier 1.0
 
 // App Switcher page
 // The place for browsing already running apps
@@ -78,7 +79,7 @@ Item {
 
             Repeater {
                 id: gridRepeater
-                model: WindowModel {
+                model: GlacierWindowModel {
                     id:switcherModel
                 }
 

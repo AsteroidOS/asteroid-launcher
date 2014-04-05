@@ -224,8 +224,11 @@ Compositor {
         var isHomeWindow = window.isInProcess && root.homeWindow == null && window.title == "Home"
         var isNotificationWindow = window.category == "notification"
         var isOverlayWindow =  window.category == "overlay"
-
         var parent = null
+        if (window.category == "cover") {
+            window.visible = false
+            return
+        }
         if (isHomeWindow) {
             parent = homeLayer
         } else if (isNotificationWindow) {
@@ -246,6 +249,7 @@ Compositor {
             root.homeWindow = w
             setCurrentWindow(homeWindow)
         } else if (isNotificationWindow || isOverlayWindow) {
+
         } else {
             w = mysticWrapper.createObject(parent, {window: window})
             window.userData = w

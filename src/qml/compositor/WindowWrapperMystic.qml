@@ -27,16 +27,9 @@ import org.nemomobile.lipstick 0.1
 
 WindowWrapperBase {
     id: wrapper
-
     ShaderEffect {
         anchors.fill: parent
         z: 2
-        /*hasCover: coverWindowId.value != undefined ? true : false
-                WindowProperty {
-                    id: coverWindowId
-                    windowId: window.windowId
-                    property: "SAILFISH_COVER_WINDOW"
-                }*/
         // source Item must be a texture provider
         property Item source: wrapper.window
 

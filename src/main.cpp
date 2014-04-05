@@ -24,6 +24,9 @@
 #include <homeapplication.h>
 #include <QFont>
 #include <homewindow.h>
+#include <QQmlEngine>
+#include <QQmlContext>
+#include "glacierwindowmodel.h"
 
 int main(int argc, char **argv)
 {
@@ -35,9 +38,9 @@ int main(int argc, char **argv)
     setenv("QT_WAYLAND_DISABLE_WINDOWDECORATION", "1", 1);
 
     app.setCompositorPath("qrc:/qml/compositor.qml");
+    qmlRegisterType<GlacierWindowModel>("org.nemomobile.glacier", 1, 0 ,"GlacierWindowModel");
     app.setQmlPath("qrc:/qml/MainScreen.qml");
     app.mainWindowInstance()->showFullScreen();
-
     return app.exec();
 }
 

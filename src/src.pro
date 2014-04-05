@@ -12,12 +12,14 @@ config.path = /usr/share/lipstick
 INSTALLS += config
 
 CONFIG += qt link_pkgconfig
-QT += quick
-
-HEADERS +=
+QT += quick compositor
+DEFINES += QT_COMPOSITOR_QUICK
+HEADERS += \
+    glacierwindowmodel.h
 
 SOURCES += \
-    main.cpp
+    main.cpp \
+    glacierwindowmodel.cpp
 
 RESOURCES += \
     resources-qml.qrc

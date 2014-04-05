@@ -29,7 +29,6 @@ Item {
     width: window.width
     height: window.height
     NumberAnimation on opacity { id: fadeInAnimation; running: false; from: 0; to: 1 }
-
     function animateIn() { fadeInAnimation.start(); }
 
     Component.onCompleted: window.parent = wrapper
