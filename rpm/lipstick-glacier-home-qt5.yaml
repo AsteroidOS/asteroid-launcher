@@ -21,6 +21,7 @@ PkgConfigBR:
     - Qt5Core
     - Qt5Quick
     - lipstick-qt5 >= 0.12.0
+    - Qt5Compositor
 ExtraSources:
   - lipstick.service;%{_libdir}/systemd/user/
 Conflicts:
