@@ -27,6 +27,7 @@ Requires:   nemo-qml-plugin-contextkit-qt5
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  pkgconfig(lipstick-qt5) >= 0.12.0
+BuildRequires:  pkgconfig(Qt5Compositor)
 Conflicts:   lipstick-example-home
 
 %description
