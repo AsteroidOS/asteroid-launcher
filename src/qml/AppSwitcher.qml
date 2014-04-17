@@ -110,7 +110,7 @@ Item {
             width: 1
             color: '#333333'
         }
-
+        z: 202
         height: toolBarDone.height + 2*padding
         property int padding: 9
 
