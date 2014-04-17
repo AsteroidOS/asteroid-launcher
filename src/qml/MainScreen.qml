@@ -91,9 +91,15 @@ Page {
         value: "100"
     }
 
-    tools: Rectangle {
+    Rectangle {
+        id: toolbar
         color: "black"
-        anchors.fill: parent
+        height: 40
+        width: parent.width
+        border.color: "white"
+        border.width: 1
+        z: 201
+        anchors.bottom: parent.bottom
         Image {
             id: batteryimg
             width: 32
