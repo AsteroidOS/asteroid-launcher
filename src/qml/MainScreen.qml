@@ -37,6 +37,7 @@ import QtQuick.Window 2.1
 import org.nemomobile.time 1.0
 import org.nemomobile.configuration 1.0
 import org.freedesktop.contextkit 1.0
+import "scripts/desktop.js" as Desktop
 
 Page {
 
@@ -111,6 +112,20 @@ Page {
             color: "white"
             font.pointSize: 8
         }
+    }
+    Component.onCompleted: {
+        Desktop.instance = desktop
+    }
+    function lockscreenVisible() {
+        return LipstickSettings.lockscreenVisible === true
+    }
+    function setLockScreen(enabled) {
+        if (enabled) {
+            LipstickSettings.lockScreen(true)
+        } else {
+            LipstickSettings.lockscreenVisible = false
+        }
+
     }
 
     Pager {

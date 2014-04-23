@@ -25,6 +25,7 @@ import QtQuick 2.0
 import org.nemomobile.lipstick 0.1
 
 import "compositor"
+import "scripts/desktop.js" as Desktop
 
 Compositor {
     id: root
@@ -118,7 +119,7 @@ Compositor {
         id: gestureArea
         z: 2
         anchors.fill: parent
-        enabled: root.appActive
+
 
         property real swipeThreshold: 0.15
 
@@ -129,11 +130,22 @@ Compositor {
         }
 
         onGestureFinished: {
-            if (gestureArea.progress >= swipeThreshold) {
-                swipeAnimation.valueTo = inverted ? -max : max
-                swipeAnimation.start()
-            } else {
-                cancelAnimation.start()
+            if (root.appActive) {
+                if (gestureArea.progress >= swipeThreshold) {
+                    swipeAnimation.valueTo = inverted ? -max : max
+                    swipeAnimation.start()
+                } else {
+                    cancelAnimation.start()
+                }
+            } else if (root.homeActive){
+                if (gestureArea.progress >= swipeThreshold) {
+                    // Locks or unlocks depending if the screen is locked.
+                    if (!Desktop.instance.lockscreenVisible()) {
+                        Desktop.instance.setLockScreen(true)
+                    } else {
+                        Desktop.instance.setLockScreen(false)
+                    }
+                }
             }
         }
 
@@ -150,12 +162,6 @@ Compositor {
                     target: appLayer
                     x: gestureArea.horizontal ? gestureArea.value : 0
                     y: gestureArea.horizontal ? 0 : gestureArea.value
-                }
-
-                PropertyChanges {
-                    target: homeLayer
-                    opacity: 0.6 + 0.4 * gestureArea.progress
-                    scale: 0.8 + 0.2 * gestureArea.progress
                 }
             }
         ]
