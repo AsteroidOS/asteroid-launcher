@@ -24,6 +24,8 @@
 
 import QtQuick 2.0
 import org.nemomobile.lipstick 0.1
+import QtQuick.Controls.Nemo 1.0
+import QtQuick.Controls.Styles.Nemo 1.0
 
 // App Launcher page
 // the place for browsing installed applications and launching them
@@ -35,14 +37,48 @@ GridView {
     width: Math.floor(parent.width / cellWidth) * cellWidth
     cacheBuffer: gridview.contentHeight
     property Item reorderItem
+    property bool onUninstall
+    property alias deleter: deleter
 
     // just for margin purposes
     header: Item {
-        height: 30
+        height: 100
     }
 
-    footer: Item {
-        height: 20
+    Item {
+        id: deleter
+        anchors.top: parent.top
+        property alias remove: remove
+        property alias uninstall: uninstall
+        Rectangle {
+            id: remove
+            property alias text: lbl.text
+            visible: onUninstall
+            height: 110
+            color: "red"
+            width: gridview.width / 2
+            Label {
+                id: lbl
+                anchors.centerIn: parent
+                text: "Remove"
+                font.pointSize: 8
+            }
+        }
+        Rectangle {
+            id: uninstall
+            property alias text: lbl2.text
+            anchors.left: remove.right
+            visible: onUninstall
+            color: "red"
+            width: gridview.width / 2
+            height: 110
+            Label {
+                id: lbl2
+                anchors.centerIn: parent
+                text: "Uninstall"
+                font.pointSize: 8
+            }
+        }
     }
 
     model: LauncherModel { id: launcherModel }
