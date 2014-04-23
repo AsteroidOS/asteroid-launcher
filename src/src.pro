@@ -41,6 +41,7 @@ OTHER_FILES += qml/*.qml \
     qml/compositor/WindowWrapperBase.qml \
     qml/compositor/WindowWrapperAlpha.qml \
     qml/compositor/ScreenGestureArea.qml \
-    qml/NotificationPreview.qml
+    qml/NotificationPreview.qml \
+    qml/scripts/desktop.js
 
 
