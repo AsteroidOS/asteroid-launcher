@@ -35,5 +35,6 @@
         <file>qml/NotificationPreview.qml</file>
         <file>qml/images/notification-circle.png</file>
         <file>qml/scripts/desktop.js</file>
+        <file>qml/FeedsPage.qml</file>
     </qresource>
 </RCC>

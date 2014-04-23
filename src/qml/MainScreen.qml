@@ -147,10 +147,15 @@ Page {
                 height: pager.height
                 visibleInHome: x > -width && x < desktop.width
             }
+            FeedsPage {
+                id: feeds
+                width: pager.width
+                height: pager.height
+            }
         }
 
         // Initial view should be the AppLauncher
-        currentIndex: 1
+        currentIndex: 0
     }
     Lockscreen {
         id: lockScreen
