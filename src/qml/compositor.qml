@@ -134,6 +134,9 @@ Compositor {
                 if (gestureArea.progress >= swipeThreshold) {
                     swipeAnimation.valueTo = inverted ? -max : max
                     swipeAnimation.start()
+                    if (gestureArea.gesture == "down") {
+                        Lipstick.compositor.closeClientForWindowId(topmostWindow.window.windowId)
+                    }
                 } else {
                     cancelAnimation.start()
                 }
