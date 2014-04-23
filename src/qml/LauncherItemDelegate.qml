@@ -74,6 +74,7 @@ Item {
             drag.target = launcherItem
             z = 1000
             reordering = true
+            gridview.onUninstall = true
 
             // don't allow dragging an icon out of pages with a horizontal flick
             pager.interactive = false
@@ -85,9 +86,14 @@ Item {
                 reorderTimer.stop()
                 drag.target = null
                 reorderItem = null
-                reparent(gridview.contentItem)
-                slideMoveAnim.start()
                 pager.interactive = true
+                gridview.onUninstall = false
+                deleter.remove.text = "Remove"
+                deleter.uninstall.text = "Uninstall"
+
+                reparent(gridview.contentItem)
+
+                slideMoveAnim.start()
             }
         }
 
@@ -102,18 +108,17 @@ Item {
             if (reordering) {
                 var gridViewPos = gridview.contentItem.mapFromItem(launcherItem, width/2, height/2)
                 var idx = gridview.indexAt(gridViewPos.x, gridViewPos.y)
+                var delPos = deleter.remove.mapFromItem(launcherItem, width/2, height/2)
+                var isdel = deleter.childAt(delPos.x, delPos.y)
+                if (isdel === deleter.remove) {
+                    deleter.remove.text = "Removing " + iconCaption
+                } else if (isdel === deleter.uninstall) {
+                    deleter.uninstall.text = "Uninstalling " + iconCaption
+                }
                 if (newIndex !== idx) {
                     reorderTimer.restart()
                     newIndex = idx
                 }
-/*
-                var globalY = desktop.mapFromItem(launcherItem, 0, 0).y
-                if (globalY < 70) {
-                    pageChangeTimer.start()
-                } else {
-                    pageChangeTimer.stop()
-                }
-*/
             }
         }
 
