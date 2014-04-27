@@ -54,7 +54,7 @@ Page {
         defaultValue: "images/graphics-wallpaper-home.jpg"
     }
     id: desktop
-
+    property alias lockscreen: lockScreen
     // Implements back key navigation
     Keys.onReleased: {
         if (event.key === Qt.Key_Back) {
@@ -131,9 +131,6 @@ Page {
     Pager {
         id: pager
 
-        scale: 0.7 + 0.3 * lockScreen.openingState
-        opacity: lockScreen.openingState
-
         anchors.fill: parent
 
         model: VisualItemModel {
@@ -162,20 +159,6 @@ Page {
 
         width: parent.width
         height: parent.height
-
         z: 200
-
-        onOpeningStateChanged: {
-            // When fully closed, reset the current page
-            if (openingState !== 0)
-                return
-
-            // Focus the switcher if any applications are running, otherwise the launcher
-            if (switcher.runningAppsCount > 0) {
-                pager.currentIndex = 2
-            } else {
-                pager.currentIndex = 1
-            }
-        }
     }
 }
