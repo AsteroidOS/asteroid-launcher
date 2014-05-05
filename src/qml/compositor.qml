@@ -122,11 +122,17 @@ Compositor {
 
 
         property real swipeThreshold: 0.15
+        property real lockThreshold: 0.25
 
         onGestureStarted: {
             swipeAnimation.stop()
             cancelAnimation.stop()
-            state = "swipe"
+            lockAnimation.stop()
+            if (root.appActive) {
+                state = "swipe"
+            } else if (root.homeActive) {
+                state = "lock"
+            }
         }
 
         onGestureFinished: {
@@ -141,13 +147,19 @@ Compositor {
                     cancelAnimation.start()
                 }
             } else if (root.homeActive){
-                if (gestureArea.progress >= swipeThreshold) {
+                if (gestureArea.progress >= lockThreshold) {
+                    lockAnimation.valueTo = (gestureArea.gesture == "left" ?
+                                                 Desktop.instance.lockscreen.width :
+                                                 -Desktop.instance.lockscreen.width)
+                    lockAnimation.start()
                     // Locks or unlocks depending if the screen is locked.
                     if (!Desktop.instance.lockscreenVisible()) {
                         Desktop.instance.setLockScreen(true)
                     } else {
                         Desktop.instance.setLockScreen(false)
                     }
+                } else {
+                    cancelAnimation.start()
                 }
             }
         }
@@ -166,7 +178,30 @@ Compositor {
                     x: gestureArea.horizontal ? gestureArea.value : 0
                     y: gestureArea.horizontal ? 0 : gestureArea.value
                 }
+            },
+            State {
+                name: "lock"
+                PropertyChanges {
+                    target: Desktop.instance.lockscreen
+                    visible: true
+                }
+                PropertyChanges {
+                    target: gestureArea
+                    delayReset: true
+                }
+                PropertyChanges {
+                    target: Desktop.instance.lockscreen
+                    x: gestureArea.horizontal ? (Desktop.instance.lockscreenVisible()?(gestureArea.value):
+                                                                                       (gestureArea.gesture == "right" ?
+                                                                                       -Desktop.instance.lockscreen.width+Math.abs(gestureArea.value) :
+                                                                                       Desktop.instance.lockscreen.width+gestureArea.value) ) : 0
+                    y: gestureArea.horizontal ? 0 : (Desktop.instance.lockscreenVisible()?(gestureArea.value):
+                                                                                       (gestureArea.gesture == "down" ?
+                                                                                       -Desktop.instance.lockscreen.height+Math.abs(gestureArea.value) :
+                                                                                       Desktop.instance.lockscreen.height+gestureArea.value) )
+                }
             }
+
         ]
 
         SequentialAnimation {
@@ -178,6 +213,28 @@ Compositor {
                 to: 0
                 duration: 200
                 easing.type: Easing.OutQuint
+            }
+
+            PropertyAction {
+                target: gestureArea
+                property: "state"
+                value: ""
+            }
+        }
+
+        SequentialAnimation {
+            id: lockAnimation
+            property alias valueTo: valueAnimationLock.to
+
+            SmoothedAnimation {
+                id: valueAnimationLock
+                target: Desktop.instance.lockscreen
+                property: "x"
+                easing.type: Easing.OutQuint
+            }
+
+            ScriptAction {
+                script: Desktop.instance.setLockScreen(Desktop.instance.lockscreenVisible())
             }
 
             PropertyAction {
