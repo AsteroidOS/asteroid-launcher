@@ -36,7 +36,6 @@ import QtQuick.Controls.Styles.Nemo 1.0
 import QtQuick.Window 2.1
 import org.nemomobile.time 1.0
 import org.nemomobile.configuration 1.0
-import org.freedesktop.contextkit 1.0
 import "scripts/desktop.js" as Desktop
 
 Page {
@@ -64,61 +63,19 @@ Page {
             } else { Qt.quit(); }
         }
     }
-    Connections {
-        target: batterystatus
-        onValueChanged: {
-            if(batterystatus.value > 85) {
-                batteryimg.source = "images/battery6.png"
-            } else if (batterystatus.value <= 5) {
-                batteryimg.source = "images/battery0.png"
-            } else if (batterystatus.value <= 10) {
-                batteryimg.source = "images/battery1.png"
-            } else if (batterystatus.value <= 25) {
-                batteryimg.source = "images/battery2.png"
-            } else if (batterystatus.value <= 40) {
-                batteryimg.source = "images/battery3.png"
-            } else if (batterystatus.value <= 65) {
-                batteryimg.source = "images/battery4.png"
-            } else if (batterystatus.value <= 80) {
-                batteryimg.source = "images/battery5.png"
-            }
-            batterylbl.text = batterystatus.value + "%"
-        }
+
+    Statusbar {
+        id: statusbar
     }
 
-    ContextProperty {
-        id: batterystatus
-        key: "Battery.ChargePercentage"
-        value: "100"
-    }
-
-    Rectangle {
-        id: toolbar
-        color: "black"
-        height: 40
-        width: parent.width
-        border.color: "white"
-        border.width: 1
-        z: 201
-        anchors.bottom: parent.bottom
-        Image {
-            id: batteryimg
-            width: 32
-            height: 32
-        }
-        Label {
-            anchors.left: batteryimg.right
-            id: batterylbl
-            color: "white"
-            font.pointSize: 8
-        }
-    }
     Component.onCompleted: {
         Desktop.instance = desktop
     }
+
     function lockscreenVisible() {
         return LipstickSettings.lockscreenVisible === true
     }
+
     function setLockScreen(enabled) {
         if (enabled) {
             LipstickSettings.lockScreen(true)
@@ -154,6 +111,12 @@ Page {
         // Initial view should be the AppLauncher
         currentIndex: 0
     }
+    Image {
+        id:wallpaper
+        source: "images/wallpaper-portrait-bubbles.png"
+        anchors.fill: parent
+        z: -100
+    }
     Lockscreen {
         id: lockScreen
 
@@ -161,4 +124,5 @@ Page {
         height: parent.height
         z: 200
     }
+
 }

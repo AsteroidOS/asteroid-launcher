@@ -36,5 +36,7 @@
         <file>qml/images/notification-circle.png</file>
         <file>qml/scripts/desktop.js</file>
         <file>qml/FeedsPage.qml</file>
+        <file>qml/Statusbar.qml</file>
+        <file>qml/images/wallpaper-portrait-bubbles.png</file>
     </qresource>
 </RCC>

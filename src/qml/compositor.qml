@@ -82,10 +82,9 @@ Compositor {
         }
     }
 
-    Rectangle {
+    Item {
         id: layersParent
         anchors.fill: parent
-        color: "black"
 
         Item {
             id: homeLayer
