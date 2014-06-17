@@ -32,6 +32,7 @@ import QtQuick 2.1
 import QtQuick.Controls.Nemo 1.0
 import QtQuick.Controls.Styles.Nemo 1.0
 import org.freedesktop.contextkit 1.0
+import MeeGo.Connman 0.2
 
 Item {
     id: root
@@ -64,6 +65,24 @@ Item {
         key: "Cellular.RegistrationStatus"
     }
 
+    NetworkManager {
+        id: networkManager
+        function updateTechnologies() {
+            if (available && technologiesEnabled) {
+                wlan.path = networkManager.technologyPathForType("wifi")
+            }
+        }
+
+        onAvailableChanged: updateTechnologies()
+        onTechnologiesEnabledChanged: updateTechnologies()
+        onTechnologiesChanged: updateTechnologies()
+
+    }
+
+    NetworkTechnology {
+        id: wlan
+    }
+
     Row {
         spacing: 16
         StatusbarItem {
@@ -71,7 +90,23 @@ Item {
         }
         StatusbarItem {
             source: {
-                return "image://theme/icon_wifi_normal1"
+                if (wlan.connected) {
+                    if (networkManager.defaultRoute.type !== "wifi")
+                        return "image://theme/icon_wifi_0"
+                    if (networkManager.defaultRoute.strength >= 59) {
+                        return "image://theme/icon_wifi_normal4"
+                    } else if (networkManager.defaultRoute.strength >= 55) {
+                        return "image://theme/icon_wifi_normal3"
+                    } else if (networkManager.defaultRoute.strength >= 50) {
+                        return "image://theme/icon_wifi_normal2"
+                    } else if (networkManager.defaultRoute.strength >= 40) {
+                        return "image://theme/icon_wifi_normal1"
+                    } else {
+                        return "image://theme/icon_wifi_0"
+                    }
+                } else {
+                    return "image://theme/icon_wifi_0"
+                }
             }
         }
         StatusbarItem {
