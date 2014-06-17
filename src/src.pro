@@ -44,6 +44,7 @@ OTHER_FILES += qml/*.qml \
     qml/NotificationPreview.qml \
     qml/scripts/desktop.js \
     qml/FeedsPage.qml \
-    qml/Statusbar.qml
+    qml/Statusbar.qml \
+    qml/StatusbarItem.qml
 
 

@@ -48,35 +48,6 @@ Item {
         z: 200
     }
 
-    Connections {
-        target: batteryChargePercentage
-        onValueChanged: {
-            if(batteryChargePercentage.value > 85) {
-                batteryimg.source = "images/battery6.png"
-            } else if (batteryChargePercentage.value <= 5) {
-                batteryimg.source = "images/battery0.png"
-            } else if (batteryChargePercentage.value <= 10) {
-                batteryimg.source = "images/battery1.png"
-            } else if (batteryChargePercentage.value <= 25) {
-                batteryimg.source = "images/battery2.png"
-            } else if (batteryChargePercentage.value <= 40) {
-                batteryimg.source = "images/battery3.png"
-            } else if (batteryChargePercentage.value <= 65) {
-                batteryimg.source = "images/battery4.png"
-            } else if (batteryChargePercentage.value <= 80) {
-                batteryimg.source = "images/battery5.png"
-            }
-        }
-    }
-
-    Connections {
-        target: cellularSignalBars
-        onValueChanged: {
-            cellularbars.text = cellularSignalBars.value
-        }
-    }
-
-
     ContextProperty {
         id: batteryChargePercentage
         key: "Battery.ChargePercentage"
@@ -93,116 +64,65 @@ Item {
         key: "Cellular.RegistrationStatus"
     }
 
-    Rectangle {
-        id: cellular
-        anchors.left: parent.left
-        color: "transparent"
-        height: 48
-        width: 48
-        anchors.margins: 8
-        Label {
-            id: cellularbars
-            width: 32
-            height: 32
-            font.pointSize: 8
+    Row {
+        spacing: 16
+        StatusbarItem {
+            source: "image://theme/icon_cell" + cellularSignalBars.value
         }
-    }
-    Rectangle {
-        id: wifi
-        anchors.left: cellular.right
-        color: "transparent"
-        height: 48
-        width: 48
-        anchors.margins: 8
-    }
-    Rectangle {
-        id: bluetooth
-        anchors.left: wifi.right
-        color: "transparent"
-        height: 48
-        width: 48
-        anchors.margins: 8
-        Image {
-            source: bluetoothConnected.value !== undefined && bluetoothConnected.value ? "image://theme/icon-status-bluetooth-connected" : "image://theme/icon-status-bluetooth"
-
-            ContextProperty {
-                id: bluetoothEnabled
-                key: "Bluetooth.Enabled"
-            }
-            ContextProperty {
-                id: bluetoothConnected
-                key: "Bluetooth.Connected"
+        StatusbarItem {
+            source: {
+                return "image://theme/icon_wifi_normal1"
             }
         }
-    }
-    Rectangle {
-        id: nfc
-        anchors.left: bluetooth.right
-        color: "transparent"
-        height: 48
-        width: 48
-        anchors.margins: 8
-        Image {
-            source: "image://theme/icon-nfc-enabled"
+        StatusbarItem {
+            source: "image://theme/icon_bt_normal"
         }
-    }
-    Rectangle {
-        id: gps
-        anchors.left: nfc.right
-        color: "transparent"
-        height: 48
-        width: 48
-        anchors.margins: 8
-        Image {
-            source: "image://theme/icon-gps-enabled"
+        StatusbarItem {
+            source: "image://theme/icon_nfc_normal"
         }
-    }
-    Rectangle {
-        id: playlist
-        anchors.left: gps.right
-        color: "transparent"
-        height: 48
-        width: 48
-        anchors.margins: 8
-        Image {
-            source: "image://theme/icon-playlist-playpause"
+        StatusbarItem {
+            source: "image://theme/icon_gps_normal"
         }
-    }
-    Rectangle {
-        id: clock
-        anchors.left: playlist.right
-        color: "transparent"
-        height: 48
-        width: 48
-        anchors.margins: 8
-        Label {
-            id: hours
-            width: 16
-            height: 16
-            font.pointSize: 6
-            text: Qt.formatDateTime(wallClock.time, "hh")
+        StatusbarItem {
+            source: "image://theme/icon_play_pause"
         }
-        Label {
-            id: minutes
-            anchors.top: hours.bottom
-            anchors.topMargin: 4
-            width: 16
-            height: 16
-            font.pointSize: 6
-            text: Qt.formatDateTime(wallClock.time, "mm")
+        StatusbarItem {
+            Label {
+                id: hours
+                width: 16
+                height: 16
+                font.pointSize: 6
+                text: Qt.formatDateTime(wallClock.time, "hh")
+            }
+            Label {
+                id: minutes
+                anchors.top: hours.bottom
+                anchors.topMargin: 4
+                width: 16
+                height: 16
+                font.pointSize: 6
+                text: Qt.formatDateTime(wallClock.time, "mm")
+            }
         }
-    }
 
-    Rectangle {
-        anchors.right: parent.right
-        height: 48
-        width: 48
-        color: "transparent"
-        anchors.margins: 8
-        Image {
-            id: batteryimg
-            width: 32
-            height: 32
+        StatusbarItem {
+            source: {
+                if(batteryChargePercentage.value > 85) {
+                    return "images/battery6.png"
+                } else if (batteryChargePercentage.value <= 5) {
+                    return "images/battery0.png"
+                } else if (batteryChargePercentage.value <= 10) {
+                    return "images/battery1.png"
+                } else if (batteryChargePercentage.value <= 25) {
+                    return "images/battery2.png"
+                } else if (batteryChargePercentage.value <= 40) {
+                    return "images/battery3.png"
+                } else if (batteryChargePercentage.value <= 65) {
+                    return "images/battery4.png"
+                } else if (batteryChargePercentage.value <= 80) {
+                    return "images/battery5.png"
+                }
+            }
         }
     }
 }
