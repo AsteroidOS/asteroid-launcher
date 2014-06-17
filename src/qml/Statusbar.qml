@@ -72,15 +72,23 @@ Item {
                 wlan.path = networkManager.technologyPathForType("wifi")
             }
         }
-
         onAvailableChanged: updateTechnologies()
         onTechnologiesEnabledChanged: updateTechnologies()
         onTechnologiesChanged: updateTechnologies()
-
     }
 
     NetworkTechnology {
         id: wlan
+    }
+
+    ContextProperty {
+        id: cellularNetworkName
+        key: "Cellular.NetworkName"
+    }
+
+    ContextProperty {
+        id: cellularDataTechnology
+        key: "Cellular.DataTechnology"
     }
 
     Row {
@@ -88,6 +96,30 @@ Item {
         StatusbarItem {
             source: "image://theme/icon_cell" + cellularSignalBars.value
         }
+
+        StatusbarItem {
+            Label {
+                id: tech
+                width: 16
+                height: 16
+                font.pointSize: 6
+                font.bold: true
+                text: cellularNetworkName.value.toUpperCase()
+            }
+
+            Label {
+                anchors.top: tech.bottom
+                anchors.topMargin: 4
+                width: 16
+                height: 16
+                font.pointSize: 6
+                text: {
+                    var techToG = {gprs: "2", egprs: "2.5", umts: "3", hspa: "3.5", lte: "4"}
+                    return techToG[cellularDataTechnology.value] + "G"
+                }
+            }
+        }
+
         StatusbarItem {
             source: {
                 if (wlan.connected) {
