@@ -43,6 +43,7 @@ OTHER_FILES += qml/*.qml \
     qml/compositor/ScreenGestureArea.qml \
     qml/NotificationPreview.qml \
     qml/scripts/desktop.js \
-    qml/FeedsPage.qml
+    qml/FeedsPage.qml \
+    qml/Statusbar.qml
 
 
