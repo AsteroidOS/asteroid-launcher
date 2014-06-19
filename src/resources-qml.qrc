@@ -39,5 +39,6 @@
         <file>qml/Statusbar.qml</file>
         <file>qml/images/wallpaper-portrait-bubbles.png</file>
         <file>qml/StatusbarItem.qml</file>
+        <file>qml/WifiPanel.qml</file>
     </qresource>
 </RCC>

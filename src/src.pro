@@ -45,6 +45,7 @@ OTHER_FILES += qml/*.qml \
     qml/scripts/desktop.js \
     qml/FeedsPage.qml \
     qml/Statusbar.qml \
-    qml/StatusbarItem.qml
+    qml/StatusbarItem.qml \
+    qml/WifiPanel.qml
 
 

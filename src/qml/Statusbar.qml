@@ -75,6 +75,7 @@ Item {
         onAvailableChanged: updateTechnologies()
         onTechnologiesEnabledChanged: updateTechnologies()
         onTechnologiesChanged: updateTechnologies()
+
     }
 
     NetworkTechnology {
@@ -89,6 +90,23 @@ Item {
     ContextProperty {
         id: cellularDataTechnology
         key: "Cellular.DataTechnology"
+    }
+
+    TechnologyModel {
+        id: wifimodel
+        name: "wifi"
+        onPoweredChanged: {
+            if (powered)
+                wifimodel.requestScan()
+        }
+    }
+
+    Loader {
+        id: panel_loader
+        anchors.bottom: root.top
+        height: 240
+        width: parent.width
+        visible: false
     }
 
     Row {
@@ -140,6 +158,7 @@ Item {
                     return "image://theme/icon_wifi_0"
                 }
             }
+            panel: WifiPanel {}
         }
         StatusbarItem {
             source: "image://theme/icon_bt_normal"
