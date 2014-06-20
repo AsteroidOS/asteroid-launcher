@@ -7,9 +7,6 @@ VERSION = 0.1
 
 INSTALLS = target
 target.path = /usr/bin
-config.files = lipstick.conf
-config.path = /usr/share/lipstick
-INSTALLS += config
 
 CONFIG += qt link_pkgconfig
 QT += quick compositor
