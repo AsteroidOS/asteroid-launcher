@@ -33,6 +33,7 @@ import org.nemomobile.glacier 1.0
 
 Item {
     id: switcherRoot
+
     property bool closeMode: false
     property bool visibleInHome: false
     property alias runningAppsCount: switcherModel.itemCount
@@ -119,7 +120,7 @@ Item {
             right: parent.right
             bottom: parent.bottom
             margins: -1
-            bottomMargin: switcherRoot.closeMode ? 0 : -height
+            bottomMargin: switcherRoot.closeMode ? 48 : -height
         }
 
         Behavior on anchors.bottomMargin { PropertyAnimation { duration: 100 } }

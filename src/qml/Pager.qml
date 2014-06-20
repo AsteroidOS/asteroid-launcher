@@ -25,13 +25,12 @@ import QtQuick 2.0
 
 PathView {
     id: pager
-    highlightRangeMode: PathView.StrictlyEnforceRange
+    highlightRangeMode: PathView.ApplyRange
     preferredHighlightBegin: 0.5
     preferredHighlightEnd: 0.5
     flickDeceleration: 10000
     highlightMoveDuration: 100
     snapMode: PathView.SnapOneItem
-    clip: true
     path: Path {
         startX: - width * model.count / 2 + width / 2
         startY: height / 2

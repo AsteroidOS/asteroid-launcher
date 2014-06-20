@@ -89,7 +89,6 @@ Page {
         id: pager
 
         anchors.fill: parent
-
         model: VisualItemModel {
             AppLauncher {
                 id: launcher

@@ -44,6 +44,9 @@ GridView {
     header: Item {
         height: 100
     }
+    footer: Item {
+        height: 100
+    }
 
     Item {
         id: deleter
