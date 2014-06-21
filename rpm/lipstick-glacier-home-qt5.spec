@@ -71,7 +71,6 @@ ln -s ../lipstick.service %{buildroot}%{_libdir}/systemd/user/user-session.targe
 %{_bindir}/lipstick
 %{_libdir}/systemd/user/lipstick.service
 %config /etc/xdg/autostart/*.desktop
-%{_datadir}/lipstick/lipstick.conf
 %{_libdir}/systemd/user/user-session.target.wants/lipstick.service
 # >> files
 # << files
