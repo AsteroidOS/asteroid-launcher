@@ -72,5 +72,6 @@ ln -s ../lipstick.service %{buildroot}%{_libdir}/systemd/user/user-session.targe
 %{_libdir}/systemd/user/lipstick.service
 %config /etc/xdg/autostart/*.desktop
 %{_libdir}/systemd/user/user-session.target.wants/lipstick.service
+%{_datadir}/lipstick-glacier-home-qt5/nemovars.conf
 # >> files
 # << files

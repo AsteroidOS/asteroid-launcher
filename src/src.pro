@@ -8,6 +8,11 @@ VERSION = 0.1
 INSTALLS = target
 target.path = /usr/bin
 
+styles.path = /usr/share/lipstick-glacier-home-qt5
+styles.files = nemovars.conf
+
+INSTALLS += styles
+
 CONFIG += qt link_pkgconfig
 QT += quick compositor
 DEFINES += QT_COMPOSITOR_QUICK
@@ -43,6 +48,6 @@ OTHER_FILES += qml/*.qml \
     qml/FeedsPage.qml \
     qml/Statusbar.qml \
     qml/StatusbarItem.qml \
-    qml/WifiPanel.qml
-
+    qml/WifiPanel.qml \
+    nemovars.conf
 
