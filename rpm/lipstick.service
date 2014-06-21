@@ -6,6 +6,7 @@ After=pre-user-session.target
 [Service]
 Type=notify
 EnvironmentFile=-/var/lib/environment/compositor/*.conf
+EnvironmentFile=-/usr/share/lipstick-glacier-home-qt5/nemovars.conf
 ExecStart=/usr/bin/lipstick $LIPSTICK_OPTIONS --systemd
 Restart=always
  
