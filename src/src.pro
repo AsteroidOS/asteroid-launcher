@@ -49,5 +49,8 @@ OTHER_FILES += qml/*.qml \
     qml/Statusbar.qml \
     qml/StatusbarItem.qml \
     qml/WifiPanel.qml \
-    nemovars.conf
+	nemovars.conf \
+    qml/SimPanel.qml \
+    qml/NumButton.qml
+
 

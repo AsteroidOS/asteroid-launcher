@@ -40,5 +40,7 @@
         <file>qml/images/wallpaper-portrait-bubbles.png</file>
         <file>qml/StatusbarItem.qml</file>
         <file>qml/WifiPanel.qml</file>
+        <file>qml/SimPanel.qml</file>
+        <file>qml/NumButton.qml</file>
     </qresource>
 </RCC>

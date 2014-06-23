@@ -112,7 +112,7 @@ Item {
     Row {
         spacing: 16
         StatusbarItem {
-            source: "image://theme/icon_cell" + cellularSignalBars.value
+            source: (cellularSignalBars.value > 0) ? "image://theme/icon_cell" + cellularSignalBars.value : "image://theme/icon_cell1"
         }
 
         StatusbarItem {
@@ -122,7 +122,8 @@ Item {
                 height: 16
                 font.pointSize: 6
                 font.bold: true
-                text: cellularNetworkName.value.toUpperCase()
+                wrapMode: Text.ElideRight
+                text: (cellularNetworkName !== "") ? cellularNetworkName.value.toUpperCase() : "N/A"
             }
 
             Label {
@@ -132,10 +133,11 @@ Item {
                 height: 16
                 font.pointSize: 6
                 text: {
-                    var techToG = {gprs: "2", egprs: "2.5", umts: "3", hspa: "3.5", lte: "4"}
+                    var techToG = {gprs: "2", egprs: "2.5", umts: "3", hspa: "3.5", lte: "4", unknown: "0"}
                     return techToG[cellularDataTechnology.value] + "G"
                 }
             }
+            panel: SimPanel {}
         }
 
         StatusbarItem {
