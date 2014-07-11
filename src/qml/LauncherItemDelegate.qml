@@ -157,7 +157,7 @@ Item {
             Spinner {
                 id: spinner
                 anchors.centerIn: parent
-                enabled: model.object.isLaunching
+                enabled: (model.object.type === 0) ? model.object.isLaunching : false
             }
         }
 
