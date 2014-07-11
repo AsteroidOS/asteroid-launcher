@@ -24,6 +24,8 @@
 
 import QtQuick 2.0
 import org.nemomobile.lipstick 0.1
+import QtQuick.Controls.Nemo 1.0
+import QtQuick.Controls.Styles.Nemo 1.0
 
 MouseArea {
     id: switcherItemRoot
@@ -80,6 +82,15 @@ MouseArea {
         ScriptAction {
             script: switcherItemRoot.close()
         }
+    }
+    Label {
+        anchors {
+            top: parent.bottom
+            horizontalCenter: parent.horizontalCenter
+            topMargin: -30
+        }
+        font.pointSize: 8
+        text: Lipstick.compositor.windowForId(model.window).title
     }
 
     CloseButton {

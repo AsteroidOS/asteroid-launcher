@@ -286,7 +286,8 @@ Compositor {
     onWindowAdded: {
         if (debug) console.log("Compositor: Window added \"" + window.title + "\"")
 
-        var isHomeWindow = window.isInProcess && root.homeWindow == null && window.title == "Home"
+        var isHomeWindow = window.isInProcess && root.homeWindow == null && window.title === "Home"
+        var isDialogWindow = window.category === "dialog"
         var isNotificationWindow = window.category == "notification"
         var isOverlayWindow =  window.category == "overlay"
         var parent = null
@@ -315,6 +316,8 @@ Compositor {
             setCurrentWindow(homeWindow)
         } else if (isNotificationWindow || isOverlayWindow) {
 
+        } else if (isDialogWindow){
+            setCurrentWindow(window)
         } else {
             w = mysticWrapper.createObject(parent, {window: window})
             window.userData = w

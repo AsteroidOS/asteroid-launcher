@@ -84,7 +84,7 @@ GridView {
         }
     }
 
-    model: LauncherModel { id: launcherModel }
+    model: LauncherFolderModel { id: launcherModel }
 
     delegate: LauncherItemDelegate {
         id: launcherItem

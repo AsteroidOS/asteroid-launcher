@@ -1,6 +1,6 @@
 Name: lipstick-glacier-home-qt5
 Summary: A nice homescreen for Glacier experience
-Version: 0.10
+Version: 0.12
 Release: 1
 Group: System/GUI/Other
 License: BSD
@@ -17,6 +17,8 @@ Requires:
     - qt5-qtdeclarative-import-window2 # TODO: components dep?
     - qt5-qtquickcontrols-nemo
     - nemo-qml-plugin-contextkit-qt5
+    - connman-qt5
+    - libqofono-qt5
 PkgConfigBR:
     - Qt5Core
     - Qt5Quick
@@ -32,3 +34,4 @@ Files:
     - "%config /etc/xdg/autostart/*.desktop"
     - "%{_libdir}/systemd/user/user-session.target.wants/lipstick.service"
     - "%{_datadir}/lipstick-glacier-home-qt5/nemovars.conf"
+    - "%{_datadir}/lipstick-glacier-home-qt5/qml"
