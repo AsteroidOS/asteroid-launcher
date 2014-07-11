@@ -22,50 +22,76 @@
 // Copyright (c) 2011, Tom Swindell <t.swindell@rubyx.co.uk>
 // Copyright (c) 2012, Timur Kristóf <venemo@fedoraproject.org>
 
-import QtQuick 2.0
+import QtQuick 2.1
+import org.nemomobile.lipstick 0.1
 import QtQuick.Controls.Nemo 1.0
 import QtQuick.Controls.Styles.Nemo 1.0
 // Feeds page:
 // the place for an event feed.
 
 Item {
-    // Day of week
-    Label {
-        id: displayDayOfWeek
-        text: Qt.formatDateTime(wallClock.time, "dddd")
-        color: "white"
-        anchors {
-            top: parent.top
-            left: parent.left
-            topMargin: 30
-            leftMargin: 20
-        }
-    }
+    Column {
+        spacing: 40
+        // Day of week
+        Row {
+            id: daterow
+            height: 120
+            Label {
+                id: displayDayOfWeek
+                text: Qt.formatDateTime(wallClock.time, "dddd") + ", "
+                color: "white"
+                font.pointSize: 12
+                font.bold: true
+                anchors {
+                    top: parent.top
+                    left: parent.left
+                    topMargin: 30
+                    leftMargin: 20
+                }
+            }
 
-    // Current date
-    Label {
-        id: displayCurrentDate
-        text: Qt.formatDate(wallClock.time, Qt.SystemLocaleShortDate)
-        color: "#888888"
-        anchors {
-            top: displayDayOfWeek.bottom
-            left: parent.left
-            topMargin: 5
-            leftMargin: 20
+            // Current date
+            Label {
+                id: displayCurrentDate
+                text: Qt.formatDate(wallClock.time, "d MMMM yyyy")
+                font.pointSize: 12
+                anchors {
+                    left: displayDayOfWeek.right
+                    top: parent.top
+                    topMargin: 30
+                }
+            }
         }
-    }
+        Column {
+            anchors.top: daterow.bottom
+            spacing: 40
+            Repeater {
+                model: NotificationListModel {
+                    id: notifmodel
+                }
+                delegate: Row {
+                    spacing: 16
+                    height: 40
+                    Image {
+                        source: {
+                            if (modelData.appIcon)
+                                return "image://theme/" + modelData.appIcon
+                            else
+                                return ""
+                        }
+                    }
 
-    // Separator thingy
-    Rectangle {
-        height: 2
-        color: "#888888"
-        anchors {
-            top: displayCurrentDate.bottom
-            left: parent.left
-            right: parent.right
-            topMargin: 5
-            leftMargin: 20
-            rightMargin: 20
+                    Label {
+                        id: appSummary
+                        text: modelData.summary
+                        font.pointSize: 10
+                    }
+                    Label {
+                        text: modelData.body
+                        font.pointSize: 8
+                    }
+                }
+            }
         }
     }
 }
