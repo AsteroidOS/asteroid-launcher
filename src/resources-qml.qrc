@@ -1,19 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>qml/MainScreen.qml</file>
-        <file>qml/compositor/ScreenGestureArea.qml</file>
-        <file>qml/compositor/WindowWrapperAlpha.qml</file>
-        <file>qml/compositor/WindowWrapperBase.qml</file>
-        <file>qml/AppLauncher.qml</file>
-        <file>qml/AppSwitcher.qml</file>
-        <file>qml/compositor.qml</file>
-        <file>qml/LauncherItemDelegate.qml</file>
-        <file>qml/Lockscreen.qml</file>
-        <file>qml/LockscreenClock.qml</file>
-        <file>qml/Pager.qml</file>
-        <file>qml/ToolBarLayoutExample.qml</file>
-        <file>qml/SwitcherItem.qml</file>
-        <file>qml/CloseButton.qml</file>
         <file>qml/images/button_default.png</file>
         <file>qml/images/button_pressed.png</file>
         <file>qml/images/navigation_next_item.png</file>
@@ -30,17 +16,8 @@
         <file>qml/images/battery4.png</file>
         <file>qml/images/battery5.png</file>
         <file>qml/images/battery6.png</file>
-        <file>qml/compositor/WindowWrapperMystic.qml</file>
         <file>qml/theme/icon-m-framework-close-thumbnail.png</file>
-        <file>qml/NotificationPreview.qml</file>
         <file>qml/images/notification-circle.png</file>
-        <file>qml/scripts/desktop.js</file>
-        <file>qml/FeedsPage.qml</file>
-        <file>qml/Statusbar.qml</file>
         <file>qml/images/wallpaper-portrait-bubbles.png</file>
-        <file>qml/StatusbarItem.qml</file>
-        <file>qml/WifiPanel.qml</file>
-        <file>qml/SimPanel.qml</file>
-        <file>qml/NumButton.qml</file>
     </qresource>
 </RCC>

@@ -11,7 +11,38 @@ target.path = /usr/bin
 styles.path = /usr/share/lipstick-glacier-home-qt5
 styles.files = nemovars.conf
 
-INSTALLS += styles
+qml.path = /usr/share/lipstick-glacier-home-qt5/qml
+qml.files = qml/MainScreen.qml \
+    qml/compositor.qml \
+    qml/LauncherItemDelegate.qml \
+    qml/Lockscreen.qml \
+    qml/LockscreenClock.qml \
+    qml/AppSwitcher.qml \
+    qml/AppLauncher.qml \
+    qml/ToolBarLayoutExample.qml \
+    qml/SwitcherItem.qml \
+    qml/CloseButton.qml \
+    qml/NotificationPreview.qml \
+    qml/FeedsPage.qml \
+    qml/Statusbar.qml \
+    qml/StatusbarItem.qml \
+    qml/WifiPanel.qml \
+    qml/SimPanel.qml \
+    qml/NumButton.qml \
+    qml/USBModeSelector.qml \
+    qml/Pager.qml \
+    qml/VolumeControl.qml
+
+qmlcompositor.path = /usr/share/lipstick-glacier-home-qt5/qml/compositor
+qmlcompositor.files = qml/compositor/WindowWrapperMystic.qml \
+    qml/compositor/WindowWrapperBase.qml \
+    qml/compositor/WindowWrapperAlpha.qml \
+    qml/compositor/ScreenGestureArea.qml
+
+scripts.path = /usr/share/lipstick-glacier-home-qt5/qml/scripts
+scripts.files =  qml/scripts/desktop.js
+
+INSTALLS += styles qml qmlcompositor scripts
 
 CONFIG += qt link_pkgconfig
 QT += quick compositor
@@ -51,6 +82,8 @@ OTHER_FILES += qml/*.qml \
     qml/WifiPanel.qml \
 	nemovars.conf \
     qml/SimPanel.qml \
-    qml/NumButton.qml
+    qml/NumButton.qml \
+    qml/USBModeSelector.qml \
+    qml/VolumeControl.qml
 
 
