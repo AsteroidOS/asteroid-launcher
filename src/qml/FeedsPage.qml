@@ -30,6 +30,7 @@ import QtQuick.Controls.Styles.Nemo 1.0
 // the place for an event feed.
 
 Item {
+    id: rootitem
     Column {
         spacing: 40
         // Day of week
@@ -62,6 +63,7 @@ Item {
                 }
             }
         }
+
         Column {
             anchors.top: daterow.bottom
             spacing: 40
@@ -72,23 +74,38 @@ Item {
                 delegate: Row {
                     spacing: 16
                     height: 40
-                    Image {
-                        source: {
-                            if (modelData.appIcon)
-                                return "image://theme/" + modelData.appIcon
-                            else
-                                return ""
+                    width: rootitem.width
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            if (modelData.userRemovable) {
+                                modelData.removeRequested()
+                            }
                         }
-                    }
 
-                    Label {
-                        id: appSummary
-                        text: modelData.summary
-                        font.pointSize: 10
-                    }
-                    Label {
-                        text: modelData.body
-                        font.pointSize: 8
+                        Image {
+                            id: appIcon
+                            source: {
+                                if (modelData.appIcon)
+                                    return "image://theme/" + modelData.appIcon
+                                else
+                                    return ""
+                            }
+                        }
+
+                        Label {
+                            id: appSummary
+                            text: modelData.summary
+                            font.pointSize: 10
+                            anchors.left: appIcon.right
+                            wrapMode: Text.WordWrap
+                        }
+                        Label {
+                            text: modelData.body
+                            font.pointSize: 8
+                            wrapMode: Text.WordWrap
+                            anchors.left: appSummary.right
+                        }
                     }
                 }
             }
