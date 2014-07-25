@@ -41,6 +41,7 @@ Compositor {
 
     // The application window that was most recently topmost
     property Item topmostApplicationWindow
+    property Item topmostAlarmWindow
 
     function windowToFront(winId) {
         var o = root.windowForId(winId)
@@ -111,6 +112,10 @@ Compositor {
         Item {
             id: notificationLayer
             z: 6
+        }
+        Item {
+            id: alarmsLayer
+            z: 7
         }
     }
 
@@ -286,12 +291,13 @@ Compositor {
     onDisplayOff: setCurrentWindow(root.homeWindow)
 
     onWindowAdded: {
-        console.log("Compositor: Window added \"" + window.title + "\"")
+        console.log("Compositor: Window added \"" + window.title + "\"" + " category: " + window.category)
 
         var isHomeWindow = window.isInProcess && root.homeWindow == null && window.title === "Home"
         var isDialogWindow = window.category === "dialog"
         var isNotificationWindow = window.category == "notification"
         var isOverlayWindow =  window.category == "overlay"
+        var isAlarmWindow = window.category == "alarm"
         var parent = null
         if (window.category == "cover") {
             window.visible = false
@@ -303,6 +309,8 @@ Compositor {
             parent = notificationLayer
         } else if (isOverlayWindow){
             parent = overlayLayer
+        } else if (isAlarmWindow) {
+            parent = alarmsLayer
         } else {
             parent = appLayer
         }
@@ -320,15 +328,22 @@ Compositor {
 
         } else if (isDialogWindow){
             setCurrentWindow(window)
-        } else {
+        } else if (isAlarmWindow){
+            root.topmostAlarmWindow = window
             w = mysticWrapper.createObject(parent, {window: window})
             window.userData = w
             setCurrentWindow(w)
+        } else {
+            if (!root.topmostAlarmWindow) {
+                w = mysticWrapper.createObject(parent, {window: window})
+                window.userData = w
+                setCurrentWindow(w)
+            }
         }
     }
 
     onWindowRemoved: {
-        if (debug) console.log("Compositor: Window removed \"" + window.title + "\"")
+        console.log("Compositor: Window removed \"" + window.title + "\"")
 
         var w = window.userData;
 
