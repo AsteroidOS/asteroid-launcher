@@ -27,7 +27,7 @@ Image {
     id: closeButton
     signal clicked()
 
-    source: 'theme/icon-m-framework-close-thumbnail.png'
+    source: 'qrc:/qml/theme/icon-m-framework-close-thumbnail.png'
 
     MouseArea {
         anchors.fill: parent
