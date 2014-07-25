@@ -283,8 +283,10 @@ Compositor {
         WindowWrapperMystic { }
     }
 
+    onDisplayOff: setCurrentWindow(root.homeWindow)
+
     onWindowAdded: {
-        if (debug) console.log("Compositor: Window added \"" + window.title + "\"")
+        console.log("Compositor: Window added \"" + window.title + "\"")
 
         var isHomeWindow = window.isInProcess && root.homeWindow == null && window.title === "Home"
         var isDialogWindow = window.category === "dialog"
