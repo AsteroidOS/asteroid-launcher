@@ -100,10 +100,8 @@ MouseArea {
         opacity: scale
         enabled: !closeAnimation.running
         anchors {
-            top: parent.top
-            right: parent.right
-            topMargin: -10
-            rightMargin: -10
+            bottom: parent.bottom
+            horizontalCenter: parent.horizontalCenter
         }
         onClicked: closeAnimation.start()
     }
