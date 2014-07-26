@@ -41,7 +41,7 @@ Compositor {
 
     // The application window that was most recently topmost
     property Item topmostApplicationWindow
-    property Item topmostAlarmWindow
+    property Item topmostAlarmWindow: null
 
     function windowToFront(winId) {
         var o = root.windowForId(winId)
@@ -115,13 +115,13 @@ Compositor {
         }
         Item {
             id: alarmsLayer
-            z: 7
+            z: 3
         }
     }
 
     ScreenGestureArea {
         id: gestureArea
-        z: 2
+        z: 7
         anchors.fill: parent
 
 
@@ -178,7 +178,7 @@ Compositor {
                 }
 
                 PropertyChanges {
-                    target: appLayer
+                    target: root.topmostAlarmWindow == null ? appLayer : alarmsLayer
                     x: gestureArea.horizontal ? gestureArea.value : 0
                     y: gestureArea.horizontal ? 0 : gestureArea.value
                 }
@@ -343,10 +343,13 @@ Compositor {
     }
 
     onWindowRemoved: {
-        console.log("Compositor: Window removed \"" + window.title + "\"")
+        console.log("Compositor: Window removed \"" + window.title + "\"" + " category: " + window.category)
 
         var w = window.userData;
-
+        if (window.category == "alarm") {
+            root.topmostAlarmWindow = null
+            setCurrentWindow(root.homeWindow)
+        }
         if (root.topmostWindow == w)
             setCurrentWindow(root.homeWindow);
 
