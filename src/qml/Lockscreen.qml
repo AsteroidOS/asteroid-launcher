@@ -12,5 +12,8 @@ Image {
             right: parent.right
         }
     }
+    MouseArea {
+        anchors.fill: parent
+    }
 }
 

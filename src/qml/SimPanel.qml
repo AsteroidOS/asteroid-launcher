@@ -36,12 +36,19 @@ import MeeGo.QOfono 0.2
 
 Component {
     Rectangle {
+        id: simpanel
         height: 240
         width: root.width
         color: "#313131"
         opacity: 0.5
-        property bool _needsPin: simManager.pinRequired === OfonoSimManager.SimPin ||
+        property bool needsPin: simManager.pinRequired === OfonoSimManager.SimPin ||
                                  simManager.pinRequired === OfonoSimManager.SimPuk
+        onNeedsPinChanged: {
+            if (needsPin === false) {
+                panel_loader.visible = false
+            }
+        }
+
         Component.onCompleted: {
             simManager.modemPath = manager.modems
         }
@@ -55,7 +62,7 @@ Component {
         }
 
         Column {
-            visible: _needsPin
+            visible: needsPin
             spacing: 10
             Row {
                 spacing: 16
@@ -128,7 +135,7 @@ Component {
             }
         }
         Label {
-            visible: !_needsPin
+            visible: !needsPin
             text: "No pin required!"
             font.pointSize: 16
         }

@@ -26,6 +26,7 @@
 import QtQuick 2.0
 import QtQuick.Controls.Nemo 1.0
 import QtQuick.Controls.Styles.Nemo 1.0
+import org.nemomobile.lipstick 0.1
 
 Item {
     id: wrapper
@@ -52,6 +53,47 @@ Item {
         }
     }
 
+    GridView {
+        id: folderLoader
+        anchors.top: parent.bottom
+        width: gridview.width
+        height: childrenRect.height
+        cellWidth: 115
+        cellHeight: cellWidth + 30
+        Rectangle {
+            anchors.fill: parent
+            opacity: 0.75
+            color: "white"
+        }
+
+        delegate: MouseArea {
+            width: gridview.cellWidth
+            height: gridview.cellHeight
+            Image {
+                id: iconimage
+                source: model.object.iconId == "" ? ":/images/icons/apps.png" : (model.object.iconId.indexOf("/") == 0 ? "file://" : "image://theme/") + model.object.iconId
+            }
+            Text {
+                id: icontext
+                // elide only works if an explicit width is set
+                width: parent.width
+                elide: Text.ElideRight
+                horizontalAlignment: Text.AlignHCenter
+                font.pixelSize: 18
+                color: 'white'
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    top: iconimage.bottom
+                    topMargin: 5
+                }
+            }
+            onClicked: {
+                model.object.launchApplication()
+            }
+        }
+    }
+
     // Application icon for the launcher
     MouseArea {
         id: launcherItem
@@ -65,7 +107,16 @@ Item {
 
         onClicked: {
             // TODO: disallow if close mode enabled
-            model.object.launchApplication()
+            if (model.object.type !== LauncherModel.Folder) {
+                model.object.launchApplication()
+            } else {
+                if (!folderLoader.visible) {
+                    folderLoader.visible = true
+                    folderLoader.model = model.object
+                } else {
+                    folderLoader.visible = false
+                }
+            }
         }
 
         onPressAndHold: {
@@ -157,7 +208,7 @@ Item {
             Spinner {
                 id: spinner
                 anchors.centerIn: parent
-                enabled: (model.object.type === 0) ? model.object.isLaunching : false
+                enabled: (model.object.type === LauncherModel.Application) ? model.object.isLaunching : false
             }
         }
 

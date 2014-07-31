@@ -41,6 +41,7 @@ Compositor {
 
     // The application window that was most recently topmost
     property Item topmostApplicationWindow
+    property Item topmostAlarmWindow: null
 
     function windowToFront(winId) {
         var o = root.windowForId(winId)
@@ -112,11 +113,15 @@ Compositor {
             id: notificationLayer
             z: 6
         }
+        Item {
+            id: alarmsLayer
+            z: 3
+        }
     }
 
     ScreenGestureArea {
         id: gestureArea
-        z: 2
+        z: 7
         anchors.fill: parent
 
 
@@ -173,7 +178,7 @@ Compositor {
                 }
 
                 PropertyChanges {
-                    target: appLayer
+                    target: root.topmostAlarmWindow == null ? appLayer : alarmsLayer
                     x: gestureArea.horizontal ? gestureArea.value : 0
                     y: gestureArea.horizontal ? 0 : gestureArea.value
                 }
@@ -283,13 +288,16 @@ Compositor {
         WindowWrapperMystic { }
     }
 
+    onDisplayOff: setCurrentWindow(root.homeWindow)
+
     onWindowAdded: {
-        if (debug) console.log("Compositor: Window added \"" + window.title + "\"")
+        console.log("Compositor: Window added \"" + window.title + "\"" + " category: " + window.category)
 
         var isHomeWindow = window.isInProcess && root.homeWindow == null && window.title === "Home"
         var isDialogWindow = window.category === "dialog"
         var isNotificationWindow = window.category == "notification"
         var isOverlayWindow =  window.category == "overlay"
+        var isAlarmWindow = window.category == "alarm"
         var parent = null
         if (window.category == "cover") {
             window.visible = false
@@ -301,6 +309,8 @@ Compositor {
             parent = notificationLayer
         } else if (isOverlayWindow){
             parent = overlayLayer
+        } else if (isAlarmWindow) {
+            parent = alarmsLayer
         } else {
             parent = appLayer
         }
@@ -318,18 +328,28 @@ Compositor {
 
         } else if (isDialogWindow){
             setCurrentWindow(window)
-        } else {
+        } else if (isAlarmWindow){
+            root.topmostAlarmWindow = window
             w = mysticWrapper.createObject(parent, {window: window})
             window.userData = w
             setCurrentWindow(w)
+        } else {
+            if (!root.topmostAlarmWindow) {
+                w = mysticWrapper.createObject(parent, {window: window})
+                window.userData = w
+                setCurrentWindow(w)
+            }
         }
     }
 
     onWindowRemoved: {
-        if (debug) console.log("Compositor: Window removed \"" + window.title + "\"")
+        console.log("Compositor: Window removed \"" + window.title + "\"" + " category: " + window.category)
 
         var w = window.userData;
-
+        if (window.category == "alarm") {
+            root.topmostAlarmWindow = null
+            setCurrentWindow(root.homeWindow)
+        }
         if (root.topmostWindow == w)
             setCurrentWindow(root.homeWindow);
 

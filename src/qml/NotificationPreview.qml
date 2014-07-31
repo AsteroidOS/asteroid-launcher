@@ -54,6 +54,7 @@ Item {
         property int notificationMargin: 14
         property int notificationIconSize: 60
         anchors.bottom: parent.bottom
+        anchors.bottomMargin: 48
         anchors.left: parent.left
         width: isPortrait ? notificationWindow.height : notificationWindow.width
         height: notificationArea.notificationHeight
