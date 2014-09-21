@@ -56,6 +56,8 @@ Item {
                 id: displayCurrentDate
                 text: Qt.formatDate(wallClock.time, "d MMMM yyyy")
                 font.pointSize: 12
+                width: rootitem.width - displayDayOfWeek.width
+                wrapMode: Text.WordWrap
                 anchors {
                     left: displayDayOfWeek.right
                     top: parent.top
@@ -101,9 +103,10 @@ Item {
                             wrapMode: Text.WordWrap
                         }
                         Label {
+                            width: rootitem.width - appSummary.width
                             text: modelData.body
                             font.pointSize: 8
-                            wrapMode: Text.WordWrap
+                            wrapMode: Text.WrapAnywhere
                             anchors.left: appSummary.right
                         }
                     }
