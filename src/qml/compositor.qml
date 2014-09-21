@@ -288,7 +288,9 @@ Compositor {
         WindowWrapperMystic { }
     }
 
-    onDisplayOff: setCurrentWindow(root.homeWindow)
+    onDisplayOff:
+        if (root.topmostAlarmWindow == null)
+            setCurrentWindow(root.homeWindow)
 
     onWindowAdded: {
         console.log("Compositor: Window added \"" + window.title + "\"" + " category: " + window.category)
