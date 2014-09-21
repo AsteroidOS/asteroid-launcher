@@ -196,6 +196,7 @@ Item {
         }
 
         StatusbarItem {
+            panel: BatteryPanel {}
             source: {
                 if(batteryChargePercentage.value > 85) {
                     return "qrc:/qml/images/battery6.png"
