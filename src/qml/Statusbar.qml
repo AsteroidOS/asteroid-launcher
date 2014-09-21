@@ -175,6 +175,8 @@ Item {
             source: "image://theme/icon_play_pause"
         }
         StatusbarItem {
+            width: 30
+            height: 48
             Label {
                 id: hours
                 width: 16
