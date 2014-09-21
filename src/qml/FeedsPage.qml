@@ -100,13 +100,13 @@ Item {
                             text: modelData.summary
                             font.pointSize: 10
                             anchors.left: appIcon.right
-                            wrapMode: Text.WordWrap
+                            wrapMode: Text.Wrap
                         }
                         Label {
                             width: rootitem.width - appSummary.width
                             text: modelData.body
                             font.pointSize: 8
-                            wrapMode: Text.WrapAnywhere
+                            wrapMode: Text.Wrap
                             anchors.left: appSummary.right
                         }
                     }
