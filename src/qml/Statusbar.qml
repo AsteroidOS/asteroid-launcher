@@ -123,7 +123,7 @@ Item {
                 font.pointSize: 6
                 font.bold: true
                 wrapMode: Text.ElideRight
-                text: (cellularNetworkName !== "") ? cellularNetworkName.value.toUpperCase() : "N/A"
+                text: (cellularNetworkName !== "") ? cellularNetworkName.value.substring(0,3).toUpperCase() : "N/A"
             }
 
             Label {
