@@ -93,12 +93,14 @@ Page {
             AppLauncher {
                 id: launcher
                 height: pager.height
+                switcher: switcher
             }
             AppSwitcher {
                 id: switcher
                 width: pager.width
                 height: pager.height
                 visibleInHome: x > -width && x < desktop.width
+                launcher: launcher
             }
             FeedsPage {
                 id: feeds
