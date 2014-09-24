@@ -108,7 +108,12 @@ Item {
         onClicked: {
             // TODO: disallow if close mode enabled
             if (model.object.type !== LauncherModel.Folder) {
-                model.object.launchApplication()
+                var winId = switcher.switchModel.getWindowIdForTitle(model.object.title)
+                console.log("Window id found: " + winId)
+                if (winId == 0)
+                    model.object.launchApplication()
+                else
+                    Lipstick.compositor.windowToFront(winId)
             } else {
                 if (!folderLoader.visible) {
                     folderLoader.visible = true

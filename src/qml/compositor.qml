@@ -346,7 +346,7 @@ Compositor {
 
     onWindowRemoved: {
         console.log("Compositor: Window removed \"" + window.title + "\"" + " category: " + window.category)
-
+        Desktop.instance.switcher.switchModel.removeWindowForTitle(window.title)
         var w = window.userData;
         if (window.category == "alarm") {
             root.topmostAlarmWindow = null

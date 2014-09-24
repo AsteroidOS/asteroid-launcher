@@ -54,6 +54,7 @@ Page {
     }
     id: desktop
     property alias lockscreen: lockScreen
+    property alias switcher: switcher
     // Implements back key navigation
     Keys.onReleased: {
         if (event.key === Qt.Key_Back) {
