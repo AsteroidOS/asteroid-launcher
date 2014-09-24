@@ -51,6 +51,8 @@ DEFINES += QT_COMPOSITOR_QUICK
 HEADERS += \
     glacierwindowmodel.h
 
+MOC_DIR = .moc
+
 SOURCES += \
     main.cpp \
     glacierwindowmodel.cpp

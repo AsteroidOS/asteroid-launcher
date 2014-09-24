@@ -25,5 +25,3 @@ void GlacierWindowModel::removeWindowForTitle(QString title)
     qDebug() << "Removing window: " + title;
     m_titles.remove(title);
 }
-
-#include "moc_glacierwindowmodel.cpp"
