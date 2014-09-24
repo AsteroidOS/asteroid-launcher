@@ -32,7 +32,8 @@ qml.files = qml/MainScreen.qml \
     qml/USBModeSelector.qml \
     qml/Pager.qml \
     qml/VolumeControl.qml \
-    qml/BatteryPanel.qml
+    qml/BatteryPanel.qml \
+    qml/CommonPanel.qml
 
 qmlcompositor.path = /usr/share/lipstick-glacier-home-qt5/qml/compositor
 qmlcompositor.files = qml/compositor/WindowWrapperMystic.qml \
@@ -88,6 +89,7 @@ OTHER_FILES += qml/*.qml \
     qml/NumButton.qml \
     qml/USBModeSelector.qml \
     qml/VolumeControl.qml \
-    qml/BatteryPanel.qml
+    qml/BatteryPanel.qml \
+    qml/CommonPanel.qml
 
 

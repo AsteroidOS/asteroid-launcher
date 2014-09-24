@@ -29,15 +29,21 @@
 **
 ****************************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.0
 import QtQuick.Controls.Nemo 1.0
 import QtQuick.Controls.Styles.Nemo 1.0
 
-Component {
-    CommonPanel {
-        Label {
-            text: "Battery level: " + batteryChargePercentage.value + "%"
-            font.pointSize: 8
+Rectangle {
+    height: 240
+    width: root.width
+    color: "#313131"
+    opacity: 0.5
+    Button {
+        text: "Close"
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+        onClicked: {
+            panel_loader.visible = !panel_loader.visible
         }
     }
 }

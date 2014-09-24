@@ -34,11 +34,7 @@ import QtQuick.Controls.Nemo 1.0
 import QtQuick.Controls.Styles.Nemo 1.0
 
 Component {
-    Rectangle {
-        height: 240
-        width: root.width
-        color: "#313131"
-        opacity: 0.5
+    CommonPanel {
         Column {
             Repeater {
                 model: wifimodel
