@@ -344,6 +344,11 @@ Compositor {
         }
     }
 
+    onWindowRaised: {
+        console.log("Compositor: Raising window: " + window.title + " category: " + window.category)
+        windowToFront(window.windowId)
+    }
+
     onWindowRemoved: {
         console.log("Compositor: Window removed \"" + window.title + "\"" + " category: " + window.category)
         Desktop.instance.switcher.switchModel.removeWindowForTitle(window.title)

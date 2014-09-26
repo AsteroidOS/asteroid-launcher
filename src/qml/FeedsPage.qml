@@ -81,7 +81,7 @@ Item {
                         anchors.fill: parent
                         onClicked: {
                             if (modelData.userRemovable) {
-                                modelData.removeRequested()
+                                modelData.actionInvoked("default")
                             }
                         }
 
