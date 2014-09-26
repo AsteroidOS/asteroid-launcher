@@ -36,7 +36,7 @@ Item {
         // Day of week
         Row {
             id: daterow
-            height: 120
+            height: displayCurrentDate.height + 15
             Label {
                 id: displayDayOfWeek
                 text: Qt.formatDateTime(wallClock.time, "dddd") + ", "
@@ -56,7 +56,7 @@ Item {
                 id: displayCurrentDate
                 text: Qt.formatDate(wallClock.time, "d MMMM yyyy")
                 font.pointSize: 12
-                width: rootitem.width - displayDayOfWeek.width
+                width: rootitem.width - displayDayOfWeek.width - 20
                 wrapMode: Text.WordWrap
                 anchors {
                     left: displayDayOfWeek.right
@@ -98,12 +98,13 @@ Item {
                         Label {
                             id: appSummary
                             text: modelData.summary
+                            width: rootitem.width/2
                             font.pointSize: 10
                             anchors.left: appIcon.right
                             wrapMode: Text.Wrap
                         }
                         Label {
-                            width: rootitem.width - appSummary.width
+                            width: rootitem.width/2
                             text: modelData.body
                             font.pointSize: 8
                             wrapMode: Text.Wrap
