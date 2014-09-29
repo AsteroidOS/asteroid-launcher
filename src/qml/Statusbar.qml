@@ -123,7 +123,7 @@ Item {
                 font.pointSize: 6
                 font.bold: true
                 wrapMode: Text.ElideRight
-                text: (cellularNetworkName !== "") ? cellularNetworkName.value.toUpperCase() : "N/A"
+                text: (cellularNetworkName !== "") ? cellularNetworkName.value.substring(0,3).toUpperCase() : "N/A"
             }
 
             Label {
@@ -175,6 +175,8 @@ Item {
             source: "image://theme/icon_play_pause"
         }
         StatusbarItem {
+            width: 30
+            height: 48
             Label {
                 id: hours
                 width: 16
@@ -194,6 +196,7 @@ Item {
         }
 
         StatusbarItem {
+            panel: BatteryPanel {}
             source: {
                 if(batteryChargePercentage.value > 85) {
                     return "qrc:/qml/images/battery6.png"

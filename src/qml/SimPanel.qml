@@ -35,12 +35,8 @@ import QtQuick.Controls.Styles.Nemo 1.0
 import MeeGo.QOfono 0.2
 
 Component {
-    Rectangle {
+    CommonPanel {
         id: simpanel
-        height: 240
-        width: root.width
-        color: "#313131"
-        opacity: 0.5
         property bool needsPin: simManager.pinRequired === OfonoSimManager.SimPin ||
                                  simManager.pinRequired === OfonoSimManager.SimPuk
         onNeedsPinChanged: {

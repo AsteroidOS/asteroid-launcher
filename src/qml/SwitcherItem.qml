@@ -85,9 +85,9 @@ MouseArea {
     }
     Label {
         anchors {
-            top: parent.bottom
+            top: parent.top
             horizontalCenter: parent.horizontalCenter
-            topMargin: -30
+            topMargin: 30
         }
         font.pointSize: 8
         text: Lipstick.compositor.windowForId(model.window).title

@@ -39,6 +39,7 @@ GridView {
     property Item reorderItem
     property bool onUninstall
     property alias deleter: deleter
+    property var switcher: null
 
     // just for margin purposes
     header: Item {

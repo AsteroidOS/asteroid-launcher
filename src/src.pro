@@ -31,7 +31,9 @@ qml.files = qml/MainScreen.qml \
     qml/NumButton.qml \
     qml/USBModeSelector.qml \
     qml/Pager.qml \
-    qml/VolumeControl.qml
+    qml/VolumeControl.qml \
+    qml/BatteryPanel.qml \
+    qml/CommonPanel.qml
 
 qmlcompositor.path = /usr/share/lipstick-glacier-home-qt5/qml/compositor
 qmlcompositor.files = qml/compositor/WindowWrapperMystic.qml \
@@ -49,6 +51,8 @@ QT += quick compositor
 DEFINES += QT_COMPOSITOR_QUICK
 HEADERS += \
     glacierwindowmodel.h
+
+MOC_DIR = .moc
 
 SOURCES += \
     main.cpp \
@@ -84,6 +88,8 @@ OTHER_FILES += qml/*.qml \
     qml/SimPanel.qml \
     qml/NumButton.qml \
     qml/USBModeSelector.qml \
-    qml/VolumeControl.qml
+    qml/VolumeControl.qml \
+    qml/BatteryPanel.qml \
+    qml/CommonPanel.qml
 
 

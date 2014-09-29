@@ -37,6 +37,8 @@ Item {
     property bool closeMode: false
     property bool visibleInHome: false
     property alias runningAppsCount: switcherModel.itemCount
+    property var switchModel: switcherModel
+    property var launcher: null
 
     onVisibleInHomeChanged: {
         // Exit close mode when scrolling out of view
