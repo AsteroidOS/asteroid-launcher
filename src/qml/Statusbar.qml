@@ -29,6 +29,7 @@
 **
 ****************************************************************************************/
 import QtQuick 2.1
+import QtQuick.Layouts 1.0
 import QtQuick.Controls.Nemo 1.0
 import QtQuick.Controls.Styles.Nemo 1.0
 import org.freedesktop.contextkit 1.0
@@ -109,7 +110,8 @@ Item {
         visible: false
     }
 
-    Row {
+    RowLayout {
+        anchors.fill: statusbar
         spacing: 16
         StatusbarItem {
             source: (cellularSignalBars.value > 0) ? "image://theme/icon_cell" + cellularSignalBars.value : "image://theme/icon_cell1"
@@ -175,8 +177,6 @@ Item {
             source: "image://theme/icon_play_pause"
         }
         StatusbarItem {
-            width: 30
-            height: 48
             Label {
                 id: hours
                 width: 16
