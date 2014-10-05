@@ -28,11 +28,15 @@ import QtQuick.Controls.Nemo 1.0
 import QtQuick.Controls.Styles.Nemo 1.0
 // Feeds page:
 // the place for an event feed.
+Flickable {
+    id: mainFlickable
 
-Item {
-    id: rootitem
-    Column {
-        spacing: 40
+    contentHeight: rootitem.height
+    contentWidth: parent.width
+    Item {
+        id: rootitem
+        width: parent.width
+        height: childrenRect.height
         // Day of week
         Row {
             id: daterow
@@ -67,18 +71,19 @@ Item {
         }
 
         Column {
+            id: notificationColumn
             anchors.top: daterow.bottom
-            spacing: 40
+            anchors.topMargin: 20
+            spacing: 10
             Repeater {
                 model: NotificationListModel {
                     id: notifmodel
                 }
-                delegate: Row {
-                    spacing: 16
-                    height: 40
-                    width: rootitem.width
+                delegate:
                     MouseArea {
-                        anchors.fill: parent
+                        height: Math.max(appSummary.height,appBody.height)
+                        width: rootitem.width
+
                         onClicked: {
                             if (modelData.userRemovable) {
                                 modelData.actionInvoked("default")
@@ -88,8 +93,8 @@ Item {
                         Image {
                             id: appIcon
                             source: {
-                                if (modelData.appIcon)
-                                    return "image://theme/" + modelData.appIcon
+                                if (modelData.icon)
+                                    return "image://theme/" + modelData.icon
                                 else
                                     return ""
                             }
@@ -98,13 +103,14 @@ Item {
                         Label {
                             id: appSummary
                             text: modelData.summary
-                            width: rootitem.width/2
+                            width: (rootitem.width-appIcon.width)/2
                             font.pointSize: 10
                             anchors.left: appIcon.right
                             wrapMode: Text.Wrap
                         }
                         Label {
-                            width: rootitem.width/2
+                            id: appBody
+                            width: (rootitem.width-appIcon.width)/2
                             text: modelData.body
                             font.pointSize: 8
                             wrapMode: Text.Wrap
@@ -114,5 +120,5 @@ Item {
                 }
             }
         }
-    }
 }
+
