@@ -33,7 +33,8 @@ qml.files = qml/MainScreen.qml \
     qml/Pager.qml \
     qml/VolumeControl.qml \
     qml/BatteryPanel.qml \
-    qml/CommonPanel.qml
+    qml/CommonPanel.qml \
+    qml/ShutdownScreen.qml
 
 qmlcompositor.path = /usr/share/lipstick-glacier-home-qt5/qml/compositor
 qmlcompositor.files = qml/compositor/WindowWrapperMystic.qml \
@@ -44,7 +45,19 @@ qmlcompositor.files = qml/compositor/WindowWrapperMystic.qml \
 scripts.path = /usr/share/lipstick-glacier-home-qt5/qml/scripts
 scripts.files =  qml/scripts/desktop.js
 
-INSTALLS += styles qml qmlcompositor scripts
+system.path = /usr/share/lipstick-glacier-home-qt5/qml/system
+system.files = qml/ShutdownScreen.qml
+
+volumecontrol.path = /usr/share/lipstick-glacier-home-qt5/qml/volumecontrol
+volumecontrol.files = qml/VolumeControl.qml
+
+connectivity.path = /usr/share/lipstick-glacier-home-qt5/qml/connectivity
+connectivity.files = qml/USBModeSelector.qml
+
+notifications.path = /usr/share/lipstick-glacier-home-qt5/qml/notifications
+notifications.files = qml/NotificationPreview.qml
+
+INSTALLS += styles qml qmlcompositor scripts system volumecontrol connectivity notifications
 
 CONFIG += qt link_pkgconfig
 QT += quick compositor
@@ -90,6 +103,7 @@ OTHER_FILES += qml/*.qml \
     qml/USBModeSelector.qml \
     qml/VolumeControl.qml \
     qml/BatteryPanel.qml \
-    qml/CommonPanel.qml
+    qml/CommonPanel.qml \
+    qml/ShutdownScreen.qml
 
 
