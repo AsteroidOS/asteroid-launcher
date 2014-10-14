@@ -25,7 +25,7 @@ Requires:   qt5-qtdeclarative-import-window2
 Requires:   qt5-qtquickcontrols-nemo
 Requires:   nemo-qml-plugin-contextkit-qt5
 Requires:   connman-qt5
-Requires:   libqofono-qt5
+Requires:   libqofono-qt5-declarative
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  pkgconfig(lipstick-qt5) >= 0.12.0
