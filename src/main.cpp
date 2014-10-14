@@ -38,6 +38,11 @@ int main(int argc, char **argv)
     app.setCompositorPath("/usr/share/lipstick-glacier-home-qt5/qml/compositor.qml");
     qmlRegisterType<GlacierWindowModel>("org.nemomobile.glacier", 1, 0 ,"GlacierWindowModel");
     app.setQmlPath("/usr/share/lipstick-glacier-home-qt5/qml/MainScreen.qml");
+    // Give these to the environment inside the lipstick homescreen
+    // Fixes a bug where some applications wouldn't launch, eg. terminal or browser
+    setenv("EGL_PLATFORM", "wayland", 1);
+    setenv("QT_QPA_PLATFORM", "wayland", 1);
+    setenv("QT_WAYLAND_DISABLE_WINDOWDECORATION", "1", 1);
     app.mainWindowInstance()->showFullScreen();
     return app.exec();
 }
