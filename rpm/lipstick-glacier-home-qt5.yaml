@@ -1,6 +1,6 @@
 Name: lipstick-glacier-home-qt5
 Summary: A nice homescreen for Glacier experience
-Version: 0.14
+Version: 0.15
 Release: 1
 Group: System/GUI/Other
 License: BSD
@@ -18,7 +18,7 @@ Requires:
     - qt5-qtquickcontrols-nemo
     - nemo-qml-plugin-contextkit-qt5
     - connman-qt5
-    - libqofono-qt5
+    - libqofono-qt5-declarative
 PkgConfigBR:
     - Qt5Core
     - Qt5Quick

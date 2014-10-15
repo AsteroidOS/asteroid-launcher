@@ -1,11 +1,12 @@
 import QtQuick 2.0
+import QtQuick.Layouts 1.0
 
 Item {
-    height: 48
-    width: 48
     property alias source: icon.source
     property string panel_source
     property Component panel
+    Layout.fillWidth: true
+    Layout.fillHeight: true
     Image {
         id: icon
         anchors.centerIn: parent
