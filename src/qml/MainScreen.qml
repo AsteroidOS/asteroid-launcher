@@ -36,10 +36,11 @@ import QtQuick.Controls.Styles.Nemo 1.0
 import QtQuick.Window 2.1
 import org.nemomobile.time 1.0
 import org.nemomobile.configuration 1.0
+import org.nemomobile.lipstick 0.1
 import "scripts/desktop.js" as Desktop
+import "scripts/rotation.js" as Rotation
 
 Page {
-
     // This is used in the favorites page and in the lock screen
     WallClock {
         id: wallClock
@@ -56,6 +57,7 @@ Page {
     property alias lockscreen: lockScreen
     property alias switcher: switcher
     // Implements back key navigation
+
     Keys.onReleased: {
         if (event.key === Qt.Key_Back) {
             if (pageStack.depth > 1) {
@@ -67,6 +69,15 @@ Page {
 
     Statusbar {
         id: statusbar
+    }
+
+    orientation: Lipstick.compositor.screenOrientation
+
+    onOrientationChanged: {
+        Rotation.rotateObject(desktop.parent, Screen.angleBetween(orientation,Screen.primaryOrientation), Screen.angleBetween(nativeOrientation, Screen.primaryOrientation))
+    }
+    onParentChanged: {
+        Rotation.rotateObject(desktop.parent, Screen.angleBetween(nativeOrientation, Screen.primaryOrientation), Screen.angleBetween(nativeOrientation, Screen.primaryOrientation))
     }
 
     Component.onCompleted: {
