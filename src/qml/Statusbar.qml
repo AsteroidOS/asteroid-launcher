@@ -125,7 +125,7 @@ Item {
                 font.pointSize: 6
                 font.bold: true
                 wrapMode: Text.ElideRight
-                text: (cellularNetworkName !== "") ? cellularNetworkName.value.substring(0,3).toUpperCase() : "N/A"
+                text: (cellularNetworkName.value !== "") ? cellularNetworkName.value.substring(0,3).toUpperCase() : "NA"
             }
 
             Label {
@@ -136,7 +136,7 @@ Item {
                 font.pointSize: 6
                 text: {
                     var techToG = {gprs: "2", egprs: "2.5", umts: "3", hspa: "3.5", lte: "4", unknown: "0"}
-                    return techToG[cellularDataTechnology.value] + "G"
+                    return techToG[cellularDataTechnology.value ? cellularDataTechnology.value : "unknown"] + "G"
                 }
             }
             panel: SimPanel {}
@@ -212,6 +212,8 @@ Item {
                     return "qrc:/qml/images/battery4.png"
                 } else if (batteryChargePercentage.value <= 80) {
                     return "qrc:/qml/images/battery5.png"
+                } else {
+                    return "qrc:/qml/images/battery6.png"
                 }
             }
         }

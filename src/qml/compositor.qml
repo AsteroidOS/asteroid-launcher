@@ -70,6 +70,10 @@ Compositor {
         }
     }
 
+    onSensorOrientationChanged: {
+        screenOrientation = sensorOrientation
+    }
+
     Connections {
         target: root
         onActiveFocusItemChanged: {

@@ -9,7 +9,7 @@ Name:       lipstick-glacier-home-qt5
 # << macros
 
 Summary:    A nice homescreen for Glacier experience
-Version:    0.15
+Version:    0.16
 Release:    1
 Group:      System/GUI/Other
 License:    BSD
