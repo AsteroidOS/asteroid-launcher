@@ -29,27 +29,41 @@
 **
 ****************************************************************************************/
 
-function rotateObject(obj, r, nr) {
+import QtQuick 2.1
+import QtQuick.Window 2.1
+import org.nemomobile.lipstick 0.1
 
-    if (obj.rotation !== r) {
-        var nativeIsPortrait = ((nr === 0) || (nr === 180))
-        var isPortrait = ((r === 0) || (r === 180))
+Item {
 
-        var correction = 0
-        var isNative=((nativeIsPortrait || isPortrait) && !(nativeIsPortrait && isPortrait)) //xor
-        //xor
-        if ((isNative || !nativeIsPortrait) && !(isNative && !nativeIsPortrait)) {
-          correction = obj.width / 2 - obj.height / 2
+    QtObject {
+        id: privateProperties
+        property int nativeRotation: Screen.angleBetween(nativeOrientation, Screen.primaryOrientation)
+        property bool nativeIsPortrait: ((nativeRotation === 0) || (nativeRotation === 180))
+    }
+
+    function rotateObject(obj, o) {
+
+        var r = Screen.angleBetween(o, Screen.primaryOrientation)
+        if (obj.rotation !== r) {
+
+            var isPortrait = ((r === 0) || (r === 180))
+            var correction = 0
+            var isNative=((privateProperties.nativeIsPortrait || isPortrait) && !(privateProperties.nativeIsPortrait && isPortrait)) //xor
+            var diff = Math.abs(r - obj.rotation)
+            //xor
+            if ((isNative || !privateProperties.nativeIsPortrait) && !(isNative && !privateProperties.nativeIsPortrait)) {
+              correction = obj.width / 2 - obj.height / 2
+              if (diff === 180)
+                correction = -correction
+            }
+            obj.rotation = r
+            if ((diff === 90) || (diff === 270)) {
+                var w = obj.width
+                obj.width = obj.height
+                obj.height = w
+            }
+            obj.x = correction
+            obj.y = -correction
         }
-        var diff = Math.abs(r - obj.rotation)
-        obj.rotation = r
-        if ((diff === 90) || (diff === 270)) {
-            console.log("rotateObject swapping w,h")
-            var w = obj.width
-            obj.width = obj.height
-            obj.height = w
-        }
-        obj.x = correction
-        obj.y = -correction
     }
 }

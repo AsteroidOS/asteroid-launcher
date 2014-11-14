@@ -38,7 +38,6 @@ import org.nemomobile.time 1.0
 import org.nemomobile.configuration 1.0
 import org.nemomobile.lipstick 0.1
 import "scripts/desktop.js" as Desktop
-import "scripts/rotation.js" as Rotation
 
 Page {
     // This is used in the favorites page and in the lock screen
@@ -71,17 +70,23 @@ Page {
         id: statusbar
     }
 
+    GlacierRotation {
+        id: glacierRotation
+    }
+
     orientation: Lipstick.compositor.screenOrientation
 
     onOrientationChanged: {
-        Rotation.rotateObject(desktop.parent, Screen.angleBetween(orientation,Screen.primaryOrientation), Screen.angleBetween(nativeOrientation, Screen.primaryOrientation))
+        glacierRotation.rotateObject(desktop.parent, orientation)
     }
+
     onParentChanged: {
-        Rotation.rotateObject(desktop.parent, Screen.angleBetween(nativeOrientation, Screen.primaryOrientation), Screen.angleBetween(nativeOrientation, Screen.primaryOrientation))
+        glacierRotation.rotateObject(desktop.parent, nativeOrientation)
     }
 
     Component.onCompleted: {
         Desktop.instance = desktop
+        Lipstick.compositor.screenOrientation = nativeOrientation
     }
 
     function lockscreenVisible() {
