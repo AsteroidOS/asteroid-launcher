@@ -34,7 +34,8 @@ qml.files = qml/MainScreen.qml \
     qml/VolumeControl.qml \
     qml/BatteryPanel.qml \
     qml/CommonPanel.qml \
-    qml/ShutdownScreen.qml
+    qml/ShutdownScreen.qml \
+    qml/GlacierRotation.qml
 
 qmlcompositor.path = /usr/share/lipstick-glacier-home-qt5/qml/compositor
 qmlcompositor.files = qml/compositor/WindowWrapperMystic.qml \
@@ -106,6 +107,6 @@ OTHER_FILES += qml/*.qml \
     qml/BatteryPanel.qml \
     qml/CommonPanel.qml \
     qml/ShutdownScreen.qml \
-    qml/scripts/rotation.js
+    qml/GlacierRotation.qml
 
 
