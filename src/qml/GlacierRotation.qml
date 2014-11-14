@@ -49,11 +49,13 @@ Item {
             var isPortrait = ((r === 0) || (r === 180))
             var correction = 0
             var isNative=((privateProperties.nativeIsPortrait || isPortrait) && !(privateProperties.nativeIsPortrait && isPortrait)) //xor
+            var diff = Math.abs(r - obj.rotation)
             //xor
             if ((isNative || !privateProperties.nativeIsPortrait) && !(isNative && !privateProperties.nativeIsPortrait)) {
               correction = obj.width / 2 - obj.height / 2
+              if (diff === 180)
+                correction = -correction
             }
-            var diff = Math.abs(r - obj.rotation)
             obj.rotation = r
             if ((diff === 90) || (diff === 270)) {
                 var w = obj.width
