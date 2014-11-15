@@ -41,6 +41,12 @@ Item {
         property bool nativeIsPortrait: ((nativeRotation === 0) || (nativeRotation === 180))
     }
 
+    property Item rotationParent
+
+    function rotateRotationParent(o) {
+        rotateObject(rotationParent, o)
+    }
+
     function rotateObject(obj, o) {
 
         var r = Screen.angleBetween(o, Screen.primaryOrientation)

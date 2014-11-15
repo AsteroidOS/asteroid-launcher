@@ -72,16 +72,17 @@ Page {
 
     GlacierRotation {
         id: glacierRotation
+        rotationParent: desktop.parent
     }
 
     orientation: Lipstick.compositor.screenOrientation
 
     onOrientationChanged: {
-        glacierRotation.rotateObject(desktop.parent, orientation)
+        glacierRotation.rotateRotationParent(orientation)
     }
 
     onParentChanged: {
-        glacierRotation.rotateObject(desktop.parent, nativeOrientation)
+        glacierRotation.rotateRotationParent(nativeOrientation)
     }
 
     Component.onCompleted: {
