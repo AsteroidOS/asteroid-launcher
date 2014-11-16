@@ -24,14 +24,18 @@
 
 import QtQuick 2.0
 import org.nemomobile.lipstick 0.1
+import "../scripts/desktop.js" as Desktop
 
 Item {
     id: notificationWindow
     property alias summary: summary.text
     property alias body: body.text
     property alias icon: icon.source
-    width: initialSize.width
-    height: initialSize.height
+    width: Desktop.instance.parent.width
+    height: Desktop.instance.parent.height
+    rotation: Desktop.instance.parent.rotation
+    x: Desktop.instance.parent.x
+    y: Desktop.instance.parent.y
 
     MouseArea {
         id: notificationArea
