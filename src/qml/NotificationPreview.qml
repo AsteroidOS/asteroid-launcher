@@ -66,9 +66,6 @@ Item {
                     StateChangeScript {
                         name: "notificationShown"
                         script: {
-                            var topLeft = notificationPreview.mapToItem(notificationWindow, 0, 0)
-                            var bottomRight = notificationPreview.mapToItem(notificationWindow, notificationPreview.width, notificationPreview.height)
-                            notificationPreviewPresenter.setNotificationPreviewRect(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y)
                             notificationTimer.start()
                         }
                     }
