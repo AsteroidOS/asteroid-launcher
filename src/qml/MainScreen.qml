@@ -72,21 +72,34 @@ Page {
 
     GlacierRotation {
         id: glacierRotation
+        rotationParent: desktop.parent
     }
 
     orientation: Lipstick.compositor.screenOrientation
 
     onOrientationChanged: {
-        glacierRotation.rotateObject(desktop.parent, orientation)
+        if (!lockscreenVisible())
+            glacierRotation.rotateRotationParent(orientation)
     }
 
     onParentChanged: {
-        glacierRotation.rotateObject(desktop.parent, nativeOrientation)
+        glacierRotation.rotateRotationParent(nativeOrientation)
     }
 
     Component.onCompleted: {
         Desktop.instance = desktop
         Lipstick.compositor.screenOrientation = nativeOrientation
+    }
+
+    Connections {
+        target: LipstickSettings
+        onLockscreenVisibleChanged: {
+            if (lockscreenVisible()) {
+                glacierRotation.rotateRotationParent(nativeOrientation)
+            } else {
+                glacierRotation.rotateRotationParent(desktop.orientation)
+            }
+        }
     }
 
     function lockscreenVisible() {
