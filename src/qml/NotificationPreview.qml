@@ -23,62 +23,30 @@
 // Contact: Vesa Halttunen <vesa.halttunen@jollamobile.com>
 
 import QtQuick 2.0
-//import org.freedesktop.contextkit 1.0
 import org.nemomobile.lipstick 0.1
+import "../scripts/desktop.js" as Desktop
 
 Item {
     id: notificationWindow
     property alias summary: summary.text
     property alias body: body.text
     property alias icon: icon.source
-    width: initialSize.width
-    height: initialSize.height
-
-/*
- TODO
-    ContextProperty {
-        id: orientationAngleContextProperty
-        key: "/Screen/CurrentWindow/OrientationAngle"
-    }
-*/
-
-    QtObject {
-        id: orientationAngleContextProperty
-        property int value: 0
-    }
+    width: Desktop.instance.parent.width
+    height: Desktop.instance.parent.height
+    rotation: Desktop.instance.parent.rotation
+    x: Desktop.instance.parent.x
+    y: Desktop.instance.parent.y
 
     MouseArea {
         id: notificationArea
-        property bool isPortrait: (orientationAngleContextProperty.value == 90 || orientationAngleContextProperty.value == 270)
         property int notificationHeight: 102
         property int notificationMargin: 14
         property int notificationIconSize: 60
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 48
         anchors.left: parent.left
-        width: isPortrait ? notificationWindow.height : notificationWindow.width
+        width: notificationWindow.width
         height: notificationArea.notificationHeight
-        transform: Rotation {
-            origin.x: { switch(orientationAngleContextProperty.value) {
-                      case 270:
-                          return notificationWindow.height / 2
-                      case 180:
-                      case 90:
-                          return notificationWindow.width / 2
-                      default:
-                          return 0
-                      } }
-            origin.y: { switch(orientationAngleContextProperty.value) {
-                case 270:
-                case 180:
-                    return notificationWindow.height / 2
-                case 90:
-                    return notificationWindow.width / 2
-                default:
-                    return 0
-                } }
-            angle: (orientationAngleContextProperty.value === undefined || orientationAngleContextProperty.value == 0) ? 0 : -360 + orientationAngleContextProperty.value
-        }
 
         onClicked: if (notificationPreviewPresenter.notification != null) notificationPreviewPresenter.notification.actionInvoked("default")
 
@@ -102,9 +70,6 @@ Item {
                     StateChangeScript {
                         name: "notificationShown"
                         script: {
-                            var topLeft = notificationPreview.mapToItem(notificationWindow, 0, 0)
-                            var bottomRight = notificationPreview.mapToItem(notificationWindow, notificationPreview.width, notificationPreview.height)
-                            notificationPreviewPresenter.setNotificationPreviewRect(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y)
                             notificationTimer.start()
                         }
                     }
