@@ -23,7 +23,6 @@
 // Contact: Vesa Halttunen <vesa.halttunen@jollamobile.com>
 
 import QtQuick 2.0
-//import org.freedesktop.contextkit 1.0
 import org.nemomobile.lipstick 0.1
 
 Item {
@@ -34,51 +33,16 @@ Item {
     width: initialSize.width
     height: initialSize.height
 
-/*
- TODO
-    ContextProperty {
-        id: orientationAngleContextProperty
-        key: "/Screen/CurrentWindow/OrientationAngle"
-    }
-*/
-
-    QtObject {
-        id: orientationAngleContextProperty
-        property int value: 0
-    }
-
     MouseArea {
         id: notificationArea
-        property bool isPortrait: (orientationAngleContextProperty.value == 90 || orientationAngleContextProperty.value == 270)
         property int notificationHeight: 102
         property int notificationMargin: 14
         property int notificationIconSize: 60
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 48
         anchors.left: parent.left
-        width: isPortrait ? notificationWindow.height : notificationWindow.width
+        width: notificationWindow.width
         height: notificationArea.notificationHeight
-        transform: Rotation {
-            origin.x: { switch(orientationAngleContextProperty.value) {
-                      case 270:
-                          return notificationWindow.height / 2
-                      case 180:
-                      case 90:
-                          return notificationWindow.width / 2
-                      default:
-                          return 0
-                      } }
-            origin.y: { switch(orientationAngleContextProperty.value) {
-                case 270:
-                case 180:
-                    return notificationWindow.height / 2
-                case 90:
-                    return notificationWindow.width / 2
-                default:
-                    return 0
-                } }
-            angle: (orientationAngleContextProperty.value === undefined || orientationAngleContextProperty.value == 0) ? 0 : -360 + orientationAngleContextProperty.value
-        }
 
         onClicked: if (notificationPreviewPresenter.notification != null) notificationPreviewPresenter.notification.actionInvoked("default")
 
