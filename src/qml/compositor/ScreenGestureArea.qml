@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 import QtQuick 2.0
+import org.nemomobile.lipstick 0.1
 
 MouseArea {
     id: root
@@ -42,20 +43,27 @@ MouseArea {
 
     // Internal
     property int _mouseStart
+    property Item _mapTo: Lipstick.compositor.topmostWindow.window
+
+    function mouseToMouseReal(m) {
+        return mapToItem(_mapTo, m.x, m.y)
+    }
 
     onPressed: {
-        if (mouse.x < boundary) {
+        var mouseReal = mouseToMouseReal(mouse)
+
+        if (mouseReal.x < boundary) {
             gesture = "right"
-            max = width - mouse.x
-        } else if (width - mouse.x < boundary) {
+            max = _mapTo.width - mouseReal.x
+        } else if (_mapTo.width - mouseReal.x < boundary) {
             gesture = "left"
-            max = mouse.x
-        } else if (mouse.y < boundary) {
+            max = mouseReal.x
+        } else if (mouseReal.y < boundary) {
             gesture = "down"
-            max = height - mouse.y
-        } else if (height - mouse.y < boundary) {
+            max = _mapTo.height - mouseReal.y
+        } else if (_mapTo.height - mouseReal.y < boundary) {
             gesture = "up"
-            max = mouse.y
+            max = mouseReal.y
         } else {
             mouse.accepted = false
             return
@@ -63,15 +71,16 @@ MouseArea {
 
         value = 0
         if (horizontal)
-            _mouseStart = mouse.x
+            _mouseStart = mouseReal.x
         else
-            _mouseStart = mouse.y
+            _mouseStart = mouseReal.y
 
         gestureStarted(gesture)
     }
 
     onPositionChanged: {
-        var p = horizontal ? mouse.x : mouse.y
+        var mouseReal = mouseToMouseReal(mouse)
+        var p = horizontal ? mouseReal.x : mouseReal.y
         value = Math.max(Math.min(p - _mouseStart, max), -max)
     }
 
