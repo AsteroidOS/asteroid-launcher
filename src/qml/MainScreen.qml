@@ -73,6 +73,7 @@ Page {
     GlacierRotation {
         id: glacierRotation
         rotationParent: desktop.parent
+        unrotatedItems: [lockScreen]
     }
 
     orientation: Lipstick.compositor.screenOrientation
@@ -94,11 +95,8 @@ Page {
     Connections {
         target: LipstickSettings
         onLockscreenVisibleChanged: {
-            if (lockscreenVisible()) {
-                glacierRotation.rotateRotationParent(nativeOrientation)
-            } else {
+            if (!lockscreenVisible())
                 glacierRotation.rotateRotationParent(desktop.orientation)
-            }
         }
     }
 
