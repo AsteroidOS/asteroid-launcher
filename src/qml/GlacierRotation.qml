@@ -35,12 +35,6 @@ import org.nemomobile.lipstick 0.1
 
 Item {
 
-    QtObject {
-        id: privateProperties
-        property int nativeRotation: Screen.angleBetween(nativeOrientation, Screen.primaryOrientation)
-        property bool nativeIsPortrait: ((nativeRotation === 0) || (nativeRotation === 180))
-    }
-
     property Item rotationParent
 
     function rotateRotationParent(o) {
@@ -48,28 +42,15 @@ Item {
     }
 
     function rotateObject(obj, o) {
-
         var r = Screen.angleBetween(o, Screen.primaryOrientation)
-        if (obj.rotation !== r) {
+        if (obj.rotation !== r)
+            rotateObjectToAngle(obj, r)
+    }
 
-            var isPortrait = ((r === 0) || (r === 180))
-            var correction = 0
-            var isNative=((privateProperties.nativeIsPortrait || isPortrait) && !(privateProperties.nativeIsPortrait && isPortrait)) //xor
-            var diff = Math.abs(r - obj.rotation)
-            //xor
-            if ((isNative || !privateProperties.nativeIsPortrait) && !(isNative && !privateProperties.nativeIsPortrait)) {
-              correction = obj.width / 2 - obj.height / 2
-              if (diff === 180)
-                correction = -correction
-            }
-            obj.rotation = r
-            if ((diff === 90) || (diff === 270)) {
-                var w = obj.width
-                obj.width = obj.height
-                obj.height = w
-            }
-            obj.x = correction
-            obj.y = -correction
-        }
+    function rotateObjectToAngle(obj, r) {
+        obj.width = Screen.width; obj.height = Screen.height; obj.x = 0; obj.y = 0
+        obj.rotation = r
+        var res = obj.mapToItem(rotationParent.parent, 0, 0, obj.width, obj.height)
+        obj.x = res.x; obj.y = res.y; obj.width = res.width; obj.height = res.height
     }
 }
