@@ -35,10 +35,24 @@ import org.nemomobile.lipstick 0.1
 
 Item {
 
+    property int _nativeRotation: Screen.angleBetween(nativeOrientation, Screen.primaryOrientation)
+    property bool _nativeIsPortrait: ((_nativeRotation === 0) || (_nativeRotation === 180))
+
     property Item rotationParent
+    property variant unrotatedItems: []
+
+    function rotationDiff(a, b) {
+        var r =_nativeRotation - rotationParent.rotation
+        if (r < 360)
+            r += 360
+        return r
+    }
 
     function rotateRotationParent(o) {
         rotateObject(rotationParent, o)
+        for(var i = 0; i < unrotatedItems.length; i++) {
+            rotateObjectToAngle(unrotatedItems[i], rotationDiff(_nativeRotation, rotationParent.rotation))
+        }
     }
 
     function rotateObject(obj, o) {
@@ -50,7 +64,16 @@ Item {
     function rotateObjectToAngle(obj, r) {
         obj.width = Screen.width; obj.height = Screen.height; obj.x = 0; obj.y = 0
         obj.rotation = r
-        var res = obj.mapToItem(rotationParent.parent, 0, 0, obj.width, obj.height)
+        var res = obj.mapToItem((obj === rotationParent) ?  rotationParent.parent : rotationParent, 0, 0, obj.width, obj.height)
+        if (obj !== rotationParent) {
+            if (_nativeIsPortrait) {
+                var i = res.x
+                res.x = res.y
+                res.y = i
+            }
+            var res2 = rotationParent.mapToItem(rotationParent.parent, 0, 0, res.width, res.height)
+            res.width = res2.width; res.height = res2.height
+        }
         obj.x = res.x; obj.y = res.y; obj.width = res.width; obj.height = res.height
     }
 }

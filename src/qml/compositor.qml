@@ -131,6 +131,8 @@ Compositor {
 
         property real swipeThreshold: 0.15
         property real lockThreshold: 0.25
+        property int lockscreenX
+        property int lockscreenY
 
         onGestureStarted: {
             swipeAnimation.stop()
@@ -139,6 +141,8 @@ Compositor {
             if (root.appActive) {
                 state = "swipe"
             } else if (root.homeActive) {
+                lockscreenX = Desktop.instance.lockscreen.x
+                lockscreenY = Desktop.instance.lockscreen.y
                 state = "lock"
             }
         }
@@ -199,14 +203,22 @@ Compositor {
                 }
                 PropertyChanges {
                     target: Desktop.instance.lockscreen
-                    x: gestureArea.horizontal ? (Desktop.instance.lockscreenVisible()?(gestureArea.value):
+                    x: gestureArea.lockscreenX + ((gestureArea.horizontal) ? (Desktop.instance.lockscreenVisible()?(gestureArea.value) :
                                                                                        (gestureArea.gesture == "right" ?
-                                                                                       -Desktop.instance.lockscreen.width+Math.abs(gestureArea.value) :
-                                                                                       Desktop.instance.lockscreen.width+gestureArea.value) ) : 0
-                    y: gestureArea.horizontal ? 0 : (Desktop.instance.lockscreenVisible()?(gestureArea.value):
+                                                                                       ((Desktop.instance.lockscreen.width === topmostWindow.width) ?
+                                                                                            -Desktop.instance.lockscreen.width :
+                                                                                            -Desktop.instance.lockscreen.height)+Math.abs(gestureArea.value) :
+                                                                                       ((Desktop.instance.lockscreen.width === topmostWindow.width) ?
+                                                                                            Desktop.instance.lockscreen.width :
+                                                                                            Desktop.instance.lockscreen.height)+gestureArea.value) ) : 0 )
+                    y: gestureArea.lockscreenY + ((gestureArea.horizontal) ? 0 : (Desktop.instance.lockscreenVisible()?(gestureArea.value) :
                                                                                        (gestureArea.gesture == "down" ?
-                                                                                       -Desktop.instance.lockscreen.height+Math.abs(gestureArea.value) :
-                                                                                       Desktop.instance.lockscreen.height+gestureArea.value) )
+                                                                                       ((Desktop.instance.lockscreen.width === topmostWindow.width) ?
+                                                                                            -Desktop.instance.lockscreen.height :
+                                                                                            -Desktop.instance.lockscreen.width)+Math.abs(gestureArea.value) :
+                                                                                       ((Desktop.instance.lockscreen.width === topmostWindow.width) ?
+                                                                                            Desktop.instance.lockscreen.height :
+                                                                                            Desktop.instance.lockscreen.width)+gestureArea.value) ) )
                 }
             }
 
