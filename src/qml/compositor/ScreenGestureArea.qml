@@ -43,7 +43,7 @@ MouseArea {
 
     // Internal
     property int _mouseStart
-    property Item _mapTo: Lipstick.compositor.topmostWindow.window
+    property Item _mapTo: Lipstick.compositor.homeActive ? Lipstick.compositor.topmostWindow.window : parent
 
     function mouseToMouseReal(m) {
         return mapToItem(_mapTo, m.x, m.y)
