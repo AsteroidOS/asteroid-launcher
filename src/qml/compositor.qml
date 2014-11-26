@@ -152,7 +152,7 @@ Compositor {
                 if (gestureArea.progress >= swipeThreshold) {
                     swipeAnimation.valueTo = inverted ? -max : max
                     swipeAnimation.start()
-                    if (gestureArea.gesture == "down") {
+                    if (gesture == "down") {
                         Lipstick.compositor.closeClientForWindowId(topmostWindow.window.windowId)
                     }
                 } else {
@@ -160,7 +160,7 @@ Compositor {
                 }
             } else if (root.homeActive){
                 if (gestureArea.progress >= lockThreshold) {
-                    lockAnimation.valueTo = (gestureArea.gesture == "left" ?
+                    lockAnimation.valueTo = (gesture == "left" ?
                                                  Desktop.instance.lockscreen.width :
                                                  -Desktop.instance.lockscreen.width)
                     lockAnimation.start()

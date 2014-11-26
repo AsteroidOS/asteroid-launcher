@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 import QtQuick 2.0
+import QtQuick.Window 2.0
 import org.nemomobile.lipstick 0.1
 
 MouseArea {
@@ -44,9 +45,24 @@ MouseArea {
     // Internal
     property int _mouseStart
     property Item _mapTo: Lipstick.compositor.homeActive ? Lipstick.compositor.topmostWindow.window : parent
+    property variant _gestures: ["down", "left", "up", "right"]
 
     function mouseToMouseReal(m) {
         return mapToItem(_mapTo, m.x, m.y)
+    }
+
+    function realGesture(g) {
+        var r = Screen.angleBetween(Lipstick.compositor.screenOrientation, Screen.orientation) / 90
+        if (r === 0)
+            return g
+
+        var shiftedGestures = _gestures.slice(0)
+        for (var i = 0; i < r; i++) {
+            var shifted = shiftedGestures.shift()
+            shiftedGestures.push(shifted)
+        }
+
+        return _gestures[shiftedGestures.indexOf(g)]
     }
 
     onPressed: {
@@ -75,7 +91,7 @@ MouseArea {
         else
             _mouseStart = mouseReal.y
 
-        gestureStarted(gesture)
+        gestureStarted(Lipstick.compositor.homeActive ?  gesture : realGesture(gesture))
     }
 
     onPositionChanged: {
@@ -96,7 +112,7 @@ MouseArea {
     }
 
     onReleased: {
-        gestureFinished(gesture)
+        gestureFinished(Lipstick.compositor.homeActive ? gesture : realGesture(gesture))
         if (!delayReset)
             reset()
     }
