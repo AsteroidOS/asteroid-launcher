@@ -49,6 +49,24 @@ Item {
         opacity: 0.5
         z: 200
     }
+    Connections {
+        target: lipstickSettings;
+        onLockscreenVisibleChanged: {
+            if(lipstickSettings.lockscreenVisible) {
+                batteryChargePercentage.subscribe()
+                cellularSignalBars.subscribe()
+                cellularRegistrationStatus.subscribe()
+                cellularNetworkName.subscribe()
+                cellularDataTechnology.subscribe()
+            } else {
+                batteryChargePercentage.unsubscribe()
+                cellularSignalBars.unsubscribe()
+                cellularRegistrationStatus.unsubscribe()
+                cellularNetworkName.unsubscribe()
+                cellularDataTechnology.unsubscribe()
+            }
+        }
+    }
 
     ContextProperty {
         id: batteryChargePercentage
