@@ -133,6 +133,7 @@ Compositor {
         property real lockThreshold: 0.25
         property int lockscreenX
         property int lockscreenY
+        enabled: deviceLock.state === 0
 
         onGestureStarted: {
             swipeAnimation.stop()
