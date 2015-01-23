@@ -33,6 +33,7 @@ import QtQuick 2.1
 import QtQuick.Controls.Nemo 1.0
 import QtQuick.Controls.Styles.Nemo 1.0
 import MeeGo.QOfono 0.2
+import QtQuick.Layouts 1.0
 
 Component {
     CommonPanel {
@@ -57,21 +58,25 @@ Component {
             id: simManager
         }
 
-        Column {
+        ColumnLayout {
             visible: needsPin
-            spacing: 10
-            Row {
+            anchors.fill: simpanel
+            spacing: 0
+            RowLayout {
                 spacing: 16
                 TextField {
                     id: pinquery
-                    width: 180
-                    height: 40
+                    width: 140
+                    Layout.fillWidth: true
+                    Layout.fillHeight: false
+                    Layout.preferredHeight: 20
                 }
                 Button {
                     id: pinenter
                     text: "OK"
-                    width: 120
-                    height: 40
+                    Layout.fillWidth: true
+                    Layout.fillHeight: false
+                    Layout.preferredHeight: 40
                     onClicked: {
                         simManager.enterPin(OfonoSimManager.SimPin, pinquery.text)
                         pinquery.text = ""
@@ -80,15 +85,18 @@ Component {
                 Button {
                     id: clearpin
                     text: "Clear"
-                    width: 120
-                    height: 40
+                    Layout.fillWidth: true
+                    Layout.fillHeight: false
+                    Layout.preferredHeight: 40
                     onClicked: {
                         pinquery.text = ""
                     }
                 }
             }
-            Row {
-                spacing: 16
+            GridLayout {
+                columnSpacing: 10
+                rowSpacing: 10
+                columns: 3
                 NumButton {
                     text: "1"
                 }
@@ -98,9 +106,6 @@ Component {
                 NumButton {
                     text: "3"
                 }
-            }
-            Row {
-                spacing: 16
                 NumButton {
                     text: "4"
                 }
@@ -110,9 +115,6 @@ Component {
                 NumButton {
                     text: "6"
                 }
-            }
-            Row {
-                spacing: 16
                 NumButton {
                     text: "7"
                 }
@@ -122,10 +124,8 @@ Component {
                 NumButton {
                     text: "9"
                 }
-            }
-            Row {
-                spacing: 16
                 NumButton {
+                    Layout.columnSpan: 3
                     text: "0"
                 }
             }

@@ -28,15 +28,29 @@
 ** SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 **
 ****************************************************************************************/
-
+import QtQuick 2.1
+import QtQuick.Controls 1.0
 import QtQuick.Controls.Nemo 1.0
 import QtQuick.Controls.Styles.Nemo 1.0
+import QtQuick.Layouts 1.0
 
-Button {
+Rectangle {
     id: btn
-    width: 120
-    height: 40
-    onClicked: {
-        pinquery.text += btn.text
+    Layout.fillWidth: true
+    Layout.fillHeight: true
+    color: "transparent"
+    border.color: "white"
+    property alias text: txt.text
+    MouseArea {
+        anchors.fill: parent
+        onClicked: {
+            pinquery.text += btn.text
+        }
+    }
+
+    Text {
+        id: txt
+        anchors.centerIn: parent
+        color: "white"
     }
 }
