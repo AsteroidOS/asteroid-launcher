@@ -3,7 +3,7 @@ import QtQuick 2.0
 Image {
     id: lockScreen
     source: "qrc:/qml/images/graphics-wallpaper-home.jpg"
-    visible: LipstickSettings.lockscreenVisible
+    visible: LipstickSettings.lockscreenVisible || deviceLock.state === 1
 
     LockscreenClock {
         id: clock
