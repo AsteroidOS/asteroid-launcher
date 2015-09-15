@@ -1,5 +1,0 @@
-[Desktop Entry]
-Exec=/usr/bin/lipstick
-X-Moblin-Priority=High
-OnlyShowIn=X-MEEGO-HS;
-X-Meego-Watchdog=Restart
