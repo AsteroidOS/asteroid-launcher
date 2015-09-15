@@ -18,6 +18,5 @@
         <file>qml/images/battery6.png</file>
         <file>qml/theme/icon-m-framework-close-thumbnail.png</file>
         <file>qml/images/notification-circle.png</file>
-        <file>qml/images/wallpaper-portrait-bubbles.png</file>
     </qresource>
 </RCC>

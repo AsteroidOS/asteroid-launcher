@@ -14,9 +14,8 @@ Rectangle {
         id: clockColumn
 
         anchors {
-            left: parent.left
-            right: parent.right
-            top: parent.top
+            verticalCenter: parent.verticalCenter
+            horizontalCenter: parent.horizontalCenter
         }
 
         Text {
@@ -49,7 +48,7 @@ Rectangle {
                 right: parent.right
             }
 
-            text: Qt.formatDateTime(wallClock.time, "<b>dddd</b>, d MMMM yyyy")
+            text: Qt.formatDateTime(wallClock.time, "<b>ddd.</b> d MMM.")
         }
     }
 }

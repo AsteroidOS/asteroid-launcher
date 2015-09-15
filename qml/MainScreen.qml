@@ -66,12 +66,12 @@ Page {
         }
     }
 
-    Statusbar {
-        id: statusbar
-    }
+//    Statusbar {
+//        id: statusbar
+//    }
 
-    GlacierRotation {
-        id: glacierRotation
+    LauncherRotation {
+        id: launcherRotation
         rotationParent: desktop.parent
         unrotatedItems: [lockScreen]
     }
@@ -80,11 +80,11 @@ Page {
 
     onOrientationChanged: {
         if (!lockscreenVisible())
-            glacierRotation.rotateRotationParent(orientation)
+            launcherRotation.rotateRotationParent(orientation)
     }
 
     onParentChanged: {
-        glacierRotation.rotateRotationParent(nativeOrientation)
+        launcherRotation.rotateRotationParent(nativeOrientation)
     }
 
     Component.onCompleted: {
@@ -96,7 +96,7 @@ Page {
         target: LipstickSettings
         onLockscreenVisibleChanged: {
             if (!lockscreenVisible())
-                glacierRotation.rotateRotationParent(desktop.orientation)
+                launcherRotation.rotateRotationParent(desktop.orientation)
         }
     }
 
@@ -142,7 +142,7 @@ Page {
     }
     Image {
         id:wallpaper
-        source: "qrc:/qml/images/wallpaper-portrait-bubbles.png"
+        source: "qrc:/qml/images/graphics-wallpaper-home.jpg"
         anchors.fill: parent
         z: -100
     }

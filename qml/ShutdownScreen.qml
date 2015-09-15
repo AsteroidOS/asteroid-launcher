@@ -11,8 +11,8 @@ Rectangle {
     property bool shouldVisible
     opacity: shutdownScreen.windowVisible
 
-    GlacierRotation {
-        id: glacierRotation
+    LauncherRotation {
+        id: launcherRotation
         rotationParent: shutdownWindow.parent
     }
 
@@ -20,7 +20,7 @@ Rectangle {
         target: shutdownScreen
         onWindowVisibleChanged: {
             if (shutdownScreen.windowVisible) {
-                glacierRotation.rotateRotationParent(nativeOrientation)
+                launcherRotation.rotateRotationParent(nativeOrientation)
             }
         }
     }

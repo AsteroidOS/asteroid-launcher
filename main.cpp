@@ -21,24 +21,26 @@
 //
 // Copyright (c) 2012, Timur Kristóf <venemo@fedoraproject.org>
 
-#include <homeapplication.h>
 #include <QFont>
-#include <homewindow.h>
-#include <lipstickqmlpath.h>
+#include <QScreen>
 #include <QQmlEngine>
 #include <QQmlContext>
-#include "glacierwindowmodel.h"
-#include <QScreen>
+
+#include <lipstickqmlpath.h>
+#include <homeapplication.h>
+#include <homewindow.h>
+
+#include "launcherwindowmodel.h"
 
 int main(int argc, char **argv)
 {
-    QmlPath::append("/usr/share/lipstick-glacier-home-qt5/qml");
+    QmlPath::append("/usr/share/asteroid-launcher/qml");
     HomeApplication app(argc, argv, QString());
 
     QGuiApplication::setFont(QFont("Open Sans"));
-    app.setCompositorPath("/usr/share/lipstick-glacier-home-qt5/qml/compositor.qml");
+    app.setCompositorPath("/usr/share/asteroid-launcher/qml/compositor.qml");
     Qt::ScreenOrientation nativeOrientation = app.primaryScreen()->nativeOrientation();
-    QByteArray v = qgetenv("GLACIER_NATIVEORIENTATION");
+    QByteArray v = qgetenv("LAUNCHER_NATIVEORIENTATION");
     if (!v.isEmpty()) {
         switch (v.toInt()) {
         case 1:
@@ -60,8 +62,10 @@ int main(int argc, char **argv)
     if (nativeOrientation == Qt::PrimaryOrientation)
         nativeOrientation = app.primaryScreen()->primaryOrientation();
     app.engine()->rootContext()->setContextProperty("nativeOrientation", nativeOrientation);
-    qmlRegisterType<GlacierWindowModel>("org.nemomobile.glacier", 1, 0 ,"GlacierWindowModel");
-    app.setQmlPath("/usr/share/lipstick-glacier-home-qt5/qml/MainScreen.qml");
+
+    qmlRegisterType<LauncherWindowModel>("org.asteroidproject.launcher", 1, 0 ,"LauncherWindowModel");
+    app.setQmlPath("/usr/share/asteroid-launcher/qml/MainScreen.qml");
+
     // Give these to the environment inside the lipstick homescreen
     // Fixes a bug where some applications wouldn't launch, eg. terminal or browser
     setenv("EGL_PLATFORM", "wayland", 1);

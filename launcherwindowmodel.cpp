@@ -1,17 +1,15 @@
-#include "glacierwindowmodel.h"
+#include "launcherwindowmodel.h"
 
-GlacierWindowModel::GlacierWindowModel(): WindowModel()
+LauncherWindowModel::LauncherWindowModel(): WindowModel()
 {
 }
 
-int GlacierWindowModel::getWindowIdForTitle(QString title)
+int LauncherWindowModel::getWindowIdForTitle(QString title)
 {
     return m_titles.value(title,0);
 }
 
-
-
-bool GlacierWindowModel::approveWindow(LipstickCompositorWindow *window)
+bool LauncherWindowModel::approveWindow(LipstickCompositorWindow *window)
 {
     bool accepted = window->isInProcess() == false && window->category() != QLatin1String("overlay") && window->category() != QLatin1String("cover");
     if (accepted) {
@@ -20,7 +18,7 @@ bool GlacierWindowModel::approveWindow(LipstickCompositorWindow *window)
     return accepted;
 }
 
-void GlacierWindowModel::removeWindowForTitle(QString title)
+void LauncherWindowModel::removeWindowForTitle(QString title)
 {
     qDebug() << "Removing window: " + title;
     m_titles.remove(title);
