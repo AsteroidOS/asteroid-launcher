@@ -54,7 +54,8 @@ volumecontrol.path = /usr/share/asteroid-launcher/qml/volumecontrol
 volumecontrol.files = qml/VolumeControl.qml
 
 connectivity.path = /usr/share/asteroid-launcher/qml/connectivity
-connectivity.files = qml/USBModeSelector.qml
+connectivity.files = qml/USBModeSelector.qml \
+    qml/ConnectionSelector.qml
 
 notifications.path = /usr/share/asteroid-launcher/qml/notifications
 notifications.files = qml/NotificationPreview.qml
