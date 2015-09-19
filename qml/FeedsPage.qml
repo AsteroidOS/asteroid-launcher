@@ -37,38 +37,6 @@ Flickable {
         id: rootitem
         width: parent.width
         height: childrenRect.height
-        // Day of week
-        Row {
-            id: daterow
-            height: displayCurrentDate.height + 15
-            Label {
-                id: displayDayOfWeek
-                text: Qt.formatDateTime(wallClock.time, "dddd") + ", "
-                color: "white"
-                font.pointSize: 12
-                font.bold: true
-                anchors {
-                    top: parent.top
-                    left: parent.left
-                    topMargin: 30
-                    leftMargin: 20
-                }
-            }
-
-            // Current date
-            Label {
-                id: displayCurrentDate
-                text: Qt.formatDate(wallClock.time, "d MMMM yyyy")
-                font.pointSize: 12
-                width: rootitem.width - displayDayOfWeek.width - 20
-                wrapMode: Text.WordWrap
-                anchors {
-                    left: displayDayOfWeek.right
-                    top: parent.top
-                    topMargin: 30
-                }
-            }
-        }
 
         Column {
             id: notificationColumn
