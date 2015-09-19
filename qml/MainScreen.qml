@@ -62,15 +62,9 @@ Page {
     LauncherRotation {
         id: launcherRotation
         rotationParent: desktop.parent
-        unrotatedItems: [lockScreen]
     }
 
     orientation: Lipstick.compositor.screenOrientation
-
-    onOrientationChanged: {
-        if (!lockscreenVisible())
-            launcherRotation.rotateRotationParent(orientation)
-    }
 
     onParentChanged: {
         launcherRotation.rotateRotationParent(nativeOrientation)
@@ -79,27 +73,6 @@ Page {
     Component.onCompleted: {
         Desktop.instance = desktop
         Lipstick.compositor.screenOrientation = nativeOrientation
-    }
-
-    Connections {
-        target: LipstickSettings
-        onLockscreenVisibleChanged: {
-            if (!lockscreenVisible())
-                launcherRotation.rotateRotationParent(desktop.orientation)
-        }
-    }
-
-    function lockscreenVisible() {
-        return LipstickSettings.lockscreenVisible === true
-    }
-
-    function setLockScreen(enabled) {
-        if (enabled) {
-            LipstickSettings.lockScreen(true)
-        } else {
-            LipstickSettings.lockscreenVisible = false
-        }
-
     }
 
     Pager {
