@@ -40,7 +40,7 @@ Flickable {
 
         Column {
             id: notificationColumn
-            anchors.top: daterow.bottom
+            anchors.top: parent.top
             anchors.topMargin: 20
             spacing: 10
             Repeater {
