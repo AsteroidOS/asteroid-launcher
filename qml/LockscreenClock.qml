@@ -5,10 +5,7 @@ Rectangle {
     id: lockscreenClock
     height: (timeDisplay.height + dateDisplay.height) * 1.5
 
-    gradient: Gradient {
-        GradientStop { position: 0.0; color: '#b0000000' }
-        GradientStop { position: 1.0; color: '#00000000' }
-    }
+    color: "transparent"
 
     Column {
         id: clockColumn
