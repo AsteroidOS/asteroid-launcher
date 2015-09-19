@@ -104,9 +104,19 @@ Page {
 
     Pager {
         id: pager
-
         anchors.fill: parent
+
         model: VisualItemModel {
+            ClockPage {
+                id: clock
+                width: pager.width
+                height: pager.height
+            }
+            FeedsPage {
+                id: feeds
+                width: pager.width
+                height: pager.height
+            }
             AppLauncher {
                 id: launcher
                 height: pager.height
@@ -118,11 +128,6 @@ Page {
                 height: pager.height
                 visibleInHome: x > -width && x < desktop.width
                 launcher: launcher
-            }
-            FeedsPage {
-                id: feeds
-                width: pager.width
-                height: pager.height
             }
         }
 

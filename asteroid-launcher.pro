@@ -35,7 +35,8 @@ qml.files = qml/MainScreen.qml \
     qml/CommonPanel.qml \
     qml/ShutdownScreen.qml \
     qml/LauncherRotation.qml \
-    qml/DeviceLock.qml
+    qml/DeviceLock.qml \
+    qml/ClockPage.qml
 
 qmlcompositor.path = /usr/share/asteroid-launcher/qml/compositor
 qmlcompositor.files = qml/compositor/WindowWrapperMystic.qml \
@@ -109,5 +110,6 @@ OTHER_FILES += qml/*.qml \
     qml/CommonPanel.qml \
     qml/ShutdownScreen.qml \
     qml/LauncherRotation.qml \
-    qml/DeviceLock.qml
+    qml/DeviceLock.qml \
+    qml/ClockPage.qml
 
