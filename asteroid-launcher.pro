@@ -96,7 +96,7 @@ OTHER_FILES += qml/*.qml \
     qml/Statusbar.qml \
     qml/StatusbarItem.qml \
     qml/WifiPanel.qml \
-	nemovars.conf \
+	vars.conf \
     qml/SimPanel.qml \
     qml/NumButton.qml \
     qml/USBModeSelector.qml \
