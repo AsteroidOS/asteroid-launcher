@@ -40,18 +40,12 @@ import org.nemomobile.lipstick 0.1
 import "scripts/desktop.js" as Desktop
 
 Page {
-    // This is used in the favorites page and in the lock screen
     WallClock {
         id: wallClock
         enabled: true /* XXX: Disable when display is off */
         updateFrequency: WallClock.Minute
     }
-    // This is used in the lock screen
-    ConfigurationValue {
-        id: wallpaperSource
-        key: desktop.isPortrait ? "/desktop/meego/background/portrait/picture_filename" : "/desktop/meego/background/landscape/picture_filename"
-        defaultValue: "qrc:/qml/images/graphics-wallpaper-home.jpg"
-    }
+
     id: desktop
     property alias switcher: switcher
     // Implements back key navigation
@@ -64,10 +58,6 @@ Page {
             } else { Qt.quit(); }
         }
     }
-
-//    Statusbar {
-//        id: statusbar
-//    }
 
     LauncherRotation {
         id: launcherRotation
@@ -136,12 +126,19 @@ Page {
             }
         }
 
-        // Initial view should be the AppLauncher
         currentIndex: 0
     }
+
+// Wallpaper
+    ConfigurationValue {
+        id: wallpaperSource
+        key: desktop.isPortrait ? "/desktop/meego/background/portrait/picture_filename" : "/desktop/meego/background/landscape/picture_filename"
+        defaultValue: "qrc:/qml/images/graphics-wallpaper-home.jpg"
+    }
+
     Image {
         id:wallpaper
-        source: "qrc:/qml/images/graphics-wallpaper-home.jpg"
+        source: wallpaperSource.value
         anchors.fill: parent
         z: -100
     }
