@@ -53,7 +53,6 @@ Page {
         defaultValue: "qrc:/qml/images/graphics-wallpaper-home.jpg"
     }
     id: desktop
-    property alias lockscreen: lockScreen
     property alias switcher: switcher
     // Implements back key navigation
 
@@ -146,12 +145,4 @@ Page {
         anchors.fill: parent
         z: -100
     }
-    Lockscreen {
-        id: lockScreen
-
-        width: parent.width
-        height: parent.height
-        z: 200
-    }
-
 }
