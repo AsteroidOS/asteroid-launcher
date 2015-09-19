@@ -14,7 +14,6 @@ qml.path = /usr/share/asteroid-launcher/qml
 qml.files = qml/MainScreen.qml \
     qml/compositor.qml \
     qml/LauncherItemDelegate.qml \
-    qml/Lockscreen.qml \
     qml/AppSwitcher.qml \
     qml/AppLauncher.qml \
     qml/ToolBarLayoutExample.qml \
@@ -34,7 +33,6 @@ qml.files = qml/MainScreen.qml \
     qml/CommonPanel.qml \
     qml/ShutdownScreen.qml \
     qml/LauncherRotation.qml \
-    qml/DeviceLock.qml \
     qml/ClockPage.qml
 
 qmlcompositor.path = /usr/share/asteroid-launcher/qml/compositor
@@ -83,7 +81,6 @@ OTHER_FILES += qml/*.qml \
     qml/MainScreen.qml \
     qml/compositor.qml \
     qml/LauncherItemDelegate.qml \
-    qml/Lockscreen.qml \
     qml/AppSwitcher.qml \
     qml/AppLauncher.qml \
     qml/ToolBarLayoutExample.qml \
@@ -108,6 +105,5 @@ OTHER_FILES += qml/*.qml \
     qml/CommonPanel.qml \
     qml/ShutdownScreen.qml \
     qml/LauncherRotation.qml \
-    qml/DeviceLock.qml \
     qml/ClockPage.qml
 
