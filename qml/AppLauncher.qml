@@ -35,7 +35,6 @@ GridView {
     cellWidth: 115
     cellHeight: cellWidth + 30
     width: Math.floor(parent.width / cellWidth) * cellWidth
-    cacheBuffer: gridview.contentHeight
     property Item reorderItem
     property bool onUninstall
     property alias deleter: deleter
