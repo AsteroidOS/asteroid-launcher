@@ -15,7 +15,6 @@ qml.files = qml/MainScreen.qml \
     qml/compositor.qml \
     qml/LauncherItemDelegate.qml \
     qml/Lockscreen.qml \
-    qml/LockscreenClock.qml \
     qml/AppSwitcher.qml \
     qml/AppLauncher.qml \
     qml/ToolBarLayoutExample.qml \
@@ -85,7 +84,6 @@ OTHER_FILES += qml/*.qml \
     qml/compositor.qml \
     qml/LauncherItemDelegate.qml \
     qml/Lockscreen.qml \
-    qml/LockscreenClock.qml \
     qml/AppSwitcher.qml \
     qml/AppLauncher.qml \
     qml/ToolBarLayoutExample.qml \
