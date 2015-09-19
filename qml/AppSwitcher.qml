@@ -164,8 +164,13 @@ Item {
     // Empty switcher indicator
     Label {
         visible: switcherModel.itemCount === 0
+        horizontalAlignment: Text.AlignHCenter
 
-        text: "No apps open"
+        text: "<b>No apps<br>open</b>"
         font.pointSize: 12
+        anchors {
+            verticalCenter: parent.verticalCenter
+            horizontalCenter: parent.horizontalCenter
+        }
     }
 }
