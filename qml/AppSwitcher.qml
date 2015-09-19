@@ -166,6 +166,6 @@ Item {
         visible: switcherModel.itemCount === 0
 
         text: "No apps open"
-        font.pixelSize: 80
+        font.pointSize: 12
     }
 }
