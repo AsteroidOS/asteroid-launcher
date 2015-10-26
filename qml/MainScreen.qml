@@ -73,6 +73,7 @@ Page {
     Component.onCompleted: {
         Desktop.instance = desktop
         Lipstick.compositor.screenOrientation = nativeOrientation
+        LipstickSettings.lockScreen(true)
     }
 
     Pager {
