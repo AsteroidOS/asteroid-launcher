@@ -1,35 +1,8 @@
-
-// This file is part of colorful-home, a nice user experience for touchscreens.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
-//
-// Copyright (c) 2011, Tom Swindell <t.swindell@rubyx.co.uk>
-// Copyright (c) 2012, Timur Kristóf <venemo@fedoraproject.org>
-
 import QtQuick 2.0
 import org.nemomobile.lipstick 0.1
 import QtQuick.Controls.Nemo 1.0
 import QtQuick.Controls.Styles.Nemo 1.0
 import org.asteroidproject.launcher 1.0
-
-// App Switcher page
-// The place for browsing already running apps
 
 Item {
     id: switcherRoot
@@ -38,7 +11,6 @@ Item {
     property bool visibleInHome: false
     property alias runningAppsCount: switcherModel.itemCount
     property var switchModel: switcherModel
-    property var launcher: null
 
     onVisibleInHomeChanged: {
         // Exit close mode when scrolling out of view
@@ -109,27 +81,30 @@ Item {
     Rectangle {
         id: toolBar
         color: 'black'
-        border {
-            width: 1
+        Rectangle {
+            anchors.top   : toolBar.top
+            anchors.left  : toolBar.left
+            anchors.right : toolBar.right
+            height: 1
             color: '#333333'
         }
         z: 202
         height: toolBarDone.height + 2*padding
-        property int padding: 9
+        property int padding: 3
 
         anchors {
             left: parent.left
             right: parent.right
             bottom: parent.bottom
-            margins: -1
-            bottomMargin: switcherRoot.closeMode ? 48 : -height
+            bottomMargin: switcherRoot.closeMode ? 0 : -height
         }
 
         Behavior on anchors.bottomMargin { PropertyAnimation { duration: 100 } }
 
         Button {
             id: toolBarDone
-            width: parent.width / 3
+            width: parent.width / 2.5
+            height: 40
             anchors {
                 top: parent.top
                 topMargin: toolBar.padding
@@ -140,11 +115,22 @@ Item {
             onClicked: {
                 switcherRoot.closeMode = false;
             }
+            style: ButtonStyle {
+                label: Text {
+                    renderType: Text.NativeRendering
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pointSize: 8
+                    text: control.text
+                    color: "white"
+                }
+            }
         }
 
         Button {
             id: toolBarCloseAll
             width: toolBarDone.width
+            height: toolBarDone.height
             anchors {
                 top: parent.top
                 topMargin: toolBar.padding
@@ -156,6 +142,16 @@ Item {
                 // TODO: use close animation inside item
                 for (var i = gridRepeater.count - 1; i >= 0; i--) {
                     gridRepeater.itemAt(i).close()
+                }
+            }
+            style: ButtonStyle {
+                label: Text {
+                    renderType: Text.NativeRendering
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pointSize: 8
+                    text: control.text
+                    color: "white"
                 }
             }
         }
