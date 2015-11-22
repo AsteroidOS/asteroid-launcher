@@ -15,19 +15,16 @@ qml.files = qml/MainScreen.qml \
     qml/compositor.qml \
     qml/LauncherItemDelegate.qml \
     qml/AppSwitcher.qml \
+    qml/QuickSettings.qml \
     qml/AppLauncher.qml \
-    qml/ToolBarLayoutExample.qml \
     qml/SwitcherItem.qml \
-    qml/CloseButton.qml \
     qml/NotificationPreview.qml \
     qml/FeedsPage.qml \
-    qml/Statusbar.qml \
-    qml/StatusbarItem.qml \
+    qml/QuickSetItem.qml \
     qml/WifiPanel.qml \
     qml/SimPanel.qml \
     qml/NumButton.qml \
     qml/USBModeSelector.qml \
-    qml/Pager.qml \
     qml/VolumeControl.qml \
     qml/BatteryPanel.qml \
     qml/CommonPanel.qml \
@@ -40,10 +37,6 @@ qmlcompositor.files = qml/compositor/WindowWrapperMystic.qml \
     qml/compositor/WindowWrapperBase.qml \
     qml/compositor/WindowWrapperAlpha.qml \
     qml/compositor/ScreenGestureArea.qml
-
-scripts.path = /usr/share/asteroid-launcher/qml/scripts
-scripts.files =  qml/scripts/desktop.js \
-                qml/scripts/rotation.js
 
 system.path = /usr/share/asteroid-launcher/qml/system
 system.files = qml/ShutdownScreen.qml
@@ -58,7 +51,7 @@ connectivity.files = qml/USBModeSelector.qml \
 notifications.path = /usr/share/asteroid-launcher/qml/notifications
 notifications.files = qml/NotificationPreview.qml
 
-INSTALLS += styles qml qmlcompositor scripts system volumecontrol connectivity notifications
+INSTALLS += styles qml qmlcompositor system volumecontrol connectivity notifications
 
 CONFIG += qt link_pkgconfig
 QT += quick compositor
@@ -82,16 +75,14 @@ OTHER_FILES += qml/*.qml \
     qml/compositor.qml \
     qml/LauncherItemDelegate.qml \
     qml/AppSwitcher.qml \
+    qml/QuickSettings.qml \
     qml/AppLauncher.qml \
-    qml/ToolBarLayoutExample.qml \
     qml/SwitcherItem.qml \
-    qml/CloseButton.qml \
     qml/compositor/WindowWrapperMystic.qml \
     qml/compositor/WindowWrapperBase.qml \
     qml/compositor/WindowWrapperAlpha.qml \
     qml/compositor/ScreenGestureArea.qml \
     qml/NotificationPreview.qml \
-    qml/scripts/desktop.js \
     qml/FeedsPage.qml \
     qml/Statusbar.qml \
     qml/StatusbarItem.qml \
