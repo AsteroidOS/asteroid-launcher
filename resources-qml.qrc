@@ -1,13 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>qml/images/button_default.png</file>
-        <file>qml/images/button_pressed.png</file>
-        <file>qml/images/navigation_next_item.png</file>
-        <file>qml/images/navigation_previous_item.png</file>
-        <file>qml/images/tab_selected.png</file>
-        <file>qml/images/tabs_standard.png</file>
-        <file>qml/images/textinput.png</file>
-        <file>qml/images/toolbar.png</file>
         <file>qml/images/graphics-wallpaper-home.jpg</file>
         <file>qml/images/battery0.png</file>
         <file>qml/images/battery1.png</file>
@@ -16,7 +8,7 @@
         <file>qml/images/battery4.png</file>
         <file>qml/images/battery5.png</file>
         <file>qml/images/battery6.png</file>
-        <file>qml/theme/icon-m-framework-close-thumbnail.png</file>
+        <file>qml/images/icon-m-framework-close-thumbnail.png</file>
         <file>qml/images/notification-circle.png</file>
     </qresource>
 </RCC>
