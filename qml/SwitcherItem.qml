@@ -93,8 +93,9 @@ MouseArea {
         text: Lipstick.compositor.windowForId(model.window).title
     }
 
-    CloseButton {
+    Image {
         id: closeButton
+        source: 'qrc:/qml/images/icon-m-framework-close-thumbnail.png'
         Behavior on scale { PropertyAnimation { duration: 300; easing.type: Easing.OutBack } }
         scale: switcherRoot.closeMode ? 1 : 0
         opacity: scale
@@ -103,6 +104,10 @@ MouseArea {
             bottom: parent.bottom
             horizontalCenter: parent.horizontalCenter
         }
-        onClicked: closeAnimation.start()
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: closeAnimation.start()
+        }
     }
 }
