@@ -1,0 +1,3 @@
+Asteroid-launcher is a wayland compositor which uses Lipstick from NemoMobile which itself uses QML, QtWayland, QPA etc... It is designed to provide a smartwatch UX for the AsteroidOS project.
+
+Asteroid-launcher is released under the BSD license and is based on Glacier-Home (released under the BSD license) which is itself based on lipstick-colorful-home(released under MIT provided in COPYING.MIT).
