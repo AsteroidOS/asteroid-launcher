@@ -79,6 +79,7 @@ Page {
             orientation: ListView.Horizontal
             width: desktop.width; height: desktop.height;
             snapMode: ListView.SnapOneItem
+            cacheBuffer: width*3
             currentIndex: 1
 
             delegate: Loader {
@@ -104,6 +105,7 @@ Page {
         orientation: ListView.Vertical
         anchors.fill: parent
         snapMode: ListView.SnapOneItem
+        cacheBuffer: height*3
         currentIndex: 1
 
         delegate:Loader {
