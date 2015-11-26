@@ -80,7 +80,6 @@ Page {
             width: desktop.width; height: desktop.height;
             snapMode: ListView.SnapOneItem
             cacheBuffer: width*3
-            currentIndex: 1
 
             delegate: Loader {
                 sourceComponent: {
@@ -92,6 +91,7 @@ Page {
                     }
                 }
             }
+            contentItem.onWidthChanged: positionViewAtIndex(1, ListView.Beginning)
             onContentXChanged: {
                 verticalListView.interactive = centerListView.contentX == width // Only allows vertical flicking for the center item
                 wallpaperBlur.radius = (centerListView.contentX > height*2/3 && centerListView.contentX < height*4/3)  ? 0 : 35
@@ -106,7 +106,6 @@ Page {
         anchors.fill: parent
         snapMode: ListView.SnapOneItem
         cacheBuffer: height*3
-        currentIndex: 1
 
         delegate:Loader {
             sourceComponent: {
@@ -118,6 +117,7 @@ Page {
                 }
             }
         }
+        contentItem.onHeightChanged: positionViewAtIndex(1, ListView.Beginning)
         onContentYChanged: wallpaperBlur.radius = (verticalListView.contentY > height*2/3 && verticalListView.contentY < height*4/3)  ? 0 : 35
     }
 
