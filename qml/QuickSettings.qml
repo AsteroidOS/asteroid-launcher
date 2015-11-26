@@ -122,11 +122,11 @@ Item {
     GridLayout {
         anchors.fill: parent
         columns: 3
-        StatusbarItem {
+        QuickSetItem {
             source: (cellularSignalBars.value > 0) ? "image://theme/icon_cell" + cellularSignalBars.value : "image://theme/icon_cell1"
         }
 
-        StatusbarItem {
+        QuickSetItem {
             Label {
                 id: tech
                 width: 32
@@ -151,7 +151,7 @@ Item {
             panel: SimPanel {}
         }
 
-        StatusbarItem {
+        QuickSetItem {
             source: {
                 if (wlan.connected) {
                     if (networkManager.defaultRoute.type !== "wifi")
@@ -173,17 +173,17 @@ Item {
             }
             panel: WifiPanel {}
         }
-        StatusbarItem {
+        QuickSetItem {
             source: "image://theme/icon_bt_normal"
         }
-        StatusbarItem {
+        QuickSetItem {
             source: "image://theme/icon_nfc_normal"
         }
-        StatusbarItem {
+        QuickSetItem {
             source: "image://theme/icon_gps_normal"
         }
 
-        StatusbarItem {
+        QuickSetItem {
             panel: BatteryPanel {}
             source: {
                 if(batteryChargePercentage.value > 85) {
