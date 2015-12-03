@@ -89,4 +89,16 @@ ListView {
         source: model.object.iconId == "" ? ":/images/icons/apps.png" : (model.object.iconId.indexOf("/") == 0 ? "file://" : "image://theme/") + model.object.iconId
         iconCaption: model.object.title
     }
+
+    Label {
+        visible: launcherModel.itemCount === 0
+        horizontalAlignment: Text.AlignHCenter
+
+        text: "<b>No apps<br>installed</b>"
+        font.pointSize: 12
+        anchors {
+            verticalCenter: parent.verticalCenter
+            horizontalCenter: parent.horizontalCenter
+        }
+    }
 }
