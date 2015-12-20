@@ -32,8 +32,7 @@
  */
 
 import QtQuick 2.0
-import QtQuick.Controls.Nemo 1.0
-import QtQuick.Controls.Styles.Nemo 1.0
+import QtQuick.Controls 1.0
 import org.nemomobile.lipstick 0.1
 
 Item {
@@ -122,12 +121,6 @@ Item {
             width: wrapper.width* 0.8
             height: width
             asynchronous: true
-
-            Spinner {
-                id: spinner
-                anchors.centerIn: parent
-                enabled: (model.object.type === LauncherModel.Application) ? model.object.isLaunching : false
-            }
         }
 
         // Caption for the icon

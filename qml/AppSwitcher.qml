@@ -32,9 +32,9 @@
 
 import QtQuick 2.0
 import org.nemomobile.lipstick 0.1
-import QtQuick.Controls.Nemo 1.0
-import QtQuick.Controls.Styles.Nemo 1.0
-import org.asteroidproject.launcher 1.0
+import QtQuick.Controls 1.0
+import QtQuick.Controls.Styles 1.0
+import org.asteroid.launcher 1.0
 
 Item {
     id: switcherRoot
@@ -154,7 +154,6 @@ Item {
                     horizontalAlignment: Text.AlignHCenter
                     font.pointSize: 8
                     text: control.text
-                    color: "white"
                 }
             }
         }
@@ -183,7 +182,6 @@ Item {
                     horizontalAlignment: Text.AlignHCenter
                     font.pointSize: 8
                     text: control.text
-                    color: "white"
                 }
             }
         }
@@ -195,6 +193,7 @@ Item {
         horizontalAlignment: Text.AlignHCenter
 
         text: "<b>No apps<br>open</b>"
+        color: "white"
         font.pointSize: 12
         anchors {
             verticalCenter: parent.verticalCenter

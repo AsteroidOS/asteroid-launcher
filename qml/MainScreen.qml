@@ -30,16 +30,16 @@
 
 import QtQuick 2.1
 import QtQuick.Controls 1.0
-import QtQuick.Controls.Nemo 1.0
-import QtQuick.Controls.Styles.Nemo 1.0
 import QtQuick.Window 2.1
 import QtGraphicalEffects 1.0
 import org.nemomobile.time 1.0
 import org.nemomobile.configuration 1.0
 import org.nemomobile.lipstick 0.1
+import org.asteroid.controls 1.0
 
-Page {
+Item {
     id: desktop
+    anchors.fill: parent;
     property var switcher: null
 
     Component.onCompleted: {
@@ -65,7 +65,7 @@ Page {
     }
 
     LauncherRotation { id: launcherRotation; rotationParent: desktop.parent }
-    orientation: Lipstick.compositor.screenOrientation
+
     onParentChanged: launcherRotation.rotateRotationParent(nativeOrientation)
 
     Component { id: topPage;    QuickSettings { id: quickSet; width: desktop.width; height: desktop.height } }

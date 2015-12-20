@@ -29,14 +29,14 @@
  */
 
 import QtQuick 2.1
-import QtQuick.Controls.Nemo 1.0
-import QtQuick.Controls.Styles.Nemo 1.0
+import QtQuick.Controls 1.0
 
 Component {
     CommonPanel {
         Label {
-            text: "Battery level: " + batteryChargePercentage.value + "%"
-            font.pointSize: 8
+            text: "Battery level:\n " + batteryChargePercentage.value + "%"
+            font.pointSize: 13
+            color: "white"
         }
     }
 }

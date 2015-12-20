@@ -32,8 +32,7 @@
 
 import QtQuick 2.1
 import org.nemomobile.lipstick 0.1
-import QtQuick.Controls.Nemo 1.0
-import QtQuick.Controls.Styles.Nemo 1.0
+import QtQuick.Controls 1.0
 
 Item {
     Flickable {
@@ -103,6 +102,7 @@ Item {
         horizontalAlignment: Text.AlignHCenter
 
         text: "<b>No new<br>notification</b>"
+        color: "white"
         font.pointSize: 12
         anchors {
             verticalCenter: parent.verticalCenter

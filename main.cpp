@@ -71,7 +71,7 @@ int main(int argc, char **argv)
         nativeOrientation = app.primaryScreen()->primaryOrientation();
     app.engine()->rootContext()->setContextProperty("nativeOrientation", nativeOrientation);
 
-    qmlRegisterType<LauncherWindowModel>("org.asteroidproject.launcher", 1, 0 ,"LauncherWindowModel");
+    qmlRegisterType<LauncherWindowModel>("org.asteroid.launcher", 1, 0 ,"LauncherWindowModel");
     app.setQmlPath("/usr/share/asteroid-launcher/qml/MainScreen.qml");
 
     // Give these to the environment inside the lipstick homescreen

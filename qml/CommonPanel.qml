@@ -29,14 +29,11 @@
  */
 
 import QtQuick 2.0
-import QtQuick.Controls.Nemo 1.0
-import QtQuick.Controls.Styles.Nemo 1.0
+import QtQuick.Controls 1.0
 
 Rectangle {
-    height: 240
-    width: root.width
     color: "#313131"
-    opacity: 0.5
+    opacity: 0.8
     Button {
         text: "Close"
         anchors.bottom: parent.bottom
