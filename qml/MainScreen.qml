@@ -69,9 +69,15 @@ Item {
 
     onParentChanged: launcherRotation.rotateRotationParent(nativeOrientation)
 
+    ConfigurationValue {
+        id: watchFaceSource
+        key: "/desktop/asteroid/watchface"
+        defaultValue: "ClockPage.qml"
+    }
+
     Component { id: topPage;    QuickSettings { id: quickSet; width: desktop.width; height: desktop.height } }
     Component { id: leftPage;   AppSwitcher   { id: switcher; width: desktop.width; height: desktop.height; visibleInHome: x > -width && x < desktop.width; Component.onCompleted: { desktop.switcher = switcher }} }
-    Component { id: centerPage; ClockPage     { id: clock;    width: desktop.width; height: desktop.height } }
+    Component { id: centerPage; Loader        { id: clock;    width: desktop.width; height: desktop.height; source: watchFaceSource.value } }
     Component { id: rightPage;  FeedsPage     { id: feed;     width: desktop.width; height: desktop.height } }
     Component { id: bottomPage; AppLauncher   { id: launcher; width: desktop.width; height: desktop.height; switcher: desktop.switcher } }
 
