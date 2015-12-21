@@ -58,7 +58,7 @@ Item {
             height: appsListView.cellHeight
             Image {
                 id: iconimage
-                source: model.object.iconId == "" ? ":/images/icons/apps.png" : (model.object.iconId.indexOf("/") == 0 ? "file://" : "image://theme/") + model.object.iconId
+                source: model.object.iconId == "" ? ":/images/icons/apps.png" : (model.object.iconId.indexOf("/") == 0 ? "file://" : "qrc:/qml/images/") + model.object.iconId
             }
             Text {
                 id: icontext

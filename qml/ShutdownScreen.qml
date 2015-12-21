@@ -57,7 +57,7 @@ Rectangle {
 
     Image {
         anchors.centerIn: parent
-        source: shutdownMode ? "" : "image://theme/graphic-shutdown-logo"
+        source: shutdownMode ? "" : "qrc:/qml/images/graphic-shutdown-logo.png"
     }
 
     Behavior on opacity {

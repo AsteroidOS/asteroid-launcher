@@ -56,7 +56,7 @@ Component {
                     Row {
                         spacing: 12
                         Image {
-                           source: "image://theme/icon_wifi_focused" + getStrengthIndex(modelData.strength)
+                           source: "qrc:/qml/images/icon_wifi_focused" + getStrengthIndex(modelData.strength) + ".png"
                         }
 
                         Label {

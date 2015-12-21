@@ -122,7 +122,7 @@ Item {
         anchors.fill: parent
         columns: 3
         QuickSetItem {
-            source: (cellularSignalBars.value > 0) ? "image://theme/icon_cell" + cellularSignalBars.value : "image://theme/icon_cell1"
+            source: (cellularSignalBars.value > 0) ? "qrc:/qml/images/icon_cell.png" + cellularSignalBars.value : "qrc:/qml/images/icon_cell1.png"
         }
 
         QuickSetItem {
@@ -132,6 +132,7 @@ Item {
                 height: 32
                 font.pointSize: 6
                 font.bold: true
+                color: "white"
                 wrapMode: Text.ElideRight
                 text: (cellularNetworkName.value !== "") ? cellularNetworkName.value.substring(0,3).toUpperCase() : "NA"
             }
@@ -142,6 +143,7 @@ Item {
                 width: 32
                 height: 32
                 font.pointSize: 6
+                color: "white"
                 text: {
                     var techToG = {gprs: "2", egprs: "2.5", umts: "3", hspa: "3.5", lte: "4", unknown: "0"}
                     return techToG[cellularDataTechnology.value ? cellularDataTechnology.value : "unknown"] + "G"
@@ -154,32 +156,32 @@ Item {
             source: {
                 if (wlan.connected) {
                     if (networkManager.defaultRoute.type !== "wifi")
-                        return "image://theme/icon_wifi_0"
+                        return "qrc:/qml/images/icon_wifi_0.png"
                     if (networkManager.defaultRoute.strength >= 59) {
-                        return "image://theme/icon_wifi_normal4"
+                        return "qrc:/qml/images/icon_wifi_normal4.png"
                     } else if (networkManager.defaultRoute.strength >= 55) {
-                        return "image://theme/icon_wifi_normal3"
+                        return "qrc:/qml/images/icon_wifi_normal3.png"
                     } else if (networkManager.defaultRoute.strength >= 50) {
-                        return "image://theme/icon_wifi_normal2"
+                        return "qrc:/qml/images/icon_wifi_normal2.png"
                     } else if (networkManager.defaultRoute.strength >= 40) {
-                        return "image://theme/icon_wifi_normal1"
+                        return "qrc:/qml/images/icon_wifi_normal1.png"
                     } else {
-                        return "image://theme/icon_wifi_0"
+                        return "qrc:/qml/images/icon_wifi_0.png"
                     }
                 } else {
-                    return "image://theme/icon_wifi_0"
+                    return "qrc:/qml/images/icon_wifi_0.png"
                 }
             }
             panel: WifiPanel {}
         }
         QuickSetItem {
-            source: "image://theme/icon_bt_normal"
+            source: "qrc:/qml/images/icon_bt_normal.png"
         }
         QuickSetItem {
-            source: "image://theme/icon_nfc_normal"
+            source: "qrc:/qml/images/icon_nfc_normal.png"
         }
         QuickSetItem {
-            source: "image://theme/icon_gps_normal"
+            source: "qrc:/qml/images/icon_gps_normal.png"
         }
 
         QuickSetItem {
