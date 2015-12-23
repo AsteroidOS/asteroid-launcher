@@ -32,6 +32,7 @@
  */
 
 import QtQuick 2.0
+import QtGraphicalEffects 1.0
 import QtQuick.Controls 1.0
 import org.nemomobile.lipstick 0.1
 
@@ -73,6 +74,16 @@ Item {
                     right: parent.right
                     top: iconimage.bottom
                     topMargin: 5
+                }
+
+                DropShadow {
+                    anchors.fill: icontext
+                    horizontalOffset: 3
+                    verticalOffset: 3
+                    radius: 8.0
+                    samples: 16
+                    color: "#80000000"
+                    source: icontext
                 }
             }
             onClicked: {
@@ -138,6 +149,15 @@ Item {
                 top: iconImage.bottom
                 topMargin: 5
             }
+        }
+        DropShadow {
+            anchors.fill: iconText
+            horizontalOffset: 3
+            verticalOffset: 3
+            radius: 8.0
+            samples: 16
+            color: "#80000000"
+            source: iconText
         }
     }
 }

@@ -29,6 +29,7 @@
  */
 
 import QtQuick 2.1
+import QtGraphicalEffects 1.0
 
 Item {
     id: rootitem
@@ -53,6 +54,16 @@ Item {
         text: Qt.formatDateTime(wallClock.time, "hh:mm")
     }
 
+    DropShadow {
+        anchors.fill: timeDisplay
+        horizontalOffset: 3
+        verticalOffset: 3
+        radius: 8.0
+        samples: 16
+        color: "#80000000"
+        source: timeDisplay
+    }
+
     Text {
         id: dateDisplay
 
@@ -68,5 +79,15 @@ Item {
         }
 
         text: Qt.formatDateTime(wallClock.time, "<b>ddd.</b> d MMM.")
+    }
+
+    DropShadow {
+        anchors.fill: dateDisplay
+        horizontalOffset: 3
+        verticalOffset: 3
+        radius: 8.0
+        samples: 16
+        color: "#80000000"
+        source: dateDisplay
     }
 }

@@ -31,6 +31,7 @@
  */
 
 import QtQuick 2.0
+import QtGraphicalEffects 1.0
 import QtQuick.Controls 1.0
 import org.nemomobile.lipstick 0.1
 
@@ -90,6 +91,7 @@ ListView {
     }
 
     Label {
+        id: emptyIndicator
         visible: launcherModel.itemCount === 0
         horizontalAlignment: Text.AlignHCenter
 
@@ -99,5 +101,15 @@ ListView {
             verticalCenter: parent.verticalCenter
             horizontalCenter: parent.horizontalCenter
         }
+    }
+    DropShadow {
+        visible: launcherModel.itemCount === 0
+        anchors.fill: emptyIndicator
+        horizontalOffset: 3
+        verticalOffset: 3
+        radius: 8.0
+        samples: 16
+        color: "#80000000"
+        source: emptyIndicator
     }
 }
