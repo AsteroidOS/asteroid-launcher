@@ -85,7 +85,7 @@ ListView {
         id: launcherItem
         width: appsListView.width
         height: appsListView.width
-        source: model.object.iconId == "" ? ":/images/icons/apps.png" : (model.object.iconId.indexOf("/") == 0 ? "file://" : "image://theme/") + model.object.iconId
+        source: model.object.iconId == "" ? "image://theme/help" : (model.object.iconId.indexOf("/") == 0 ? "file://" : "image://theme/") + model.object.iconId
         iconCaption: model.object.title
     }
 
