@@ -91,6 +91,7 @@ MouseArea {
         }
     }
     Label {
+        visible: switcherRoot.closeMode
         anchors {
             top: parent.top
             horizontalCenter: parent.horizontalCenter
