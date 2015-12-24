@@ -20,14 +20,8 @@ qml.files = qml/MainScreen.qml \
     qml/SwitcherItem.qml \
     qml/NotificationPreview.qml \
     qml/FeedsPage.qml \
-    qml/QuickSetItem.qml \
-    qml/WifiPanel.qml \
-    qml/SimPanel.qml \
-    qml/NumButton.qml \
     qml/USBModeSelector.qml \
     qml/VolumeControl.qml \
-    qml/BatteryPanel.qml \
-    qml/CommonPanel.qml \
     qml/ShutdownScreen.qml \
     qml/LauncherRotation.qml \
     qml/ClockPage.qml
@@ -84,16 +78,9 @@ OTHER_FILES += qml/*.qml \
     qml/compositor/ScreenGestureArea.qml \
     qml/NotificationPreview.qml \
     qml/FeedsPage.qml \
-    qml/Statusbar.qml \
-    qml/StatusbarItem.qml \
-    qml/WifiPanel.qml \
 	vars.conf \
-    qml/SimPanel.qml \
-    qml/NumButton.qml \
     qml/USBModeSelector.qml \
     qml/VolumeControl.qml \
-    qml/BatteryPanel.qml \
-    qml/CommonPanel.qml \
     qml/ShutdownScreen.qml \
     qml/LauncherRotation.qml \
     qml/ClockPage.qml

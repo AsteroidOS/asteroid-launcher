@@ -11,30 +11,7 @@
         <file>qml/images/graphics-wallpaper-home.jpg</file>
         <file>qml/images/icon_bt_focused.png</file>
         <file>qml/images/icon_bt_normal.png</file>
-        <file>qml/images/icon_cell1.png</file>
-        <file>qml/images/icon_cell2.png</file>
-        <file>qml/images/icon_cell3.png</file>
-        <file>qml/images/icon_cell4.png</file>
-        <file>qml/images/icon_cell5.png</file>
-        <file>qml/images/icon_cell_full_focused.png</file>
-        <file>qml/images/icon_gps_focused.png</file>
-        <file>qml/images/icon_gps_normal.png</file>
         <file>qml/images/icon-m-framework-close-thumbnail.png</file>
-        <file>qml/images/icon_nfc_focused.png</file>
-        <file>qml/images/icon_nfc_normal.png</file>
-        <file>qml/images/icon_play_noplaylist.png</file>
-        <file>qml/images/icon_play_pause.png</file>
-        <file>qml/images/icon_play_play.png</file>
-        <file>qml/images/icon_wifi_0.png</file>
-        <file>qml/images/icon_wifi_focused1.png</file>
-        <file>qml/images/icon_wifi_focused2.png</file>
-        <file>qml/images/icon_wifi_focused3.png</file>
-        <file>qml/images/icon_wifi_focused4.png</file>
-        <file>qml/images/icon_wifi_normal1.png</file>
-        <file>qml/images/icon_wifi_normal2.png</file>
-        <file>qml/images/icon_wifi_normal3.png</file>
-        <file>qml/images/icon_wifi_normal4.png</file>
-        <file>qml/images/icon_wifi_touch.png</file>
         <file>qml/images/notification-circle.png</file>
     </qresource>
 </RCC>
