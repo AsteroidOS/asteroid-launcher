@@ -32,7 +32,7 @@
 
 import QtQuick 2.0
 import org.nemomobile.lipstick 0.1
-
+import "desktop.js" as Desktop
 import "compositor"
 
 Compositor {

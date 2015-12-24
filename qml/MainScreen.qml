@@ -37,6 +37,7 @@ import org.nemomobile.configuration 1.0
 import org.nemomobile.lipstick 0.1
 import org.asteroid.controls 1.0
 import QtQuick.Controls.Styles.Asteroid 1.0
+import "desktop.js" as Desktop
 
 Item {
     id: desktop
@@ -44,6 +45,7 @@ Item {
     property var switcher: null
 
     Component.onCompleted: {
+        Desktop.instance = desktop
         Lipstick.compositor.screenOrientation = nativeOrientation
         LipstickSettings.lockScreen(true)
     }
