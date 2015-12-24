@@ -37,15 +37,13 @@ import org.nemomobile.lipstick 0.1
 MouseArea {
     id: switcherItemRoot
 
-    property bool rotateWindowContent: desktop.isPortrait
-
     WindowPixmapItem {
         id: windowPixmap
-        width: rotateWindowContent ? parent.height : parent.width
-        height: rotateWindowContent ? parent.width : parent.height
+        width: parent.width
+        height: parent.height
         windowId: model.window
         transform: Rotation {
-            angle: rotateWindowContent ? 90 : 0
+            angle: 0
             origin.x: windowPixmap.height / 2
             origin.y: windowPixmap.height / 2
         }
