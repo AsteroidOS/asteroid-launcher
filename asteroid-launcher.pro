@@ -26,6 +26,9 @@ qml.files = qml/MainScreen.qml \
     qml/LauncherRotation.qml \
     qml/ClockPage.qml
 
+scripts.path = /usr/share/asteroid-launcher/qml/
+scripts.files =  qml/desktop.js
+
 qmlcompositor.path = /usr/share/asteroid-launcher/qml/compositor
 qmlcompositor.files = qml/compositor/WindowWrapperMystic.qml \
     qml/compositor/WindowWrapperBase.qml \
@@ -45,7 +48,7 @@ connectivity.files = qml/USBModeSelector.qml \
 notifications.path = /usr/share/asteroid-launcher/qml/notifications
 notifications.files = qml/NotificationPreview.qml
 
-INSTALLS += styles qml qmlcompositor system volumecontrol connectivity notifications
+INSTALLS += styles qml qmlcompositor scripts system volumecontrol connectivity notifications
 
 CONFIG += qt link_pkgconfig
 QT += quick compositor
