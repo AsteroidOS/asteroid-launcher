@@ -31,7 +31,7 @@
 
 import QtQuick 2.0
 import org.nemomobile.lipstick 0.1
-import "scripts/desktop.js" as Desktop
+import "../desktop.js" as Desktop
 
 Item {
     id: notificationWindow
