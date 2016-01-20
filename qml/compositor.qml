@@ -142,13 +142,13 @@ Compositor {
         onGestureStarted: {
             swipeAnimation.stop()
             cancelAnimation.stop()
-            if (root.appActive) {
+            if ((gesture == "down" || gesture == "right") && root.appActive) {
                 state = "swipe"
             }
         }
 
         onGestureFinished: {
-            if (root.appActive) {
+            if ((gesture == "down" || gesture == "right") && root.appActive) {
                 if (gestureArea.progress >= swipeThreshold) {
                     swipeAnimation.valueTo = inverted ? -max : max
                     swipeAnimation.start()
