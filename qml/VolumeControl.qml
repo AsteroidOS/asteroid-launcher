@@ -34,7 +34,7 @@ import org.nemomobile.lipstick 0.1
 
 ProgressBar {
     id: volumeSlider
-    width: parent.width
+    width: initialSize.width
     minimumValue: 0
     maximumValue: volumeControl.maximumVolume
     property bool shouldbevisible
