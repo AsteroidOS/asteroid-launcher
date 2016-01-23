@@ -35,8 +35,8 @@ Item {
     id: wrapper
 
     property Item window
-    width: window.width
-    height: window.height
+    width: window !== null ? window.width : 0
+    height: window !== null ? window.height : 0
     NumberAnimation on opacity { id: fadeInAnimation; running: false; from: 0; to: 1 }
     function animateIn() { fadeInAnimation.start(); }
 
