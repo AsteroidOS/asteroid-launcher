@@ -18,7 +18,6 @@ qml.files = qml/MainScreen.qml \
     qml/QuickSettings.qml \
     qml/AppLauncher.qml \
     qml/SwitcherItem.qml \
-    qml/NotificationPreview.qml \
     qml/FeedsPage.qml \
     qml/USBModeSelector.qml \
     qml/VolumeControl.qml \
