@@ -46,14 +46,10 @@ Item {
 
     MouseArea {
         id: notificationArea
-        property int notificationHeight: 102
-        property int notificationMargin: 14
-        property int notificationIconSize: 60
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 48
+        anchors.top: parent.top
         anchors.left: parent.left
         width: notificationWindow.width
-        height: notificationArea.notificationHeight
+        height: 80
 
         onClicked: if (notificationPreviewPresenter.notification != null) notificationPreviewPresenter.notification.actionInvoked("default")
 
@@ -62,10 +58,7 @@ Item {
             anchors {
                 fill: parent
             }
-            color: "transparent"
-            radius: 5
-
-            opacity: 0
+            color: "#DD222222"
 
             states: [
                 State {
@@ -101,13 +94,13 @@ Item {
 
                 height: 15
 
-                anchors.top: parent.top
+                anchors.bottom: parent.bottom
                 anchors.left: parent.left
                 anchors.right: parent.right
 
                 gradient: Gradient {
-                    GradientStop { position: 0; color: "black" }
-                    GradientStop { position: 1.0; color: "transparent" }
+                    GradientStop { position: 0; color: "transparent" }
+                    GradientStop { position: 1.0; color: "#111111" }
                 }
             }
             transitions: [
@@ -122,7 +115,7 @@ Item {
                     to: "hide"
                     SequentialAnimation {
                         NumberAnimation { property: "opacity"; duration: 200 }
-                        ScriptAction { scriptName: "notificationHidden" }
+                        NumberAnimation { property: "opacity"; duration: 200 }
                     }
                 }
             ]
@@ -137,12 +130,11 @@ Item {
             Image {
                 id: icon
                 anchors {
-                    top: parent.top
                     left: parent.left
-                    topMargin: notificationArea.notificationMargin
-                    leftMargin: notificationArea.notificationMargin
+                    verticalCenter: parent.verticalCenter
+                    leftMargin: 10
                 }
-                width: notificationArea.notificationIconSize
+                width: 50
                 height: width
                 source: "qrc:/qml/images/notification-circle.png"
             }
@@ -153,9 +145,9 @@ Item {
                     top: parent.top
                     left: icon.right
                     right: parent.right
-                    topMargin: notificationArea.notificationMargin
-                    leftMargin: notificationArea.notificationMargin + 26
-                    rightMargin: notificationArea.notificationMargin
+                    topMargin: 7
+                    leftMargin: 26
+                    rightMargin: 5
                 }
                 font {
                     pixelSize: 36
@@ -169,9 +161,10 @@ Item {
             Text {
                 id: body
                 anchors {
-                    top: summary.bottom
+                    bottom: parent.bottom
                     left: summary.left
                     right: summary.right
+                    bottomMargin: 7
                 }
                 font {
                     pixelSize: 18
