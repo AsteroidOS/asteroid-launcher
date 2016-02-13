@@ -12,6 +12,5 @@
         <file>qml/images/icon_bt_focused.png</file>
         <file>qml/images/icon_bt_normal.png</file>
         <file>qml/images/icon-m-framework-close-thumbnail.png</file>
-        <file>qml/images/notification-circle.png</file>
     </qresource>
 </RCC>

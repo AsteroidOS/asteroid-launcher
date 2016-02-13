@@ -30,6 +30,7 @@
  */
 
 import QtQuick 2.0
+import org.asteroid.controls 1.0
 import org.nemomobile.lipstick 0.1
 import "../desktop.js" as Desktop
 
@@ -136,7 +137,7 @@ Item {
                 }
                 width: 50
                 height: width
-                source: "qrc:/qml/images/notification-circle.png"
+                source: notificationPreviewPresenter.notification == null ? "image://theme/user-info" : notificationPreviewPresenter.notification.indexOf("/") == 0 ? "file://" : "image://theme/" + notificationPreviewPresenter.notification
             }
 
             Text {
