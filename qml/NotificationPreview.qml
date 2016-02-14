@@ -137,7 +137,7 @@ Item {
                 }
                 width: 50
                 height: width
-                source: notificationPreviewPresenter.notification == null ? "image://theme/user-info" : notificationPreviewPresenter.notification.indexOf("/") == 0 ? "file://" : "image://theme/" + notificationPreviewPresenter.notification
+                source: notificationPreviewPresenter.notification == null ? "image://theme/user-info" : notificationPreviewPresenter.notification.icon.indexOf("/") == 0 ? "file://" : "image://theme/" + notificationPreviewPresenter.notification.icon
             }
 
             Text {
