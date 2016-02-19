@@ -51,6 +51,10 @@ Compositor {
     property Item topmostApplicationWindow
     property Item topmostAlarmWindow: null
 
+    readonly property bool topmostWindowRequestsGesturesDisabled: topmostWindow && topmostWindow.window
+                                                                  && topmostWindow.window.surface
+                                                                  && (topmostWindow.window.surface.windowFlags & 1)
+
     function windowToFront(winId) {
         var o = root.windowForId(winId)
         var window = null
@@ -135,6 +139,7 @@ Compositor {
         id: gestureArea
         z: 7
         anchors.fill: parent
+        enabled: !topmostWindowRequestsGesturesDisabled
 
 
         property real swipeThreshold: 0.15
