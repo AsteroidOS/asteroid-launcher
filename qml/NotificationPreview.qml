@@ -51,6 +51,7 @@ Item {
         anchors.left: parent.left
         width: notificationWindow.width
         height: 80
+        enabled: notificationPreview.state == "show"
 
         onClicked: if (notificationPreviewPresenter.notification != null) notificationPreviewPresenter.notification.actionInvoked("default")
 
