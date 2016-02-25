@@ -32,6 +32,7 @@
 
 import QtQuick 2.0
 import org.nemomobile.lipstick 0.1
+import org.asteroid.controls 1.0
 import "desktop.js" as Desktop
 import "compositor"
 
@@ -135,7 +136,7 @@ Compositor {
         }
     }
 
-    ScreenGestureArea {
+    BorderGestureArea {
         id: gestureArea
         z: 7
         anchors.fill: parent

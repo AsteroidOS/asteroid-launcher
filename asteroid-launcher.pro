@@ -31,8 +31,7 @@ scripts.files =  qml/desktop.js
 qmlcompositor.path = /usr/share/asteroid-launcher/qml/compositor
 qmlcompositor.files = qml/compositor/WindowWrapperMystic.qml \
     qml/compositor/WindowWrapperBase.qml \
-    qml/compositor/WindowWrapperAlpha.qml \
-    qml/compositor/ScreenGestureArea.qml
+    qml/compositor/WindowWrapperAlpha.qml
 
 system.path = /usr/share/asteroid-launcher/qml/system
 system.files = qml/ShutdownScreen.qml
@@ -77,7 +76,6 @@ OTHER_FILES += qml/*.qml \
     qml/compositor/WindowWrapperMystic.qml \
     qml/compositor/WindowWrapperBase.qml \
     qml/compositor/WindowWrapperAlpha.qml \
-    qml/compositor/ScreenGestureArea.qml \
     qml/NotificationPreview.qml \
     qml/FeedsPage.qml \
 	vars.conf \
