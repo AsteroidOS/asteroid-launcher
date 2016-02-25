@@ -33,6 +33,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.0
 import org.nemomobile.lipstick 0.1
+import org.asteroid.controls 1.0
 
 MouseArea {
     id: switcherItemRoot
@@ -48,7 +49,7 @@ MouseArea {
             origin.y: windowPixmap.height / 2
         }
         smooth: true
-        radius: 5
+        radius: DeviceInfo.hasRoundScreen ? width/2 : 5
         opacity: switcherRoot.closeMode ? .6 : 1
         Behavior on opacity { NumberAnimation { duration: 300; easing.type: Easing.OutBack } }
     }
