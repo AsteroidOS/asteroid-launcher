@@ -57,14 +57,9 @@ Item {
     }
 
     Connections {
-        target: lipstickSettings;
-        onLockscreenVisibleChanged: {
-            if(lipstickSettings.lockscreenVisible) {
-                wallClock.enabled = true
-            } else {
-                wallClock.enabled = false
-            }
-        }
+        target: Lipstick.compositor
+        onDisplayAboutToBeOn: wallClock.enabled = true
+        onDisplayAboutToBeOff: wallClock.enabled = false
     }
 
     LauncherRotation { id: launcherRotation; rotationParent: desktop.parent }
