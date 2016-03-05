@@ -140,8 +140,8 @@ Compositor {
         id: gestureArea
         z: 7
         anchors.fill: parent
-        enabled: !topmostWindowRequestsGesturesDisabled
-
+        acceptsDown: true
+        acceptsRight: !topmostWindowRequestsGesturesDisabled
 
         property real swipeThreshold: 0.15
 
