@@ -43,6 +43,7 @@ ListView {
     property var switcher: null
     snapMode: ListView.SnapToItem
     spacing: -width*0.25
+    maximumFlickVelocity: 1100
 
     Item {
         id: deleter
