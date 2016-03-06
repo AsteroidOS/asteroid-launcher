@@ -100,6 +100,14 @@ Item {
                 verticalListView.interactive = centerListView.contentX == width // Only allows vertical flicking for the center item
                 wallpaperBlur.radius = (centerListView.contentX > height*2/3 && centerListView.contentX < height*4/3)  ? 0 : 35
             }
+
+            Connections {
+                target: Lipstick.compositor
+                onDisplayOff: {
+                    verticalListView.positionViewAtIndex(1, ListView.Beginning);
+                    centerListView.positionViewAtIndex(1, ListView.Beginning);
+                }
+            }
         }
     }
 
