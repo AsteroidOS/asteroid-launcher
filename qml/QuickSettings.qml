@@ -34,6 +34,7 @@ import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
 import org.freedesktop.contextkit 1.0
 import MeeGo.Connman 0.2
+import org.nemomobile.dbus 1.0
 
 Item {
     id: rootitem
@@ -67,6 +68,16 @@ Item {
 
     NetworkTechnology { id: bt }
 
+    property DBusInterface _dbus: DBusInterface {
+        id: mce_dbus
+
+        destination: "com.nokia.mce"
+        path: "/com/nokia/mce/request"
+        iface: "com.nokia.mce.request"
+
+        busType: DBusInterface.SystemBus
+    }
+
     GridLayout {
         id : grid
         anchors.fill: parent
@@ -81,6 +92,7 @@ Item {
             Layout.columnSpan : 3
             Layout.preferredWidth  : grid.width
             Layout.preferredHeight : grid.height/3
+            onClicked: mce_dbus.call("req_display_state_off", undefined)
             Image {
                 id: lockedIcon
                 source: "qrc:/qml/images/lock.png"
