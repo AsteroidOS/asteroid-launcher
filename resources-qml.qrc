@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
+        <file>qml/images/airplane_off.png</file>
+        <file>qml/images/airplane_on.png</file>
         <file>qml/images/battery0.png</file>
         <file>qml/images/battery1.png</file>
         <file>qml/images/battery2.png</file>
@@ -7,10 +9,14 @@
         <file>qml/images/battery4.png</file>
         <file>qml/images/battery5.png</file>
         <file>qml/images/battery6.png</file>
+        <file>qml/images/bluetooth_off.png</file>
+        <file>qml/images/bluetooth_on.png</file>
+        <file>qml/images/brightness1.png</file>
+        <file>qml/images/brightness2.png</file>
+        <file>qml/images/brightness3.png</file>
         <file>qml/images/graphic-shutdown-logo.png</file>
         <file>qml/images/graphics-wallpaper-home.jpg</file>
-        <file>qml/images/icon_bt_focused.png</file>
-        <file>qml/images/icon_bt_normal.png</file>
         <file>qml/images/icon-m-framework-close-thumbnail.png</file>
+        <file>qml/images/lock.png</file>
     </qresource>
 </RCC>
