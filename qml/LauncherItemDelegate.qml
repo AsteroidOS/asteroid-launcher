@@ -133,6 +133,12 @@ Item {
             height: width
             asynchronous: true
         }
+        BrightnessContrast {
+            anchors.fill: iconImage
+            source: iconImage
+            visible: launcherItem.pressed
+            brightness: -0.3
+        }
 
         // Caption for the icon
         Text {
