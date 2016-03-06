@@ -18,5 +18,7 @@
         <file>qml/images/graphics-wallpaper-home.jpg</file>
         <file>qml/images/icon-m-framework-close-thumbnail.png</file>
         <file>qml/images/lock.png</file>
+        <file>qml/images/no_apps.png</file>
+        <file>qml/images/no_notification.png</file>
     </qresource>
 </RCC>

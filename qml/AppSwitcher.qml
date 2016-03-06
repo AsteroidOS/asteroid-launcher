@@ -189,18 +189,14 @@ Item {
     }
 
     // Empty switcher indicator
-    Label {
+    Image {
         id: emptyIndicator
         visible: switcherModel.itemCount === 0
-        horizontalAlignment: Text.AlignHCenter
-
-        text: "<b>No apps<br>open</b>"
-        color: "white"
-        font.pointSize: 12
-        anchors {
-            verticalCenter: parent.verticalCenter
-            horizontalCenter: parent.horizontalCenter
-        }
+        width: parent.width*0.4
+        height: parent.height*0.4
+        fillMode: Image.PreserveAspectFit
+        source: "qrc:/qml/images/no_apps.png"
+        anchors.centerIn: parent
     }
     DropShadow {
         visible: switcherModel.itemCount === 0

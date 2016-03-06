@@ -98,18 +98,14 @@ Item {
             }
     }
 
-    Label {
+    Image {
         id: emptyIndicator
-        visible: notifmodel.itemCount === 0
-        horizontalAlignment: Text.AlignHCenter
-
-        text: "<b>No new<br>notification</b>"
-        color: "white"
-        font.pointSize: 12
-        anchors {
-            verticalCenter: parent.verticalCenter
-            horizontalCenter: parent.horizontalCenter
-        }
+        visible: switcherModel.itemCount === 0
+        width: parent.width*0.4
+        height: parent.height*0.4
+        fillMode: Image.PreserveAspectFit
+        source: "qrc:/qml/images/no_notification.png"
+        anchors.centerIn: parent
     }
     DropShadow {
         visible: notifmodel.itemCount === 0
