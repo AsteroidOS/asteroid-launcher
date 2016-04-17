@@ -100,7 +100,7 @@ Item {
 
     Image {
         id: emptyIndicator
-        visible: switcherModel.itemCount === 0
+        visible: notifmodel.itemCount === 0
         width: parent.width*0.4
         height: parent.height*0.4
         fillMode: Image.PreserveAspectFit
