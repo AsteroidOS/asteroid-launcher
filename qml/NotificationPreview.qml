@@ -117,7 +117,7 @@ Item {
                     to: "hide"
                     SequentialAnimation {
                         NumberAnimation { property: "opacity"; duration: 200 }
-                        NumberAnimation { property: "opacity"; duration: 200 }
+                        ScriptAction { scriptName: "notificationHidden" }
                     }
                 }
             ]
