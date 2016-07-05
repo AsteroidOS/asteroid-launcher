@@ -10,6 +10,10 @@ target.path = /usr/bin
 styles.path = /usr/share/asteroid-launcher/
 styles.files = vars.conf
 
+watchfaces.path = /usr/share/asteroid-launcher/watchfaces
+watchfaces.files =  watchfaces/default-digital.qml \
+                    watchfaces/default-digital.jpg
+
 qml.path = /usr/share/asteroid-launcher/qml
 qml.files = qml/MainScreen.qml \
     qml/compositor.qml \
@@ -22,8 +26,7 @@ qml.files = qml/MainScreen.qml \
     qml/USBModeSelector.qml \
     qml/VolumeControl.qml \
     qml/ShutdownScreen.qml \
-    qml/LauncherRotation.qml \
-    qml/ClockPage.qml
+    qml/LauncherRotation.qml
 
 scripts.path = /usr/share/asteroid-launcher/qml/
 scripts.files =  qml/desktop.js
@@ -46,7 +49,7 @@ connectivity.files = qml/USBModeSelector.qml \
 notifications.path = /usr/share/asteroid-launcher/qml/notifications
 notifications.files = qml/NotificationPreview.qml
 
-INSTALLS += styles qml qmlcompositor scripts system volumecontrol connectivity notifications
+INSTALLS += styles qml qmlcompositor scripts system volumecontrol connectivity notifications watchfaces
 
 CONFIG += qt link_pkgconfig
 QT += quick compositor
@@ -82,6 +85,4 @@ OTHER_FILES += qml/*.qml \
     qml/USBModeSelector.qml \
     qml/VolumeControl.qml \
     qml/ShutdownScreen.qml \
-    qml/LauncherRotation.qml \
-    qml/ClockPage.qml
-
+    qml/LauncherRotation.qml
