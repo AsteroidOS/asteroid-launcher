@@ -101,12 +101,18 @@ Item {
                 wallpaperBlur.radius = (centerListView.contentX > height*2/3 && centerListView.contentX < height*4/3)  ? 0 : 35
             }
 
+            Timer {
+                id: delayTimer
+                interval: 150
+                repeat: false
+                onTriggered: {
+                        verticalListView.positionViewAtIndex(1, ListView.Beginning);
+                        centerListView.positionViewAtIndex(1, ListView.Beginning);
+                }
+            }
             Connections {
                 target: Lipstick.compositor
-                onDisplayOff: {
-                    verticalListView.positionViewAtIndex(1, ListView.Beginning);
-                    centerListView.positionViewAtIndex(1, ListView.Beginning);
-                }
+                onDisplayOff: delayTimer.start();
             }
         }
     }
