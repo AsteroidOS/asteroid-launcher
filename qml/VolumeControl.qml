@@ -29,10 +29,10 @@
  */
 
 import QtQuick 2.1
-import QtQuick.Controls 1.0
 import org.nemomobile.lipstick 0.1
 
-ProgressBar {
+Item {}
+/* ProgressBar {
     id: volumeSlider
     width: initialSize.width
     minimumValue: 0
@@ -67,4 +67,4 @@ ProgressBar {
             }
         }
     }
-}
+} */

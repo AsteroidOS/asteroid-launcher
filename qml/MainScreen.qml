@@ -29,14 +29,12 @@
  */
 
 import QtQuick 2.1
-import QtQuick.Controls 1.0
 import QtQuick.Window 2.1
 import QtGraphicalEffects 1.0
 import org.nemomobile.time 1.0
 import org.nemomobile.configuration 1.0
 import org.nemomobile.lipstick 0.1
 import org.asteroid.controls 1.0
-import QtQuick.Controls.Styles.Asteroid 1.0
 import "desktop.js" as Desktop
 
 Item {

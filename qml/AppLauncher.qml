@@ -32,7 +32,6 @@
 
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
-import QtQuick.Controls 1.0
 import org.nemomobile.lipstick 0.1
 
 ListView {
@@ -57,7 +56,7 @@ ListView {
             height: 110
             color: "red"
             width: appsListView.width / 2
-            Label {
+            Text {
                 id: removeLabel
                 anchors.centerIn: parent
                 text: "Remove"
@@ -72,7 +71,7 @@ ListView {
             color: "red"
             width: appsListView.width / 2
             height: 110
-            Label {
+            Text {
                 id: uninstallLabel
                 anchors.centerIn: parent
                 text: "Uninstall"
@@ -91,7 +90,7 @@ ListView {
         iconCaption: model.object.title
     }
 
-    Label {
+    Text {
         id: emptyIndicator
         visible: launcherModel.itemCount === 0
         horizontalAlignment: Text.AlignHCenter

@@ -33,7 +33,6 @@
 import QtQuick 2.1
 import QtGraphicalEffects 1.0
 import org.nemomobile.lipstick 0.1
-import QtQuick.Controls 1.0
 
 Item {
     Flickable {
@@ -76,7 +75,7 @@ Item {
                                 }
                             }
 
-                            Label {
+                            Text {
                                 id: appSummary
                                 text: modelData.summary
                                 width: (rootitem.width-appIcon.width)/2
@@ -84,7 +83,7 @@ Item {
                                 anchors.left: appIcon.right
                                 wrapMode: Text.Wrap
                             }
-                            Label {
+                            Text {
                                 id: appBody
                                 width: (rootitem.width-appIcon.width)/2
                                 text: modelData.body

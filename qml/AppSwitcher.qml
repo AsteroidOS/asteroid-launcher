@@ -33,8 +33,6 @@
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
 import org.nemomobile.lipstick 0.1
-import QtQuick.Controls 1.0
-import QtQuick.Controls.Styles 1.0
 import org.asteroid.launcher 1.0
 
 Item {
@@ -55,7 +53,8 @@ Item {
     Flickable {
         id: flickable
         contentHeight: gridview.height
-        width: parent.width - 10 // see comment re right anchor below
+        anchors.fill: parent
+        anchors.margins: 10
 
         MouseArea {
             height: flickable.contentHeight > flickable.height ? flickable.contentHeight : flickable.height
@@ -65,14 +64,6 @@ Item {
                 if (closeMode)
                     closeMode = false
             }
-        }
-
-        anchors {
-            top: parent.top
-            bottom: toolBar.top
-            left: parent.left
-            // no right anchor to avoid double margin (complicated math)
-            margins: 10
         }
 
         Grid {
@@ -102,87 +93,6 @@ Item {
                         width: parent.width
                         height: parent.height
                     }
-
-                    function close() {
-                        switcherItem.close()
-                    }
-                }
-            }
-        }
-    }
-
-    Rectangle {
-        id: toolBar
-        color: 'black'
-        Rectangle {
-            anchors.top   : toolBar.top
-            anchors.left  : toolBar.left
-            anchors.right : toolBar.right
-            height: 1
-            color: '#333333'
-        }
-        z: 202
-        height: toolBarDone.height + 2*padding
-        property int padding: 3
-
-        anchors {
-            left: parent.left
-            right: parent.right
-            bottom: parent.bottom
-            bottomMargin: switcherRoot.closeMode ? 0 : -height
-        }
-
-        Behavior on anchors.bottomMargin { PropertyAnimation { duration: 100 } }
-
-        Button {
-            id: toolBarDone
-            width: parent.width / 2.5
-            height: 40
-            anchors {
-                top: parent.top
-                topMargin: toolBar.padding
-                right: parent.horizontalCenter
-                rightMargin: toolBar.padding
-            }
-            text: 'Done'
-            onClicked: {
-                switcherRoot.closeMode = false;
-            }
-            style: ButtonStyle {
-                label: Text {
-                    renderType: Text.NativeRendering
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                    font.pointSize: 8
-                    text: control.text
-                }
-            }
-        }
-
-        Button {
-            id: toolBarCloseAll
-            width: toolBarDone.width
-            height: toolBarDone.height
-            anchors {
-                top: parent.top
-                topMargin: toolBar.padding
-                left: parent.horizontalCenter
-                leftMargin: toolBar.padding
-            }
-            text: 'Close all'
-            onClicked: {
-                // TODO: use close animation inside item
-                for (var i = gridRepeater.count - 1; i >= 0; i--) {
-                    gridRepeater.itemAt(i).close()
-                }
-            }
-            style: ButtonStyle {
-                label: Text {
-                    renderType: Text.NativeRendering
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                    font.pointSize: 8
-                    text: control.text
                 }
             }
         }

@@ -31,7 +31,6 @@
  */
 
 import QtQuick 2.0
-import QtQuick.Controls 1.0
 import org.nemomobile.lipstick 0.1
 import org.asteroid.controls 1.0
 
@@ -88,6 +87,8 @@ MouseArea {
     onClicked: {
         if (!switcherRoot.closeMode) {
             Lipstick.compositor.windowToFront(model.window);
+        } else {
+            switcherRoot.closeMode = false;
         }
     }
 
