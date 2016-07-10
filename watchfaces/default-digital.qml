@@ -33,8 +33,6 @@ import QtGraphicalEffects 1.0
 
 Item {
     id: rootitem
-    width: parent.width
-    height: parent.height
 
     Text {
         id: timeDisplay
