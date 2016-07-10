@@ -57,9 +57,7 @@ Item {
 
         Rectangle {
             id: notificationPreview
-            anchors {
-                fill: parent
-            }
+            anchors.fill: parent
             color: "#DD222222"
 
             states: [
@@ -138,7 +136,17 @@ Item {
                 }
                 width: 50
                 height: width
-                source: notificationPreviewPresenter.notification == null ? "image://theme/user-info" : notificationPreviewPresenter.notification.icon.indexOf("/") == 0 ? "file://" : "image://theme/" + notificationPreviewPresenter.notification.icon
+                source: {
+                            var notif = notificationPreviewPresenter.notification;
+                            if(notif==null)
+                                return "";
+                            else if(notif == "")
+                                return "image://theme/user-info";
+                            else if(notif.icon.indexOf("/") == 0)
+                                return "file://" + notif.icon;
+                            else
+                                return "image://theme/" + notif.icon;
+                        }
             }
 
             Text {
