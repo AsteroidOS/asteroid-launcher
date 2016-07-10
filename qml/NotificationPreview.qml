@@ -140,7 +140,7 @@ Item {
                             var notif = notificationPreviewPresenter.notification;
                             if(notif==null)
                                 return "";
-                            else if(notif == "")
+                            else if(notif.icon == "")
                                 return "image://theme/user-info";
                             else if(notif.icon.indexOf("/") == 0)
                                 return "file://" + notif.icon;
