@@ -53,19 +53,6 @@ Item {
         value: "100"
     }
 
-    NetworkManager {
-        id: networkManager
-        function updateTechnologies() {
-            if (available && technologiesEnabled) 
-                bt.path = networkManager.technologyPathForType("bluetooth")
-        }
-        onAvailableChanged: updateTechnologies()
-        onTechnologiesEnabledChanged: updateTechnologies()
-        onTechnologiesChanged: updateTechnologies()
-    }
-
-    NetworkTechnology { id: bt }
-
     property DBusInterface _dbus: DBusInterface {
         id: mce_dbus
 
