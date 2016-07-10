@@ -32,7 +32,6 @@ import QtQuick 2.1
 import QtGraphicalEffects 1.0
 import QtQuick.Layouts 1.0
 import org.freedesktop.contextkit 1.0
-import MeeGo.Connman 0.2
 import org.nemomobile.dbus 1.0
 
 Item {
