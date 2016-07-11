@@ -33,6 +33,7 @@ import QtGraphicalEffects 1.0
 import QtQuick.Layouts 1.0
 import org.freedesktop.contextkit 1.0
 import org.nemomobile.dbus 1.0
+import org.nemomobile.systemsettings 1.0
 
 Item {
     id: rootitem
@@ -96,14 +97,37 @@ Item {
             source: lockedMA
         }
 
+        function initialBrightness()
+        {
+            if (displaySettings == 100)
+                return "qrc:/qml/images/brightness3.png";
+            else if (displaySettings >= 50)
+                return "qrc:/qml/images/brightness2.png";
+            else
+                return "qrc:/qml/images/brightness1.png";
+        }
+
+        DisplaySettings {
+            id: displaySettings
+        }
+
         MouseArea {
             id: brightnessMA
             Layout.preferredWidth  : grid.width/3
             Layout.preferredHeight : grid.height/3
             onClicked: {
-                if (brightnessIcon.source.toString().match("brightness1")) brightnessIcon.source = brightnessIcon.source.toString().replace("brightness1","brightness2")
-                else if (brightnessIcon.source.toString().match("brightness2")) brightnessIcon.source = brightnessIcon.source.toString().replace("brightness2","brightness3")
-                else brightnessIcon.source = brightnessIcon.source.toString().replace("brightness3","brightness1")
+                if (brightnessIcon.source.toString().match("brightness1")) {
+                    brightnessIcon.source = brightnessIcon.source.toString().replace("brightness1","brightness2")
+                    displaySettings.brightness = 50
+                }
+                else if (brightnessIcon.source.toString().match("brightness2")) {
+                    brightnessIcon.source = brightnessIcon.source.toString().replace("brightness2","brightness3")
+                    displaySettings.brightness = 100
+                }
+                else {
+                    brightnessIcon.source = brightnessIcon.source.toString().replace("brightness3","brightness1")
+                    displaySettings.brightness = 0
+                }
             }
             Rectangle {
                 anchors.fill: parent
