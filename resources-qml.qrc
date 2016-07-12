@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/">
-        <file>qml/images/airplane_off.png</file>
-        <file>qml/images/airplane_on.png</file>
+        <file>qml/images/vibra_off.png</file>
+        <file>qml/images/vibra_on.png</file>
         <file>qml/images/battery0.png</file>
         <file>qml/images/battery1.png</file>
         <file>qml/images/battery2.png</file>

@@ -165,22 +165,32 @@ Item {
                 }
             }
         }
+
+        ProfileControl {
+             id: profileControl
+        }
         MouseArea {
-            id: airplaneMA
+            id: vibraMA
             Layout.preferredWidth  : grid.width/3
             Layout.preferredHeight : grid.height/3
             onClicked: {
-                if (airplaneIcon.source.toString().match("off")) airplaneIcon.source = airplaneIcon.source.toString().replace("off","on")
-                else airplaneIcon.source = airplaneIcon.source.toString().replace("on","off")
+                if (vibraIcon.source.toString().match("off")) {
+                    vibraIcon.source = vibraIcon.source.toString().replace("off","on");
+                    profileControl.profile = "general";
+                }
+                else {
+                    vibraIcon.source = vibraIcon.source.toString().replace("on","off");
+                    profileControl.profile = "silent";
+                }
             }
             Rectangle {
                 anchors.fill: parent
                 radius: width/2
                 anchors.margins: 10
-                color : airplaneMA.pressed ? '#66222222' : '#99222222'
+                color : vibraMA.pressed ? '#66222222' : '#99222222'
                 Image {
-                    id: airplaneIcon
-                    source: "qrc:/qml/images/airplane_off.png"
+                    id: vibraIcon
+                    source: profileControl.profile == "silent" ? "qrc:/qml/images/vibra_off.png" : "qrc:/qml/images/vibra_on.png"
                     fillMode: Image.PreserveAspectFit
                     anchors.fill: parent
                     anchors.margins: 20
