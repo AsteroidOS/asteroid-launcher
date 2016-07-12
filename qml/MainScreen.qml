@@ -67,7 +67,7 @@ Item {
     ConfigurationValue {
         id: watchFaceSource
         key: "/desktop/asteroid/watchface"
-        defaultValue: "file:///usr/share/asteroid-launcher/watchfaces/default-digital.qml"
+        defaultValue: "file:///usr/share/asteroid-launcher/watchfaces/000-default-digital.qml"
     }
 
     Component { id: topPage;    QuickSettings { id: quickSet; width: desktop.width; height: desktop.height } }
