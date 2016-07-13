@@ -53,7 +53,7 @@ Item {
 
     Canvas {
         anchors.fill: parent
-        rotation: Qt.formatDateTime(wallClock.time, "hh") * 30 + Qt.formatDateTime(wallClock.time, "mm") * 0.5
+        rotation: wallClock.time.getHours() * 30 + wallClock.time.getMinutes() * 0.5
         smooth: true
         onPaint: {
             var ctx = getContext("2d")
@@ -73,7 +73,7 @@ Item {
 
     Canvas {
         anchors.fill: parent
-        rotation: Qt.formatDateTime(wallClock.time, "mm") * 6
+        rotation: wallClock.time.getMinutes() * 6
         smooth: true
         onPaint: {
             var ctx = getContext("2d")
