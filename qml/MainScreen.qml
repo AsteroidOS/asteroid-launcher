@@ -92,7 +92,9 @@ Item {
             contentItem.onWidthChanged: positionViewAtIndex(1, ListView.Beginning)
             onContentXChanged: {
                 verticalListView.interactive = centerListView.contentX == width // Only allows vertical flicking for the center item
-                wallpaperBlur.radius = (centerListView.contentX > height*2/3 && centerListView.contentX < height*4/3)  ? 0 : 35
+                wallpaperBlur.radius = Math.abs(centerListView.contentX - width)/width*35
+                wallpaperDarkener.brightness = Math.abs(centerListView.contentX - width)/width*(-0.2)
+                wallpaper.anchors.horizontalCenterOffset = (centerListView.contentX - width)*(-0.05)
             }
 
             Timer {
@@ -130,7 +132,11 @@ Item {
             }
         }
         contentItem.onHeightChanged: positionViewAtIndex(1, ListView.Beginning)
-        onContentYChanged: wallpaperBlur.radius = (verticalListView.contentY > height*2/3 && verticalListView.contentY < height*4/3)  ? 0 : 35
+        onContentYChanged: {
+            wallpaperBlur.radius = Math.abs(verticalListView.contentY - height)/height*35
+            wallpaperDarkener.brightness = Math.abs(verticalListView.contentY - height)/height*(-0.2)
+            wallpaper.anchors.verticalCenterOffset = (verticalListView.contentY - height)*(-0.05)
+        }
     }
 
 // Wallpaper
@@ -143,8 +149,11 @@ Item {
     Image {
         id: wallpaper
         source: wallpaperSource.value
-        anchors.fill: parent
+        width:parent.width*1.1
+        height:parent.height*1.1
         z: -100
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.horizontalCenter: parent.horizontalCenter
     }
 
     FastBlur {
@@ -152,6 +161,12 @@ Item {
         anchors.fill: wallpaper
         source: wallpaper
         z: -99
-        Behavior on radius { PropertyAnimation { duration: 200 } }
+    }
+
+    BrightnessContrast {
+        id: wallpaperDarkener
+        anchors.fill: wallpaperBlur
+        source: wallpaperBlur
+        z: -99
     }
 }
