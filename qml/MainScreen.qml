@@ -60,10 +60,6 @@ Item {
         onDisplayAboutToBeOff: wallClock.enabled = false
     }
 
-    LauncherRotation { id: launcherRotation; rotationParent: desktop.parent }
-
-    onParentChanged: launcherRotation.rotateRotationParent(nativeOrientation)
-
     ConfigurationValue {
         id: watchFaceSource
         key: "/desktop/asteroid/watchface"

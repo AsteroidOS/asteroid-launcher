@@ -41,20 +41,6 @@ Rectangle {
     property bool shouldVisible
     opacity: shutdownScreen.windowVisible
 
-    LauncherRotation {
-        id: launcherRotation
-        rotationParent: shutdownWindow.parent
-    }
-
-    Connections {
-        target: shutdownScreen
-        onWindowVisibleChanged: {
-            if (shutdownScreen.windowVisible) {
-                launcherRotation.rotateRotationParent(nativeOrientation)
-            }
-        }
-    }
-
     Image {
         anchors.centerIn: parent
         source: shutdownMode ? "" : "qrc:/qml/images/graphic-shutdown-logo.png"

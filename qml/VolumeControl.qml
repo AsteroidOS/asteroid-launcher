@@ -29,42 +29,5 @@
  */
 
 import QtQuick 2.1
-import org.nemomobile.lipstick 0.1
 
 Item {}
-/* ProgressBar {
-    id: volumeSlider
-    width: initialSize.width
-    minimumValue: 0
-    maximumValue: volumeControl.maximumVolume
-    property bool shouldbevisible
-
-    opacity: volumeSlider.shouldbevisible ? 1 : 0
-    Behavior on opacity {
-        NumberAnimation {
-            duration: 300
-            onRunningChanged: if (!running && volumeSlider.opacity == 0) volumeControl.windowVisible = false
-        }
-    }
-    Timer {
-        id: voltimer
-        interval: 2000
-        onTriggered: volumeSlider.shouldbevisible = false
-    }
-
-    Connections {
-        target: volumeControl
-        onVolumeChanged: {
-            volumeSlider.value = volumeControl.volume
-            if (volumeControl.windowVisible) {
-                voltimer.restart()
-            }
-        }
-        onWindowVisibleChanged: {
-            if (volumeControl.windowVisible) {
-                volumeSlider.shouldbevisible = true
-                voltimer.restart()
-            }
-        }
-    }
-} */
