@@ -30,7 +30,6 @@
 
 import QtQuick 2.1
 import QtGraphicalEffects 1.0
-import QtQuick.Layouts 1.0
 import org.freedesktop.contextkit 1.0
 import org.nemomobile.dbus 1.0
 import org.nemomobile.systemsettings 1.0
@@ -64,186 +63,182 @@ Item {
         busType: DBusInterface.SystemBus
     }
 
-    GridLayout {
-        id : grid
-        anchors.fill: parent
-        rows    : 3
-        columns : 3
-        columnSpacing : 0
-        rowSpacing    : 0
+    MouseArea {
+        id: lockedMA
+        width  : rootitem.width
+        height : rootitem.height/3
+        anchors.top: rootitem.top
+        anchors.left: rootitem.left
+        onClicked: mce_dbus.call("req_display_state_off", undefined)
+        Image {
+            id: lockedIcon
+            source: "qrc:/qml/images/lock.png"
+            fillMode: Image.PreserveAspectFit
+            anchors.fill: parent
+            anchors.margins: 25
+        }
+    }
+    DropShadow {
+        anchors.fill: lockedMA
+        horizontalOffset: 3
+        verticalOffset: 3
+        radius: 8.0
+        samples: 16
+        color: "#80000000"
+        source: lockedMA
+    }
 
-        MouseArea {
-            id: lockedMA
-            Layout.rowSpan    : 1
-            Layout.columnSpan : 3
-            Layout.preferredWidth  : grid.width
-            Layout.preferredHeight : grid.height/3
-            onClicked: mce_dbus.call("req_display_state_off", undefined)
+    function initialBrightness()
+    {
+        if (displaySettings == 100)
+            return "qrc:/qml/images/brightness3.png";
+        else if (displaySettings >= 50)
+            return "qrc:/qml/images/brightness2.png";
+        else
+            return "qrc:/qml/images/brightness1.png";
+    }
+
+    DisplaySettings {
+        id: displaySettings
+    }
+
+    MouseArea {
+        id: brightnessMA
+        width  : rootitem.width/3
+        height : rootitem.height/3
+        anchors.top: lockedMA.bottom
+        anchors.left: rootitem.left
+        onClicked: {
+            if (brightnessIcon.source.toString().match("brightness1")) {
+                brightnessIcon.source = brightnessIcon.source.toString().replace("brightness1","brightness2")
+                displaySettings.brightness = 50
+            }
+            else if (brightnessIcon.source.toString().match("brightness2")) {
+                brightnessIcon.source = brightnessIcon.source.toString().replace("brightness2","brightness3")
+                displaySettings.brightness = 100
+            }
+            else {
+                brightnessIcon.source = brightnessIcon.source.toString().replace("brightness3","brightness1")
+                displaySettings.brightness = 0
+            }
+        }
+        Rectangle {
+            anchors.fill: parent
+            radius: width/2
+            anchors.margins: 10
+            color : brightnessMA.pressed ? '#66222222' : '#99222222'
             Image {
-                id: lockedIcon
-                source: "qrc:/qml/images/lock.png"
+                id: brightnessIcon
+                source: "qrc:/qml/images/brightness1.png"
                 fillMode: Image.PreserveAspectFit
                 anchors.fill: parent
-                anchors.margins: 25
+                anchors.margins: 20
+            }
+        }
+    }
+    MouseArea {
+        id: bluetoothMA
+        width  : rootitem.width/3
+        height : rootitem.height/3
+        anchors.centerIn: rootitem
+        onClicked: {
+            if (bluetoothIcon.source.toString().match("off")) bluetoothIcon.source = bluetoothIcon.source.toString().replace("off","on")
+            else bluetoothIcon.source = bluetoothIcon.source.toString().replace("on","off")
+        }
+        Rectangle {
+            anchors.fill: parent
+            radius: width/2
+            anchors.margins: 10
+            color : bluetoothMA.pressed ? '#66222222' : '#99222222'
+            Image {
+                id: bluetoothIcon
+                source: "qrc:/qml/images/bluetooth_off.png"
+                fillMode: Image.PreserveAspectFit
+                anchors.fill: parent
+                anchors.margins: 20
+            }
+        }
+    }
+
+    ProfileControl {
+         id: profileControl
+    }
+    MouseArea {
+        id: vibraMA
+        width  : rootitem.width/3
+        height : rootitem.height/3
+        anchors.top: lockedMA.bottom
+        anchors.right: rootitem.right
+        onClicked: {
+            if (vibraIcon.source.toString().match("off")) {
+                vibraIcon.source = vibraIcon.source.toString().replace("off","on");
+                profileControl.profile = "general";
+            }
+            else {
+                vibraIcon.source = vibraIcon.source.toString().replace("on","off");
+                profileControl.profile = "silent";
+            }
+        }
+        Rectangle {
+            anchors.fill: parent
+            radius: width/2
+            anchors.margins: 10
+            color : vibraMA.pressed ? '#66222222' : '#99222222'
+            Image {
+                id: vibraIcon
+                source: profileControl.profile == "silent" ? "qrc:/qml/images/vibra_off.png" : "qrc:/qml/images/vibra_on.png"
+                fillMode: Image.PreserveAspectFit
+                anchors.fill: parent
+                anchors.margins: 20
+            }
+        }
+    }
+    MouseArea {
+        id : batteryMA
+        width  : rootitem.width
+        height : rootitem.height/3
+        anchors.bottom: rootitem.bottom
+        anchors.left: rootitem.left
+        Item {
+            id: battery
+            anchors.centerIn: parent
+            height: parent.height
+            width: batteryIcon.width + batteryIndicator.width
+            Image {
+                id: batteryIcon
+                source: {
+                    if(batteryChargePercentage.value > 85)        return "qrc:/qml/images/battery6.png"
+                    else if (batteryChargePercentage.value <= 5)  return "qrc:/qml/images/battery0.png"
+                    else if (batteryChargePercentage.value <= 10) return "qrc:/qml/images/battery1.png"
+                    else if (batteryChargePercentage.value <= 25) return "qrc:/qml/images/battery2.png"
+                    else if (batteryChargePercentage.value <= 40) return "qrc:/qml/images/battery3.png"
+                    else if (batteryChargePercentage.value <= 65) return "qrc:/qml/images/battery4.png"
+                    else if (batteryChargePercentage.value <= 80) return "qrc:/qml/images/battery5.png"
+                    else                                          return "qrc:/qml/images/battery6.png"
+                }
+                fillMode: Image.PreserveAspectFit
+                height: parent.height-66
+                width: height
+                anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
+            }
+            Text {
+                id: batteryIndicator
+                font.pointSize: 8
+                text: batteryChargePercentage.value + "%"
+                color: "white"
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
             }
         }
         DropShadow {
-            anchors.fill: lockedMA
+            anchors.fill: battery
             horizontalOffset: 3
             verticalOffset: 3
             radius: 8.0
             samples: 16
             color: "#80000000"
-            source: lockedMA
-        }
-
-        function initialBrightness()
-        {
-            if (displaySettings == 100)
-                return "qrc:/qml/images/brightness3.png";
-            else if (displaySettings >= 50)
-                return "qrc:/qml/images/brightness2.png";
-            else
-                return "qrc:/qml/images/brightness1.png";
-        }
-
-        DisplaySettings {
-            id: displaySettings
-        }
-
-        MouseArea {
-            id: brightnessMA
-            Layout.preferredWidth  : grid.width/3
-            Layout.preferredHeight : grid.height/3
-            onClicked: {
-                if (brightnessIcon.source.toString().match("brightness1")) {
-                    brightnessIcon.source = brightnessIcon.source.toString().replace("brightness1","brightness2")
-                    displaySettings.brightness = 50
-                }
-                else if (brightnessIcon.source.toString().match("brightness2")) {
-                    brightnessIcon.source = brightnessIcon.source.toString().replace("brightness2","brightness3")
-                    displaySettings.brightness = 100
-                }
-                else {
-                    brightnessIcon.source = brightnessIcon.source.toString().replace("brightness3","brightness1")
-                    displaySettings.brightness = 0
-                }
-            }
-            Rectangle {
-                anchors.fill: parent
-                radius: width/2
-                anchors.margins: 10
-                color : brightnessMA.pressed ? '#66222222' : '#99222222'
-                Image {
-                    id: brightnessIcon
-                    source: "qrc:/qml/images/brightness1.png"
-                    fillMode: Image.PreserveAspectFit
-                    anchors.fill: parent
-                    anchors.margins: 20
-                }
-            }
-        }
-        MouseArea {
-            id: bluetoothMA
-            Layout.preferredWidth  : grid.width/3
-            Layout.preferredHeight : grid.height/3
-            onClicked: {
-                if (bluetoothIcon.source.toString().match("off")) bluetoothIcon.source = bluetoothIcon.source.toString().replace("off","on")
-                else bluetoothIcon.source = bluetoothIcon.source.toString().replace("on","off")
-            }
-            Rectangle {
-                anchors.fill: parent
-                radius: width/2
-                anchors.margins: 10
-                color : bluetoothMA.pressed ? '#66222222' : '#99222222'
-                Image {
-                    id: bluetoothIcon
-                    source: "qrc:/qml/images/bluetooth_off.png"
-                    fillMode: Image.PreserveAspectFit
-                    anchors.fill: parent
-                    anchors.margins: 20
-                }
-            }
-        }
-
-        ProfileControl {
-             id: profileControl
-        }
-        MouseArea {
-            id: vibraMA
-            Layout.preferredWidth  : grid.width/3
-            Layout.preferredHeight : grid.height/3
-            onClicked: {
-                if (vibraIcon.source.toString().match("off")) {
-                    vibraIcon.source = vibraIcon.source.toString().replace("off","on");
-                    profileControl.profile = "general";
-                }
-                else {
-                    vibraIcon.source = vibraIcon.source.toString().replace("on","off");
-                    profileControl.profile = "silent";
-                }
-            }
-            Rectangle {
-                anchors.fill: parent
-                radius: width/2
-                anchors.margins: 10
-                color : vibraMA.pressed ? '#66222222' : '#99222222'
-                Image {
-                    id: vibraIcon
-                    source: profileControl.profile == "silent" ? "qrc:/qml/images/vibra_off.png" : "qrc:/qml/images/vibra_on.png"
-                    fillMode: Image.PreserveAspectFit
-                    anchors.fill: parent
-                    anchors.margins: 20
-                }
-            }
-        }
-        MouseArea {
-            id : batteryMA
-            Layout.rowSpan    : 1
-            Layout.columnSpan : 3
-            Layout.preferredWidth  : grid.width
-            Layout.preferredHeight : grid.height/3
-            Item {
-                id: battery
-                anchors.centerIn: parent
-                height: parent.height
-                width: batteryIcon.width + batteryIndicator.width
-                Image {
-                    id: batteryIcon
-                    source: {
-                        if(batteryChargePercentage.value > 85)        return "qrc:/qml/images/battery6.png"
-                        else if (batteryChargePercentage.value <= 5)  return "qrc:/qml/images/battery0.png"
-                        else if (batteryChargePercentage.value <= 10) return "qrc:/qml/images/battery1.png"
-                        else if (batteryChargePercentage.value <= 25) return "qrc:/qml/images/battery2.png"
-                        else if (batteryChargePercentage.value <= 40) return "qrc:/qml/images/battery3.png"
-                        else if (batteryChargePercentage.value <= 65) return "qrc:/qml/images/battery4.png"
-                        else if (batteryChargePercentage.value <= 80) return "qrc:/qml/images/battery5.png"
-                        else                                          return "qrc:/qml/images/battery6.png"
-                    }
-                    fillMode: Image.PreserveAspectFit
-                    height: parent.height-66
-                    width: height
-                    anchors.left: parent.left
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-                Text {
-                    id: batteryIndicator
-                    font.pointSize: 8
-                    text: batteryChargePercentage.value + "%"
-                    color: "white"
-                    anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-            }
-            DropShadow {
-                anchors.fill: battery
-                horizontalOffset: 3
-                verticalOffset: 3
-                radius: 8.0
-                samples: 16
-                color: "#80000000"
-                source: battery
-            }
+            source: battery
         }
     }
 }
