@@ -76,7 +76,7 @@ Item {
             right: parent.right
         }
 
-        text: Qt.formatDateTime(wallClock.time, "<b>ddd.</b> d MMM.")
+        text: Qt.formatDate(wallClock.time, "<b>ddd</b> d MMM")
     }
 
     DropShadow {

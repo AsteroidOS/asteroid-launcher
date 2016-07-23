@@ -38,7 +38,7 @@ Item {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 20
 
-        text: Qt.formatDateTime(wallClock.time, "<b>ddd.</b> d MMM.")
+        text: Qt.formatDate(wallClock.time, "<b>ddd</b> d MMM")
     }
 
     DropShadow {
