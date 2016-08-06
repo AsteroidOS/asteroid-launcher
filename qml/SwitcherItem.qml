@@ -31,6 +31,7 @@
  */
 
 import QtQuick 2.0
+import QtGraphicalEffects 1.0
 import org.nemomobile.lipstick 0.1
 import org.asteroid.controls 1.0
 
@@ -78,6 +79,12 @@ MouseArea {
                     * qt_Opacity;
             }"
         }
+    }
+    BrightnessContrast {
+        anchors.fill: windowPixmap
+        source: windowPixmap
+        visible: switcherItemRoot.pressed
+        brightness: -0.3
     }
 
     function close() {
