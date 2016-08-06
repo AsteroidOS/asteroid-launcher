@@ -39,7 +39,7 @@ ListView {
     orientation: ListView.Horizontal
     property var switcher: null
     snapMode: ListView.SnapToItem
-    spacing: -width*0.25
+    spacing: -width*0.35
 
     model: LauncherFolderModel { id: launcherModel }
 

@@ -40,63 +40,11 @@ Item {
     property alias source: iconImage.source
     property alias iconCaption: iconText.text
 
-    GridView {
-        id: folderLoader
-        anchors.top: parent.bottom
-        width: appsListView.width
-        height: childrenRect.height
-        cellWidth: 115
-        cellHeight: cellWidth + 30
-        Rectangle {
-            anchors.fill: parent
-            opacity: 0.75
-            color: "white"
-        }
-
-        delegate: MouseArea {
-            width: appsListView.cellWidth
-            height: appsListView.cellHeight
-            Image {
-                id: iconimage
-                source: model.object.iconId == "" ? "image://theme/help" : (model.object.iconId.indexOf("/") == 0 ? "file://" : "image://theme/") + model.object.iconId
-            }
-            Text {
-                id: icontext
-                // elide only works if an explicit width is set
-                width: parent.width
-                elide: Text.ElideRight
-                horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 18
-                color: 'white'
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                    top: iconimage.bottom
-                    topMargin: 5
-                }
-
-                DropShadow {
-                    anchors.fill: icontext
-                    horizontalOffset: 3
-                    verticalOffset: 3
-                    radius: 8.0
-                    samples: 16
-                    color: "#80000000"
-                    source: icontext
-                }
-            }
-            onClicked: {
-                model.object.launchApplication()
-            }
-        }
-    }
-
-    // Application icon for the launcher
     MouseArea {
         id: launcherItem
-        width: wrapper.width
+        width: wrapper.width*0.7
         height: wrapper.height
-        transformOrigin: Item.Center
+        anchors.centerIn: parent
 
         onClicked: {
             // TODO: disallow if close mode enabled
@@ -117,18 +65,10 @@ Item {
             }
         }
 
-        onPressAndHold: {
-            // Show a similar cross as AppSwitcher
-        }
-
         Image {
             id: iconImage
-            anchors {
-                horizontalCenter: parent.horizontalCenter
-                top: parent.top
-                topMargin: 8
-            }
-            width: wrapper.width* 0.8
+            anchors.centerIn: parent
+            width: parent.width
             height: width
             asynchronous: true
         }
@@ -152,7 +92,7 @@ Item {
                 left: parent.left
                 right: parent.right
                 top: iconImage.bottom
-                topMargin: 5
+                topMargin: -5
             }
         }
         DropShadow {
