@@ -29,6 +29,7 @@
  */
 
 import QtQuick 2.1
+import QtFeedback 5.0
 import QtGraphicalEffects 1.0
 import org.freedesktop.contextkit 1.0
 import org.nemomobile.dbus 1.0
@@ -166,8 +167,18 @@ Item {
         }
     }
 
+    ThemeEffect {
+         id: haptics
+         effect: "Press"
+     }
     ProfileControl {
          id: profileControl
+    }
+    Timer {
+        id: delayTimer
+        interval: 125
+        repeat: false
+        onTriggered: haptics.play()
     }
     MouseArea {
         id: vibraMA
@@ -179,6 +190,7 @@ Item {
             if (vibraIcon.source.toString().match("off")) {
                 vibraIcon.source = vibraIcon.source.toString().replace("off","on");
                 profileControl.profile = "general";
+                delayTimer.start();
             }
             else {
                 vibraIcon.source = vibraIcon.source.toString().replace("on","off");
