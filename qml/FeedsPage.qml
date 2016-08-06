@@ -37,64 +37,68 @@ import org.nemomobile.lipstick 0.1
 Item {
     Flickable {
         id: mainFlickable
+        contentHeight: notifmodel.itemCount * 80
+        anchors.fill: parent
 
-        contentHeight: rootitem.height
-        contentWidth: parent.width
-        Item {
-            id: rootitem
-            width: parent.width
-            height: childrenRect.height
+        Column {
+            anchors.fill: parent
+            spacing: 10
+            Repeater {
+                model: NotificationListModel { id: notifmodel }
+                delegate:
+                    MouseArea {
+                        height: 80
+                        width: parent.width
 
-            Column {
-                id: notificationColumn
-                anchors.top: parent.top
-                anchors.topMargin: 20
-                spacing: 10
-                Repeater {
-                    model: NotificationListModel {
-                        id: notifmodel
-                    }
-                    delegate:
-                        MouseArea {
-                            height: Math.max(appSummary.height,appBody.height)
-                            width: rootitem.width
+                        onClicked: if (modelData.userRemovable) modelData.actionInvoked("default")
 
-                            onClicked: {
-                                if (modelData.userRemovable) {
-                                    modelData.actionInvoked("default")
-                                }
-                            }
-
-                            Image {
-                                id: appIcon
-                                source: {
-                                    if (modelData.icon)
-                                        return "image://theme/" + modelData.icon
-                                    else
-                                        return ""
-                                }
-                            }
-
-                            Text {
-                                id: appSummary
-                                text: modelData.summary
-                                width: (rootitem.width-appIcon.width)/2
-                                font.pointSize: 10
-                                anchors.left: appIcon.right
-                                wrapMode: Text.Wrap
-                            }
-                            Text {
-                                id: appBody
-                                width: (rootitem.width-appIcon.width)/2
-                                text: modelData.body
-                                font.pointSize: 8
-                                wrapMode: Text.Wrap
-                                anchors.left: appSummary.right
+                        Image {
+                            id: appIcon
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.leftMargin: 10
+                            width: 50
+                            height: width
+                            source: {
+                                if(modelData == null || modelData.icon == "")
+                                    return "image://theme/user-info";
+                                else if(modelData.icon.indexOf("/") == 0)
+                                    return "file://" + modelData.icon;
+                                else
+                                    return "image://theme/" + modelData.icon;
                             }
                         }
+
+                        Text {
+                            id: appSummary
+                            text: modelData.summary
+                            color: "white"
+                            font.pixelSize: 36
+                            clip: true
+                            elide: Text.ElideRight
+                            anchors.top: parent.top
+                            anchors.left: appIcon.right
+                            anchors.right: parent.right
+                            anchors.topMargin: 7
+                            anchors.leftMargin: 26
+                            anchors.rightMargin: 5
+                        }
+                        Text {
+                            id: appBody
+                            text: modelData.body
+                            color: "white"
+                            font.pixelSize: 18
+                            font.bold: true
+                            clip: true
+                            elide: Text.ElideRight
+                            anchors.bottom: parent.bottom
+                            anchors.left: appSummary.left
+                            anchors.right: parent.right
+                            anchors.bottomMargin: 7
+                        }
                     }
-                }
             }
+        }
     }
 
     Image {
