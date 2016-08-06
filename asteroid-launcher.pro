@@ -29,8 +29,7 @@ qml.files = qml/MainScreen.qml \
     qml/FeedsPage.qml \
     qml/USBModeSelector.qml \
     qml/VolumeControl.qml \
-    qml/ShutdownScreen.qml \
-    qml/LauncherRotation.qml
+    qml/ShutdownScreen.qml
 
 scripts.path = /usr/share/asteroid-launcher/qml/
 scripts.files =  qml/desktop.js
@@ -88,5 +87,4 @@ OTHER_FILES += qml/*.qml \
 	vars.conf \
     qml/USBModeSelector.qml \
     qml/VolumeControl.qml \
-    qml/ShutdownScreen.qml \
-    qml/LauncherRotation.qml
+    qml/ShutdownScreen.qml
