@@ -37,48 +37,9 @@ import org.nemomobile.lipstick 0.1
 ListView {
     id: appsListView
     orientation: ListView.Horizontal
-    property bool onUninstall
-    property alias deleter: deleter
     property var switcher: null
     snapMode: ListView.SnapToItem
     spacing: -width*0.25
-    maximumFlickVelocity: 1100
-
-    Item {
-        id: deleter
-        anchors.top: parent.top
-        property alias remove: remove
-        property alias uninstall: uninstall
-        Rectangle {
-            id: remove
-            property alias text: removeLabel.text
-            visible: onUninstall
-            height: 110
-            color: "red"
-            width: appsListView.width / 2
-            Text {
-                id: removeLabel
-                anchors.centerIn: parent
-                text: "Remove"
-                font.pointSize: 8
-            }
-        }
-        Rectangle {
-            id: uninstall
-            property alias text: uninstallLabel.text
-            anchors.left: remove.right
-            visible: onUninstall
-            color: "red"
-            width: appsListView.width / 2
-            height: 110
-            Text {
-                id: uninstallLabel
-                anchors.centerIn: parent
-                text: "Uninstall"
-                font.pointSize: 8
-            }
-        }
-    }
 
     model: LauncherFolderModel { id: launcherModel }
 
