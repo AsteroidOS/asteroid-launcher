@@ -66,8 +66,10 @@ Item {
         defaultValue: "file:///usr/share/asteroid-launcher/watchfaces/000-default-digital.qml"
     }
 
+    property bool switcherVisibleInHome: false;
+
     Component { id: topPage;    QuickSettings { id: quickSet; width: desktop.width; height: desktop.height } }
-    Component { id: leftPage;   AppSwitcher   { id: switcher; width: desktop.width; height: desktop.height; visibleInHome: x > -width && x < desktop.width; Component.onCompleted: { desktop.switcher = switcher }} }
+    Component { id: leftPage;   AppSwitcher   { id: switcher; width: desktop.width; height: desktop.height; visibleInHome: switcherVisibleInHome; Component.onCompleted: { desktop.switcher = switcher }} }
     Component { id: centerPage; Loader        { id: clock;    width: desktop.width; height: desktop.height; source: watchFaceSource.value } }
     Component { id: rightPage;  FeedsPage     { id: feed;     width: desktop.width; height: desktop.height } }
     Component { id: bottomPage; AppLauncher   { id: launcher; width: desktop.width; height: desktop.height; switcher: desktop.switcher } }
@@ -95,6 +97,7 @@ Item {
                 wallpaperBlur.radius = Math.abs(centerListView.contentX - width)/width*35
                 wallpaperDarkener.brightness = Math.abs(centerListView.contentX - width)/width*(-0.2)
                 wallpaper.anchors.horizontalCenterOffset = (centerListView.contentX - width)*(-0.05)
+                switcherVisibleInHome = centerListView.contentX < width
             }
 
             Timer {
