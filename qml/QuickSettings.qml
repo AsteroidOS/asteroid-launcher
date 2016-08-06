@@ -77,6 +77,12 @@ Item {
             anchors.fill: parent
             anchors.margins: 25
         }
+        BrightnessContrast {
+            anchors.fill: lockedIcon
+            source: lockedIcon
+            visible: lockedMA.pressed
+            brightness: -0.3
+        }
     }
     DropShadow {
         anchors.fill: lockedMA
