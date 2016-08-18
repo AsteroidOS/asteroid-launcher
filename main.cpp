@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2015 Florent Revest <revestflo@gmail.com>
+ * Copyright (C) 2016 Sylvia van Os <iamsylvie@openmailbox.org>
+ *               2015 Florent Revest <revestflo@gmail.com>
  *               2014 Aleksi Suomalainen <suomalainen.aleksi@gmail.com>
  *               2012 Timur Kristóf <venemo@fedoraproject.org>
  * All rights reserved.
@@ -29,10 +30,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <QDirIterator>
 #include <QFont>
 #include <QScreen>
 #include <QQmlEngine>
 #include <QQmlContext>
+#include <QTranslator>
 
 #include <lipstickqmlpath.h>
 #include <homeapplication.h>
@@ -70,6 +73,20 @@ int main(int argc, char **argv)
     if (nativeOrientation == Qt::PrimaryOrientation)
         nativeOrientation = app.primaryScreen()->primaryOrientation();
     app.engine()->rootContext()->setContextProperty("nativeOrientation", nativeOrientation);
+
+    // Load the translation for each watchface that may exist
+    QTranslator translator;
+    QDirIterator watchfaceDir("/usr/share/asteroid-launcher/watchfaces");
+    int extensionIndex;
+    while (watchfaceDir.hasNext()) {
+        watchfaceDir.next();
+        QString watchfaceDirEntry = watchfaceDir.fileName();
+        if ((extensionIndex = watchfaceDirEntry.lastIndexOf(".qml")) != -1) {
+            watchfaceDirEntry.truncate(extensionIndex);
+            translator.load(QLocale(), watchfaceDirEntry, ".", "/usr/share/translations/watchfaces", ".qm");
+        }
+    }
+    app.installTranslator(&translator);
 
     qmlRegisterType<LauncherWindowModel>("org.asteroid.launcher", 1, 0 ,"LauncherWindowModel");
     app.setQmlPath("/usr/share/asteroid-launcher/qml/MainScreen.qml");
