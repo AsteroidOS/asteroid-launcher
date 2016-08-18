@@ -36,26 +36,35 @@ Item {
     id: rootitem
 
     Text {
+        function format(string, hour) {
+            var hoursList = [qsTr("twelve"), qsTr("one"), qsTr("two"), qsTr("three"), qsTr("four"), qsTr("five"), qsTr("six"), qsTr("seven"), qsTr("eight"), qsTr("nine"), qsTr("ten"), qsTr("eleven")];
+
+            string = string.replace(/\{0\}/g, function(_, _) {
+                return hoursList[hour % 12];
+            });
+
+            return string.replace(/\{1\}/g, function(_, _) {
+                return hoursList[(hour + 1) % 12];
+            });
+        }
+
         function generateTime(time) {
-            var minutesList = ["<b>'o clock</b>", "<b>five</b><br>past", "<b>ten</b><br>past", "<b>quarter</b><br>past", "<b>twenty</b>", "<b>twenty-five</b>", "<b>thirty</b>", "<b>thirty-five</b>", "<b>fourty</b>", "<b>quarter</b><br>to", "<b>ten</b><br>to", "<b>five</b><br>to", "<b>'o clock</b>"]
-            var hoursList = ["<b>twelve</b>", "<b>one</b>", "<b>two</b>", "<b>three</b>", "<b>four</b>", "<b>five</b>", "<b>six</b>", "<b>seven</b>", "<b>eight</b>", "<b>nine</b>", "<b>ten</b>", "<b>eleven</b>"]
-            var minutesFirst = [false, true, true, true, false, false, false, false, false, true, true, true, false]
-            var nextHour = [false, false, false, false, false, false, false, false, false, true, true, true, true]
+            var formatStrings = [qsTr("<b>{0}<br>'o clock</b>"),
+                                 qsTr("<b>five</b><br>past<br><b>{0}</b>"),
+                                 qsTr("<b>ten</b><br>past<br><b>{0}</b>"),
+                                 qsTr("<b>quarter</b><br>past<br><b>{0}</b>"),
+                                 qsTr("<b>{0}<br>twenty</b>"),
+                                 qsTr("<b>{0}<br>twenty-five</b>"),
+                                 qsTr("<b>{0}<br>thirty</b>"),
+                                 qsTr("<b>{0}<br>thirty-five</b>"),
+                                 qsTr("<b>{0}<br>fourty</b>"),
+                                 qsTr("<b>quarter</b><br>to<br><b>{1}</b>"),
+                                 qsTr("<b>ten</b><br>to<br><b>{1}</b>"),
+                                 qsTr("<b>five</b><br>to<br><b>{1}</b>")];
 
             var minutes = Math.round(time.getMinutes()/5)
-            var hours = (time.getHours() + (nextHour[minutes] ? 1 : 0)) % 12
 
-            var start = "<p style=\"text-align:center\">"
-            var newline = "<br>"
-            var end = "</p>"
-
-            if (minutesFirst[minutes]) {
-                var generatedString = minutesList[minutes].toUpperCase() + newline + hoursList[hours].toUpperCase()
-            } else {
-                var generatedString = hoursList[hours].toUpperCase() + newline + minutesList[minutes].toUpperCase()
-            }
-
-            return start + generatedString + end
+            return "<p style=\"text-align:center\">" + format(formatStrings[minutes], time.getHours()).toUpperCase() + "</p>"
         }
 
         id: timeDisplay
