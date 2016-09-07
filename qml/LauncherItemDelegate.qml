@@ -35,74 +35,80 @@ import QtQuick 2.0
 import QtGraphicalEffects 1.0
 import org.nemomobile.lipstick 0.1
 
-Item {
-    id: wrapper
+MouseArea {
+    id: launcherItem
     property alias source: iconImage.source
     property alias iconCaption: iconText.text
 
-    MouseArea {
-        id: launcherItem
-        width: wrapper.width*0.7
-        height: wrapper.height
-        anchors.centerIn: parent
-
-        onClicked: {
-            // TODO: disallow if close mode enabled
-            if (model.object.type !== LauncherModel.Folder) {
-                var winId = switcher.switchModel.getWindowIdForTitle(model.object.title)
-                console.log("Window id found: " + winId)
-                if (winId == 0)
-                    model.object.launchApplication()
-                else
-                    Lipstick.compositor.windowToFront(winId)
+    onClicked: {
+        // TODO: disallow if close mode enabled
+        if (model.object.type !== LauncherModel.Folder) {
+            var winId = switcher.switchModel.getWindowIdForTitle(model.object.title)
+            console.log("Window id found: " + winId)
+            if (winId == 0)
+                model.object.launchApplication()
+            else
+                Lipstick.compositor.windowToFront(winId)
+        } else {
+            if (!folderLoader.visible) {
+                folderLoader.visible = true
+                folderLoader.model = model.object
             } else {
-                if (!folderLoader.visible) {
-                    folderLoader.visible = true
-                    folderLoader.model = model.object
-                } else {
-                    folderLoader.visible = false
-                }
+                folderLoader.visible = false
             }
         }
+    }
 
-        Image {
-            id: iconImage
+    Item {
+        id: circleWrapper
+        anchors.fill: parent
+        Rectangle {
+            id: circle
             anchors.centerIn: parent
-            width: parent.width
-            height: width
-            asynchronous: true
+            width: parent.width*0.7
+            height: parent.height*0.7
+            radius: width/2
+            color: launcherItem.pressed ? "#cccccc" : "#f4f4f4"
         }
-        BrightnessContrast {
-            anchors.fill: iconImage
-            source: iconImage
-            visible: launcherItem.pressed
-            brightness: -0.3
-        }
+    }
+    DropShadow {
+        anchors.fill: circleWrapper
+        horizontalOffset: 0
+        verticalOffset: 0
+        radius: 8.0
+        samples: 17
+        color: "#80000000"
+        source: circleWrapper
+        cached: true
+    }
 
-        // Caption for the icon
-        Text {
-            id: iconText
-            // elide only works if an explicit width is set
-            width: parent.width
-            elide: Text.ElideRight
-            horizontalAlignment: Text.AlignHCenter
-            font.pixelSize: 23
-            color: 'white'
-            anchors {
-                left: parent.left
-                right: parent.right
-                top: iconImage.bottom
-                topMargin: -5
-            }
-        }
-        DropShadow {
-            anchors.fill: iconText
-            horizontalOffset: 3
-            verticalOffset: 3
-            radius: 8.0
-            samples: 16
-            color: "#80000000"
-            source: iconText
-        }
+    Image {
+        id: iconImage
+        anchors.centerIn: parent
+        anchors.verticalCenterOffset: -parent.height*0.03
+        width: parent.width*0.31
+        height: width
+        smooth: true
+        asynchronous: true
+    }
+    ColorOverlay {
+        anchors.fill: iconImage
+        source: iconImage
+        color: "#666666"
+        cached: true
+        visible: iconImage.source !== ""
+    }
+
+    Text {
+        id: iconText
+        anchors.top: iconImage.bottom
+        width: parent.width
+        elide: Text.ElideRight
+        horizontalAlignment: Text.AlignHCenter
+        anchors.topMargin: parent.height*0.042
+        text: "ALARM CLOCK"
+        color: "#666666"
+        font.pixelSize: parent.height*0.05
+        font.weight: Font.Medium
     }
 }

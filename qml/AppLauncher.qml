@@ -39,7 +39,6 @@ ListView {
     orientation: ListView.Horizontal
     property var switcher: null
     snapMode: ListView.SnapToItem
-    spacing: -width*0.35
 
     model: LauncherFolderModel { id: launcherModel }
 
@@ -47,8 +46,8 @@ ListView {
         id: launcherItem
         width: appsListView.width
         height: appsListView.width
-        source: model.object.iconId == "" ? "image://theme/help" : (model.object.iconId.indexOf("/") == 0 ? "file://" : "image://theme/") + model.object.iconId
-        iconCaption: model.object.title
+        source: model.object.iconId == "" ? "image://theme/help" : (model.object.iconId.indexOf("/") == 0 ? "file://" : "file:///usr/lib/qml/org/asteroid/icons/") + model.object.iconId + ".svg"
+        iconCaption: model.object.title.toUpperCase()
     }
 
     Text {
