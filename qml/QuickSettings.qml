@@ -54,7 +54,7 @@ Item {
         value: "100"
     }
 
-    property DBusInterface _dbus: DBusInterface {
+    DBusInterface {
         id: mce_dbus
 
         destination: "com.nokia.mce"
@@ -143,14 +143,31 @@ Item {
             }
         }
     }
+
+    DBusInterface {
+        id: bluez_adapter_dbus
+
+        destination: "org.bluez"
+        path: "/org/bluez/hci0"
+        iface: "org.bluez.Adapter1"
+
+        busType: DBusInterface.SystemBus
+    }
+
     MouseArea {
         id: bluetoothMA
         width  : rootitem.width/3
         height : rootitem.height/3
         anchors.centerIn: rootitem
         onClicked: {
-            if (bluetoothIcon.source.toString().match("off")) bluetoothIcon.source = bluetoothIcon.source.toString().replace("off","on")
-            else bluetoothIcon.source = bluetoothIcon.source.toString().replace("on","off")
+            if (bluetoothIcon.source.toString().match("off")) {
+                bluetoothIcon.source = bluetoothIcon.source.toString().replace("off","on")
+                bluez_adapter_dbus.setProperty("Powered", true)
+            }
+            else {
+                bluetoothIcon.source = bluetoothIcon.source.toString().replace("on","off")
+                bluez_adapter_dbus.setProperty("Powered", false)
+            }
         }
         Rectangle {
             anchors.fill: parent
@@ -159,7 +176,7 @@ Item {
             color : bluetoothMA.pressed ? '#66222222' : '#99222222'
             Image {
                 id: bluetoothIcon
-                source: "qrc:/qml/images/bluetooth_off.png"
+                source: bluez_adapter_dbus.getProperty("Powered") ? "qrc:/qml/images/bluetooth_on.png" : "qrc:/qml/images/bluetooth_off.png"
                 fillMode: Image.PreserveAspectFit
                 anchors.fill: parent
                 anchors.margins: 20
