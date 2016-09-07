@@ -112,6 +112,7 @@ Item {
             Connections {
                 target: Lipstick.compositor
                 onDisplayOff: delayTimer.start();
+                onActiveFocusItemChanged: delayTimer.start();
             }
         }
     }

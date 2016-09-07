@@ -38,7 +38,7 @@ Item {
     property Item window
     width: window !== null ? window.width : 0
     height: window !== null ? window.height : 0
-    NumberAnimation on opacity { id: fadeInAnimation; running: false; from: 0; to: 1 }
+    NumberAnimation on opacity { id: fadeInAnimation; running: false; from: 0; to: 1; duration: 150 }
     function animateIn() { fadeInAnimation.start(); }
 
     Component.onCompleted: window.parent = wrapper
