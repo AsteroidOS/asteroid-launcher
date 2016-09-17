@@ -90,6 +90,8 @@ MouseArea {
         height: width
         smooth: true
         asynchronous: true
+        sourceSize.width:  iconImage.width
+        sourceSize.height: iconImage.height
     }
     ColorOverlay {
         anchors.fill: iconImage
