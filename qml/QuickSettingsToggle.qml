@@ -1,8 +1,5 @@
 /*
  * Copyright (C) 2015 Florent Revest <revestflo@gmail.com>
- *               2014 Aleksi Suomalainen <suomalainen.aleksi@gmail.com>
- *               2012 Timur Kristóf <venemo@fedoraproject.org>
- *               2011 Tom Swindell <t.swindell@rubyx.co.uk>
  * All rights reserved.
  *
  * You may use this file under the terms of BSD license as follows:
@@ -30,36 +27,36 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.0
-import QtGraphicalEffects 1.0
-import org.nemomobile.lipstick 0.1
+import QtQuick 2.1
+import org.asteroid.controls 1.0
 
-ListView {
-    id: appsListView
-    orientation: ListView.Horizontal
-    property var switcher: null
-    snapMode: ListView.SnapToItem
+MouseArea {
+    id: ma
 
-    model: LauncherFolderModel { id: launcherModel }
+    width: parent.width/3
+    height: width
 
-    delegate: LauncherItemDelegate {
-        id: launcherItem
-        width: appsListView.width
-        height: appsListView.width
-        source: model.object.iconId == "" ? "image://theme/help" : (model.object.iconId.indexOf("/") == 0 ? "file://" : "file:///usr/lib/qml/org/asteroid/icons/") + model.object.iconId + ".svg"
-        iconCaption: model.object.title.toUpperCase()
+    property alias icon : ic.name
+    property bool toggled : true
+    property bool togglable : true
+
+    signal checked
+    signal unchecked
+    onClicked: {
+        if (ma.togglable) toggled = !toggled;
+        ma.toggled ? ma.checked() : ma.unchecked()
     }
-
-    Text {
-        id: emptyIndicator
-        visible: launcherModel.itemCount === 0
-        horizontalAlignment: Text.AlignHCenter
-
-        text: "<b>No apps<br>installed</b>"
-        font.pointSize: 12
-        anchors {
-            verticalCenter: parent.verticalCenter
-            horizontalCenter: parent.horizontalCenter
+    Rectangle {
+        anchors.fill: parent
+        radius: width/2
+        anchors.margins: ma.width*0.1
+        color: ma.pressed ? '#66222222' : ma.toggled ? '#BB222222' :  '#33222222'
+        Icon {
+            id: ic
+            size: parent.width*0.56
+            anchors.centerIn: parent
+            color: ma.pressed ? "lightgrey" : "white"
         }
     }
 }
+

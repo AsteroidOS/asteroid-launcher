@@ -24,6 +24,7 @@ qml.files = qml/MainScreen.qml \
     qml/LauncherItemDelegate.qml \
     qml/AppSwitcher.qml \
     qml/QuickSettings.qml \
+    qml/QuickSettingsToggle.qml \
     qml/AppLauncher.qml \
     qml/SwitcherItem.qml \
     qml/FeedsPage.qml \
@@ -77,6 +78,7 @@ OTHER_FILES += qml/*.qml \
     qml/LauncherItemDelegate.qml \
     qml/AppSwitcher.qml \
     qml/QuickSettings.qml \
+    qml/QuickSettingsToggle.qml \
     qml/AppLauncher.qml \
     qml/SwitcherItem.qml \
     qml/compositor/WindowWrapperMystic.qml \

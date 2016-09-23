@@ -34,6 +34,7 @@ import QtGraphicalEffects 1.0
 import org.freedesktop.contextkit 1.0
 import org.nemomobile.dbus 1.0
 import org.nemomobile.systemsettings 1.0
+import org.asteroid.controls 1.0
 
 Item {
     id: rootitem
@@ -54,6 +55,12 @@ Item {
         value: "100"
     }
 
+    ContextProperty {
+        id: batteryIsCharging
+        key: "Battery.IsCharging"
+        value: false
+    }
+
     DBusInterface {
         id: mce_dbus
 
@@ -64,84 +71,27 @@ Item {
         busType: DBusInterface.SystemBus
     }
 
-    MouseArea {
-        id: lockedMA
-        width  : rootitem.width
-        height : rootitem.height/3
+    QuickSettingsToggle {
+        id: lockedToggle
         anchors.top: rootitem.top
-        anchors.left: rootitem.left
-        onClicked: mce_dbus.call("req_display_state_off", undefined)
-        Image {
-            id: lockedIcon
-            source: "qrc:/qml/images/lock.png"
-            fillMode: Image.PreserveAspectFit
-            anchors.fill: parent
-            anchors.margins: 25
-        }
-        BrightnessContrast {
-            anchors.fill: lockedIcon
-            source: lockedIcon
-            visible: lockedMA.pressed
-            brightness: -0.3
-        }
-    }
-    DropShadow {
-        anchors.fill: lockedMA
-        horizontalOffset: 3
-        verticalOffset: 3
-        radius: 8.0
-        samples: 16
-        color: "#80000000"
-        source: lockedMA
-    }
-
-    function initialBrightness()
-    {
-        if (displaySettings == 100)
-            return "qrc:/qml/images/brightness3.png";
-        else if (displaySettings >= 50)
-            return "qrc:/qml/images/brightness2.png";
-        else
-            return "qrc:/qml/images/brightness1.png";
+        anchors.horizontalCenter: rootitem.horizontalCenter
+        icon: "ios-lock"
+        togglable: false
+        onChecked: mce_dbus.call("req_display_state_off", undefined)
     }
 
     DisplaySettings {
         id: displaySettings
     }
 
-    MouseArea {
-        id: brightnessMA
-        width  : rootitem.width/3
-        height : rootitem.height/3
-        anchors.top: lockedMA.bottom
+    QuickSettingsToggle {
+        id: brightnessToggle
         anchors.left: rootitem.left
-        onClicked: {
-            if (brightnessIcon.source.toString().match("brightness1")) {
-                brightnessIcon.source = brightnessIcon.source.toString().replace("brightness1","brightness2")
-                displaySettings.brightness = 50
-            }
-            else if (brightnessIcon.source.toString().match("brightness2")) {
-                brightnessIcon.source = brightnessIcon.source.toString().replace("brightness2","brightness3")
-                displaySettings.brightness = 100
-            }
-            else {
-                brightnessIcon.source = brightnessIcon.source.toString().replace("brightness3","brightness1")
-                displaySettings.brightness = 0
-            }
-        }
-        Rectangle {
-            anchors.fill: parent
-            radius: width/2
-            anchors.margins: 10
-            color : brightnessMA.pressed ? '#66222222' : '#99222222'
-            Image {
-                id: brightnessIcon
-                source: "qrc:/qml/images/brightness1.png"
-                fillMode: Image.PreserveAspectFit
-                anchors.fill: parent
-                anchors.margins: 20
-            }
-        }
+        anchors.verticalCenter: rootitem.verticalCenter
+        icon: "ios-sunny"
+        onChecked: displaySettings.brightness = 100
+        onUnchecked: displaySettings.brightness = 0
+        Component.onCompleted: toggled = displaySettings.brightness > 80
     }
 
     DBusInterface {
@@ -154,34 +104,13 @@ Item {
         busType: DBusInterface.SystemBus
     }
 
-    MouseArea {
-        id: bluetoothMA
-        width  : rootitem.width/3
-        height : rootitem.height/3
-        anchors.centerIn: rootitem
-        onClicked: {
-            if (bluetoothIcon.source.toString().match("off")) {
-                bluetoothIcon.source = bluetoothIcon.source.toString().replace("off","on")
-                bluez_adapter_dbus.setProperty("Powered", true)
-            }
-            else {
-                bluetoothIcon.source = bluetoothIcon.source.toString().replace("on","off")
-                bluez_adapter_dbus.setProperty("Powered", false)
-            }
-        }
-        Rectangle {
-            anchors.fill: parent
-            radius: width/2
-            anchors.margins: 10
-            color : bluetoothMA.pressed ? '#66222222' : '#99222222'
-            Image {
-                id: bluetoothIcon
-                source: bluez_adapter_dbus.getProperty("Powered") ? "qrc:/qml/images/bluetooth_on.png" : "qrc:/qml/images/bluetooth_off.png"
-                fillMode: Image.PreserveAspectFit
-                anchors.fill: parent
-                anchors.margins: 20
-            }
-        }
+    QuickSettingsToggle {
+        id: bluetoothToggle
+        anchors.centerIn: parent
+        icon: "ios-bluetooth"
+        onChecked:   bluez_adapter_dbus.setProperty("Powered", true)
+        onUnchecked: bluez_adapter_dbus.setProperty("Powered", false)
+        Component.onCompleted: bluez_adapter_dbus.getProperty("Powered") 
     }
 
     ThemeEffect {
@@ -197,83 +126,45 @@ Item {
         repeat: false
         onTriggered: haptics.play()
     }
-    MouseArea {
-        id: vibraMA
-        width  : rootitem.width/3
-        height : rootitem.height/3
-        anchors.top: lockedMA.bottom
+ 
+    QuickSettingsToggle {
+        id: hapticsToggle
         anchors.right: rootitem.right
-        onClicked: {
-            if (vibraIcon.source.toString().match("off")) {
-                vibraIcon.source = vibraIcon.source.toString().replace("off","on");
-                profileControl.profile = "general";
-                delayTimer.start();
-            }
-            else {
-                vibraIcon.source = vibraIcon.source.toString().replace("on","off");
-                profileControl.profile = "silent";
-            }
+        anchors.verticalCenter: rootitem.verticalCenter
+        icon: "ios-volume-up"
+        onChecked: {
+            profileControl.profile = "general";
+            delayTimer.start();
         }
-        Rectangle {
-            anchors.fill: parent
-            radius: width/2
-            anchors.margins: 10
-            color : vibraMA.pressed ? '#66222222' : '#99222222'
-            Image {
-                id: vibraIcon
-                source: profileControl.profile == "silent" ? "qrc:/qml/images/vibra_off.png" : "qrc:/qml/images/vibra_on.png"
-                fillMode: Image.PreserveAspectFit
-                anchors.fill: parent
-                anchors.margins: 20
-            }
-        }
+        onUnchecked: profileControl.profile = "silent";
+        Component.onCompleted: profileControl.profile == "general"
     }
-    MouseArea {
-        id : batteryMA
-        width  : rootitem.width
-        height : rootitem.height/3
+
+    Item {
+        id: battery
+        anchors.horizontalCenter: rootitem.horizontalCenter
         anchors.bottom: rootitem.bottom
-        anchors.left: rootitem.left
-        Item {
-            id: battery
-            anchors.centerIn: parent
-            height: parent.height
-            width: batteryIcon.width + batteryIndicator.width
-            Image {
-                id: batteryIcon
-                source: {
-                    if(batteryChargePercentage.value > 85)        return "qrc:/qml/images/battery6.png"
-                    else if (batteryChargePercentage.value <= 5)  return "qrc:/qml/images/battery0.png"
-                    else if (batteryChargePercentage.value <= 10) return "qrc:/qml/images/battery1.png"
-                    else if (batteryChargePercentage.value <= 25) return "qrc:/qml/images/battery2.png"
-                    else if (batteryChargePercentage.value <= 40) return "qrc:/qml/images/battery3.png"
-                    else if (batteryChargePercentage.value <= 65) return "qrc:/qml/images/battery4.png"
-                    else if (batteryChargePercentage.value <= 80) return "qrc:/qml/images/battery5.png"
-                    else                                          return "qrc:/qml/images/battery6.png"
-                }
-                fillMode: Image.PreserveAspectFit
-                height: parent.height-66
-                width: height
-                anchors.left: parent.left
-                anchors.verticalCenter: parent.verticalCenter
+        height: parent.height/3
+        width: batteryIcon.size + batteryIndicator.width
+
+        Icon {
+            id: batteryIcon
+            name: {
+                if(batteryIsCharging.value)                 return "ios-battery-charging"
+                else if(batteryChargePercentage.value > 15) return "ios-battery-full"
+                else                                        return "ios-battery-dead"
             }
-            Text {
-                id: batteryIndicator
-                font.pointSize: 8
-                text: batteryChargePercentage.value + "%"
-                color: "white"
-                anchors.right: parent.right
-                anchors.verticalCenter: parent.verticalCenter
-            }
+            size:  parent.height/2
+            anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
         }
-        DropShadow {
-            anchors.fill: battery
-            horizontalOffset: 3
-            verticalOffset: 3
-            radius: 8.0
-            samples: 16
-            color: "#80000000"
-            source: battery
+        Text {
+            id: batteryIndicator
+            font.pointSize: 8
+            text: batteryChargePercentage.value + "%"
+            color: "white"
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
         }
     }
 }

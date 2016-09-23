@@ -125,9 +125,9 @@ MouseArea {
         }
     }
 
-    Image {
+    Icon {
         id: closeButton
-        source: 'qrc:/qml/images/icon-m-framework-close-thumbnail.png'
+        name: "ios-close-circle"
         Behavior on scale { PropertyAnimation { duration: 300; easing.type: Easing.OutBack } }
         scale: switcherRoot.closeMode ? 1 : 0
         opacity: scale

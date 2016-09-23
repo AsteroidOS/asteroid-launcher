@@ -33,6 +33,7 @@
 import QtQuick 2.1
 import QtGraphicalEffects 1.0
 import org.nemomobile.lipstick 0.1
+import org.asteroid.controls 1.0
 
 Item {
     Flickable {
@@ -101,23 +102,14 @@ Item {
         }
     }
 
-    Image {
+    Icon {
         id: emptyIndicator
         visible: notifmodel.itemCount === 0
-        width: parent.width*0.4
-        height: parent.height*0.4
-        fillMode: Image.PreserveAspectFit
-        source: "qrc:/qml/images/no_notification.png"
+        width: parent.width*0.5
+        height: parent.height*0.5
+        size: width
+        name: "ios-notifications-off-outline"
+        color: "white"
         anchors.centerIn: parent
-    }
-    DropShadow {
-        visible: notifmodel.itemCount === 0
-        anchors.fill: emptyIndicator
-        horizontalOffset: 3
-        verticalOffset: 3
-        radius: 8.0
-        samples: 16
-        color: "#80000000"
-        source: emptyIndicator
     }
 }
