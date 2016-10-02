@@ -147,17 +147,31 @@ Item {
     ConfigurationValue {
         id: wallpaperSource
         key: "/desktop/asteroid/background_filename"
-        defaultValue: "file:///usr/share/asteroid-launcher/wallpapers/Ipswich_is_THAT_way_by_simon.hedge.jpg"
+        property bool isQml: {
+            var endsWithQml = /qml$/;
+            return endsWithQml.test(value)
+        }
+        defaultValue: "file:///usr/share/asteroid-launcher/wallpapers/flatmesh.qml"
     }
 
-    Image {
+    Item {
         id: wallpaper
-        source: wallpaperSource.value
         width:parent.width*1.1
         height:parent.height*1.1
         z: -100
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
+
+        Component {
+            id: imageWallpaper
+            Image { source: wallpaperSource.value }
+        }
+
+        Loader {
+            source: wallpaperSource.isQml ? wallpaperSource.value : ""
+            sourceComponent: wallpaperSource.isQml ? undefined : imageWallpaper
+            anchors.fill: parent
+        }
     }
 
     FastBlur {
