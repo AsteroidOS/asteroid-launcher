@@ -105,14 +105,14 @@ Item {
                 interval: 150
                 repeat: false
                 onTriggered: {
-                        verticalListView.positionViewAtIndex(1, ListView.Beginning);
-                        centerListView.positionViewAtIndex(1, ListView.Beginning);
+                    verticalListView.positionViewAtIndex(1, ListView.Beginning);
+                    centerListView.positionViewAtIndex(1, ListView.Beginning);
                 }
             }
             Connections {
                 target: Lipstick.compositor
                 onDisplayOff: delayTimer.start();
-                onActiveFocusItemChanged: delayTimer.start();
+                onHomeActiveChanged: delayTimer.start();
             }
         }
     }
