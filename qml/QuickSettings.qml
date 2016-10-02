@@ -35,6 +35,7 @@ import org.freedesktop.contextkit 1.0
 import org.nemomobile.dbus 1.0
 import org.nemomobile.systemsettings 1.0
 import org.asteroid.controls 1.0
+import org.asteroid.launcher 1.0
 
 Item {
     id: rootitem
@@ -94,23 +95,18 @@ Item {
         Component.onCompleted: toggled = displaySettings.brightness > 80
     }
 
-    DBusInterface {
-        id: bluez_adapter_dbus
-
-        destination: "org.bluez"
-        path: "/org/bluez/hci0"
-        iface: "org.bluez.Adapter1"
-
-        busType: DBusInterface.SystemBus
+    BluetoothStatus {
+        id: btStatus
+        onPoweredChanged: bluetoothToggle.toggled = btStatus.powered
     }
 
     QuickSettingsToggle {
         id: bluetoothToggle
         anchors.centerIn: parent
         icon: "ios-bluetooth"
-        onChecked:   bluez_adapter_dbus.setProperty("Powered", true)
-        onUnchecked: bluez_adapter_dbus.setProperty("Powered", false)
-        Component.onCompleted: bluez_adapter_dbus.getProperty("Powered") 
+        onChecked:   btStatus.powered = true
+        onUnchecked: btStatus.powered = false
+        Component.onCompleted: toggled = btStatus.powered
     }
 
     ThemeEffect {
@@ -126,7 +122,7 @@ Item {
         repeat: false
         onTriggered: haptics.play()
     }
- 
+
     QuickSettingsToggle {
         id: hapticsToggle
         anchors.right: rootitem.right
@@ -137,7 +133,7 @@ Item {
             delayTimer.start();
         }
         onUnchecked: profileControl.profile = "silent";
-        Component.onCompleted: profileControl.profile == "general"
+        Component.onCompleted: toggled = profileControl.profile == "general"
     }
 
     Item {

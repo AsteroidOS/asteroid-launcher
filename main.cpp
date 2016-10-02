@@ -38,6 +38,8 @@
 #include <homeapplication.h>
 #include <homewindow.h>
 
+#include "bluetoothstatus.h"
+
 #include "launcherwindowmodel.h"
 
 int main(int argc, char **argv)
@@ -72,6 +74,7 @@ int main(int argc, char **argv)
     app.engine()->rootContext()->setContextProperty("nativeOrientation", nativeOrientation);
 
     qmlRegisterType<LauncherWindowModel>("org.asteroid.launcher", 1, 0 ,"LauncherWindowModel");
+    qmlRegisterType<BluetoothStatus>("org.asteroid.launcher", 1, 0, "BluetoothStatus");
     app.setQmlPath("/usr/share/asteroid-launcher/qml/MainScreen.qml");
 
     // Give these to the environment inside the lipstick homescreen

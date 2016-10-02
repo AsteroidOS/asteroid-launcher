@@ -56,16 +56,18 @@ notifications.files = qml/NotificationPreview.qml
 INSTALLS += styles qml qmlcompositor scripts system volumecontrol connectivity notifications watchfaces
 
 CONFIG += qt link_pkgconfig
-QT += quick compositor
+QT += quick compositor dbus
 DEFINES += QT_COMPOSITOR_QUICK
 HEADERS += \
-    launcherwindowmodel.h
+    launcherwindowmodel.h \
+    bluetoothstatus.h
 
 MOC_DIR = .moc
 
 SOURCES += \
     main.cpp \
-    launcherwindowmodel.cpp
+    launcherwindowmodel.cpp \
+    bluetoothstatus.cpp
 
 RESOURCES += \
     resources-qml.qrc
