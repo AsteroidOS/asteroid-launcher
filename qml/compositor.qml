@@ -138,6 +138,7 @@ Compositor {
 
     BorderGestureArea {
         id: gestureArea
+        enabled: root.appActive
         z: 7
         anchors.fill: parent
         acceptsDown: true
@@ -148,13 +149,13 @@ Compositor {
         onGestureStarted: {
             swipeAnimation.stop()
             cancelAnimation.stop()
-            if ((gesture == "down" || gesture == "right") && root.appActive) {
+            if ((gesture == "down" || gesture == "right")) {
                 state = "swipe"
             }
         }
 
         onGestureFinished: {
-            if ((gesture == "down" || gesture == "right") && root.appActive) {
+            if ((gesture == "down" || gesture == "right")) {
                 if (gestureArea.progress >= swipeThreshold) {
                     swipeAnimation.valueTo = inverted ? -max : max
                     swipeAnimation.start()
