@@ -147,11 +147,21 @@ Item {
     ConfigurationValue {
         id: wallpaperSource
         key: "/desktop/asteroid/background_filename"
-        property bool isQml: {
-            var endsWithQml = /qml$/;
-            return endsWithQml.test(value)
-        }
         defaultValue: "file:///usr/share/asteroid-launcher/wallpapers/flatmesh.qml"
+
+        function updateWallpaper() {
+            var endsWithQml = /qml$/;
+            if(endsWithQml.test(wallpaperSource.value)) {
+                wallpaperLoader.sourceComponent = undefined
+                wallpaperLoader.source = wallpaperSource.value
+            } else {
+                wallpaperLoader.source = ""
+                wallpaperLoader.sourceComponent = imageWallpaper
+            }
+        }
+
+        Component.onCompleted: updateWallpaper()
+        onValueChanged: updateWallpaper()
     }
 
     Item {
@@ -168,8 +178,7 @@ Item {
         }
 
         Loader {
-            source: wallpaperSource.isQml ? wallpaperSource.value : ""
-            sourceComponent: wallpaperSource.isQml ? undefined : imageWallpaper
+            id: wallpaperLoader
             anchors.fill: parent
         }
     }
