@@ -38,7 +38,7 @@ Item {
     id: notificationWindow
     property alias summary: summary.text
     property alias body: body.text
-    property alias icon: icon.source
+    property alias icon: icon.name
     width: Desktop.instance.parent.width
     height: Desktop.instance.parent.height
     rotation: Desktop.instance.parent.rotation
@@ -127,25 +127,22 @@ Item {
                 onTriggered: notificationPreview.state = "hide"
             }
 
-            Image {
+            Icon {
                 id: icon
                 anchors {
                     left: parent.left
                     verticalCenter: parent.verticalCenter
                     leftMargin: 10
                 }
-                width: 50
-                height: width
-                source: {
+                size: 50
+                name: {
                             var notif = notificationPreviewPresenter.notification;
                             if(notif==null)
-                                return "";
+                                return "ios-notifications";
                             else if(notif.icon == "")
-                                return "image://theme/user-info";
-                            else if(notif.icon.indexOf("/") == 0)
-                                return "file://" + notif.icon;
+                                return "ios-notifications";
                             else
-                                return "image://theme/" + notif.icon;
+                                return notif.icon;
                         }
             }
 

@@ -53,20 +53,17 @@ Item {
 
                         onClicked: if (modelData.userRemovable) modelData.actionInvoked("default")
 
-                        Image {
+                        Icon {
                             id: appIcon
                             anchors.left: parent.left
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.leftMargin: 10
-                            width: 50
-                            height: width
-                            source: {
+                            size: 50
+                            name: {
                                 if(modelData == null || modelData.icon == "")
-                                    return "image://theme/user-info";
-                                else if(modelData.icon.indexOf("/") == 0)
-                                    return "file://" + modelData.icon;
+                                    return "ios-notifications";
                                 else
-                                    return "image://theme/" + modelData.icon;
+                                    return modelData.icon;
                             }
                         }
 
