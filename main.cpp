@@ -39,6 +39,7 @@
 #include <homewindow.h>
 
 #include "bluetoothstatus.h"
+#include "applauncherbackground.h"
 
 #include "launcherwindowmodel.h"
 
@@ -75,6 +76,7 @@ int main(int argc, char **argv)
 
     qmlRegisterType<LauncherWindowModel>("org.asteroid.launcher", 1, 0 ,"LauncherWindowModel");
     qmlRegisterType<BluetoothStatus>("org.asteroid.launcher", 1, 0, "BluetoothStatus");
+    qmlRegisterType<AppLauncherBackground>("org.asteroid.launcher", 1, 0, "AppLauncherBackground");
     app.setQmlPath("/usr/share/asteroid-launcher/qml/MainScreen.qml");
 
     // Give these to the environment inside the lipstick homescreen

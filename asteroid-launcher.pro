@@ -60,6 +60,7 @@ QT += quick compositor dbus
 DEFINES += QT_COMPOSITOR_QUICK
 HEADERS += \
     launcherwindowmodel.h \
+    applauncherbackground.h \
     bluetoothstatus.h
 
 MOC_DIR = .moc
@@ -67,6 +68,7 @@ MOC_DIR = .moc
 SOURCES += \
     main.cpp \
     launcherwindowmodel.cpp \
+    applauncherbackground.cpp \
     bluetoothstatus.cpp
 
 RESOURCES += \
