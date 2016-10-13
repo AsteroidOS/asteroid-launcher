@@ -106,8 +106,7 @@ Item {
             contentItem.onWidthChanged: positionViewAtIndex(1, ListView.Beginning)
             onContentXChanged: {
                 verticalListView.interactive = centerListView.contentX == width // Only allows vertical flicking for the center item
-                wallpaperBlur.radius = Math.abs(centerListView.contentX - width)/width*35
-                wallpaperDarkener.brightness = Math.abs(centerListView.contentX - width)/width*(-0.2)
+                wallpaperDarkener.brightness = Math.abs(centerListView.contentX - width)/width*(-0.3)
                 wallpaper.anchors.horizontalCenterOffset = (centerListView.contentX - width)*(-0.05)
                 switcherVisibleInHome = centerListView.contentX < width
             }
@@ -150,7 +149,6 @@ Item {
         contentItem.onHeightChanged: positionViewAtIndex(1, ListView.Beginning)
         onContentYChanged: {
             var shift = verticalListView.contentY - height
-            wallpaperDarkener.brightness = Math.abs(shift)/height*(-0.2)
             wallpaper.anchors.verticalCenterOffset = shift*(-0.05)
 
             if(shift == height) {
@@ -174,7 +172,7 @@ Item {
                         );
             }
             else
-                wallpaperBlur.radius = Math.abs(shift)/height*35
+                wallpaperDarkener.brightness = Math.abs(shift)/height*(-0.3)
         }
     }
 
@@ -218,17 +216,10 @@ Item {
         }
     }
 
-    FastBlur {
-        id: wallpaperBlur
-        anchors.fill: wallpaper
-        source: wallpaper
-        z: -99
-    }
-
     BrightnessContrast {
         id: wallpaperDarkener
-        anchors.fill: wallpaperBlur
-        source: wallpaperBlur
+        anchors.fill: wallpaper
+        source: wallpaper
         z: -99
     }
 }
