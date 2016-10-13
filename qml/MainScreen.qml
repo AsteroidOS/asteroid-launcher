@@ -35,12 +35,24 @@ import org.nemomobile.time 1.0
 import org.nemomobile.configuration 1.0
 import org.nemomobile.lipstick 0.1
 import org.asteroid.controls 1.0
+import org.asteroid.launcher 1.0
 import "desktop.js" as Desktop
 
 Item {
     id: desktop
     anchors.fill: parent;
     property var switcher: null
+
+    AppLauncherBackground { id: alb }
+
+    property var defaultCenterColor: alb.centerColor("/usr/share/asteroid-launcher/default-colors.desktop")
+    property var defaultOuterColor: alb.outerColor("/usr/share/asteroid-launcher/default-colors.desktop")
+
+    property var bgCenterColor: defaultCenterColor
+    property var bgOuterColor: defaultOuterColor
+
+    property var launcherCenterColor: defaultCenterColor
+    property var launcherOuterColor: defaultOuterColor
 
     Component.onCompleted: {
         Desktop.instance = desktop
@@ -137,9 +149,32 @@ Item {
         }
         contentItem.onHeightChanged: positionViewAtIndex(1, ListView.Beginning)
         onContentYChanged: {
-            wallpaperBlur.radius = Math.abs(verticalListView.contentY - height)/height*35
-            wallpaperDarkener.brightness = Math.abs(verticalListView.contentY - height)/height*(-0.2)
-            wallpaper.anchors.verticalCenterOffset = (verticalListView.contentY - height)*(-0.05)
+            var shift = verticalListView.contentY - height
+            wallpaperDarkener.brightness = Math.abs(shift)/height*(-0.2)
+            wallpaper.anchors.verticalCenterOffset = shift*(-0.05)
+
+            if(shift == height) {
+                bgCenterColor = Qt.binding(function() { return launcherCenterColor })
+                bgOuterColor = Qt.binding(function() { return launcherOuterColor })
+            }
+
+            else if(shift >= 0) {
+                var ratio = shift/height
+
+                bgCenterColor = Qt.rgba(
+                            launcherCenterColor.r * ratio + defaultCenterColor.r * (1-ratio),
+                            launcherCenterColor.g * ratio + defaultCenterColor.g * (1-ratio),
+                            launcherCenterColor.b * ratio + defaultCenterColor.b * (1-ratio)
+                        );
+
+                bgOuterColor = Qt.rgba(
+                            launcherOuterColor.r * ratio + defaultOuterColor.r * (1-ratio),
+                            launcherOuterColor.g * ratio + defaultOuterColor.g * (1-ratio),
+                            launcherOuterColor.b * ratio + defaultOuterColor.b * (1-ratio)
+                        );
+            }
+            else
+                wallpaperBlur.radius = Math.abs(shift)/height*35
         }
     }
 

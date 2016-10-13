@@ -40,7 +40,7 @@ ListView {
     property var switcher: null
     snapMode: ListView.SnapToItem
 
-    model: LauncherFolderModel { id: launcherModel }
+    model: LauncherModel { id: launcherModel }
 
     delegate: LauncherItemDelegate {
         id: launcherItem
@@ -48,6 +48,48 @@ ListView {
         height: appsListView.width
         source: model.object.iconId == "" ? "image://theme/help" : (model.object.iconId.indexOf("/") == 0 ? "file://" : "file:///usr/lib/qml/org/asteroid/icons/") + model.object.iconId + ".svg"
         iconCaption: model.object.title.toUpperCase()
+    }
+
+    Component.onCompleted: {
+        launcherCenterColor = alb.centerColor(launcherModel.get(0).filePath);
+        launcherOuterColor = alb.outerColor(launcherModel.get(0).filePath);
+    }
+
+    onContentXChanged: {
+        var lowerStop = Math.floor(contentX/appsListView.width)
+        var upperStop = lowerStop+1
+        var ratio = (contentX%appsListView.width)/appsListView.width
+
+        if(upperStop+1 > launcherModel.count || ratio == 0) {
+            launcherCenterColor = alb.centerColor(launcherModel.get(lowerStop).filePath);
+            launcherOuterColor = alb.OuterColor(launcherModel.get(lowerStop).filePath);
+            return;
+        }
+
+        if(lowerStop < 0) {
+            launcherCenterColor = alb.centerColor(launcherModel.get(0).filePath);
+            launcherOuterColor = alb.outerColor(launcherModel.get(0).filePath);
+            return;
+        }
+
+        var upperCenterColor = alb.centerColor(launcherModel.get(upperStop).filePath);
+        var lowerCenterColor = alb.centerColor(launcherModel.get(lowerStop).filePath);
+
+        launcherCenterColor = Qt.rgba(
+                    upperCenterColor.r * ratio + lowerCenterColor.r * (1-ratio),
+                    upperCenterColor.g * ratio + lowerCenterColor.g * (1-ratio),
+                    upperCenterColor.b * ratio + lowerCenterColor.b * (1-ratio)
+                );
+
+        var upperOuterColor = alb.outerColor(launcherModel.get(upperStop).filePath);
+        var lowerOuterColor = alb.outerColor(launcherModel.get(lowerStop).filePath);
+
+        launcherOuterColor = Qt.rgba(
+                    upperOuterColor.r * ratio + lowerOuterColor.r * (1-ratio),
+                    upperOuterColor.g * ratio + lowerOuterColor.g * (1-ratio),
+                    upperOuterColor.b * ratio + lowerOuterColor.b * (1-ratio)
+                );
+
     }
 
     Text {
