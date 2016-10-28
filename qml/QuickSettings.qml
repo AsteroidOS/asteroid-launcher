@@ -35,7 +35,7 @@ import org.freedesktop.contextkit 1.0
 import org.nemomobile.dbus 1.0
 import org.nemomobile.systemsettings 1.0
 import org.asteroid.controls 1.0
-import org.asteroid.launcher 1.0
+import org.asteroid.utils 1.0
 
 Item {
     id: rootitem
