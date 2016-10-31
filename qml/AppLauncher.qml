@@ -62,7 +62,7 @@ ListView {
 
         if(upperStop+1 > launcherModel.count || ratio == 0) {
             launcherCenterColor = alb.centerColor(launcherModel.get(lowerStop).filePath);
-            launcherOuterColor = alb.OuterColor(launcherModel.get(lowerStop).filePath);
+            launcherOuterColor = alb.outerColor(launcherModel.get(lowerStop).filePath);
             return;
         }
 
