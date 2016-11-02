@@ -250,8 +250,6 @@ Compositor {
             setCurrentWindow(root.homeWindow)
 
     onWindowAdded: {
-        console.log("Compositor: Window added \"" + window.title + "\"" + " category: " + window.category)
-
         var isHomeWindow = window.isInProcess && root.homeWindow == null && window.title === "Home"
         var isDialogWindow = window.category === "dialog"
         var isNotificationWindow = window.category == "notification"
@@ -302,12 +300,10 @@ Compositor {
     }
 
     onWindowRaised: {
-        console.log("Compositor: Raising window: " + window.title + " category: " + window.category)
         windowToFront(window.windowId)
     }
 
     onWindowRemoved: {
-        console.log("Compositor: Window removed \"" + window.title + "\"" + " category: " + window.category)
         Desktop.instance.switcher.switchModel.removeWindowForTitle(window.title)
         var w = window.userData;
         if (window.category == "alarm") {
