@@ -38,18 +38,21 @@ import org.asteroid.controls 1.0
 MouseArea {
     id: switcherItemRoot
 
-    WindowPixmapItem {
-        id: windowPixmap
-        width: parent.width
-        height: parent.height
-        windowId: model.window
-        transform: Rotation {
-            angle: 0
-            origin.x: windowPixmap.height / 2
-            origin.y: windowPixmap.height / 2
+    Item {
+        anchors.fill: parent
+        WindowPixmapItem {
+            id: windowPixmap
+            anchors.fill: parent
+            windowId: model.window
+            smooth: true
+            radius: 5
         }
-        smooth: true
-        radius: 5
+        BrightnessContrast {
+            anchors.fill: parent
+            source: windowPixmap
+            visible: switcherItemRoot.pressed
+            brightness: -0.3
+        }
         opacity: switcherRoot.closeMode ? .6 : 1
         Behavior on opacity { NumberAnimation { duration: 300; easing.type: Easing.OutBack } }
         layer.enabled: DeviceInfo.hasRoundScreen
@@ -79,12 +82,6 @@ MouseArea {
                     * qt_Opacity;
             }"
         }
-    }
-    BrightnessContrast {
-        anchors.fill: windowPixmap
-        source: windowPixmap
-        visible: switcherItemRoot.pressed
-        brightness: -0.3
     }
 
     function close() {
