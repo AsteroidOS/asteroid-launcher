@@ -245,9 +245,16 @@ Compositor {
         WindowWrapperMystic { }
     }
 
-    onDisplayOff:
+    Timer {
+        id: delayTimer
+        interval: 150
+        repeat: false
+        onTriggered: setCurrentWindow(root.homeWindow)
+    }
+    onDisplayOff: {
         if (root.topmostAlarmWindow == null)
-            setCurrentWindow(root.homeWindow)
+            delayTimer.start()
+    }
 
     onWindowAdded: {
         var isHomeWindow = window.isInProcess && root.homeWindow == null && window.title === "Home"
