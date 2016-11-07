@@ -55,7 +55,7 @@ Item {
         id: flickable
         contentHeight: gridview.height
         anchors.fill: parent
-        anchors.margins: 10
+        anchors.margins: DeviceInfo.hasRoundScreen ? width/10 : width/20
 
         MouseArea {
             height: flickable.contentHeight > flickable.height ? flickable.contentHeight : flickable.height
@@ -70,7 +70,6 @@ Item {
         Grid {
             id: gridview
             columns: 2
-            spacing: 10
             move: Transition {
                 NumberAnimation {
                     properties: "x,y"
@@ -91,8 +90,9 @@ Item {
                     // its size, which would break the Grid. 
                     SwitcherItem {
                         id: switcherItem
-                        width: parent.width
-                        height: parent.height
+                        width: parent.width*0.95
+                        height: parent.height*0.95
+                        anchors.centerIn: parent
                     }
                 }
             }
