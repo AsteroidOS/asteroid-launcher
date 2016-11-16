@@ -156,7 +156,7 @@ Item {
                 bgOuterColor = Qt.binding(function() { return launcherOuterColor })
             }
 
-            else if(shift > 0) {
+            else if(shift >= 0) {
                 var ratio = shift/height
 
                 bgCenterColor = Qt.rgba(
