@@ -156,7 +156,7 @@ Item {
                 bgOuterColor = Qt.binding(function() { return launcherOuterColor })
             }
 
-            else if(shift >= 0) {
+            else if(shift > 0) {
                 var ratio = shift/height
 
                 bgCenterColor = Qt.rgba(
@@ -171,8 +171,11 @@ Item {
                             launcherOuterColor.b * ratio + defaultOuterColor.b * (1-ratio)
                         );
             }
-            else
+            else {
+                bgCenterColor = Qt.binding(function() { return defaultCenterColor })
+                bgOuterColor = Qt.binding(function() { return defaultOuterColor })
                 wallpaperDarkener.brightness = Math.abs(shift)/height*(-0.3)
+            }
         }
     }
 
@@ -184,9 +187,9 @@ Item {
 
         function updateWallpaper() {
             var endsWithQml = /qml$/;
-            if(endsWithQml.test(wallpaperSource.value)) {
+            if(endsWithQml.test("file:///usr/share/asteroid-launcher/wallpapers/flatmesh.qml")) {
                 wallpaperLoader.sourceComponent = undefined
-                wallpaperLoader.source = wallpaperSource.value
+                wallpaperLoader.source = "file:///usr/share/asteroid-launcher/wallpapers/flatmesh.qml"
             } else {
                 wallpaperLoader.source = ""
                 wallpaperLoader.sourceComponent = imageWallpaper
