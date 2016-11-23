@@ -105,7 +105,7 @@ Item {
         width: parent.width*0.5
         height: parent.height*0.5
         size: width
-        name: "ios-notifications-off-outline"
+        name: "ios-mail-outline"
         color: "white"
         anchors.centerIn: parent
     }
