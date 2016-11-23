@@ -109,4 +109,13 @@ Item {
         color: "white"
         anchors.centerIn: parent
     }
+
+    Text {
+        visible: notifmodel.itemCount === 0
+        anchors.top: emptyIndicator.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        text: qsTr("No notifications")
+        font.pixelSize: parent.height/10
+        color: "white"
+    }
 }
