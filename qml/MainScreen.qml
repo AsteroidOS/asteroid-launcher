@@ -187,9 +187,9 @@ Item {
 
         function updateWallpaper() {
             var endsWithQml = /qml$/;
-            if(endsWithQml.test("file:///usr/share/asteroid-launcher/wallpapers/flatmesh.qml")) {
+            if(endsWithQml.test(wallpaperSource.value)) {
                 wallpaperLoader.sourceComponent = undefined
-                wallpaperLoader.source = "file:///usr/share/asteroid-launcher/wallpapers/flatmesh.qml"
+                wallpaperLoader.source = wallpaperSource.value
             } else {
                 wallpaperLoader.source = ""
                 wallpaperLoader.sourceComponent = imageWallpaper
