@@ -128,7 +128,7 @@ Item {
         id: hapticsToggle
         anchors.right: rootitem.right
         anchors.verticalCenter: rootitem.verticalCenter
-        icon: "ios-volume-up"
+        icon: "ios-watch-vibrating"
         onChecked: {
             profileControl.profile = "general";
             delayTimer.start();
