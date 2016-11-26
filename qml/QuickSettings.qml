@@ -76,9 +76,10 @@ Item {
         id: lockedToggle
         anchors.top: rootitem.top
         anchors.horizontalCenter: rootitem.horizontalCenter
-        icon: "ios-lock"
+        icon: "ios-unlock"
         togglable: false
-        onChecked: mce_dbus.call("req_display_state_off", undefined)
+        toggled: false
+        onUnchecked: mce_dbus.call("req_display_state_off", undefined)
     }
 
     DisplaySettings {

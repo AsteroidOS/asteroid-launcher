@@ -50,7 +50,7 @@ MouseArea {
         anchors.fill: parent
         radius: width/2
         anchors.margins: ma.width*0.1
-        color: ma.pressed ? '#66222222' : ma.toggled ? '#BB222222' :  '#33222222'
+        color: ma.pressed ? '#99222222' : ma.toggled ? '#BB222222' :  '#33222222'
         Icon {
             id: ic
             size: parent.width*0.56
