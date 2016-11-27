@@ -33,51 +33,59 @@ import QtGraphicalEffects 1.0
 
 Item {
     id: rootitem
-    anchors.fill: parent
 
-    function twoDigits(x) {
-        if (x<10) return "0"+x;
-        else      return x;
+    Text {
+        id: timeDisplay
+
+        font.pixelSize: 80
+        font.weight: Font.Light
+        lineHeight: 0.85
+        color: "white"
+        horizontalAlignment: Text.AlignHCenter
+
+        anchors {
+            verticalCenter: parent.verticalCenter
+            left: parent.left
+            right: parent.right
+        }
+
+        text: Qt.formatDateTime(wallClock.time, "hh:mm")
     }
 
-    Item {
-        id: clock
-        anchors.fill: parent
-        Text {
-            id: hour
-            text: twoDigits(wallClock.time.getHours())
-            font.pixelSize: parent.height/3
-            font.family: "Roboto"
-            font.weight: Font.Medium
-            anchors.centerIn: parent
-            anchors.verticalCenterOffset: -parent.width*0.19
-            color: "white"
-        }
-        Text {
-            id: minute
-            text: twoDigits(wallClock.time.getMinutes())
-            font.pixelSize: parent.height/3
-            font.family: "Roboto"
-            font.weight: Font.Light
-            anchors.centerIn: parent
-            anchors.verticalCenterOffset: parent.width/6
-            color: "white"
-        }
-        Text {
-            id: date
-            text: Qt.formatDate(wallClock.time, "dMMM")
-            font.pixelSize: parent.height/13
-            font.family: "Raleway"
-            font.weight: Font.Thin
-            anchors.centerIn: parent
-            anchors.horizontalCenterOffset: parent.width/5
-            color: "white"
-        }
-    }
     DropShadow {
-        anchors.fill: clock
-        source: clock
-        radius: 7.0
-        samples: 15
+        anchors.fill: timeDisplay
+        horizontalOffset: 3
+        verticalOffset: 3
+        radius: 8.0
+        samples: 16
+        color: "#80000000"
+        source: timeDisplay
+    }
+
+    Text {
+        id: dateDisplay
+
+        font.pixelSize: 20
+        color: "white"
+        opacity: 0.8
+        horizontalAlignment: Text.AlignHCenter
+
+        anchors {
+            top: timeDisplay.bottom
+            left: parent.left
+            right: parent.right
+        }
+
+        text: Qt.formatDate(wallClock.time, "<b>ddd</b> d MMM")
+    }
+
+    DropShadow {
+        anchors.fill: dateDisplay
+        horizontalOffset: 3
+        verticalOffset: 3
+        radius: 8.0
+        samples: 16
+        color: "#80000000"
+        source: dateDisplay
     }
 }
