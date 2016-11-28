@@ -48,6 +48,7 @@ ListView {
         height: appsListView.width
         source: model.object.iconId == "" ? "image://theme/help" : (model.object.iconId.indexOf("/") == 0 ? "file://" : "file:///usr/lib/qml/org/asteroid/icons/") + model.object.iconId + ".svg"
         iconCaption: model.object.title.toUpperCase()
+        enabled: !appsListView.dragging
     }
 
     Component.onCompleted: {
