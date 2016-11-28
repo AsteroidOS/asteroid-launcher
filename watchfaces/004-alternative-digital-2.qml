@@ -46,37 +46,32 @@ Item {
         Text {
             id: hour
             text: twoDigits(wallClock.time.getHours())
-            font.pixelSize: parent.height*0.36
+            font.pixelSize: parent.height/3
             font.family: "Roboto"
             font.weight: Font.Medium
             anchors.centerIn: parent
-            anchors.horizontalCenterOffset: -parent.width*0.15
+            anchors.verticalCenterOffset: -parent.width*0.19
             color: "white"
-            renderType: Text.NativeRendering
         }
         Text {
             id: minute
             text: twoDigits(wallClock.time.getMinutes())
-            font.pixelSize: parent.height/7
+            font.pixelSize: parent.height/3
             font.family: "Roboto"
-            font.weight: Font.Thin
+            font.weight: Font.Light
             anchors.centerIn: parent
-            anchors.verticalCenterOffset: -parent.width/20
-            anchors.horizontalCenterOffset: parent.width/5
+            anchors.verticalCenterOffset: parent.width/6
             color: "white"
-            renderType: Text.NativeRendering
         }
         Text {
             id: date
-            text: Qt.formatDate(wallClock.time, "d MMM")
+            text: Qt.formatDate(wallClock.time, "dMMM")
             font.pixelSize: parent.height/13
             font.family: "Raleway"
-            font.weight: Font.Light
+            font.weight: Font.Thin
             anchors.centerIn: parent
-            anchors.verticalCenterOffset: parent.width/11
             anchors.horizontalCenterOffset: parent.width/5
             color: "white"
-            renderType: Text.NativeRendering
         }
     }
     DropShadow {
