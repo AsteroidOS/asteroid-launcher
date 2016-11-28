@@ -97,7 +97,7 @@ MouseArea {
         source: iconImage
         color: "#666666"
         cached: true
-        visible: iconImage.source !== ""
+        visible: iconImage.source != ""
     }
 
     Text {
@@ -107,7 +107,6 @@ MouseArea {
         elide: Text.ElideRight
         horizontalAlignment: Text.AlignHCenter
         anchors.topMargin: parent.height*0.042
-        text: "ALARM CLOCK"
         color: "#666666"
         font.pixelSize: parent.height*0.05
         font.weight: Font.Medium
