@@ -1,6 +1,5 @@
 /*
- * Copyright (C) 2015 Florent Revest <revestflo@gmail.com>
- *               2014 Aleksi Suomalainen <suomalainen.aleksi@gmail.com>
+ * Copyright (C) 2016 Florent Revest <revestflo@gmail.com>
  * All rights reserved.
  *
  * You may use this file under the terms of BSD license as follows:
@@ -52,7 +51,6 @@ Item {
             anchors.centerIn: parent
             anchors.horizontalCenterOffset: -parent.width*0.15
             color: "white"
-            renderType: Text.NativeRendering
         }
         Text {
             id: minute
@@ -64,7 +62,6 @@ Item {
             anchors.verticalCenterOffset: -parent.width/20
             anchors.horizontalCenterOffset: parent.width/5
             color: "white"
-            renderType: Text.NativeRendering
         }
         Text {
             id: date
@@ -76,7 +73,6 @@ Item {
             anchors.verticalCenterOffset: parent.width/11
             anchors.horizontalCenterOffset: parent.width/5
             color: "white"
-            renderType: Text.NativeRendering
         }
     }
     DropShadow {

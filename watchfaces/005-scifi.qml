@@ -39,39 +39,13 @@ Item {
         else      return x;
     }
 
-    Item {
+    Text {
         id: clock
-        anchors.fill: parent
-        Text {
-            id: hour
-            text: twoDigits(wallClock.time.getHours())
-            font.pixelSize: parent.height/3
-            font.family: "Roboto"
-            font.weight: Font.Medium
-            anchors.centerIn: parent
-            anchors.verticalCenterOffset: -parent.width*0.19
-            color: "white"
-        }
-        Text {
-            id: minute
-            text: twoDigits(wallClock.time.getMinutes())
-            font.pixelSize: parent.height/3
-            font.family: "Roboto"
-            font.weight: Font.Light
-            anchors.centerIn: parent
-            anchors.verticalCenterOffset: parent.width/6
-            color: "white"
-        }
-        Text {
-            id: date
-            text: Qt.formatDate(wallClock.time, "dMMM")
-            font.pixelSize: parent.height/13
-            font.family: "Raleway"
-            font.weight: Font.Thin
-            anchors.centerIn: parent
-            anchors.horizontalCenterOffset: parent.width/5
-            color: "white"
-        }
+        text: twoDigits(wallClock.time.getHours()) + ":" + twoDigits(wallClock.time.getMinutes())
+        font.pixelSize: parent.height/5
+        font.family: "Orbitron"
+        anchors.centerIn: parent
+        color: "white"
     }
     DropShadow {
         anchors.fill: clock
