@@ -30,163 +30,165 @@
  */
 
 import QtQuick 2.0
+import QtGraphicalEffects 1.0
 import org.asteroid.controls 1.0
 import org.nemomobile.lipstick 0.1
 import "../desktop.js" as Desktop
 
 Item {
     id: notificationWindow
-    property alias summary: summary.text
-    property alias body: body.text
-    property alias icon: icon.name
     width: Desktop.instance.parent.width
     height: Desktop.instance.parent.height
-    rotation: Desktop.instance.parent.rotation
     x: Desktop.instance.parent.x
     y: Desktop.instance.parent.y
 
     MouseArea {
         id: notificationArea
-        anchors.top: parent.top
-        anchors.left: parent.left
-        width: notificationWindow.width
-        height: 80
-        enabled: notificationPreview.state == "show"
-
+        anchors.fill: parent
+        enabled: state == "show"
         onClicked: if (notificationPreviewPresenter.notification != null) notificationPreviewPresenter.notification.actionInvoked("default")
 
-        Rectangle {
-            id: notificationPreview
+        Item {
+            id: circleWrapper
             anchors.fill: parent
-            color: "#DD222222"
-
-            states: [
-                State {
-                    name: "show"
-                    PropertyChanges {
-                        target: notificationPreview
-                        opacity: 1
-                    }
-                    StateChangeScript {
-                        name: "notificationShown"
-                        script: {
-                            notificationTimer.start()
-                        }
-                    }
-                },
-                State {
-                    name: "hide"
-                    PropertyChanges {
-                        target: notificationPreview
-                        opacity: 0
-                    }
-                    StateChangeScript {
-                        name: "notificationHidden"
-                        script: {
-                            notificationTimer.stop()
-                            notificationPreviewPresenter.showNextNotification()
-                        }
-                    }
-                }
-            ]
             Rectangle {
-                id: dimmer
-
-                height: 15
-
-                anchors.bottom: parent.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
-
-                gradient: Gradient {
-                    GradientStop { position: 0; color: "transparent" }
-                    GradientStop { position: 1.0; color: "#111111" }
-                }
+                id: circle
+                anchors.centerIn: parent
+                width: parent.width*0.7
+                height: parent.height*0.7
+                radius: width/2
+                color: notificationArea.pressed ? "#cccccc" : "#f4f4f4"
             }
-            transitions: [
-                Transition {
-                    to: "show"
-                    SequentialAnimation {
-                        NumberAnimation { property: "opacity"; duration: 200 }
-                        ScriptAction { scriptName: "notificationShown" }
+        }
+        DropShadow {
+            anchors.fill: circleWrapper
+            horizontalOffset: 0
+            verticalOffset: 0
+            radius: 8.0
+            samples: 17
+            color: "#80000000"
+            source: circleWrapper
+            cached: true
+        }
+
+        Image {
+            id: icon
+            anchors.centerIn: parent
+            anchors.verticalCenterOffset: -parent.height*0.2
+            width: parent.width*0.2
+            height: width
+            smooth: true
+            asynchronous: true
+            sourceSize.width:  width
+            sourceSize.height: height
+            source: {
+                var notif = notificationPreviewPresenter.notification;
+                if(notif==null)
+                    return "";
+                else if(notif.icon == "")
+                    return "file:///usr/lib/qml/org/asteroid/icons/ios-mail-outline.svg";
+                else
+                    return "file:///usr/lib/qml/org/asteroid/icons/" + notif.icon + ".svg";
+                }
+        }
+        ColorOverlay {
+            anchors.fill: icon
+            source: icon
+            color: "#666666"
+            cached: true
+            visible: icon.source != ""
+        }
+
+        Text {
+            id: summary
+            anchors.top: icon.bottom
+            height: text == "" ? 0 : undefined
+            width: parent.width*0.7
+            horizontalAlignment: Text.AlignHCenter
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.topMargin: parent.height*0.03
+            color: "#666666"
+            font.pixelSize: parent.height*0.05
+            font.bold: true
+            clip: true
+            elide: Text.ElideRight
+            text: notificationPreviewPresenter.notification != null ? notificationPreviewPresenter.notification.previewSummary : ""
+        }
+
+        Text {
+            id: body
+            anchors.top: summary.bottom
+            width: parent.width/2
+            horizontalAlignment: Text.AlignHCenter
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.topMargin: parent.height*0.06
+            color: "#666666"
+            font.pixelSize: parent.height*0.05
+            font.bold: summary.text == ""
+            clip: true
+            maximumLineCount: 3
+            elide: Text.ElideRight
+            wrapMode: Text.Wrap
+            text: notificationPreviewPresenter.notification != null ? notificationPreviewPresenter.notification.previewBody : ""
+        }
+
+        states: [
+            State {
+                name: "show"
+                PropertyChanges {
+                    target: notificationArea
+                    opacity: 1
+                }
+                StateChangeScript {
+                    name: "notificationShown"
+                    script: {
+                        notificationTimer.start()
                     }
-                },
-                Transition {
-                    to: "hide"
-                    SequentialAnimation {
-                        NumberAnimation { property: "opacity"; duration: 200 }
-                        ScriptAction { scriptName: "notificationHidden" }
+                }
+            },
+            State {
+                name: "hide"
+                PropertyChanges {
+                    target: notificationArea
+                    opacity: 0
+                }
+                StateChangeScript {
+                    name: "notificationHidden"
+                    script: {
+                        notificationTimer.stop()
+                        notificationPreviewPresenter.showNextNotification()
                     }
                 }
-            ]
-
-            Timer {
-                id: notificationTimer
-                interval: 3000
-                repeat: false
-                onTriggered: notificationPreview.state = "hide"
             }
+        ]
 
-            Icon {
-                id: icon
-                anchors {
-                    left: parent.left
-                    verticalCenter: parent.verticalCenter
-                    leftMargin: 10
+        transitions: [
+            Transition {
+                to: "show"
+                SequentialAnimation {
+                    NumberAnimation { property: "opacity"; duration: 200 }
+                    ScriptAction { scriptName: "notificationShown" }
                 }
-                size: 50
-                name: {
-                            var notif = notificationPreviewPresenter.notification;
-                            if(notif==null)
-                                return "ios-notifications";
-                            else if(notif.icon == "")
-                                return "ios-notifications";
-                            else
-                                return notif.icon;
-                        }
+            },
+            Transition {
+                to: "hide"
+                SequentialAnimation {
+                    NumberAnimation { property: "opacity"; duration: 200 }
+                    ScriptAction { scriptName: "notificationHidden" }
+                }
             }
+        ]
 
-            Text {
-                id: summary
-                anchors {
-                    top: parent.top
-                    left: icon.right
-                    right: parent.right
-                    topMargin: 7
-                    leftMargin: 26
-                    rightMargin: 5
-                }
-                font {
-                    pixelSize: 36
-                }
-                text: notificationPreviewPresenter.notification != null ? notificationPreviewPresenter.notification.previewSummary : ""
-                color: "white"
-                clip: true
-                elide: Text.ElideRight
-            }
+        Timer {
+            id: notificationTimer
+            interval: 3000
+            repeat: false
+            onTriggered: notificationArea.state = "hide"
+        }
 
-            Text {
-                id: body
-                anchors {
-                    bottom: parent.bottom
-                    left: summary.left
-                    right: summary.right
-                    bottomMargin: 7
-                }
-                font {
-                    pixelSize: 18
-                    bold: true
-                }
-                text: notificationPreviewPresenter.notification != null ? notificationPreviewPresenter.notification.previewBody : ""
-                color: "white"
-                clip: true
-                elide: Text.ElideRight
-            }
-
-            Connections {
-                target: notificationPreviewPresenter;
-                onNotificationChanged: notificationPreview.state = (notificationPreviewPresenter.notification != null) ? "show" : "hide"
-            }
+        Connections {
+            target: notificationPreviewPresenter;
+            onNotificationChanged: notificationArea.state = (notificationPreviewPresenter.notification != null) ? "show" : "hide"
         }
     }
 }
