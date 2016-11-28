@@ -11,12 +11,7 @@ styles.path = /usr/share/asteroid-launcher/
 styles.files = vars.conf
 
 watchfaces.path = /usr/share/asteroid-launcher/watchfaces
-watchfaces.files =  watchfaces/000-default-digital.qml \
-                    watchfaces/000-default-digital.jpg \
-                    watchfaces/001-analog.qml \
-                    watchfaces/001-analog.jpg \
-                    watchfaces/002-words.qml \
-                    watchfaces/002-words.jpg
+watchfaces.files =  watchfaces/*
 
 qml.path = /usr/share/asteroid-launcher/qml
 qml.files = qml/MainScreen.qml \
