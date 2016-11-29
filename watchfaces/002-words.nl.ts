@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="nl_NL">
+<context>
+    <name>002-words</name>
+    <message>
+        <source>twelve</source>
+        <translation>twaalf</translation>
+    </message>
+    <message>
+        <source>one</source>
+        <translation>een</translation>
+    </message>
+    <message>
+        <source>two</source>
+        <translation>twee</translation>
+    </message>
+    <message>
+        <source>three</source>
+        <translation>drie</translation>
+    </message>
+    <message>
+        <source>four</source>
+        <translation>vier</translation>
+    </message>
+    <message>
+        <source>five</source>
+        <translation>vijf</translation>
+    </message>
+    <message>
+        <source>six</source>
+        <translation>zes</translation>
+    </message>
+    <message>
+        <source>seven</source>
+        <translation>zeven</translation>
+    </message>
+    <message>
+        <source>eight</source>
+        <translation>acht</translation>
+    </message>
+    <message>
+        <source>nine</source>
+        <translation>negen</translation>
+    </message>
+    <message>
+        <source>ten</source>
+        <translation>tien</translation>
+    </message>
+    <message>
+        <source>eleven</source>
+        <translation>elf</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;{0}&lt;br&gt;&apos;o clock&lt;/b&gt;</source>
+        <translation>&lt;b&gt;{0}&lt;br&gt;uur&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;five&lt;/b&gt;&lt;br&gt;past&lt;br&gt;&lt;b&gt;{0}&lt;/b&gt;</source>
+        <translation>&lt;b&gt;vijf&lt;/b&gt;&lt;br&gt;over&lt;br&gt;&lt;b&gt;{0}&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;ten&lt;/b&gt;&lt;br&gt;past&lt;br&gt;&lt;b&gt;{0}&lt;/b&gt;</source>
+        <translation>&lt;b&gt;tien&lt;/b&gt;&lt;br&gt;over&lt;br&gt;&lt;b&gt;{0}&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;quarter&lt;/b&gt;&lt;br&gt;past&lt;br&gt;&lt;b&gt;{0}&lt;/b&gt;</source>
+        <translation>&lt;b&gt;kwart&lt;/b&gt;&lt;br&gt;over&lt;br&gt;&lt;b&gt;{0}&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;{0}&lt;br&gt;twenty&lt;/b&gt;</source>
+        <translation>&lt;b&gt;tien&lt;/b&gt;&lt;br&gt;voor&lt;br&gt;&lt;b&gt;half {1}&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;{0}&lt;br&gt;twenty-five&lt;/b&gt;</source>
+        <translation>&lt;b&gt;vijf&lt;/b&gt;&lt;br&gt;voor&lt;br&gt;&lt;b&gt;half {1}&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;{0}&lt;br&gt;thirty&lt;/b&gt;</source>
+        <translation>&lt;b&gt;half&lt;br&gt;{1}&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;{0}&lt;br&gt;thirty-five&lt;/b&gt;</source>
+        <translation>&lt;b&gt;vijf&lt;/b&gt;&lt;br&gt;over&lt;br&gt;&lt;b&gt;half {1}&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;{0}&lt;br&gt;fourty&lt;/b&gt;</source>
+        <translation>&lt;b&gt;tien&lt;/b&gt;&lt;br&gt;over&lt;br&gt;&lt;b&gt;half {1}&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;quarter&lt;/b&gt;&lt;br&gt;to&lt;br&gt;&lt;b&gt;{1}&lt;/b&gt;</source>
+        <translation>&lt;b&gt;kwart&lt;/b&gt;&lt;br&gt;voor&lt;br&gt;&lt;b&gt;{1}&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;ten&lt;/b&gt;&lt;br&gt;to&lt;br&gt;&lt;b&gt;{1}&lt;/b&gt;</source>
+        <translation>&lt;b&gt;tien&lt;/b&gt;&lt;br&gt;voor&lt;br&gt;&lt;b&gt;{1}&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;five&lt;/b&gt;&lt;br&gt;to&lt;br&gt;&lt;b&gt;{1}&lt;/b&gt;</source>
+        <translation>&lt;b&gt;vijf&lt;/b&gt;&lt;br&gt;voor&lt;br&gt;&lt;b&gt;{1}&lt;/b&gt;</translation>
+    </message>
+</context>
+</TS>

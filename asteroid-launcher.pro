@@ -87,3 +87,7 @@ OTHER_FILES += qml/*.qml \
     qml/USBModeSelector.qml \
     qml/VolumeControl.qml \
     qml/ShutdownScreen.qml
+
+lupdate_only{
+    SOURCES = watchfaces/*.qml
+}
