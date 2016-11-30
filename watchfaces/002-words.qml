@@ -62,7 +62,7 @@ Item {
 
         textFormat: Text.RichText
 
-        font.pixelSize: 45
+        font.pixelSize: parent.height*0.15
         font.weight: Font.Light
         lineHeight: 0.85
         color: "white"
@@ -90,7 +90,7 @@ Item {
     Text {
         id: dateDisplay
 
-        font.pixelSize: 20
+        font.pixelSize: parent.height*0.07
         color: "white"
         opacity: 0.8
         horizontalAlignment: Text.AlignHCenter
