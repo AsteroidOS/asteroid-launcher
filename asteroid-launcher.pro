@@ -87,3 +87,8 @@ OTHER_FILES += qml/*.qml \
     qml/USBModeSelector.qml \
     qml/VolumeControl.qml \
     qml/ShutdownScreen.qml
+
+lupdate_only{
+    SOURCES = qml/AppSwitcher.qml \
+              qml/FeedsPage.qml
+}
