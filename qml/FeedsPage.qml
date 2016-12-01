@@ -115,7 +115,7 @@ Item {
         anchors.top: emptyIndicator.bottom
         anchors.horizontalCenter: parent.horizontalCenter
         text: qsTr("No notifications")
-        font.pixelSize: parent.height/10
-        color: "white"
+        font.pixelSize: parent.height*0.08
+        color: "lightgrey"
     }
 }

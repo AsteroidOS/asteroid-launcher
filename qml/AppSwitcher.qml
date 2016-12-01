@@ -115,8 +115,8 @@ Item {
         visible: switcherModel.itemCount === 0
         anchors.top: emptyIndicator.bottom
         anchors.horizontalCenter: parent.horizontalCenter
-        text: qsTr("No apps opened")
-        font.pixelSize: parent.height/10
-        color: "white"
+        text: qsTr("No open apps")
+        font.pixelSize: parent.height*0.08
+        color: "lightgrey"
     }
 }
