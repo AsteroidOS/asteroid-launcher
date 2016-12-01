@@ -101,21 +101,23 @@ Item {
 
     Icon {
         id: emptyIndicator
-        visible: notifmodel.itemCount === 0
-        width: parent.width*0.5
-        height: parent.height*0.5
+        visible: switcherModel.itemCount === 0
+        width: parent.width*0.27
+        height: parent.height*0.27
         size: width
         name: "ios-mail-outline"
-        color: "white"
+        color: "lightgrey"
         anchors.centerIn: parent
+        anchors.verticalCenterOffset: -parent.height*0.09
     }
 
     Text {
-        visible: notifmodel.itemCount === 0
+        visible: switcherModel.itemCount === 0
+        anchors.topMargin: parent.height*0.04
         anchors.top: emptyIndicator.bottom
         anchors.horizontalCenter: parent.horizontalCenter
         text: qsTr("No notifications")
-        font.pixelSize: parent.height*0.08
+        font.pixelSize: parent.height*0.06
         color: "lightgrey"
     }
 }
