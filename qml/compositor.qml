@@ -181,6 +181,7 @@ Compositor {
 
                 PropertyChanges {
                     target: root.topmostAlarmWindow == null ? appLayer : alarmsLayer
+                    opacity: (width-2*gestureArea.value)/width
                     x: gestureArea.horizontal ? gestureArea.value : 0
                     y: gestureArea.horizontal ? 0 : gestureArea.value
                 }
