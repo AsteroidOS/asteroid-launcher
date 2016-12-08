@@ -101,7 +101,7 @@ Item {
 
     Icon {
         id: emptyIndicator
-        visible: switcherModel.itemCount === 0
+        visible: notifmodel.itemCount === 0
         width: parent.width*0.27
         height: parent.height*0.27
         size: width
@@ -112,7 +112,7 @@ Item {
     }
 
     Text {
-        visible: switcherModel.itemCount === 0
+        visible: notifmodel.itemCount === 0
         anchors.topMargin: parent.height*0.04
         anchors.top: emptyIndicator.bottom
         anchors.horizontalCenter: parent.horizontalCenter
