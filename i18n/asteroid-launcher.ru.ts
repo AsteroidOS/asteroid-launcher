@@ -10,7 +10,7 @@
     <message>
         <location filename="../qml/AppSwitcher.qml" line="120"/>
         <source>No open apps</source>
-        <translation type="unfinished"></translation>
+        <translation>Нет открытых приложений</translation>
     </message>
 </context>
 <context>
