@@ -6,7 +6,7 @@
     <message>
         <location filename="qml/AppSwitcher.qml" line="118"/>
         <source>No apps opened</source>
-        <translation>Nie ma otwartych programów</translation>
+        <translation>Brak uruchomionych aplikacji</translation>
     </message>
 </context>
 <context>
