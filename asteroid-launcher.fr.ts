@@ -6,7 +6,7 @@
     <message>
         <location filename="qml/AppSwitcher.qml" line="118"/>
         <source>No apps opened</source>
-        <translation type="unfinished"></translation>
+        <translation>Pas d'applis ouvertes</translation>
     </message>
 </context>
 <context>
@@ -14,7 +14,7 @@
     <message>
         <location filename="qml/FeedsPage.qml" line="117"/>
         <source>No notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Pas de notifications</translation>
     </message>
 </context>
 </TS>
