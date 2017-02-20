@@ -26,7 +26,7 @@ Item {
         color: "#3498db"
         backgroundColor: "#e5e6e8"
         animationEnabled: true
-        value: rootitem.currentValue
+        value: rootitem.currentValue/100
     }
 
     Item {
