@@ -63,7 +63,7 @@ Item {
     WallClock {
         id: wallClock
         enabled: true
-        updateFrequency: WallClock.Minute
+        updateFrequency: WallClock.Second
     }
 
     Connections {
