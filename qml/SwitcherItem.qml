@@ -44,8 +44,6 @@ MouseArea {
             id: windowPixmap
             anchors.fill: parent
             windowId: model.window
-            smooth: true
-            radius: 5
         }
         BrightnessContrast {
             anchors.fill: parent
