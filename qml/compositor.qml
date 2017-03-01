@@ -36,62 +36,15 @@ import org.asteroid.controls 1.0
 import "desktop.js" as Desktop
 import "compositor"
 
-Compositor {
+Item {
     id: root
-
-    property Item homeWindow
-
-    // Set to the item of the current topmost window
-    property Item topmostWindow
-
-    // True if the home window is the topmost window
-    homeActive: topmostWindow == root.homeWindow
-    property bool appActive: !homeActive
-
-    // The application window that was most recently topmost
-    property Item topmostApplicationWindow
-    property Item topmostAlarmWindow: null
-
-    readonly property bool topmostWindowRequestsGesturesDisabled: topmostWindow && topmostWindow.window
-                                                                  && topmostWindow.window.surface
-                                                                  && (topmostWindow.window.surface.windowFlags & 1)
-
-    function windowToFront(winId) {
-        var o = root.windowForId(winId)
-        var window = null
-
-        if (o) window = o.userData
-        if (window == null) window = homeWindow
-
-        setCurrentWindow(window)
-    }
-
-    function setCurrentWindow(w, skipAnimation) {
-        if (w == null)
-            w = homeWindow
-
-        topmostWindow = w;
-
-        if (topmostWindow == homeWindow || topmostWindow == null) {
-            clearKeyboardFocus()
-        } else {
-            if (topmostApplicationWindow) topmostApplicationWindow.visible = false
-            topmostApplicationWindow = topmostWindow
-            topmostApplicationWindow.visible = true
-            if (!skipAnimation) topmostApplicationWindow.animateIn()
-            w.window.takeFocus()
-        }
-    }
-
-    onSensorOrientationChanged: {
-        screenOrientation = sensorOrientation
-    }
+    anchors.fill: parent
 
     Connections {
-        target: root
+        target: comp.quickWindow
         onActiveFocusItemChanged: {
             // Search for the layer of the focus item
-            var focusedLayer = root.activeFocusItem
+            var focusedLayer = comp.activeFocusItem
             while (focusedLayer && focusedLayer.parent !== layersParent)
                 focusedLayer = focusedLayer.parent
 
@@ -106,7 +59,7 @@ Compositor {
 
         Item {
             id: homeLayer
-            z: root.homeActive ? 4 : 1
+            z: comp.homeActive ? 4 : 1
             anchors.fill: parent
         }
 
@@ -116,14 +69,14 @@ Compositor {
 
             width: parent.width
             height: parent.height
-            visible: root.appActive
+            visible: comp.appActive
         }
 
         Item {
             id: overlayLayer
             z: 5
 
-            visible: root.appActive
+            visible: comp.appActive
         }
 
         Item {
@@ -138,11 +91,11 @@ Compositor {
 
     BorderGestureArea {
         id: gestureArea
-        enabled: root.appActive
+        enabled: comp.appActive
         z: 7
         anchors.fill: parent
         acceptsDown: true
-        acceptsRight: !topmostWindowRequestsGesturesDisabled
+        acceptsRight: !comp.topmostWindowRequestsGesturesDisabled
 
         property real swipeThreshold: 0.15
 
@@ -160,12 +113,12 @@ Compositor {
                     swipeAnimation.valueTo = inverted ? -max : max
                     swipeAnimation.start()
                     if (gesture == "down") {
-                        Lipstick.compositor.closeClientForWindowId(topmostWindow.window.windowId)
+                        Lipstick.compositor.closeClientForWindowId(comp.topmostWindow.window.windowId)
                     }
                 } else {
                     cancelAnimation.start()
                 }
-            } else if (root.homeActive){
+            } else if (comp.homeActive){
                 cancelAnimation.start()
             }
         }
@@ -180,7 +133,7 @@ Compositor {
                 }
 
                 PropertyChanges {
-                    target: root.topmostAlarmWindow == null ? appLayer : alarmsLayer
+                    target: comp.topmostAlarmWindow == null ? appLayer : alarmsLayer
                     opacity: (width-2*gestureArea.value)/width
                     x: gestureArea.horizontal ? gestureArea.value : 0
                     y: gestureArea.horizontal ? 0 : gestureArea.value
@@ -220,7 +173,7 @@ Compositor {
             }
 
             ScriptAction {
-                script: setCurrentWindow(root.homeWindow)
+                script: comp.setCurrentWindow(comp.homeWindow)
             }
 
             PropertyAction {
@@ -241,87 +194,136 @@ Compositor {
         WindowWrapperAlpha { }
     }
 
-    Component {
-        id: mysticWrapper
-        WindowWrapperMystic { }
-    }
-
     Timer {
         id: delayTimer
         interval: 150
         repeat: false
-        onTriggered: setCurrentWindow(root.homeWindow)
-    }
-    onDisplayOff: {
-        if (root.topmostAlarmWindow == null)
-            delayTimer.start()
+        onTriggered: comp.setCurrentWindow(comp.homeWindow)
     }
 
-    onWindowAdded: {
-        var isHomeWindow = window.isInProcess && root.homeWindow == null && window.title === "Home"
-        var isDialogWindow = window.category === "dialog"
-        var isNotificationWindow = window.category == "notification"
-        var isOverlayWindow =  window.category == "overlay"
-        var isAlarmWindow = window.category == "alarm"
-        var parent = null
-        if (window.category == "cover") {
-            window.visible = false
-            return
-        }
-        if (isHomeWindow) {
-            parent = homeLayer
-        } else if (isNotificationWindow) {
-            parent = notificationLayer
-        } else if (isOverlayWindow){
-            parent = overlayLayer
-        } else if (isAlarmWindow) {
-            parent = alarmsLayer
-        } else {
-            parent = appLayer
-        }
+    Compositor {
+        id: comp
 
-        var w;
-        if (isOverlayWindow) w = alphaWrapper.createObject(parent, { window: window })
-        else w = windowWrapper.createObject(parent, { window: window })
+        property Item homeWindow
 
-        window.userData = w
+        // Set to the item of the current topmost window
+        property Item topmostWindow
 
-        if (isHomeWindow) {
-            root.homeWindow = w
-            setCurrentWindow(homeWindow)
-        } else if (isNotificationWindow || isOverlayWindow) {
+        // True if the home window is the topmost window
+        homeActive: topmostWindow == comp.homeWindow
+        property bool appActive: !homeActive
 
-        } else if (isDialogWindow){
+        // The application window that was most recently topmost
+        property Item topmostApplicationWindow
+        property Item topmostAlarmWindow: null
+
+        readonly property bool topmostWindowRequestsGesturesDisabled: topmostWindow && topmostWindow.window
+                                                                      && (topmostWindow.window.windowFlags & 1)
+
+        function windowToFront(winId) {
+            var o = comp.windowForId(winId)
+            var window = null
+
+            if (o) window = o.userData
+            if (window == null) window = homeWindow
+
             setCurrentWindow(window)
-        } else if (isAlarmWindow){
-            root.topmostAlarmWindow = window
-            w = mysticWrapper.createObject(parent, {window: window})
-            window.userData = w
-            setCurrentWindow(w)
-        } else {
-            if (!root.topmostAlarmWindow) {
-                w = mysticWrapper.createObject(parent, {window: window})
-                window.userData = w
-                setCurrentWindow(w)
+        }
+
+        function setCurrentWindow(w, skipAnimation) {
+            if (w == null)
+                w = homeWindow
+
+            topmostWindow = w;
+
+            if (topmostWindow == homeWindow || topmostWindow == null) {
+                clearKeyboardFocus()
+            } else {
+                if (topmostApplicationWindow) topmostApplicationWindow.visible = false
+                topmostApplicationWindow = topmostWindow
+                topmostApplicationWindow.visible = true
+                if (!skipAnimation) topmostApplicationWindow.animateIn()
+                w.window.takeFocus()
             }
         }
-    }
 
-    onWindowRaised: {
-        windowToFront(window.windowId)
-    }
-
-    onWindowRemoved: {
-        Desktop.instance.switcher.switchModel.removeWindowForTitle(window.title)
-        var w = window.userData;
-        if (window.category == "alarm") {
-            root.topmostAlarmWindow = null
-            setCurrentWindow(root.homeWindow)
+        onSensorOrientationChanged: {
+            screenOrientation = sensorOrientation
         }
-        if (root.topmostWindow == w)
-            setCurrentWindow(root.homeWindow);
 
-        if (window.userData)
-            window.userData.destroy()
+        onDisplayOff: {
+            if (comp.topmostAlarmWindow == null)
+                delayTimer.start()
+        }
+
+        onWindowAdded: {
+            var isHomeWindow = window.isInProcess && comp.homeWindow == null && window.title === "Home"
+            var isDialogWindow = window.category === "dialog"
+            var isNotificationWindow = window.category == "notification"
+            var isOverlayWindow =  window.category == "overlay"
+            var isAlarmWindow = window.category == "alarm"
+            var parent = null
+            if (window.category == "cover") {
+                window.visible = false
+                return
+            }
+            if (isHomeWindow) {
+                parent = homeLayer
+            } else if (isNotificationWindow) {
+                parent = notificationLayer
+            } else if (isOverlayWindow){
+                parent = overlayLayer
+            } else if (isAlarmWindow) {
+                parent = alarmsLayer
+            } else {
+                parent = appLayer
+            }
+
+            var w;
+            if (isOverlayWindow) w = alphaWrapper.createObject(parent, { window: window })
+            else w = windowWrapper.createObject(parent, { window: window })
+
+            window.userData = w
+
+            if (isHomeWindow) {
+                comp.homeWindow = w
+                setCurrentWindow(homeWindow)
+            } else if (isNotificationWindow || isOverlayWindow) {
+
+            } else if (isDialogWindow){
+                setCurrentWindow(window)
+            } else if (isAlarmWindow){
+                comp.topmostAlarmWindow = window
+                setCurrentWindow(window)
+            } else {
+                if (!comp.topmostAlarmWindow) {
+                    setCurrentWindow(w)
+                }
+            }
+        }
+
+        onWindowRaised: {
+            windowToFront(window.windowId)
+        }
+
+        onWindowRemoved: {
+            console.log("onWindowRemoved310")
+            Desktop.instance.switcher.switchModel.removeWindowForTitle(window.title)
+            console.log("onWindowRemoved312")
+            var w = window.userData;
+            console.log("onWindowRemoved314")
+            if (window.category == "alarm") {
+                comp.topmostAlarmWindow = null
+                setCurrentWindow(comp.homeWindow)
+            }
+            console.log("onWindowRemoved319")
+            if (comp.topmostWindow == w)
+                setCurrentWindow(comp.homeWindow);
+
+            console.log("onWindowRemoved323")
+            if (window.userData)
+                window.userData.destroy()
+            console.log("onWindowRemoved326")
+        }
     }
 }
