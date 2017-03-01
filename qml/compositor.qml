@@ -307,23 +307,17 @@ Item {
         }
 
         onWindowRemoved: {
-            console.log("onWindowRemoved310")
             Desktop.instance.switcher.switchModel.removeWindowForTitle(window.title)
-            console.log("onWindowRemoved312")
             var w = window.userData;
-            console.log("onWindowRemoved314")
             if (window.category == "alarm") {
                 comp.topmostAlarmWindow = null
                 setCurrentWindow(comp.homeWindow)
             }
-            console.log("onWindowRemoved319")
             if (comp.topmostWindow == w)
                 setCurrentWindow(comp.homeWindow);
 
-            console.log("onWindowRemoved323")
             if (window.userData)
                 window.userData.destroy()
-            console.log("onWindowRemoved326")
         }
     }
 }
