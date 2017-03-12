@@ -142,7 +142,7 @@ Item {
         anchors.horizontalCenter: rootitem.horizontalCenter
         anchors.bottom: rootitem.bottom
         height: parent.height/3
-        width: batteryIcon.size + batteryIndicator.width
+        width: batteryIcon.width + batteryIndicator.width
 
         Icon {
             id: batteryIcon
@@ -151,7 +151,8 @@ Item {
                 else if(batteryChargePercentage.value > 15) return "ios-battery-full"
                 else                                        return "ios-battery-dead"
             }
-            size:  parent.height/2
+            width:  parent.height/2
+            height: width
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
         }

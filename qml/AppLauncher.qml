@@ -46,7 +46,7 @@ ListView {
         id: launcherItem
         width: appsListView.width
         height: appsListView.width
-        source: model.object.iconId == "" ? "image://theme/help" : (model.object.iconId.indexOf("/") == 0 ? "file://" : "file:///usr/lib/qml/org/asteroid/icons/") + model.object.iconId + ".svg"
+        iconName: model.object.iconId == "" ? "ios-help" : model.object.iconId
         iconCaption: model.object.title.toUpperCase()
         enabled: !appsListView.dragging
     }

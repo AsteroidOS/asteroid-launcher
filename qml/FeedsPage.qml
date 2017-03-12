@@ -58,7 +58,8 @@ Item {
                             anchors.left: parent.left
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.leftMargin: 10
-                            size: 50
+                            width: 50
+                            height: 50
                             name: {
                                 if(modelData == null || modelData.icon == "")
                                     return "ios-notifications";
@@ -104,7 +105,6 @@ Item {
         visible: notifmodel.itemCount === 0
         width: parent.width*0.27
         height: parent.height*0.27
-        size: width
         name: "ios-mail-outline"
         color: "lightgrey"
         anchors.centerIn: parent
