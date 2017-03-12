@@ -105,7 +105,6 @@ Item {
         visible: switcherModel.itemCount === 0
         width: parent.width*0.27
         height: parent.height*0.27
-        size: width
         name: "ios-apps-outline"
         color: "lightgrey"
         anchors.centerIn: parent

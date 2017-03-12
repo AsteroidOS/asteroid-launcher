@@ -34,10 +34,11 @@
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
 import org.nemomobile.lipstick 0.1
+import org.asteroid.controls 1.0
 
 MouseArea {
     id: launcherItem
-    property alias source: iconImage.source
+    property alias iconName: icon.name
     property alias iconCaption: iconText.text
 
     onClicked: {
@@ -81,28 +82,18 @@ MouseArea {
         cached: true
     }
 
-    Image {
-        id: iconImage
+    Icon {
+        id: icon
         anchors.centerIn: parent
         anchors.verticalCenterOffset: -parent.height*0.03
         width: parent.width*0.31
         height: width
-        smooth: true
-        asynchronous: true
-        sourceSize.width:  iconImage.width
-        sourceSize.height: iconImage.height
-    }
-    ColorOverlay {
-        anchors.fill: iconImage
-        source: iconImage
         color: "#666666"
-        cached: true
-        visible: iconImage.source != ""
     }
 
     Text {
         id: iconText
-        anchors.top: iconImage.bottom
+        anchors.top: icon.bottom
         width: parent.width
         elide: Text.ElideRight
         horizontalAlignment: Text.AlignHCenter

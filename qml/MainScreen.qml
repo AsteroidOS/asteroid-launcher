@@ -30,7 +30,6 @@
 
 import QtQuick 2.1
 import QtQuick.Window 2.1
-import QtGraphicalEffects 1.0
 import org.nemomobile.time 1.0
 import org.nemomobile.configuration 1.0
 import org.nemomobile.lipstick 0.1
@@ -106,7 +105,7 @@ Item {
             contentItem.onWidthChanged: positionViewAtIndex(1, ListView.Beginning)
             onContentXChanged: {
                 verticalListView.interactive = centerListView.contentX == width // Only allows vertical flicking for the center item
-                wallpaperDarkener.brightness = Math.abs(centerListView.contentX - width)/width*(-0.3)
+                wallpaperDarkener.opacity = Math.abs(centerListView.contentX - width)/width*0.4
                 wallpaper.anchors.horizontalCenterOffset = (centerListView.contentX - width)*(-0.05)
                 switcherVisibleInHome = centerListView.contentX < width
             }
@@ -174,7 +173,7 @@ Item {
             else {
                 bgCenterColor = Qt.binding(function() { return defaultCenterColor })
                 bgOuterColor = Qt.binding(function() { return defaultOuterColor })
-                wallpaperDarkener.brightness = Math.abs(shift)/height*(-0.3)
+                wallpaperDarkener.opacity = Math.abs(shift)/height*0.4
             }
         }
     }
@@ -219,10 +218,11 @@ Item {
         }
     }
 
-    BrightnessContrast {
+    Rectangle {
         id: wallpaperDarkener
         anchors.fill: wallpaper
-        source: wallpaper
         z: -99
+        color: "#000000"
+        opacity: 0.0
     }
 }

@@ -71,32 +71,22 @@ Item {
             cached: true
         }
 
-        Image {
+        Icon {
             id: icon
             anchors.centerIn: parent
             anchors.verticalCenterOffset: -parent.height*0.2
             width: parent.width*0.2
             height: width
-            smooth: true
-            asynchronous: true
-            sourceSize.width:  width
-            sourceSize.height: height
-            source: {
+            color: "#666666"
+            name: {
                 var notif = notificationPreviewPresenter.notification;
                 if(notif==null)
                     return "";
                 else if(notif.icon == "")
-                    return "file:///usr/lib/qml/org/asteroid/icons/ios-mail-outline.svg";
+                    return "ios-mail-outline";
                 else
-                    return "file:///usr/lib/qml/org/asteroid/icons/" + notif.icon + ".svg";
+                    return notif.icon;
                 }
-        }
-        ColorOverlay {
-            anchors.fill: icon
-            source: icon
-            color: "#666666"
-            cached: true
-            visible: icon.source != ""
         }
 
         Text {

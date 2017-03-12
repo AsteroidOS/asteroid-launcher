@@ -53,7 +53,8 @@ MouseArea {
         color: ma.pressed ? '#99222222' : ma.toggled ? '#BB222222' :  '#33222222'
         Icon {
             id: ic
-            size: parent.width*0.56
+            width: parent.width*0.56
+            height: width
             anchors.centerIn: parent
             color: ma.pressed ? "lightgrey" : "white"
         }
