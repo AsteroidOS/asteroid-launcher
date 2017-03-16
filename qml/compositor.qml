@@ -41,7 +41,7 @@ Item {
     anchors.fill: parent
 
     Connections {
-        target: comp.quickWindow
+        target: comp != null ? comp.quickWindow : null
         onActiveFocusItemChanged: {
             // Search for the layer of the focus item
             var focusedLayer = comp.activeFocusItem
@@ -59,7 +59,7 @@ Item {
 
         Item {
             id: homeLayer
-            z: comp.homeActive ? 4 : 1
+            z: comp != null && comp.homeActive ? 4 : 1
             anchors.fill: parent
         }
 
@@ -69,14 +69,14 @@ Item {
 
             width: parent.width
             height: parent.height
-            visible: comp.appActive
+            visible: comp != null && comp.appActive
         }
 
         Item {
             id: overlayLayer
             z: 5
 
-            visible: comp.appActive
+            visible: comp != null && comp.appActive
         }
 
         Item {
@@ -91,11 +91,11 @@ Item {
 
     BorderGestureArea {
         id: gestureArea
-        enabled: comp.appActive
+        enabled: comp != null && comp.appActive
         z: 7
         anchors.fill: parent
         acceptsDown: true
-        acceptsRight: !comp.topmostWindowRequestsGesturesDisabled
+        acceptsRight: comp != null && !comp.topmostWindowRequestsGesturesDisabled
 
         property real swipeThreshold: 0.15
 
@@ -133,7 +133,7 @@ Item {
                 }
 
                 PropertyChanges {
-                    target: comp.topmostAlarmWindow == null ? appLayer : alarmsLayer
+                    target: comp != null ? (comp.topmostAlarmWindow == null ? appLayer : alarmsLayer) : null
                     opacity: (width-2*gestureArea.value)/width
                     x: gestureArea.horizontal ? gestureArea.value : 0
                     y: gestureArea.horizontal ? 0 : gestureArea.value

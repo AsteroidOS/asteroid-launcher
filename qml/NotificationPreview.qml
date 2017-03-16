@@ -37,10 +37,10 @@ import "../desktop.js" as Desktop
 
 Item {
     id: notificationWindow
-    width: Desktop.instance.parent.width
-    height: Desktop.instance.parent.height
-    x: Desktop.instance.parent.x
-    y: Desktop.instance.parent.y
+    width: Desktop.instance.width
+    height: Desktop.instance.height
+    x: Desktop.instance.x
+    y: Desktop.instance.y
 
     MouseArea {
         id: notificationArea
