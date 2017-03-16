@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>images/shutdown-logo.png</file>
+        <file>images/diskBackground.svg</file>
+        <file>images/diskBackgroundPressed.svg</file>
     </qresource>
 </RCC>

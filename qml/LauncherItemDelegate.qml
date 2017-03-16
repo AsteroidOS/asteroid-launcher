@@ -32,7 +32,6 @@
  */
 
 import QtQuick 2.0
-import QtGraphicalEffects 1.0
 import org.nemomobile.lipstick 0.1
 import org.asteroid.controls 1.0
 
@@ -59,27 +58,11 @@ MouseArea {
         }
     }
 
-    Item {
-        id: circleWrapper
+    Image {
         anchors.fill: parent
-        Rectangle {
-            id: circle
-            anchors.centerIn: parent
-            width: parent.width*0.7
-            height: parent.height*0.7
-            radius: width/2
-            color: launcherItem.pressed ? "#cccccc" : "#f4f4f4"
-        }
-    }
-    DropShadow {
-        anchors.fill: circleWrapper
-        horizontalOffset: 0
-        verticalOffset: 0
-        radius: 8.0
-        samples: 17
-        color: "#80000000"
-        source: circleWrapper
-        cached: true
+        source: launcherItem.pressed ? "qrc:/images/diskBackgroundPressed.svg" : "qrc:/images/diskBackground.svg"
+        sourceSize.width: width
+        sourceSize.height: height
     }
 
     Icon {
