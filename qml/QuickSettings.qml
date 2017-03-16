@@ -30,7 +30,6 @@
 
 import QtQuick 2.1
 import QtFeedback 5.0
-import QtGraphicalEffects 1.0
 import org.freedesktop.contextkit 1.0
 import org.nemomobile.dbus 1.0
 import org.nemomobile.systemsettings 1.0

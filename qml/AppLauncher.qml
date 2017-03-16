@@ -31,7 +31,6 @@
  */
 
 import QtQuick 2.0
-import QtGraphicalEffects 1.0
 import org.nemomobile.lipstick 0.1
 
 ListView {
