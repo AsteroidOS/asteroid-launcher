@@ -21,34 +21,22 @@
  */
 
 import QtQuick 2.1
-import QtGraphicalEffects 1.0
 
 Item {
-    id: rootitem
-
     Text {
         id: dateDisplay
 
-        font.pixelSize: 20
+        font.pixelSize: parent.height/17
         color: "white"
+        style: Text.Outline; styleColor: "#80000000"
         opacity: 0.8
         horizontalAlignment: Text.AlignHCenter
 
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 20
+        anchors.bottomMargin: parent.height/17
 
         text: Qt.formatDate(wallClock.time, "<b>ddd</b> d MMM")
-    }
-
-    DropShadow {
-        anchors.fill: dateDisplay
-        horizontalOffset: 3
-        verticalOffset: 3
-        radius: 8.0
-        samples: 16
-        color: "#80000000"
-        source: dateDisplay
     }
 
     Canvas {

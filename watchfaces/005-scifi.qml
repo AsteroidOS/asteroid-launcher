@@ -28,9 +28,8 @@
  */
 
 import QtQuick 2.1
-import QtGraphicalEffects 1.0
 
-Item {
+Canvas {
     id: rootitem
     anchors.fill: parent
 
@@ -39,18 +38,38 @@ Item {
         else      return x;
     }
 
-    Text {
-        id: clock
-        text: twoDigits(wallClock.time.getHours()) + ":" + twoDigits(wallClock.time.getMinutes())
-        font.pixelSize: parent.height/5
-        font.family: "Orbitron"
-        anchors.centerIn: parent
-        color: "white"
+    onPaint: {
+        var ctx = getContext("2d")
+        ctx.reset()
+        ctx.fillStyle = "white"
+        ctx.textAlign = "center"
+        ctx.textBaseline = 'middle';
+        ctx.shadowColor = "black"
+        ctx.shadowOffsetX = 0
+        ctx.shadowOffsetY = 0
+        ctx.shadowBlur = 3
+
+        var medium = "57 "
+        var thin = "0 "
+        var light = "25 "
+
+        var px = "px "
+
+        var centerX = width/2
+        var centerY = height/2
+
+        // Hour
+        var text = twoDigits(wallClock.time.getHours()) + ":" + twoDigits(wallClock.time.getMinutes())
+        var fontSize = height/5
+        var verticalOffset = height*0.025
+        var fontFamily = "Orbitron"
+        ctx.font = medium + fontSize + px + fontFamily;
+        ctx.fillText(text, centerX, centerY+verticalOffset);
     }
-    DropShadow {
-        anchors.fill: clock
-        source: clock
-        radius: 7.0
-        samples: 15
+
+    Connections {
+        target: wallClock
+        onTimeChanged: rootitem.requestPaint()
     }
 }
+
