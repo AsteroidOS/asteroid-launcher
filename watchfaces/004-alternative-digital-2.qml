@@ -32,8 +32,6 @@ import QtQuick 2.1
 Canvas {
     id: rootitem
     contextType: "2d"
-    renderStrategy: Canvas.Threaded;
-    renderTarget: Canvas.Image
     antialiasing: true
     smooth: true
 

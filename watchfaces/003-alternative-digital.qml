@@ -34,8 +34,6 @@ Canvas {
     id: rootitem
     anchors.fill: parent
     contextType: "2d"
-    renderStrategy: Canvas.Threaded;
-    renderTarget: Canvas.Image
     antialiasing: true
     smooth: true
 
