@@ -77,5 +77,10 @@ Canvas {
         ctx.font = medium + fontSize + px + fontFamily;
         ctx.fillText(text, centerX, centerY+verticalOffset);
     }
+    
+    Connections {
+        target: wallClock
+        onTimeChanged: rootitem.requestPaint()
+    }
 }
 
