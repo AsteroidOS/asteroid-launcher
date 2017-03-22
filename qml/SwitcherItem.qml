@@ -126,6 +126,8 @@ MouseArea {
         Behavior on scale { PropertyAnimation { duration: 300; easing.type: Easing.OutBack } }
         scale: switcherRoot.closeMode ? 1 : 0
         opacity: scale
+        width: switcherItemRoot.width/2
+        height: width
         enabled: !closeAnimation.running
         anchors {
             bottom: parent.bottom
