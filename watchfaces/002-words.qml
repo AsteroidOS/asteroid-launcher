@@ -30,7 +30,6 @@
  */
 
 import QtQuick 2.1
-import QtGraphicalEffects 1.0
 
 Item {
     id: rootitem
@@ -66,6 +65,7 @@ Item {
         font.weight: Font.Light
         lineHeight: 0.85
         color: "white"
+        style: Text.Outline; styleColor: "#80000000"
         horizontalAlignment: Text.AlignHCenter
 
         anchors {
@@ -77,21 +77,12 @@ Item {
         text: generateTime(wallClock.time)
     }
 
-    DropShadow {
-        anchors.fill: timeDisplay
-        horizontalOffset: 3
-        verticalOffset: 3
-        radius: 8.0
-        samples: 16
-        color: "#80000000"
-        source: timeDisplay
-    }
-
     Text {
         id: dateDisplay
 
         font.pixelSize: parent.height*0.07
         color: "white"
+        style: Text.Outline; styleColor: "#80000000"
         opacity: 0.8
         horizontalAlignment: Text.AlignHCenter
 
@@ -103,15 +94,5 @@ Item {
         }
 
         text: Qt.formatDate(wallClock.time, "<b>ddd</b> d MMM")
-    }
-
-    DropShadow {
-        anchors.fill: dateDisplay
-        horizontalOffset: 3
-        verticalOffset: 3
-        radius: 8.0
-        samples: 16
-        color: "#80000000"
-        source: dateDisplay
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Florent Revest <revestflo@gmail.com>
+ * Copyright (C) 2017 Florent Revest <revestflo@gmail.com>
  * All rights reserved.
  *
  * You may use this file under the terms of BSD license as follows:
@@ -28,57 +28,68 @@
  */
 
 import QtQuick 2.1
-import QtGraphicalEffects 1.0
 
-Item {
+Canvas {
     id: rootitem
-    anchors.fill: parent
+    contextType: "2d"
+    antialiasing: true
+    smooth: true
 
     function twoDigits(x) {
         if (x<10) return "0"+x;
         else      return x;
     }
 
-    Item {
-        id: clock
-        anchors.fill: parent
-        Text {
-            id: hour
-            text: twoDigits(wallClock.time.getHours())
-            font.pixelSize: parent.height*0.36
-            font.family: "Roboto"
-            font.weight: Font.Medium
-            anchors.centerIn: parent
-            anchors.horizontalCenterOffset: -parent.width*0.15
-            color: "white"
-        }
-        Text {
-            id: minute
-            text: twoDigits(wallClock.time.getMinutes())
-            font.pixelSize: parent.height/7
-            font.family: "Roboto"
-            font.weight: Font.Thin
-            anchors.centerIn: parent
-            anchors.verticalCenterOffset: -parent.width/20
-            anchors.horizontalCenterOffset: parent.width/5
-            color: "white"
-        }
-        Text {
-            id: date
-            text: Qt.formatDate(wallClock.time, "d MMM")
-            font.pixelSize: parent.height/13
-            font.family: "Raleway"
-            font.weight: Font.Light
-            anchors.centerIn: parent
-            anchors.verticalCenterOffset: parent.width/11
-            anchors.horizontalCenterOffset: parent.width/5
-            color: "white"
-        }
+    onPaint: {
+        var ctx = getContext("2d")
+        ctx.reset()
+        ctx.fillStyle = "white"
+        ctx.textAlign = "center"
+        ctx.textBaseline = 'middle';
+        ctx.shadowColor = "black"
+        ctx.shadowOffsetX = 0
+        ctx.shadowOffsetY = 0
+        ctx.shadowBlur = 3
+
+        var medium = "57 "
+        var thin = "0 "
+        var light = "25 "
+
+        var px = "px "
+
+        var centerX = width/2
+        var centerY = height/2
+
+        // Hour
+        var text = twoDigits(wallClock.time.getHours())
+        var fontSize = height*0.36
+        var horizontalOffset = -width*0.15
+        var verticalOffset = height*0.05
+        var fontFamily = "Roboto"
+        ctx.font = medium + fontSize + px + fontFamily;
+        ctx.fillText(text, centerX+horizontalOffset, centerY+verticalOffset);
+
+        // Minute
+        text = twoDigits(wallClock.time.getMinutes())
+        fontSize = height/7
+        horizontalOffset = width/5
+        verticalOffset = -width*0.03
+        fontFamily = "Roboto"
+        ctx.font = thin + fontSize + px + fontFamily;
+        ctx.fillText(text, centerX+horizontalOffset, centerY+verticalOffset);
+
+        // Date
+        text = Qt.formatDate(wallClock.time, "d MMM")
+        fontSize = height/13
+        horizontalOffset = width/5
+        verticalOffset = width*0.1
+        fontFamily = "Raleway"
+        ctx.font = light + fontSize + px + fontFamily;
+        ctx.fillText(text, centerX+horizontalOffset, centerY+verticalOffset);
     }
-    DropShadow {
-        anchors.fill: clock
-        source: clock
-        radius: 7.0
-        samples: 15
+
+    Connections {
+        target: wallClock
+        onTimeChanged: rootitem.requestPaint()
     }
 }

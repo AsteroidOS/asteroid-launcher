@@ -31,7 +31,6 @@
  */
 
 import QtQuick 2.0
-import QtGraphicalEffects 1.0
 import org.nemomobile.lipstick 0.1
 import org.asteroid.controls 1.0
 
@@ -45,11 +44,12 @@ MouseArea {
             anchors.fill: parent
             windowId: model.window
         }
-        BrightnessContrast {
+        Rectangle {
+            id: darkener
             anchors.fill: parent
-            source: windowPixmap
+            color: "#000000"
+            opacity: 0.3
             visible: switcherItemRoot.pressed
-            brightness: -0.3
         }
         opacity: switcherRoot.closeMode ? .6 : 1
         Behavior on opacity { NumberAnimation { duration: 300; easing.type: Easing.OutBack } }
@@ -126,6 +126,8 @@ MouseArea {
         Behavior on scale { PropertyAnimation { duration: 300; easing.type: Easing.OutBack } }
         scale: switcherRoot.closeMode ? 1 : 0
         opacity: scale
+        width: switcherItemRoot.width/2
+        height: width
         enabled: !closeAnimation.running
         anchors {
             bottom: parent.bottom
