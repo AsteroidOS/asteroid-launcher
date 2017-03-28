@@ -5,12 +5,12 @@
     <name>AppSwitcher</name>
     <message>
         <source>No apps opened</source>
-        <translation type="unfinished"></translation>
+        <translation>Ei avattuja sovelluksia</translation>
     </message>
     <message>
         <location filename="../qml/AppSwitcher.qml" line="120"/>
         <source>No open apps</source>
-        <translation type="unfinished"></translation>
+        <translation>Ei käynnissä olevia sovelluksia</translation>
     </message>
 </context>
 <context>
@@ -18,7 +18,7 @@
     <message>
         <location filename="../qml/FeedsPage.qml" line="119"/>
         <source>No notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Ei ilmoituksia</translation>
     </message>
 </context>
 </TS>
