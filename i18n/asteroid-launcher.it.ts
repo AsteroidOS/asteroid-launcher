@@ -5,7 +5,7 @@
     <name>AppSwitcher</name>
     <message>
         <source>No apps opened</source>
-        <translation>Nessuna app aperta</translation>
+        <translation>Nessuna applicazione</translation>
     </message>
     <message>
         <location filename="../qml/AppSwitcher.qml" line="120"/>
