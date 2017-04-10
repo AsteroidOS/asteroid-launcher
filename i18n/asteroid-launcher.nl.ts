@@ -18,7 +18,7 @@
     <message>
         <location filename="../qml/FeedsPage.qml" line="119"/>
         <source>No notifications</source>
-        <translation>Geen notificaties</translation>
+        <translation>Geen meldingen</translation>
     </message>
 </context>
 </TS>
