@@ -32,14 +32,11 @@
 import QtQuick 2.0
 import org.asteroid.controls 1.0
 import org.nemomobile.lipstick 0.1
-import "../desktop.js" as Desktop
 
 Item {
     id: notificationWindow
-    width: Desktop.instance.width
-    height: Desktop.instance.height
-    x: Desktop.instance.x
-    y: Desktop.instance.y
+    width: initialSize.width
+    height: initialSize.height
 
     MouseArea {
         id: notificationArea
