@@ -28,6 +28,95 @@
  */
 
 import QtQuick 2.0
+import org.asteroid.controls 1.0
 
 Item {
+    id: btAgent
+
+    width: initialSize.width
+    height: initialSize.height
+
+    Image {
+        anchors.fill: parent
+        source: "qrc:/images/diskBackground.svg"
+        sourceSize.width: width
+        sourceSize.height: height
+    }
+
+    Icon {
+        id: icon
+        anchors.centerIn: parent
+        anchors.verticalCenterOffset: -parent.height*0.2
+        width: parent.width*0.2
+        height: width
+        color: "#666666"
+        name: "ios-bluetooth"
+    }
+
+    Text {
+        id: summary
+        anchors.top: icon.bottom
+        height: text == "" ? 0 : undefined
+        width: parent.width*0.7
+        horizontalAlignment: Text.AlignHCenter
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.topMargin: parent.height*0.03
+        color: "#666666"
+        font.pixelSize: parent.height*0.05
+        clip: true
+        elide: Text.ElideRight
+        text: "Confirm:"
+    }
+
+    Text {
+        id: body
+        anchors.top: summary.bottom
+        width: parent.width/2
+        horizontalAlignment: Text.AlignHCenter
+        anchors.horizontalCenter: parent.horizontalCenter
+        color: "#666666"
+        font.pixelSize: parent.height*0.05
+        font.bold: true
+        clip: true
+        maximumLineCount: 1
+        elide: Text.ElideRight
+        wrapMode: Text.Wrap
+        text: agent.passkey
+    }
+
+    IconButton {
+        width: parent.height*0.2
+        height: width
+        iconColor: "#666666"
+        pressedIconColor: "#222222"
+        iconName: "ios-close-circle-outline"
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.horizontalCenterOffset: -parent.width*0.12
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: parent.height*0.21
+        onClicked: {
+            agent.userCancels()
+            agent.windowVisible = false
+        }
+    }
+
+    IconButton {
+        width: parent.height*0.2
+        height: width
+        iconColor: "#666666"
+        pressedIconColor: "#222222"
+        iconName: "ios-checkmark-circle-outline"
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.horizontalCenterOffset: parent.width*0.12
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: parent.height*0.21
+        onClicked: {
+            agent.userAccepts()
+            agent.windowVisible = false
+        }
+    }
+
+    Behavior on opacity {
+        NumberAnimation { duration: 200 }
+    }
 }
