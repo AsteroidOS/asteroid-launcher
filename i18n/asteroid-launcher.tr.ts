@@ -5,12 +5,12 @@
     <name>AppSwitcher</name>
     <message>
         <source>No apps opened</source>
-        <translation>Hiçbir uygulama açılmadı</translation>
+        <translation>Açık uygulama yok</translation>
     </message>
     <message>
         <location filename="../qml/AppSwitcher.qml" line="120"/>
         <source>No open apps</source>
-        <translation type="unfinished"></translation>
+        <translation>Açık uygulama yok</translation>
     </message>
 </context>
 <context>
