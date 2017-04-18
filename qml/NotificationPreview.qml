@@ -32,14 +32,11 @@
 import QtQuick 2.0
 import org.asteroid.controls 1.0
 import org.nemomobile.lipstick 0.1
-import "../desktop.js" as Desktop
 
 Item {
     id: notificationWindow
-    width: Desktop.instance.width
-    height: Desktop.instance.height
-    x: Desktop.instance.x
-    y: Desktop.instance.y
+    width: initialSize.width
+    height: initialSize.height
 
     MouseArea {
         id: notificationArea
@@ -65,11 +62,21 @@ Item {
                 var notif = notificationPreviewPresenter.notification;
                 if(notif==null)
                     return "";
-                else if(notif.icon == "")
-                    return "ios-mail-outline";
-                else
-                    return notif.icon;
+
+                function noicon(str) {
+                    return str === "" || str === null || str === undefined;
                 }
+                // icon for asteroid internal, appIcon for notifications from android
+                if(noicon(notif.icon) && noicon(notif.appIcon))
+                    return "ios-mail-outline";
+                if(noicon(notif.icon) && !noicon(notif.appIcon))
+                    return notif.appIcon;
+                if(!noicon(notif.icon) && noicon(notif.appIcon))
+                    return notif.icon;
+
+                // prefer asteroid internal
+                return notif.icon;
+            }
         }
 
         Text {
