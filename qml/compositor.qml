@@ -209,6 +209,9 @@ Item {
         // Set to the item of the current topmost window
         property Item topmostWindow
 
+        // Only used to change blank timeout when on watchface or elsewhere
+        onHomeActiveChanged: lipstickSettings.lockscreenVisible = homeActive
+
         // True if the home window is the topmost window
         homeActive: topmostWindow == comp.homeWindow
         property bool appActive: !homeActive
