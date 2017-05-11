@@ -196,7 +196,7 @@ Item {
 
     Timer {
         id: delayTimer
-        interval: 150
+        interval: 5000
         repeat: false
         onTriggered: comp.setCurrentWindow(comp.homeWindow)
     }
@@ -258,6 +258,8 @@ Item {
             if (comp.topmostAlarmWindow == null)
                 delayTimer.start()
         }
+
+        onDisplayAboutToBeOn: delayTimer.stop()
 
         onWindowAdded: {
             var isHomeWindow = window.isInProcess && comp.homeWindow == null && window.title === "Home"
