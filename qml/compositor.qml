@@ -196,7 +196,7 @@ Item {
 
     Timer {
         id: delayTimer
-        interval: 150
+        interval: 5000
         repeat: false
         onTriggered: comp.setCurrentWindow(comp.homeWindow)
     }
@@ -208,6 +208,9 @@ Item {
 
         // Set to the item of the current topmost window
         property Item topmostWindow
+
+        // Only used to change blank timeout when on watchface or elsewhere
+        onHomeActiveChanged: lipstickSettings.lockscreenVisible = homeActive
 
         // True if the home window is the topmost window
         homeActive: topmostWindow == comp.homeWindow
@@ -255,6 +258,8 @@ Item {
             if (comp.topmostAlarmWindow == null)
                 delayTimer.start()
         }
+
+        onDisplayAboutToBeOn: delayTimer.stop()
 
         onWindowAdded: {
             var isHomeWindow = window.isInProcess && comp.homeWindow == null && window.title === "Home"

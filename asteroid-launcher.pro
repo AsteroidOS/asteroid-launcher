@@ -95,7 +95,7 @@ lupdate_only{
 }
 
 TRANSLATIONS = i18n/asteroid-launcher.ca.ts \
-               i18n/asteroid-launcher.de.ts \
+               i18n/asteroid-launcher.de_DE.ts \
                i18n/asteroid-launcher.el.ts \
                i18n/asteroid-launcher.es.ts \
                i18n/asteroid-launcher.fa.ts \
@@ -104,7 +104,7 @@ TRANSLATIONS = i18n/asteroid-launcher.ca.ts \
                i18n/asteroid-launcher.it.ts \
                i18n/asteroid-launcher.kab.ts \
                i18n/asteroid-launcher.ko.ts \
-               i18n/asteroid-launcher.nl.ts \
+               i18n/asteroid-launcher.nl_NL.ts \
                i18n/asteroid-launcher.pl.ts \
                i18n/asteroid-launcher.pt_BR.ts \
                i18n/asteroid-launcher.ru.ts \

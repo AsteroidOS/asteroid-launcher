@@ -33,6 +33,7 @@
 #include <QScreen>
 #include <QQmlEngine>
 #include <QQmlContext>
+#include <QTranslator>
 
 #include <lipstickqmlpath.h>
 #include <homeapplication.h>
@@ -46,6 +47,10 @@ int main(int argc, char **argv)
 {
     QmlPath::append("/usr/share/asteroid-launcher/qml");
     HomeApplication app(argc, argv, QString());
+
+    QTranslator translator;
+    translator.load(QLocale(), "asteroid-launcher", ".", "/usr/share/translations", ".qm");
+    app.installTranslator(&translator);
 
     QGuiApplication::setFont(QFont("Open Sans"));
     app.setCompositorPath("/usr/share/asteroid-launcher/qml/compositor.qml");
