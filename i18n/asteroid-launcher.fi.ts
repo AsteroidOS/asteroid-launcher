@@ -4,10 +4,6 @@
 <context>
     <name>AppSwitcher</name>
     <message>
-        <source>No apps opened</source>
-        <translation type="vanished">Ei avattuja sovelluksia</translation>
-    </message>
-    <message>
         <location filename="../qml/AppSwitcher.qml" line="118"/>
         <source>No open apps</source>
         <translation>Ei käynnissä olevia sovelluksia</translation>

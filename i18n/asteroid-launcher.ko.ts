@@ -4,13 +4,9 @@
 <context>
     <name>AppSwitcher</name>
     <message>
-        <source>No apps opened</source>
-        <translation type="vanished">실행중인 앱 없음</translation>
-    </message>
-    <message>
         <location filename="../qml/AppSwitcher.qml" line="118"/>
         <source>No open apps</source>
-        <translation type="unfinished"></translation>
+        <translation>실행중인 앱 없음</translation>
     </message>
 </context>
 <context>
