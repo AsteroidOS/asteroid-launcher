@@ -5,10 +5,10 @@
     <name>AppSwitcher</name>
     <message>
         <source>No apps opened</source>
-        <translation>Keine Apps geöffnet</translation>
+        <translation type="vanished">Keine Apps geöffnet</translation>
     </message>
     <message>
-        <location filename="../qml/AppSwitcher.qml" line="120"/>
+        <location filename="../qml/AppSwitcher.qml" line="118"/>
         <source>No open apps</source>
         <translation>Keine offenen Apps</translation>
     </message>
@@ -16,7 +16,7 @@
 <context>
     <name>FeedsPage</name>
     <message>
-        <location filename="../qml/FeedsPage.qml" line="119"/>
+        <location filename="../qml/FeedsPage.qml" line="118"/>
         <source>No notifications</source>
         <translation>Keine Benachrichtigungen</translation>
     </message>
