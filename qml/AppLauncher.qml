@@ -60,7 +60,7 @@ ListView {
         var upperStop = lowerStop+1
         var ratio = (contentX%appsListView.width)/appsListView.width
 
-        if(upperStop+1 > launcherModel.count || ratio == 0) {
+        if(upperStop + 1 > launcherModel.itemCount || ratio == 0) {
             launcherCenterColor = alb.centerColor(launcherModel.get(lowerStop).filePath);
             launcherOuterColor = alb.outerColor(launcherModel.get(lowerStop).filePath);
             return;

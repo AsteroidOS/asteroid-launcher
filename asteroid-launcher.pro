@@ -99,6 +99,7 @@ TRANSLATIONS = i18n/asteroid-launcher.ca.ts \
                i18n/asteroid-launcher.el.ts \
                i18n/asteroid-launcher.es.ts \
                i18n/asteroid-launcher.fa.ts \
+               i18n/asteroid-launcher.fi.ts \
                i18n/asteroid-launcher.fr.ts \
                i18n/asteroid-launcher.hu.ts \
                i18n/asteroid-launcher.it.ts \

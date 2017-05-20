@@ -29,10 +29,10 @@
  */
 
 import QtQuick 2.1
-import QtFeedback 5.0
 import org.freedesktop.contextkit 1.0
 import org.nemomobile.dbus 1.0
 import org.nemomobile.systemsettings 1.0
+import org.nemomobile.ngf 1.0
 import org.asteroid.controls 1.0
 import org.asteroid.utils 1.0
 
@@ -109,18 +109,20 @@ Item {
         Component.onCompleted: toggled = btStatus.powered
     }
 
-    ThemeEffect {
-         id: haptics
-         effect: "Press"
-     }
+    NonGraphicalFeedback {
+        id: feedback
+        event: "information_tacticon"
+    }
+
     ProfileControl {
          id: profileControl
     }
+
     Timer {
         id: delayTimer
         interval: 125
         repeat: false
-        onTriggered: haptics.play()
+        onTriggered: feedback.play()
     }
 
     QuickSettingsToggle {

@@ -83,6 +83,12 @@ Item {
             id: notificationLayer
             z: 6
         }
+
+        Item {
+            id: agentLayer
+            z: 7
+        }
+
         Item {
             id: alarmsLayer
             z: 3
@@ -267,6 +273,7 @@ Item {
             var isNotificationWindow = window.category == "notification"
             var isOverlayWindow =  window.category == "overlay"
             var isAlarmWindow = window.category == "alarm"
+            var isAgentWindow = window.category == "agent"
             var parent = null
             if (window.category == "cover") {
                 window.visible = false
@@ -278,6 +285,8 @@ Item {
                 parent = notificationLayer
             } else if (isOverlayWindow){
                 parent = overlayLayer
+            } else if (isAgentWindow){
+                parent = agentLayer
             } else if (isAlarmWindow) {
                 parent = alarmsLayer
             } else {
@@ -293,7 +302,7 @@ Item {
             if (isHomeWindow) {
                 comp.homeWindow = w
                 setCurrentWindow(homeWindow)
-            } else if (isNotificationWindow || isOverlayWindow) {
+            } else if (isNotificationWindow || isOverlayWindow || isAgentWindow) {
 
             } else if (isDialogWindow){
                 setCurrentWindow(window)
