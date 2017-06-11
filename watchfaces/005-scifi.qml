@@ -32,6 +32,7 @@ import QtQuick 2.1
 Canvas {
     id: rootitem
     anchors.fill: parent
+    renderTarget: Canvas.FramebufferObject 
 
     function twoDigits(x) {
         if (x<10) return "0"+x;
@@ -58,7 +59,6 @@ Canvas {
         var centerX = width/2
         var centerY = height/2
 
-        // Hour
         var text = twoDigits(wallClock.time.getHours()) + ":" + twoDigits(wallClock.time.getMinutes())
         var fontSize = height/5
         var verticalOffset = height*0.025

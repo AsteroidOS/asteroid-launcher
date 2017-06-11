@@ -42,6 +42,7 @@ Item {
     Canvas {
         anchors.fill: parent
         smooth: true
+        renderTarget: Canvas.FramebufferObject 
         onPaint: {
             var ctx = getContext("2d")
             var rot = (wallClock.time.getHours() - 3 + wallClock.time.getMinutes()/60) / 12
@@ -63,6 +64,7 @@ Item {
     Canvas {
         anchors.fill: parent
         smooth: true
+        renderTarget: Canvas.FramebufferObject 
         onPaint: {
             var ctx = getContext("2d")
             var rot = (wallClock.time.getMinutes() - 15)/60
