@@ -103,10 +103,8 @@ Item {
         var hour = wallClock.time.getHours()
         var minute = wallClock.time.getMinutes()
         var date = wallClock.time.getDate()
-        hourCanvas.hour = hour
-        hourCanvas.requestPaint()
-        minuteCanvas.minute = minute
-        minuteCanvas.requestPaint()
+        hourMinuteCanvas.minute = minute
+        hourMinuteCanvas.requestPaint()
         dateCanvas.date = date
         dateCanvas.requestPaint()
     }
