@@ -29,6 +29,7 @@
 
 import QtQuick 2.0
 import org.asteroid.controls 1.0
+import org.nemomobile.lipstick 0.1
 
 Item {
     id: btAgent
@@ -53,38 +54,51 @@ Item {
         name: "ios-bluetooth"
     }
 
-    Text {
-        id: summary
+    Item {
+        id: text
+        anchors.left: parent.left
+        anchors.right: parent.right
         anchors.top: icon.bottom
-        height: text == "" ? 0 : undefined
-        width: parent.width*0.7
-        horizontalAlignment: Text.AlignHCenter
-        anchors.horizontalCenter: parent.horizontalCenter
         anchors.topMargin: parent.height*0.03
-        color: "#666666"
-        font.pixelSize: parent.height*0.05
-        clip: true
-        elide: Text.ElideRight
-        text: "Confirm:"
+        Text {
+            id: summary
+            anchors.top: parent.top
+            width: parent.width*0.7
+            horizontalAlignment: Text.AlignHCenter
+            anchors.horizontalCenter: parent.horizontalCenter
+            color: "#666666"
+            font.pixelSize: btAgent.height*0.05
+            clip: true
+            elide: Text.ElideRight
+        }
+
+        Text {
+            id: body
+            anchors.top: summary.bottom
+            width: parent.width*0.7
+            height: btAgent.height*0.1
+            anchors.horizontalCenter: parent.horizontalCenter
+            horizontalAlignment: Text.AlignHCenter
+            color: "#666666"
+            font.pixelSize: height*0.7
+            font.bold: true
+            clip: true
+            maximumLineCount: 1
+            elide: Text.ElideRight
+            wrapMode: Text.Wrap
+        }
     }
 
-    Text {
-        id: body
-        anchors.top: summary.bottom
-        width: parent.width/2
-        horizontalAlignment: Text.AlignHCenter
+    TextField {
+        id: inputField
+        inputMethodHints: Qt.ImhDigitsOnly
+        anchors.top: text.top
         anchors.horizontalCenter: parent.horizontalCenter
-        color: "#666666"
-        font.pixelSize: parent.height*0.05
-        font.bold: true
-        clip: true
-        maximumLineCount: 1
-        elide: Text.ElideRight
-        wrapMode: Text.Wrap
-        text: agent.passkey
+        width: parent.width*0.6
     }
 
     IconButton {
+        id: cancelButton
         width: parent.height*0.2
         height: width
         iconColor: "#666666"
@@ -96,11 +110,11 @@ Item {
         anchors.bottomMargin: parent.height*0.21
         onClicked: {
             agent.userCancels()
-            agent.windowVisible = false
         }
     }
 
     IconButton {
+        id: confirmButton
         width: parent.height*0.2
         height: width
         iconColor: "#666666"
@@ -111,12 +125,117 @@ Item {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: parent.height*0.21
         onClicked: {
+            if(agent.state == BluetoothAgent.ReqPinCode)
+                agent.pinCode = Number(inputField.text)
+            if(agent.state == BluetoothAgent.ReqPasskey)
+                agent.passkey = inputField.text
             agent.userAccepts()
-            agent.windowVisible = false
         }
     }
 
     Behavior on opacity {
         NumberAnimation { duration: 200 }
+    }
+
+    HandWritingKeyboard {
+        anchors.fill: parent
+    }
+
+    Connections {
+        target: agent
+        onStateChanged: {
+            console.log("====onStateChanged====" + agent.passkey)
+            switch(agent.state) {
+                case BluetoothAgent.AuthService:
+                    summary.text = qsTr("Authorize:")
+                    body.text = agent.pinCode
+                    text.visible = true
+                    inputField.text = ""
+                    inputField.previewText = ""
+                    inputField.visible = false
+                    cancelButton.visible = true
+                    confirmButton.visible = true
+                    break;
+
+                case BluetoothAgent.ReqAuthorization:
+                    summary.text = qsTr("Authorize")
+                    body.text = ""
+                    text.visible = true
+                    inputField.text = ""
+                    inputField.previewText = ""
+                    inputField.visible = false
+                    cancelButton.visible = true
+                    confirmButton.visible = true
+                    break;
+
+                case BluetoothAgent.ReqConfirmation:
+                    summary.text = qsTr("Confirm:")
+                    body.text = agent.passkey
+                    text.visible = true
+                    inputField.text = ""
+                    inputField.previewText = ""
+                    inputField.visible = false
+                    cancelButton.visible = true
+                    confirmButton.visible = true
+                    break;
+
+                case BluetoothAgent.DispPasskey:
+                    summary.text = qsTr("Pass Key:")
+                    body.text = agent.passkey
+                    text.visible = true
+                    inputField.text = ""
+                    inputField.previewText = ""
+                    inputField.visible = false
+                    cancelButton.visible = false
+                    confirmButton.visible = false
+                    break;
+
+                case BluetoothAgent.ReqPasskey:
+                    summary.text = ""
+                    body.text = ""
+                    text.visible = false
+                    inputField.text = ""
+                    inputField.previewText = qsTr("Enter Key")
+                    inputField.visible = true
+                    cancelButton.visible = true
+                    confirmButton.visible = true
+                    break;
+
+                case BluetoothAgent.DispPinCode:
+                    summary.text = qsTr("PIN Code:")
+                    body.text = agent.pinCode
+                    text.visible = true
+                    inputField.text = ""
+                    inputField.previewText = ""
+                    inputField.visible = false
+                    cancelButton.visible = false
+                    confirmButton.visible = false
+                    break;
+
+                case BluetoothAgent.ReqPinCode:
+                    summary.text = qsTr("PIN Code:")
+                    body.text = ""
+                    text.visible = false
+                    inputField.text = ""
+                    inputField.previewText = qsTr("Enter PIN Code")
+                    inputField.visible = true
+                    cancelButton.visible = true
+                    confirmButton.visible = true
+                    break;
+
+                case BluetoothAgent.Idle:
+                default:
+                    summary.text = ""
+                    body.text = ""
+                    text.visible = false
+                    inputField.text = ""
+                    inputField.previewText = ""
+                    inputField.visible = false
+                    cancelButton.visible = false
+                    confirmButton.visible = false
+                    agent.windowVisible = false
+                    break;
+            }
+        }
     }
 }
