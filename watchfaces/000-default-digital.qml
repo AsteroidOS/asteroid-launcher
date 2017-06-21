@@ -29,19 +29,13 @@
 
 import QtQuick 2.1
 
-Canvas {
-    id: rootitem
-    contextType: "2d"
-    antialiasing: true
-    smooth: true
-
+Item {
     function twoDigits(x) {
         if (x<10) return "0"+x;
         else      return x;
     }
 
-    onPaint: {
-        var ctx = getContext("2d")
+    function prepareContext(ctx) {
         ctx.reset()
         ctx.fillStyle = "white"
         ctx.textAlign = "center"
@@ -50,46 +44,91 @@ Canvas {
         ctx.shadowOffsetX = 0
         ctx.shadowOffsetY = 0
         ctx.shadowBlur = 3
+    }
 
-        var medium = "57 "
-        var thin = "0 "
-        var light = "25 "
+    Canvas {
+        id: hourCanvas
+        anchors.fill: parent
+        antialiasing: true
+        smooth: true
+        renderTarget: Canvas.FramebufferObject 
 
-        var px = "px "
+        property var hour: 0
 
-        var centerX = width/2
-        var centerY = height/2
+        onPaint: {
+            var ctx = getContext("2d")
+            prepareContext(ctx)
 
-        // Hour
-        var text = twoDigits(wallClock.time.getHours())
-        var fontSize = height*0.36
-        var horizontalOffset = -width*0.15
-        var verticalOffset = height*0.05
-        var fontFamily = "Roboto"
-        ctx.font = medium + fontSize + px + fontFamily;
-        ctx.fillText(text, centerX+horizontalOffset, centerY+verticalOffset);
+            ctx.font = "57 " + height*0.36 + "px Roboto"
+            ctx.fillText(twoDigits(hour), width*0.35, height*0.55);
+        }
+    }
 
-        // Minute
-        text = twoDigits(wallClock.time.getMinutes())
-        fontSize = height/7
-        horizontalOffset = width/5
-        verticalOffset = -width*0.03
-        fontFamily = "Roboto"
-        ctx.font = thin + fontSize + px + fontFamily;
-        ctx.fillText(text, centerX+horizontalOffset, centerY+verticalOffset);
+    Canvas {
+        id: minuteCanvas
+        anchors.fill: parent
+        antialiasing: true
+        smooth: true
+        renderTarget: Canvas.FramebufferObject 
 
-        // Date
-        text = Qt.formatDate(wallClock.time, "d MMM")
-        fontSize = height/13
-        horizontalOffset = width/5
-        verticalOffset = width*0.1
-        fontFamily = "Raleway"
-        ctx.font = light + fontSize + px + fontFamily;
-        ctx.fillText(text, centerX+horizontalOffset, centerY+verticalOffset);
+        property var minute: 0
+
+        onPaint: {
+            var ctx = getContext("2d")
+            prepareContext(ctx)
+
+            ctx.font = "0 " + height/7 + "px Roboto"
+            ctx.fillText(twoDigits(minute), width*0.7, height*0.47);
+        }
+    }
+
+    Canvas {
+        id: dateCanvas
+        anchors.fill: parent
+        antialiasing: true
+        smooth: true
+        renderTarget: Canvas.FramebufferObject 
+
+        property var date: 0
+
+        onPaint: {
+            var ctx = getContext("2d")
+            prepareContext(ctx)
+            var ctx = getContext("2d")
+
+            ctx.font = "25 " + height/13 + "px Raleway"
+            ctx.fillText(Qt.formatDate(wallClock.time, "d MMM"), width*0.7, height*0.6);
+        }
     }
 
     Connections {
         target: wallClock
-        onTimeChanged: rootitem.requestPaint()
+        onTimeChanged: {
+            var hour = wallClock.time.getHours()
+            var minute = wallClock.time.getMinutes()
+            var date = wallClock.time.getDate()
+            if(hourCanvas.hour != hour) {
+                hourCanvas.hour = hour
+                hourCanvas.requestPaint()
+            } if(minuteCanvas.minute != minute) {
+                minuteCanvas.minute = minute
+                minuteCanvas.requestPaint()
+            } if(dateCanvas.date != date) {
+                dateCanvas.date = date
+                dateCanvas.requestPaint()
+            }
+        }
+    }
+
+    Component.onCompleted: {
+        var hour = wallClock.time.getHours()
+        var minute = wallClock.time.getMinutes()
+        var date = wallClock.time.getDate()
+        hourCanvas.hour = hour
+        hourCanvas.requestPaint()
+        minuteCanvas.minute = minute
+        minuteCanvas.requestPaint()
+        dateCanvas.date = date
+        dateCanvas.requestPaint()
     }
 }

@@ -30,20 +30,13 @@
 
 import QtQuick 2.1
 
-Canvas {
-    id: rootitem
-    anchors.fill: parent
-    contextType: "2d"
-    antialiasing: true
-    smooth: true
-
+Item {
     function twoDigits(x) {
         if (x<10) return "0"+x;
         else      return x;
     }
 
-    onPaint: {
-        var ctx = getContext("2d")
+    function prepareContext(ctx) {
         ctx.reset()
         ctx.fillStyle = "white"
         ctx.textAlign = "center"
@@ -52,35 +45,67 @@ Canvas {
         ctx.shadowOffsetX = 3
         ctx.shadowOffsetY = 3
         ctx.shadowBlur = 3
-
-        var medium = "57 "
-        var light = "50 "
-
-        var px = "px "
-
-        var centerX = width/2
-        var centerY = height/2
-
-        // Hour & minute
-        var text = Qt.formatDateTime(wallClock.time, "hh:mm")
-        var fontSize = height*0.25
-        var verticalOffset = height*0.03
-        var fontFamily = "sans-serif"
-        ctx.font = light + fontSize + px + fontFamily;
-        ctx.fillText(text, centerX, centerY+verticalOffset);
-
-        // Date
-        text = Qt.formatDate(wallClock.time, "ddd d MMM")
-        fontSize = height*0.05
-        fontFamily = "sans-serif"
-        verticalOffset = height*0.2
-        ctx.font = medium + fontSize + px + fontFamily;
-        ctx.fillText(text, centerX, centerY+verticalOffset);
     }
-    
+
+    Canvas {
+        id: hourMinuteCanvas
+        anchors.fill: parent
+        antialiasing: true
+        smooth: true
+        renderTarget: Canvas.FramebufferObject 
+
+        property var minute: 0
+
+        onPaint: {
+            var ctx = getContext("2d")
+            prepareContext(ctx)
+
+            ctx.font = "50 " + height*0.25 + "px sans-serif";
+            ctx.fillText(Qt.formatDateTime(wallClock.time, "hh:mm"), width*0.5, height*0.53);
+        }
+    }
+
+    Canvas {
+        id: dateCanvas
+        anchors.fill: parent
+        antialiasing: true
+        smooth: true
+        renderTarget: Canvas.FramebufferObject 
+
+        property var date: 0
+
+        onPaint: {
+            var ctx = getContext("2d")
+            prepareContext(ctx)
+            var ctx = getContext("2d")
+
+            ctx.font = "57 " + height*0.05 + "px sans-serif";
+            ctx.fillText(Qt.formatDate(wallClock.time, "ddd d MMM"), width*0.5, width*0.7);
+        }
+    }
+
     Connections {
         target: wallClock
-        onTimeChanged: rootitem.requestPaint()
+        onTimeChanged: {
+            var minute = wallClock.time.getMinutes()
+            var date = wallClock.time.getDate()
+            if(hourMinuteCanvas.minute != minute) {
+                hourMinuteCanvas.minute = minute
+                hourMinuteCanvas.requestPaint()
+            } if(dateCanvas.date != date) {
+                dateCanvas.date = date
+                dateCanvas.requestPaint()
+            }
+        }
+    }
+
+    Component.onCompleted: {
+        var hour = wallClock.time.getHours()
+        var minute = wallClock.time.getMinutes()
+        var date = wallClock.time.getDate()
+        hourMinuteCanvas.minute = minute
+        hourMinuteCanvas.requestPaint()
+        dateCanvas.date = date
+        dateCanvas.requestPaint()
     }
 }
-

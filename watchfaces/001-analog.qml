@@ -41,10 +41,11 @@ Item {
 
     Canvas {
         anchors.fill: parent
-        rotation: wallClock.time.getHours() * 30 + wallClock.time.getMinutes() * 0.5
         smooth: true
+        renderTarget: Canvas.FramebufferObject 
         onPaint: {
             var ctx = getContext("2d")
+            var rot = (wallClock.time.getHours() - 3 + wallClock.time.getMinutes()/60) / 12
             ctx.lineWidth = 3
             ctx.strokeStyle = "white"
             ctx.shadowColor = "#80000000"
@@ -53,7 +54,8 @@ Item {
             ctx.shadowBlur = 3
             ctx.beginPath()
             ctx.moveTo(parent.width/2, parent.height/2)
-            ctx.lineTo(width/2, height*0.3)
+            ctx.lineTo(parent.width/2+Math.cos(rot * 2 * Math.PI)*width*0.2,
+                       parent.height/2+Math.sin(rot * 2 * Math.PI)*width*0.2)
             ctx.closePath()
             ctx.stroke()
         }
@@ -61,10 +63,11 @@ Item {
 
     Canvas {
         anchors.fill: parent
-        rotation: wallClock.time.getMinutes() * 6
         smooth: true
+        renderTarget: Canvas.FramebufferObject 
         onPaint: {
             var ctx = getContext("2d")
+            var rot = (wallClock.time.getMinutes() - 15)/60
             ctx.lineWidth = 3
             ctx.strokeStyle = "white"
             ctx.shadowColor = "#80000000"
@@ -73,7 +76,8 @@ Item {
             ctx.shadowBlur = 3
             ctx.beginPath()
             ctx.moveTo(parent.width/2, parent.height/2)
-            ctx.lineTo(width/2, height*0.1)
+            ctx.lineTo(parent.width/2+Math.cos(rot * 2 * Math.PI)*width*0.4,
+                       parent.height/2+Math.sin(rot * 2 * Math.PI)*width*0.4)
             ctx.closePath()
             ctx.stroke()
         }
