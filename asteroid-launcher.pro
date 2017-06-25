@@ -7,9 +7,6 @@ VERSION = 0.1
 INSTALLS = target
 target.path = /usr/bin
 
-styles.path = /usr/share/asteroid-launcher/
-styles.files = vars.conf
-
 watchfaces.path = /usr/share/asteroid-launcher/watchfaces
 watchfaces.files =  watchfaces/*
 
@@ -21,7 +18,6 @@ qml.files = qml/MainScreen.qml \
     qml/QuickSettings.qml \
     qml/QuickSettingsToggle.qml \
     qml/AppLauncher.qml \
-    qml/SwitcherItem.qml \
     qml/FeedsPage.qml \
     qml/USBModeSelector.qml \
     qml/VolumeControl.qml \
@@ -49,20 +45,18 @@ connectivity.files = qml/USBModeSelector.qml \
 notifications.path = /usr/share/asteroid-launcher/qml/notifications
 notifications.files = qml/NotificationPreview.qml
 
-INSTALLS += styles qml qmlcompositor scripts system volumecontrol connectivity notifications watchfaces
+INSTALLS += qml qmlcompositor scripts system volumecontrol connectivity notifications watchfaces
 
 CONFIG += qt link_pkgconfig
 QT += quick waylandcompositor
 DEFINES += QT_COMPOSITOR_QUICK
 HEADERS += \
-    launcherwindowmodel.h \
     applauncherbackground.h
 
 MOC_DIR = .moc
 
 SOURCES += \
     main.cpp \
-    launcherwindowmodel.cpp \
     applauncherbackground.cpp
 
 RESOURCES += \
@@ -78,13 +72,11 @@ OTHER_FILES += qml/*.qml \
     qml/QuickSettings.qml \
     qml/QuickSettingsToggle.qml \
     qml/AppLauncher.qml \
-    qml/SwitcherItem.qml \
     qml/compositor/WindowWrapperMystic.qml \
     qml/compositor/WindowWrapperBase.qml \
     qml/compositor/WindowWrapperAlpha.qml \
     qml/NotificationPreview.qml \
     qml/FeedsPage.qml \
-	  vars.conf \
     qml/USBModeSelector.qml \
     qml/VolumeControl.qml \
     qml/ShutdownScreen.qml

@@ -108,7 +108,11 @@ Item {
         onGestureStarted: {
             swipeAnimation.stop()
             cancelAnimation.stop()
-            if ((gesture == "down" || gesture == "right")) {
+            if (gesture == "down") {
+                Desktop.instance.onAboutToClose()
+                state = "swipe"
+            } else if(gesture == "right") {
+                Desktop.instance.onAboutToMinimize()
                 state = "swipe"
             }
         }
@@ -118,9 +122,7 @@ Item {
                 if (gestureArea.progress >= swipeThreshold) {
                     swipeAnimation.valueTo = inverted ? -max : max
                     swipeAnimation.start()
-                    if (gesture == "down") {
-                        Lipstick.compositor.closeClientForWindowId(comp.topmostWindow.window.windowId)
-                    }
+                    Lipstick.compositor.closeClientForWindowId(comp.topmostWindow.window.windowId)
                 } else {
                     cancelAnimation.start()
                 }
@@ -204,7 +206,7 @@ Item {
         id: delayTimer
         interval: 5000
         repeat: false
-        onTriggered: comp.setCurrentWindow(comp.homeWindow)
+        onTriggered: Lipstick.compositor.closeClientForWindowId(comp.topmostWindow.window.windowId)
     }
 
     Compositor {
@@ -254,10 +256,6 @@ Item {
                 if (!skipAnimation) topmostApplicationWindow.animateIn()
                 w.window.takeFocus()
             }
-        }
-
-        onSensorOrientationChanged: {
-            screenOrientation = sensorOrientation
         }
 
         onDisplayOff: {
@@ -321,7 +319,6 @@ Item {
         }
 
         onWindowRemoved: {
-            Desktop.instance.switcher.switchModel.removeWindowForTitle(window.title)
             var w = window.userData;
             if (window.category == "alarm") {
                 comp.topmostAlarmWindow = null

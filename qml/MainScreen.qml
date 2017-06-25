@@ -40,7 +40,6 @@ import "desktop.js" as Desktop
 Item {
     id: desktop
     anchors.fill: parent;
-    property var switcher: null
 
     AppLauncherBackground { id: alb }
 
@@ -55,7 +54,6 @@ Item {
 
     Component.onCompleted: {
         Desktop.instance = desktop
-        Lipstick.compositor.screenOrientation = nativeOrientation
         LipstickSettings.lockScreen(true)
     }
 
@@ -77,13 +75,13 @@ Item {
         defaultValue: "file:///usr/share/asteroid-launcher/watchfaces/000-default-digital.qml"
     }
 
-    property bool switcherVisibleInHome: false;
-
     Component { id: topPage;    QuickSettings { id: quickSet; width: desktop.width; height: desktop.height } }
-    Component { id: leftPage;   AppSwitcher   { id: switcher; width: desktop.width; height: desktop.height; visibleInHome: switcherVisibleInHome; Component.onCompleted: { desktop.switcher = switcher }} }
+    Component { id: leftPage;   FeedsPage     { id: feed;     width: desktop.width; height: desktop.height } }
     Component { id: centerPage; Loader        { id: clock;    width: desktop.width; height: desktop.height; source: watchFaceSource.value } }
-    Component { id: rightPage;  FeedsPage     { id: feed;     width: desktop.width; height: desktop.height } }
-    Component { id: bottomPage; AppLauncher   { id: launcher; width: desktop.width; height: desktop.height; switcher: desktop.switcher } }
+    Component { id: rightPage;  AppSwitcher   { id: switcher; width: desktop.width; height: desktop.height; } }
+    Component { id: bottomPage; AppLauncher   { id: launcher; width: desktop.width; height: desktop.height; } }
+
+    property QtObject centerListView
 
     Component { id: centerRow; ListView { id: centerListView // The three columns of the center row
             model: 3
@@ -107,23 +105,8 @@ Item {
                 verticalListView.interactive = centerListView.contentX == width // Only allows vertical flicking for the center item
                 wallpaperDarkener.opacity = Math.abs(centerListView.contentX - width)/width*0.4
                 wallpaper.anchors.horizontalCenterOffset = (centerListView.contentX - width)*(-0.05)
-                switcherVisibleInHome = centerListView.contentX < width
             }
-
-            Timer {
-                id: delayTimer
-                interval: 150
-                repeat: false
-                onTriggered: {
-                    verticalListView.positionViewAtIndex(1, ListView.Beginning);
-                    centerListView.positionViewAtIndex(1, ListView.Beginning);
-                }
-            }
-            Connections {
-                target: Lipstick.compositor
-                onDisplayOff: delayTimer.start();
-                onHomeActiveChanged: delayTimer.start();
-            }
+            Component.onCompleted: desktop.centerListView = this
         }
     }
 
@@ -176,6 +159,16 @@ Item {
                 wallpaperDarkener.opacity = Math.abs(shift)/height*0.4
             }
         }
+    }
+
+    function onAboutToClose() {
+        verticalListView.positionViewAtIndex(1, ListView.Beginning);
+        centerListView.positionViewAtIndex(1, ListView.Beginning);
+    }
+
+    function onAboutToMinimize() {
+        verticalListView.positionViewAtIndex(2, ListView.Beginning);
+        centerListView.positionViewAtIndex(1, ListView.Beginning);
     }
 
 // Wallpaper

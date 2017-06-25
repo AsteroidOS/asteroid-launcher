@@ -41,8 +41,6 @@
 
 #include "applauncherbackground.h"
 
-#include "launcherwindowmodel.h"
-
 int main(int argc, char **argv)
 {
     QmlPath::append("/usr/share/asteroid-launcher/qml");
@@ -78,7 +76,6 @@ int main(int argc, char **argv)
         nativeOrientation = app.primaryScreen()->primaryOrientation();
     app.engine()->rootContext()->setContextProperty("nativeOrientation", nativeOrientation);
 
-    qmlRegisterType<LauncherWindowModel>("org.asteroid.launcher", 1, 0 ,"LauncherWindowModel");
     qmlRegisterType<AppLauncherBackground>("org.asteroid.launcher", 1, 0, "AppLauncherBackground");
     app.setQmlPath("/usr/share/asteroid-launcher/qml/MainScreen.qml");
 

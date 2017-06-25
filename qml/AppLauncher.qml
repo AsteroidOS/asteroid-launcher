@@ -36,7 +36,6 @@ import org.nemomobile.lipstick 0.1
 ListView {
     id: appsListView
     orientation: ListView.Horizontal
-    property var switcher: null
     snapMode: ListView.SnapToItem
 
     model: LauncherModel { id: launcherModel }

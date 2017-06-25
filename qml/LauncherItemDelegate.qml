@@ -43,11 +43,7 @@ MouseArea {
     onClicked: {
         // TODO: disallow if close mode enabled
         if (model.object.type !== LauncherModel.Folder) {
-            var winId = switcher.switchModel.getWindowIdForTitle(model.object.title)
-            if (winId == 0)
-                model.object.launchApplication()
-            else
-                Lipstick.compositor.windowToFront(winId)
+            model.object.launchApplication()
         } else {
             if (!folderLoader.visible) {
                 folderLoader.visible = true

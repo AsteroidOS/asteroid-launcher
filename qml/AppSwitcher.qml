@@ -1,8 +1,5 @@
 /*
- * Copyright (C) 2015 Florent Revest <revestflo@gmail.com>
- *               2014 Aleksi Suomalainen <suomalainen.aleksi@gmail.com>
- *               2012 Timur Kristóf <venemo@fedoraproject.org>
- *               2011 Tom Swindell <t.swindell@rubyx.co.uk>
+ * Copyright (C) 2017 Florent Revest <revestflo@gmail.com>
  * All rights reserved.
  *
  * You may use this file under the terms of BSD license as follows:
@@ -31,91 +28,24 @@
  */
 
 import QtQuick 2.0
-import org.nemomobile.lipstick 0.1
-import org.asteroid.launcher 1.0
 import org.asteroid.controls 1.0
 
 Item {
-    id: switcherRoot
-
-    property bool closeMode: false
-    property bool visibleInHome: false
-    property alias runningAppsCount: switcherModel.itemCount
-    property var switchModel: switcherModel
-
-    onVisibleInHomeChanged: {
-        // Exit close mode when scrolling out of view
-        if (!visibleInHome && closeMode) {
-            closeMode = false;
-        }
-    }
-
-    Flickable {
-        id: flickable
-        contentHeight: gridview.height
-        anchors.fill: parent
-        anchors.margins: DeviceInfo.hasRoundScreen ? width/10 : width/20
-
-        MouseArea {
-            height: flickable.contentHeight > flickable.height ? flickable.contentHeight : flickable.height
-            width: flickable.width
-            onPressAndHold: closeMode = !closeMode
-            onClicked: {
-                if (closeMode)
-                    closeMode = false
-            }
-        }
-
-        Grid {
-            id: gridview
-            columns: 2
-            move: Transition {
-                NumberAnimation {
-                    properties: "x,y"
-                }
-            }
-
-            Repeater {
-                id: gridRepeater
-                model: LauncherWindowModel {
-                    id:switcherModel
-                }
-
-                delegate: Item {
-                    width: (flickable.width - (gridview.spacing * gridview.columns)) / gridview.columns
-                    height: width * (desktop.height / desktop.width)
-
-                    // The outer Item is necessary because of animations in SwitcherItem changing
-                    // its size, which would break the Grid. 
-                    SwitcherItem {
-                        id: switcherItem
-                        width: parent.width*0.95
-                        height: parent.height*0.95
-                        anchors.centerIn: parent
-                    }
-                }
-            }
-        }
-    }
-
-    // Empty switcher indicator
     Icon {
         id: emptyIndicator
-        visible: switcherModel.itemCount === 0
         width: parent.width*0.27
         height: parent.height*0.27
-        name: "ios-apps-outline"
+        name: "ios-alert"
         color: "lightgrey"
         anchors.centerIn: parent
         anchors.verticalCenterOffset: -parent.height*0.09
     }
 
     Text {
-        visible: switcherModel.itemCount === 0
         anchors.topMargin: parent.height*0.04
         anchors.top: emptyIndicator.bottom
         anchors.horizontalCenter: parent.horizontalCenter
-        text: qsTr("No open apps")
+        text: "Work in progress"
         font.pixelSize: parent.height*0.06
         color: "lightgrey"
     }

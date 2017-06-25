@@ -2,17 +2,9 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="hu">
 <context>
-    <name>AppSwitcher</name>
+    <name>NotificationsPage</name>
     <message>
-        <location filename="../qml/AppSwitcher.qml" line="118"/>
-        <source>No open apps</source>
-        <translation>Nincs megnyitott alkalmazás</translation>
-    </message>
-</context>
-<context>
-    <name>FeedsPage</name>
-    <message>
-        <location filename="../qml/FeedsPage.qml" line="118"/>
+        <location filename="../qml/notifications/NotificationsPage.qml" line="118"/>
         <source>No notifications</source>
         <translation>Nincsenek értesítések</translation>
     </message>
