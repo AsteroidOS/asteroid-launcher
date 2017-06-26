@@ -106,6 +106,16 @@ Item {
                 wallpaperDarkener.opacity = Math.abs(centerListView.contentX - width)/width*0.4
                 wallpaper.anchors.horizontalCenterOffset = (centerListView.contentX - width)*(-0.05)
             }
+            Timer {
+                id: delayTimer
+                interval: 150
+                repeat: false
+                onTriggered: onAboutToClose()
+            }
+            Connections {
+                target: Lipstick.compositor
+                onDisplayOff: delayTimer.start();
+             }
             Component.onCompleted: desktop.centerListView = this
         }
     }
