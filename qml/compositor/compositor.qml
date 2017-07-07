@@ -31,6 +31,7 @@
  */
 
 import QtQuick 2.0
+import QtQuick.Window 2.1
 import org.nemomobile.lipstick 0.1
 import org.asteroid.controls 1.0
 import "desktop.js" as Desktop
@@ -39,6 +40,8 @@ import "compositor"
 Item {
     id: root
     anchors.fill: parent
+
+    rotation: Screen.angleBetween(Screen.primaryScreen, Lipstick.compositor.screenOrientation)
 
     Connections {
         target: comp != null ? comp.quickWindow : null
@@ -70,6 +73,9 @@ Item {
             width: parent.width
             height: parent.height
             visible: comp != null && comp.appActive
+
+            // Let app deal with rotation themselves
+            rotation: Screen.angleBetween(Lipstick.compositor.screenOrientation, Screen.primaryScreen)
         }
 
         Item {
