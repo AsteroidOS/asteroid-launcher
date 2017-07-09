@@ -27,8 +27,7 @@ scripts.path = /usr/share/asteroid-launcher/qml/
 scripts.files =  qml/misc/desktop.js
 
 qmlcompositor.path = /usr/share/asteroid-launcher/qml/compositor
-qmlcompositor.files = qml/compositor/WindowWrapperBase.qml \
-    qml/compositor/WindowWrapperAlpha.qml
+qmlcompositor.files = qml/compositor/WindowWrapperBase.qml
 
 system.path = /usr/share/asteroid-launcher/qml/system
 system.files = qml/misc/ShutdownScreen.qml
@@ -70,7 +69,6 @@ OTHER_FILES += qml/*.qml \
     qml/appswitcher/LauncherItemDelegate.qml \
     qml/compositor/compositor.qml \
     qml/compositor/WindowWrapperBase.qml \
-    qml/compositor/WindowWrapperAlpha.qml \
     qml/misc/USBModeSelector.qml \
     qml/misc/VolumeControl.qml \
     qml/misc/ShutdownScreen.qml \

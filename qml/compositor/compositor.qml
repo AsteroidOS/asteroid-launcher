@@ -203,11 +203,6 @@ Item {
         WindowWrapperBase { }
     }
 
-    Component {
-        id: alphaWrapper
-        WindowWrapperAlpha { }
-    }
-
     Timer {
         id: delayTimer
         interval: 5000
@@ -297,10 +292,7 @@ Item {
                 parent = appLayer
             }
 
-            var w;
-            if (isOverlayWindow) w = alphaWrapper.createObject(parent, { window: window })
-            else w = windowWrapper.createObject(parent, { window: window })
-
+            var w = windowWrapper.createObject(parent, { window: window })
             window.userData = w
 
             if (isHomeWindow) {
