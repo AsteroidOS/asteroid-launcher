@@ -113,7 +113,6 @@ Item {
 
         onGestureStarted: {
             swipeAnimation.stop()
-            cancelAnimation.stop()
             if (gesture == "down") {
                 Desktop.instance.onAboutToClose()
                 state = "swipe"
@@ -306,6 +305,9 @@ Item {
                 comp.topmostAlarmWindow = window
                 setCurrentWindow(window)
             } else {
+                w.x = width
+                w.moveInAnim.start()
+                cancelAnimation.start()
                 if (!comp.topmostAlarmWindow) {
                     setCurrentWindow(w)
                 }
