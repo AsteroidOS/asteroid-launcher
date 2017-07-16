@@ -144,7 +144,6 @@ Item {
     Connections {
         target: agent
         onStateChanged: {
-            console.log("====onStateChanged====" + agent.passkey)
             switch(agent.state) {
                 case BluetoothAgent.AuthService:
                     summary.text = qsTr("Authorize:")

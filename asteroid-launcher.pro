@@ -1,5 +1,3 @@
-# Main project file for Asteroid Launcher
-
 TEMPLATE = app
 TARGET = lipstick
 VERSION = 0.1
@@ -16,10 +14,15 @@ qml.files = qml/MainScreen.qml \
     qml/applauncher/LauncherItemDelegate.qml \
     qml/appswitcher/AppSwitcher.qml \
     qml/compositor/compositor.qml \
+    qml/misc/PanelsGrid.qml \
     qml/misc/USBModeSelector.qml \
     qml/misc/VolumeControl.qml \
     qml/misc/ShutdownScreen.qml \
-    qml/notifications/FeedsPage.qml \
+    qml/notifications/NotificationActions.qml \
+    qml/notifications/NotificationButton.qml \
+    qml/notifications/NotificationIndicator.qml \
+    qml/notifications/NotificationView.qml \
+    qml/notifications/NotificationsPanel.qml \
     qml/quicksettings/QuickSettings.qml \
     qml/quicksettings/QuickSettingsToggle.qml
 
@@ -49,13 +52,15 @@ CONFIG += qt link_pkgconfig
 QT += quick waylandcompositor
 DEFINES += QT_COMPOSITOR_QUICK
 HEADERS += \
-    applauncherbackground.h
+    applauncherbackground.h \
+    gesturefilterarea.h
 
 MOC_DIR = .moc
 
 SOURCES += \
     main.cpp \
-    applauncherbackground.cpp
+    applauncherbackground.cpp \
+    gesturefilterarea.cpp
 
 RESOURCES += \
     resources-qml.qrc
@@ -73,16 +78,12 @@ OTHER_FILES += qml/*.qml \
     qml/misc/VolumeControl.qml \
     qml/misc/ShutdownScreen.qml \
     qml/notifications/NotificationPreview.qml \
-    qml/notifications/FeedsPage.qml \
+    qml/notifications/NotificationsPanel.qml \
     qml/quicksettings/QuickSettings.qml \
     qml/quicksettings/QuickSettingsToggle.qml
 
-lupdate_only{
-    SOURCES = qml/appswitcher/AppSwitcher.qml \
-              qml/notifications/FeedsPage.qml
-}
-
 TRANSLATIONS = i18n/asteroid-launcher.ca.ts \
+               i18n/asteroid-launcher.da.ts \
                i18n/asteroid-launcher.de_DE.ts \
                i18n/asteroid-launcher.el.ts \
                i18n/asteroid-launcher.es.ts \

@@ -38,6 +38,22 @@ ListView {
     orientation: ListView.Horizontal
     snapMode: ListView.SnapToItem
 
+    property bool toTopAllowed:    false
+    property bool toBottomAllowed: false
+    property bool toLeftAllowed:   true
+    property bool toRightAllowed:  false
+    property int currentPos: 0
+
+    onCurrentPosChanged: {
+        toLeftAllowed = (currentPos!=launcherModel.itemCount-1)
+        toRightAllowed  = (currentPos!=0)
+
+        rightIndicator.animate()
+        leftIndicator.animate()
+        topIndicator.animate()
+        bottomIndicator.animate()
+    }
+
     model: LauncherModel { id: launcherModel }
 
     delegate: LauncherItemDelegate {
@@ -89,6 +105,7 @@ ListView {
                     upperOuterColor.b * ratio + lowerOuterColor.b * (1-ratio)
                 );
 
+        currentPos = Math.round(lowerStop+ratio)
     }
 
     Text {

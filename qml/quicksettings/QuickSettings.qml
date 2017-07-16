@@ -41,6 +41,9 @@ Item {
     width: parent.width
     height: parent.height
 
+    property bool forbidLeft:  true
+    property bool forbidRight: true
+
     Connections {
         target: lipstickSettings;
         onLockscreenVisibleChanged: {

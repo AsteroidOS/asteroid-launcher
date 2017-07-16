@@ -40,6 +40,7 @@
 #include <homewindow.h>
 
 #include "applauncherbackground.h"
+#include "gesturefilterarea.h"
 
 int main(int argc, char **argv)
 {
@@ -77,6 +78,7 @@ int main(int argc, char **argv)
     app.engine()->rootContext()->setContextProperty("nativeOrientation", nativeOrientation);
 
     qmlRegisterType<AppLauncherBackground>("org.asteroid.launcher", 1, 0, "AppLauncherBackground");
+    qmlRegisterType<GestureFilterArea>("org.asteroid.launcher", 1, 0, "GestureFilterArea");
     app.setQmlPath("/usr/share/asteroid-launcher/qml/MainScreen.qml");
 
     // Give these to the environment inside the lipstick homescreen
