@@ -35,7 +35,7 @@ Item {
     id: notifPanel
 
     property QtObject panelsGrid
-    property QtObject firstNotifView
+    property QtObject firstNotifView: null
     property bool forbidTop: firstNotifView !== null ? firstNotifView.forbidTop : false
 
     onForbidTopChanged: panelsGrid.changeAllowedDirections()
@@ -46,22 +46,20 @@ Item {
             var index = notifmodel.indexOf(item)
 
             var leftPanelIndex = notifmodel.itemCount-1
-            var leftPanel = notifmodel.get(leftPanelIndex)
             while(leftPanelIndex > index) {
-                if(leftPanelIndex == 1 && firstNotifView !== undefined) {
+                if(leftPanelIndex == 1 && firstNotifView !== null) {
                     panelsGrid.movePanel(-1, -1, -2, -1)
                     var notif = firstNotifView.notification
                     firstNotifView.destroy()
                     var notifView = panelsGrid.addPanel(-2, 0, notificationViewComp)
                     notifView.notification = notif
                     notifView.panelsGrid = panelsGrid
-                } else {
+                } else if(firstNotifView !== null) {
                     panelsGrid.movePanel(-leftPanelIndex, 0, (-leftPanelIndex-1), 0)
                     panelsGrid.movePanel(-leftPanelIndex, -1, (-leftPanelIndex-1), -1)
                 }
 
                 leftPanelIndex--
-                leftPanel = notifmodel.get(leftPanelIndex) 
             }
                     
             var notifActions = panelsGrid.addPanel(-index-1, -1, notificationActionsComp)
@@ -128,14 +126,6 @@ Item {
     Component {
         id: notificationViewComp
         NotificationView    {}
-    }
-
-    NotificationIndicator {
-        anchors.top: parent.top
-        anchors.topMargin: parent.height*0.05
-        anchors.horizontalCenter: parent.horizontalCenter
-        height: notifPanel.width * 0.08
-        visible: !emptyIndicator.visible
     }
 
     Icon {
