@@ -68,9 +68,7 @@ MouseArea {
             }
     }
 
-    onPressed: {
-        prevY = mouse.y
-    }
+    onPressed: prevY = mouse.y
 
     onPositionChanged: {
         var newY = column.y + mouse.y-prevY
@@ -94,8 +92,9 @@ MouseArea {
         Text {
             id: appName
             color: "white"
-            width: parent.width
+            width: parent.width*0.8
             font.pixelSize: view.height * 0.06
+            elide: Text.ElideRight
 
             Connections {
                 target: panelsGrid
@@ -106,8 +105,10 @@ MouseArea {
                 id: timestamp
                 color: "white"
                 font.pixelSize: appName.font.pixelSize
-                anchors.fill: parent
                 horizontalAlignment: Text.AlignRight
+                anchors.top: appName.top
+                anchors.left: appName.right
+                width: parent.width * 0.25
             }
         }
 
@@ -123,6 +124,7 @@ MouseArea {
             font.bold: true
             font.pixelSize: view.height * 0.085
             width: parent.width
+            elide: Text.ElideRight
         }
 
         Item {
