@@ -75,7 +75,7 @@ Item {
     }
 
     Component { id: topPanel;    QuickSettings      { } }
-    Component { id: leftPanel;   NotificationsPanel { panelsGrid: grid} }
+    Component { id: leftPanel;   NotificationsPanel { panelsGrid: grid } }
     Component { id: centerPanel; Loader             { source: watchFaceSource.value } }
     Component { id: rightPanel;  AppSwitcher        { } }
     Component { id: bottomPanel; AppLauncher        { } }
@@ -127,6 +127,15 @@ Item {
                 wallpaperDarkener.opacity = Math.abs(normalizedVerOffset)*0.4
             }
         }
+    }
+
+    NotificationIndicator {
+        id: notifIndic
+        anchors.top: parent.top
+        anchors.topMargin: parent.height*0.05
+        height: parent.height * 0.08
+        width: parent.width
+        panelsGrid: grid
     }
 
     Indicator {
