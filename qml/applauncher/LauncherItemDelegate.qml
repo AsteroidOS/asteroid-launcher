@@ -31,7 +31,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.0
+import QtQuick 2.9
 import org.nemomobile.lipstick 0.1
 import org.asteroid.controls 1.0
 
@@ -64,8 +64,8 @@ MouseArea {
     Icon {
         id: icon
         anchors.centerIn: parent
-        anchors.verticalCenterOffset: -parent.height*0.03
-        width: parent.width*0.31
+        anchors.verticalCenterOffset: -Dims.h(3)
+        width: Dims.w(31)
         height: width
         color: "#666666"
     }
@@ -76,9 +76,9 @@ MouseArea {
         width: parent.width
         elide: Text.ElideRight
         horizontalAlignment: Text.AlignHCenter
-        anchors.topMargin: parent.height*0.042
+        anchors.topMargin: Dims.h(4)
         color: "#666666"
-        font.pixelSize: parent.height*0.05
+        font.pixelSize: Dims.l(5)
         font.weight: Font.Medium
     }
 }

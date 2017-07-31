@@ -27,7 +27,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.0
+import QtQuick 2.9
 import org.nemomobile.lipstick 0.1
 import org.asteroid.controls 1.0
 

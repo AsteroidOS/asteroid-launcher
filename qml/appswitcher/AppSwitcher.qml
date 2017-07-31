@@ -27,26 +27,26 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.0
+import QtQuick 2.9
 import org.asteroid.controls 1.0
 
 Item {
     Icon {
         id: emptyIndicator
-        width: parent.width*0.27
-        height: parent.height*0.27
+        width: Dims.w(27)
+        height: width
         name: "ios-alert"
         color: "lightgrey"
         anchors.centerIn: parent
-        anchors.verticalCenterOffset: -parent.height*0.09
+        anchors.verticalCenterOffset: -Dims.h(9)
     }
 
     Text {
-        anchors.topMargin: parent.height*0.04
+        anchors.topMargin: Dims.h(4)
         anchors.top: emptyIndicator.bottom
         anchors.horizontalCenter: parent.horizontalCenter
         text: "Work in progress"
-        font.pixelSize: parent.height*0.06
+        font.pixelSize: Dims.l(6)
         color: "lightgrey"
     }
 }

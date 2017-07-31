@@ -29,7 +29,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.0
+import QtQuick 2.9
 import org.asteroid.controls 1.0
 import org.nemomobile.lipstick 0.1
 
@@ -55,7 +55,7 @@ Item {
             id: icon
             anchors.centerIn: parent
             anchors.verticalCenterOffset: -parent.height*0.2
-            width: parent.width*0.2
+            width: Dims.w(20)
             height: width
             color: "#666666"
             name: {
@@ -83,12 +83,12 @@ Item {
             id: summary
             anchors.top: icon.bottom
             height: text == "" ? 0 : undefined
-            width: parent.width*0.7
+            width: Dims.w(70)
             horizontalAlignment: Text.AlignHCenter
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.topMargin: parent.height*0.03
+            anchors.topMargin: Dims.h(3)
             color: "#666666"
-            font.pixelSize: parent.height*0.05
+            font.pixelSize: Dims.l(5)
             font.bold: true
             clip: true
             elide: Text.ElideRight
@@ -98,12 +98,12 @@ Item {
         Text {
             id: body
             anchors.top: summary.bottom
-            width: parent.width/2
+            width: Dims.w(50)
             horizontalAlignment: Text.AlignHCenter
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.topMargin: parent.height*0.06
+            anchors.topMargin: Dims.h(6)
             color: "#666666"
-            font.pixelSize: parent.height*0.05
+            font.pixelSize: Dims.h(5)
             font.bold: summary.text == ""
             clip: true
             maximumLineCount: 3

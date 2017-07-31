@@ -28,6 +28,7 @@
  */
 
 import QtQuick 2.0
+import org.asteroid.controls 1.0
 
 MouseArea {
     id: view
@@ -85,15 +86,15 @@ MouseArea {
 
         Item {
             id: spacing1
-            height: view.height * 0.15
+            height: Dims.h(15)
             width: 1
         }
 
         Text {
             id: appName
             color: "white"
-            width: parent.width*0.8
-            font.pixelSize: view.height * 0.06
+            width: Dims.w(56)
+            font.pixelSize: Dims.l(6)
             elide: Text.ElideRight
 
             Connections {
@@ -108,13 +109,13 @@ MouseArea {
                 horizontalAlignment: Text.AlignRight
                 anchors.top: appName.top
                 anchors.left: appName.right
-                width: parent.width * 0.25
+                width: Dims.w(14)
             }
         }
 
         Item {
             id: spacing3
-            height: view.height * 0.03
+            height: Dims.h(3)
             width: 1
         }
 
@@ -122,21 +123,21 @@ MouseArea {
             id: summary
             color: "white"
             font.bold: true
-            font.pixelSize: view.height * 0.085
+            font.pixelSize: Dims.l(8)
             width: parent.width
             elide: Text.ElideRight
         }
 
         Item {
             id: spacing4
-            height: view.height * 0.01
+            height: Dims.h(1)
             width: 1
         }
 
         Text {
             id: body
             color: "white"
-            font.pixelSize: view.height * 0.08
+            font.pixelSize: Dims.l(8)
             anchors.horizontalCenter: parent.horizontalCenter
             wrapMode: Text.Wrap
             width: parent.width
@@ -144,21 +145,21 @@ MouseArea {
 
         Item {
             id: spacing5
-            height: view.height * 0.1
+            height: Dims.h(10)
             width: 1
         }
 
         NotificationButton {
             text: qsTr("Dismiss")
             anchors.horizontalCenter: parent.horizontalCenter
-            width: parent.width * 0.55
-            height: view.height * 0.2
+            width: Dims.w(55)
+            height: Dims.h(20)
             onClicked: if (notification !== undefined && notification.userRemovable) notification.actionInvoked("default")
         }
 
         Item {
             id: spacing6
-            height: view.height * 0.1
+            height: Dims.h(10)
             width: 1
         }
     }

@@ -30,7 +30,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.0
+import QtQuick 2.9
+import org.asteroid.controls 1.0
 import org.nemomobile.lipstick 0.1
 
 ListView {
@@ -114,7 +115,7 @@ ListView {
         horizontalAlignment: Text.AlignHCenter
 
         text: "<b>No apps<br>installed</b>"
-        font.pointSize: 12
+        font.pointSize: Dims.l(4)
         anchors {
             verticalCenter: parent.verticalCenter
             horizontalCenter: parent.horizontalCenter

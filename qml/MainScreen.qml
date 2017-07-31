@@ -28,7 +28,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.1
+import QtQuick 2.9
 import org.nemomobile.time 1.0
 import org.nemomobile.configuration 1.0
 import org.nemomobile.lipstick 0.1
@@ -132,8 +132,8 @@ Item {
     NotificationIndicator {
         id: notifIndic
         anchors.top: parent.top
-        anchors.topMargin: parent.height*0.05
-        height: parent.height * 0.08
+        anchors.topMargin: Dims.h(5)
+        height: Dims.h(8)
         width: parent.width
         panelsGrid: grid
     }
@@ -196,8 +196,8 @@ Item {
 
     Item {
         id: wallpaper
-        width:parent.width*1.1
-        height:parent.height*1.1
+        width: Dims.w(110)
+        height:  Dims.h(110)
         z: -100
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter

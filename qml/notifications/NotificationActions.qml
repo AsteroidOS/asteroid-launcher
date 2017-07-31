@@ -27,7 +27,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.0
+import QtQuick 2.9
 import org.asteroid.controls 1.0
 
 Item {
@@ -43,19 +43,19 @@ Item {
         id: column
         anchors.centerIn: parent
 
-        width: parent.width*0.55
-        spacing: height*0.08
+        width: Dims.w(55)
+        spacing: Dims.h(8)
 
         NotificationButton {
             text: qsTr("Snooze")
             width: parent.width
-            height: actions.height * 0.2
+            height: Dims.h(20)
         }
 
         NotificationButton {
             text: qsTr("Dismiss all")
             width: parent.width
-            height: actions.height * 0.2
+            height: Dims.h(20)
             onClicked: {
                 for(var i = 0 ; i < notificationModel.itemCount ; i++) {
                     var notifI = notificationModel.get(i)
@@ -69,14 +69,14 @@ Item {
         NotificationButton {
             text: qsTr("Dismiss")
             width: parent.width
-            height: actions.height * 0.2
+            height: Dims.h(20)
             onClicked: if (notification.userRemovable) notification.removeRequested()
         }
     }
 
     Row {
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: actions.height*0.03
+        anchors.bottomMargin: Dims.h(3)
         anchors.horizontalCenter: parent.horizontalCenter
 
         Icon {
@@ -107,7 +107,7 @@ Item {
             id: timestamp
             color: "#b0b0b0"
             text: "35m"
-            font.pixelSize: actions.height*0.06
+            font.pixelSize: Dims.l(6)
         }
     }
 }

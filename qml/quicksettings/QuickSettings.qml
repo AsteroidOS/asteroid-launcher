@@ -28,7 +28,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.1
+import QtQuick 2.9
 import org.freedesktop.contextkit 1.0
 import org.nemomobile.dbus 1.0
 import org.nemomobile.systemsettings 1.0
@@ -162,7 +162,7 @@ Item {
         }
         Text {
             id: batteryIndicator
-            font.pointSize: 8
+            font.pixelSize: parent.height/4
             text: batteryChargePercentage.value + "%"
             color: "white"
             anchors.right: parent.right

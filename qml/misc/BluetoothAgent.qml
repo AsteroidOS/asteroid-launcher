@@ -27,7 +27,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.0
+import QtQuick 2.9
 import org.asteroid.controls 1.0
 import org.nemomobile.lipstick 0.1
 
@@ -47,8 +47,8 @@ Item {
     Icon {
         id: icon
         anchors.centerIn: parent
-        anchors.verticalCenterOffset: -parent.height*0.2
-        width: parent.width*0.2
+        anchors.verticalCenterOffset: -Dims.h(20)
+        width: Dims.w(20)
         height: width
         color: "#666666"
         name: "ios-bluetooth"
@@ -59,15 +59,15 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: icon.bottom
-        anchors.topMargin: parent.height*0.03
+        anchors.topMargin: Dims.h(3)
         Text {
             id: summary
             anchors.top: parent.top
-            width: parent.width*0.7
+            width: Dims.w(70)
             horizontalAlignment: Text.AlignHCenter
             anchors.horizontalCenter: parent.horizontalCenter
             color: "#666666"
-            font.pixelSize: btAgent.height*0.05
+            font.pixelSize: Dims.h(5)
             clip: true
             elide: Text.ElideRight
         }
@@ -75,12 +75,12 @@ Item {
         Text {
             id: body
             anchors.top: summary.bottom
-            width: parent.width*0.7
-            height: btAgent.height*0.1
+            width: Dims.w(70)
+            height: Dims.h(10)
             anchors.horizontalCenter: parent.horizontalCenter
             horizontalAlignment: Text.AlignHCenter
             color: "#666666"
-            font.pixelSize: height*0.7
+            font.pixelSize: Dims.h(7)
             font.bold: true
             clip: true
             maximumLineCount: 1
@@ -94,36 +94,34 @@ Item {
         inputMethodHints: Qt.ImhDigitsOnly
         anchors.top: text.top
         anchors.horizontalCenter: parent.horizontalCenter
-        width: parent.width*0.6
+        width: Dims.w(60)
     }
 
     IconButton {
         id: cancelButton
-        width: parent.height*0.2
+        width: Dims.w(20)
         height: width
         iconColor: "#666666"
         pressedIconColor: "#222222"
         iconName: "ios-close-circle-outline"
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.horizontalCenterOffset: -parent.width*0.12
+        anchors.horizontalCenterOffset: -Dims.w(12)
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: parent.height*0.21
-        onClicked: {
-            agent.userCancels()
-        }
+        anchors.bottomMargin: Dims.h(21)
+        onClicked: agent.userCancels()
     }
 
     IconButton {
         id: confirmButton
-        width: parent.height*0.2
+        width: Dims.w(20)
         height: width
         iconColor: "#666666"
         pressedIconColor: "#222222"
         iconName: "ios-checkmark-circle-outline"
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.horizontalCenterOffset: parent.width*0.12
+        anchors.horizontalCenterOffset: Dims.w(12)
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: parent.height*0.21
+        anchors.bottomMargin: Dims.h(21)
         onClicked: {
             if(agent.state == BluetoothAgent.ReqPinCode)
                 agent.pinCode = Number(inputField.text)
