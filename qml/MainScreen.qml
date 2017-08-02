@@ -85,15 +85,17 @@ Item {
         anchors.fill: parent
         Component.onCompleted: {
             addPanel(0, 0, centerPanel)
-            addPanel(0, 1, bottomPanel)
+            var al = addPanel(0, 1, bottomPanel)
             addPanel(1, 0, rightPanel)
-            notifPanel = addPanel(-1, 0, leftPanel)
+            var np = addPanel(-1, 0, leftPanel)
             addPanel(0, -1, topPanel)
 
             rightIndicator.visible  = Qt.binding(function() { return grid.toLeftAllowed   || (grid.currentVerticalPos == 1 && al.toLeftAllowed )})
             leftIndicator.visible   = Qt.binding(function() { return grid.toRightAllowed  || (grid.currentVerticalPos == 1 && al.toRightAllowed)})
             topIndicator.visible    = Qt.binding(function() { return grid.toBottomAllowed    })
             bottomIndicator.visible = Qt.binding(function() { return grid.toTopAllowed })
+
+            leftIndicator.keepExpanded = Qt.binding(function() { return !np.modelEmpty && grid.currentHorizontalPos == 0 && grid.currentVerticalPos == 0 })
         }
 
         onNormalizedHorOffsetChanged: {
@@ -143,18 +145,9 @@ Item {
         edge: Qt.RightEdge
     }
 
-    property QtObject notifPanel
     Indicator {
         id: leftIndicator
         edge: Qt.LeftEdge
-
-        Connections {
-            target: notifPanel
-            onModelEmptyChanged: {
-                leftIndicator.keepExpanded = !notifPanel.modelEmpty
-                leftIndicator.animate()
-            }
-        }
     }
 
     Indicator {
