@@ -30,6 +30,7 @@
 #include "gesturefilterarea.h"
 
 #include <QQuickWindow>
+#include <QScreen>
 
 GestureFilterArea::GestureFilterArea(QQuickItem *parent) : QQuickItem(parent)
 {
@@ -39,6 +40,14 @@ GestureFilterArea::GestureFilterArea(QQuickItem *parent) : QQuickItem(parent)
     m_toRightAllowed = true;
     m_toBottomAllowed = true;
     m_toTopAllowed = true;
+
+    m_threshold = width()*0.01;
+}
+
+void GestureFilterArea::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
+{
+    m_threshold = newGeometry.width()*0.01;
+    QQuickItem::geometryChanged(newGeometry, oldGeometry);
 }
 
 bool GestureFilterArea::childMouseEventFilter(QQuickItem *i, QEvent *e)
@@ -88,7 +97,7 @@ void GestureFilterArea::mouseMoveEvent(QMouseEvent *event) {
     m_velocityX = (m_velocityX*(m_counter-1) + (event->windowPos().x()-m_prevPos.x()))/m_counter;
     m_velocityY = (m_velocityY*(m_counter-1) + (event->windowPos().y()-m_prevPos.y()))/m_counter;
     if(m_tracing) {
-        if(m_velocityX > 4) {
+        if(m_velocityX > m_threshold) {
             m_tracing = false;
             if(m_toRightAllowed) {
                 m_horizontal = true;
@@ -96,7 +105,7 @@ void GestureFilterArea::mouseMoveEvent(QMouseEvent *event) {
             }
             else
                 m_pressed = false;
-        } else if(m_velocityX < -4) {
+        } else if(m_velocityX < -m_threshold) {
             m_tracing = false;
             if(m_toLeftAllowed) {
                 m_horizontal = true;
@@ -104,7 +113,7 @@ void GestureFilterArea::mouseMoveEvent(QMouseEvent *event) {
             }
             else
                 m_pressed = false;
-        } else if(m_velocityY > 4) {
+        } else if(m_velocityY > m_threshold) {
             m_tracing = false;
             if(m_toBottomAllowed) {
                 m_horizontal = false;
@@ -112,7 +121,7 @@ void GestureFilterArea::mouseMoveEvent(QMouseEvent *event) {
             }
             else
                 m_pressed = false;
-        } else if(m_velocityY < -4) {
+        } else if(m_velocityY < -m_threshold) {
             m_tracing = false;
             if(m_toTopAllowed) {
                 m_horizontal = false;
@@ -144,7 +153,7 @@ void GestureFilterArea::mouseReleaseEvent(QMouseEvent *event) {
                 currVel = m_velocityX;
             else
                 currVel = m_velocityY;
-            emit swipeReleased(m_horizontal, currVel);
+            emit swipeReleased(m_horizontal, currVel, m_tracing);
             m_pressed = false;
         }
     }

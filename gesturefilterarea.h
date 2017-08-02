@@ -76,7 +76,7 @@ public:
 
 signals:
     void swipeMoved(bool horizontal, qreal delta);
-    void swipeReleased(bool horizontal, qreal velocity);
+    void swipeReleased(bool horizontal, qreal velocity, bool tracing);
 
     void toRightAllowedChanged();
     void toLeftAllowedChanged();
@@ -89,7 +89,7 @@ private:
     bool m_horizontal, m_pressed, m_tracing;
     unsigned int m_counter;
     QPointF m_prevPos;
-    qreal m_velocityX, m_velocityY;
+    qreal m_velocityX, m_velocityY, m_threshold;
 
 protected:
     virtual bool childMouseEventFilter(QQuickItem *, QEvent *);
@@ -97,6 +97,7 @@ protected:
     virtual void mouseMoveEvent(QMouseEvent *event);
     virtual void mouseReleaseEvent(QMouseEvent *event);
     virtual void mouseUngrabEvent();
+    virtual void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
     bool filterMouseEvent(QQuickItem *item, QMouseEvent *event);
 };
 

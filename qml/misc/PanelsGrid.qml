@@ -166,24 +166,26 @@ GestureFilterArea {
     }
 
     onSwipeReleased: {
-        if(horizontal) {
-            if(velocity>0 && toRightAllowed)
-                currentHorizontalPos--
-            else if(velocity< 0 && toLeftAllowed)
-                currentHorizontalPos++
+        if(!tracing) {
+            if(horizontal) {
+                if(velocity>0 && toRightAllowed)
+                    currentHorizontalPos--
+                else if(velocity< 0 && toLeftAllowed)
+                    currentHorizontalPos++
 
-            contentAnim.property = "x"
-            contentAnim.to = -panelWidth*currentHorizontalPos
-            contentAnim.start()
-        } else {
-            if(velocity>0 && toBottomAllowed)
-                currentVerticalPos--
-            else if(velocity< 0 && toTopAllowed)
-                currentVerticalPos++
+                contentAnim.property = "x"
+                contentAnim.to = -panelWidth*currentHorizontalPos
+                contentAnim.start()
+            } else {
+                if(velocity>0 && toBottomAllowed)
+                    currentVerticalPos--
+                else if(velocity< 0 && toTopAllowed)
+                    currentVerticalPos++
 
-            contentAnim.property = "y"
-            contentAnim.to = -panelHeight*currentVerticalPos
-            contentAnim.start()
+                contentAnim.property = "y"
+                contentAnim.to = -panelHeight*currentVerticalPos
+                contentAnim.start()
+            }
         }
 
         rightIndicator.animate()
