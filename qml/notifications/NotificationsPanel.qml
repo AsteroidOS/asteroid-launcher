@@ -37,15 +37,16 @@ Item {
     property QtObject panelsGrid
     property QtObject firstNotifView: null
     property bool forbidTop: firstNotifView !== null ? firstNotifView.forbidTop : false
+    property bool modelEmpty: notifModel.itemCount === 0
 
     onForbidTopChanged: panelsGrid.changeAllowedDirections()
 
     NotificationListModel {
-        id: notifmodel
+        id: notifModel
         onItemAdded: {
-            var index = notifmodel.indexOf(item)
+            var index = notifModel.indexOf(item)
 
-            var leftPanelIndex = notifmodel.itemCount-1
+            var leftPanelIndex = notifModel.itemCount-1
             while(leftPanelIndex > index) {
                 if(leftPanelIndex == 1 && firstNotifView !== null) {
                     panelsGrid.movePanel(-1, -1, -2, -1)
@@ -64,7 +65,7 @@ Item {
                     
             var notifActions = panelsGrid.addPanel(-index-1, -1, notificationActionsComp)
             notifActions.notification = item
-            notifActions.notificationModel = notifmodel
+            notifActions.notificationModel = notifModel
             if(index > 0) {
                 var notifView = panelsGrid.addPanel(-index-1, 0, notificationViewComp)
                 notifView.notification = item
@@ -93,21 +94,21 @@ Item {
                 panelsGrid.removePanel(-i, -1)
             }
 
-            for (var i = last+2 ; i <= notifmodel.itemCount+1; i++) {
+            for (var i = last+2 ; i <= notifModel.itemCount+1; i++) {
                 if(i == last-first+2) {
                     panelsGrid.removePanel(-i, 0)
                     panelsGrid.removePanel(-i, -1)
 
                     var notifActions = panelsGrid.addPanel(-1, -1, notificationActionsComp)
-                    notifActions.notification = notifmodel.get(0)
-                    notifActions.notificationModel = notifmodel
+                    notifActions.notification = notifModel.get(0)
+                    notifActions.notificationModel = notifModel
 
                     firstNotifView = notificationViewComp.createObject(notifPanel)
                     firstNotifView.x = 0
                     firstNotifView.y = 0
                     firstNotifView.width = Qt.binding(function() { return notifPanel.width })
                     firstNotifView.height = Qt.binding(function() { return notifPanel.height })
-                    firstNotifView.notification = notifmodel.get(0)
+                    firstNotifView.notification = notifModel.get(0)
                     firstNotifView.panelsGrid = panelsGrid
                 } else {
                     panelsGrid.movePanel(-i, 0, -i+(last-first+1), 0)
@@ -130,7 +131,7 @@ Item {
 
     Icon {
         id: emptyIndicator
-        visible: notifmodel.itemCount === 0
+        visible: modelEmpty
         width: Dims.w(27)
         height: width
         name: "ios-mail-outline"
@@ -140,7 +141,7 @@ Item {
     }
 
     Text {
-        visible: notifmodel.itemCount === 0
+        visible: modelEmpty
         anchors.topMargin: Dims.h(4)
         anchors.top: emptyIndicator.bottom
         anchors.horizontalCenter: parent.horizontalCenter

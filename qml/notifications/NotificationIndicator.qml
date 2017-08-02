@@ -45,7 +45,7 @@ Item {
         
         Rectangle {
             id: separator
-            visible: notifmodel.itemCount !== 0
+            visible: notifModel.itemCount !== 0
             x: iconSize*1.1
             width: 1
             height: iconSize
@@ -53,7 +53,7 @@ Item {
         }
 
         Icon {
-            visible: notifmodel.itemCount !== 0
+            visible: notifModel.itemCount !== 0
             name: "ios-time"
             color: "#8e8e8e"
             width: iconSize
@@ -141,11 +141,11 @@ Item {
     }
 
     NotificationListModel {
-        id: notifmodel
+        id: notifModel
         onItemAdded: {
-            var index = notifmodel.indexOf(item)
+            var index = notifModel.indexOf(item)
 
-            var leftIconIndex = notifmodel.itemCount
+            var leftIconIndex = notifModel.itemCount
             while(leftIconIndex > index) {
                 moveIcon(-leftIconIndex+1, (-leftIconIndex))
                 leftIconIndex--
@@ -158,7 +158,7 @@ Item {
             for (var i = first ; i <= last; i++)
                 removeIcon(-i)
 
-            for (var i = last+1 ; i <= notifmodel.itemCount+1; i++)
+            for (var i = last+1 ; i <= notifModel.itemCount+1; i++)
                 moveIcon(-i, -i+(last-first+1))
         }
     }

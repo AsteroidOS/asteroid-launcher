@@ -85,9 +85,9 @@ Item {
         anchors.fill: parent
         Component.onCompleted: {
             addPanel(0, 0, centerPanel)
-            var al = addPanel(0, 1, bottomPanel)
+            addPanel(0, 1, bottomPanel)
             addPanel(1, 0, rightPanel)
-            addPanel(-1, 0, leftPanel)
+            notifPanel = addPanel(-1, 0, leftPanel)
             addPanel(0, -1, topPanel)
 
             rightIndicator.visible  = Qt.binding(function() { return grid.toLeftAllowed   || (grid.currentVerticalPos == 1 && al.toLeftAllowed )})
@@ -143,9 +143,18 @@ Item {
         edge: Qt.RightEdge
     }
 
+    property QtObject notifPanel
     Indicator {
         id: leftIndicator
         edge: Qt.LeftEdge
+
+        Connections {
+            target: notifPanel
+            onModelEmptyChanged: {
+                leftIndicator.keepExpanded = !notifPanel.modelEmpty
+                leftIndicator.animate()
+            }
+        }
     }
 
     Indicator {
