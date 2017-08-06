@@ -104,7 +104,6 @@ Item {
 
     function moveIcon(originPos, destPos) {
         var icon = icons[originPos]
-        console.log("moveIcon" + originPos + " " + destPos)
         if(icon !== undefined) {
             icons[destPos] = icon
             icon.x = iconSize*destPos
