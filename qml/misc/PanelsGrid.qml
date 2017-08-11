@@ -188,10 +188,10 @@ GestureFilterArea {
             }
         }
 
-        rightIndicator.animate()
-        leftIndicator.animate()
-        topIndicator.animate()
-        bottomIndicator.animate()
+        rightIndicator.animateFar()
+        leftIndicator.animateFar()
+        topIndicator.animateFar()
+        bottomIndicator.animateFar()
     }
 
     NumberAnimation {
