@@ -77,7 +77,7 @@ Item {
     Component { id: topPanel;    QuickSettings      { } }
     Component { id: leftPanel;   NotificationsPanel { panelsGrid: grid } }
     Component { id: centerPanel; Loader             { source: watchFaceSource.value } }
-    Component { id: rightPanel;  AppSwitcher        { } }
+    Component { id: rightPanel;  Today              { } }
     Component { id: bottomPanel; AppLauncher        { } }
 
     PanelsGrid {

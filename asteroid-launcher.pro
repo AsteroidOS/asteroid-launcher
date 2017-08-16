@@ -12,7 +12,7 @@ qml.path = /usr/share/asteroid-launcher/qml
 qml.files = qml/MainScreen.qml \
     qml/applauncher/AppLauncher.qml \
     qml/applauncher/LauncherItemDelegate.qml \
-    qml/appswitcher/AppSwitcher.qml \
+    qml/today/Today.qml \
     qml/compositor/compositor.qml \
     qml/misc/PanelsGrid.qml \
     qml/misc/USBModeSelector.qml \
@@ -27,7 +27,8 @@ qml.files = qml/MainScreen.qml \
     qml/quicksettings/QuickSettingsToggle.qml
 
 scripts.path = /usr/share/asteroid-launcher/qml/
-scripts.files =  qml/misc/desktop.js
+scripts.files =  qml/misc/desktop.js \
+    qml/today/weathericons.js
 
 qmlcompositor.path = /usr/share/asteroid-launcher/qml/compositor
 qmlcompositor.files = qml/compositor/WindowWrapperBase.qml
@@ -70,7 +71,7 @@ PKGCONFIG += lipstick-qt5
 OTHER_FILES += qml/*.qml \
     qml/MainScreen.qml \
     qml/applauncher/AppLauncher.qml \
-    qml/appswitcher/AppSwitcher.qml \
+    qml/today/Today.qml \
     qml/appswitcher/LauncherItemDelegate.qml \
     qml/compositor/compositor.qml \
     qml/compositor/WindowWrapperBase.qml \

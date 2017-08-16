@@ -1,0 +1,170 @@
+/*
+ * Copyright (C) 2017 Florent Revest <revestflo@gmail.com>
+ * All rights reserved.
+ *
+ * You may use this file under the terms of BSD license as follows:
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the author nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+import QtQuick 2.9
+import org.asteroid.controls 1.0
+import org.nemomobile.calendar 1.0
+import org.nemomobile.configuration 1.0
+import 'weathericons.js' as IconTools
+
+ListView {
+    boundsBehavior: Flickable.StopAtBounds
+
+    ConfigurationValue {
+        id: timestampDay0
+        key: "/org/asteroidos/weather/timestamp-day0"
+        defaultValue: 0
+    }
+
+    function weatherAvailable() {
+        var currentDate = new Date();
+        var day0Date    = new Date(timestampDay0.value*1000);
+        var daysDiff = Math.round((currentDate-day0Date)/(1000*60*60*24));
+        return daysDiff <= 5
+    }
+
+    property int dayNb: {
+        var currentDate = new Date();
+        var day0Date    = new Date(timestampDay0.value*1000);
+        var daysDiff = Math.round((currentDate-day0Date)/(1000*60*60*24));
+        if(daysDiff > 5) daysDiff = 5;
+        return daysDiff;
+    }
+
+    ConfigurationValue {
+        id: owmId
+        key: "/org/asteroidos/weather/day" + dayNb + "/id"
+        defaultValue: 0
+    }
+    ConfigurationValue {
+        id: minTemp
+        key: "/org/asteroidos/weather/day" + dayNb + "/min-temp"
+        defaultValue: 0
+    }
+    ConfigurationValue {
+        id: maxTemp
+        key: "/org/asteroidos/weather/day" + dayNb + "/max-temp"
+        defaultValue: 0
+    }
+
+    footer: Item { height: Dims.h(25) }
+    header: Item {
+        width: parent.width
+        height: Dims.h(25)
+
+        FontLoader { source: "file:///usr/share/fonts/weathericons-regular-webfont.ttf" }
+
+        Text {
+            height: parent.height
+            width: Dims.w(50)
+            text: IconTools.getIconCode(owmId.value, 0)
+            color: "white"
+            horizontalAlignment: Text.AlignRight
+            verticalAlignment: Text.AlignVCenter
+            font.family: "weathericons"
+            font.pixelSize: Dims.l(15)
+            visible: weatherAvailable()
+        }
+
+        Text {
+            height: parent.height
+            width: Dims.w(45)
+            anchors.right: parent.right
+            text: (minTemp.value-273) + "°\n" + (maxTemp.value-273) + "°"
+            color: "white"
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
+            font.pixelSize: Dims.l(5)
+            visible: weatherAvailable()
+        }
+    }
+
+    property date currentDate: new Date()
+
+    property int year: currentDate.getFullYear()
+    property int month: currentDate.getMonth()+1
+    property int day: currentDate.getDate()
+
+    model: AgendaModel {
+        id: agendaModel
+        startDate: new Date(year, month, day)
+        endDate: startDate
+    }
+
+    delegate: Component {
+        Item {
+            height: Dims.h(25)
+            width: parent.width
+
+            Text {
+                id: hour
+                text: Qt.formatTime(model.occurrence.startTime, "hh:mm")
+                color: "lightgrey"
+                horizontalAlignment: Text.AlignRight
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                width: parent.width/4
+                font.pixelSize: parent.height/3.5
+            }
+            Text {
+                id: title
+                color: "white"
+                anchors.left: hour.right
+                anchors.right: parent.right
+                anchors.leftMargin: 20
+                text: model.event.displayLabel
+                anchors.verticalCenter: parent.verticalCenter
+                font.pixelSize: parent.height/3
+            }
+        }
+    }
+
+    property bool modelEmpty: agendaModel.count === 0
+
+    Icon {
+        id: emptyIndicator
+        visible: modelEmpty
+        width: Dims.w(27)
+        height: width
+        name: "ios-calendar-outline"
+        color: "lightgrey"
+        anchors.centerIn: parent
+        anchors.verticalCenterOffset: weatherAvailable() ? Dims.h(1) : -Dims.h(9)
+    }
+
+    Text {
+        visible: modelEmpty
+        anchors.topMargin: Dims.h(4)
+        anchors.top: emptyIndicator.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        text: qsTr("No events today")
+        font.pixelSize: Dims.l(6)
+        color: "lightgrey"
+    }
+}
