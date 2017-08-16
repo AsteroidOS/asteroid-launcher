@@ -46,18 +46,22 @@ MouseArea {
         if (ma.togglable) toggled = !toggled;
         ma.toggled ? ma.checked() : ma.unchecked()
     }
+
     Rectangle {
         anchors.fill: parent
         radius: width/2
         anchors.margins: ma.width*0.1
-        color: ma.pressed ? '#99222222' : ma.toggled ? '#BB222222' :  '#33222222'
-        Icon {
-            id: ic
-            width: parent.width*0.56
-            height: width
-            anchors.centerIn: parent
-            color: ma.pressed ? "lightgrey" : "white"
-        }
+        color: "#222222"
+        opacity: ma.pressed ? 0.6 : ma.toggled ? 0.75 : 0.2
+    }
+
+    Icon {
+        id: ic
+        width: parent.width*0.5
+        height: width
+        anchors.centerIn: parent
+        color: ma.pressed ? "lightgrey" : "white"
+        opacity: ma.pressed ? 0.5 : ma.toggled ? 1 : (ma.togglable ? 0.3 : 1)
     }
 }
 
