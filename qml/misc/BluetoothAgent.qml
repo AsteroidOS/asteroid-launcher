@@ -183,8 +183,8 @@ Item {
                     inputField.text = ""
                     inputField.previewText = ""
                     inputField.visible = false
-                    cancelButton.visible = false
-                    confirmButton.visible = false
+                    cancelButton.visible = true
+                    confirmButton.visible = true
                     break;
 
                 case BluetoothAgent.ReqPasskey:
@@ -205,8 +205,8 @@ Item {
                     inputField.text = ""
                     inputField.previewText = ""
                     inputField.visible = false
-                    cancelButton.visible = false
-                    confirmButton.visible = false
+                    cancelButton.visible = true
+                    confirmButton.visible = true
                     break;
 
                 case BluetoothAgent.ReqPinCode:
