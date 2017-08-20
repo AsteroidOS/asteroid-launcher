@@ -31,10 +31,21 @@ import QtQuick 2.9
 import org.asteroid.controls 1.0
 import org.nemomobile.calendar 1.0
 import org.nemomobile.configuration 1.0
+import org.nemomobile.time 1.0
 import 'weathericons.js' as IconTools
 
 ListView {
     boundsBehavior: Flickable.StopAtBounds
+
+    WallClock {
+        id: todayClock
+        enabled: true
+        updateFrequency: WallClock.Day
+    }
+
+    property int year: todayClock.time.getFullYear()
+    property int month: todayClock.time.getMonth()+1
+    property int day: todayClock.time.getDate()
 
     ConfigurationValue {
         id: timestampDay0
@@ -42,17 +53,15 @@ ListView {
         defaultValue: 0
     }
 
-    function weatherAvailable() {
-        var currentDate = new Date();
+    property bool weatherAvailable: {
         var day0Date    = new Date(timestampDay0.value*1000);
-        var daysDiff = Math.round((currentDate-day0Date)/(1000*60*60*24));
-        return daysDiff <= 5
+        var daysDiff = Math.round((todayClock.time-day0Date)/(1000*60*60*24));
+        return daysDiff < 5
     }
 
     property int dayNb: {
-        var currentDate = new Date();
         var day0Date    = new Date(timestampDay0.value*1000);
-        var daysDiff = Math.round((currentDate-day0Date)/(1000*60*60*24));
+        var daysDiff = Math.round((todayClock.time-day0Date)/(1000*60*60*24));
         if(daysDiff > 5) daysDiff = 5;
         return daysDiff;
     }
@@ -60,17 +69,17 @@ ListView {
     ConfigurationValue {
         id: owmId
         key: "/org/asteroidos/weather/day" + dayNb + "/id"
-        defaultValue: 0
+        defaultValue: ""
     }
     ConfigurationValue {
         id: minTemp
         key: "/org/asteroidos/weather/day" + dayNb + "/min-temp"
-        defaultValue: 0
+        defaultValue: 273
     }
     ConfigurationValue {
         id: maxTemp
         key: "/org/asteroidos/weather/day" + dayNb + "/max-temp"
-        defaultValue: 0
+        defaultValue: 273
     }
 
     footer: Item { height: Dims.h(25) }
@@ -89,7 +98,7 @@ ListView {
             verticalAlignment: Text.AlignVCenter
             font.family: "weathericons"
             font.pixelSize: Dims.l(15)
-            visible: weatherAvailable()
+            visible: weatherAvailable
         }
 
         Text {
@@ -101,15 +110,9 @@ ListView {
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
             font.pixelSize: Dims.l(5)
-            visible: weatherAvailable()
+            visible: weatherAvailable
         }
     }
-
-    property date currentDate: new Date()
-
-    property int year: currentDate.getFullYear()
-    property int month: currentDate.getMonth()+1
-    property int day: currentDate.getDate()
 
     model: AgendaModel {
         id: agendaModel
@@ -155,7 +158,7 @@ ListView {
         name: "ios-calendar-outline"
         color: "lightgrey"
         anchors.centerIn: parent
-        anchors.verticalCenterOffset: weatherAvailable() ? Dims.h(1) : -Dims.h(9)
+        anchors.verticalCenterOffset: weatherAvailable ? Dims.h(1) : -Dims.h(9)
     }
 
     Text {
