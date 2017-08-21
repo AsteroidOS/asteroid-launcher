@@ -93,7 +93,7 @@ ListView {
             height: parent.height
             width: Dims.w(50)
             text: IconTools.getIconCode(owmId.value, 0)
-            color: "white"
+            color: "lightgrey"
             horizontalAlignment: Text.AlignRight
             verticalAlignment: Text.AlignVCenter
             font.family: "weathericons"
@@ -106,7 +106,7 @@ ListView {
             width: Dims.w(45)
             anchors.right: parent.right
             text: (minTemp.value-273) + "°\n" + (maxTemp.value-273) + "°"
-            color: "white"
+            color: "lightgrey"
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
             font.pixelSize: Dims.l(5)
