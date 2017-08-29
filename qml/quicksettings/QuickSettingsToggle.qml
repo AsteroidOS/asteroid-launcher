@@ -1,7 +1,5 @@
 /*
  * Copyright (C) 2015 Florent Revest <revestflo@gmail.com>
- *               2014 Aleksi Suomalainen <suomalainen.aleksi@gmail.com>
- *               2013 Jolla Ltd, Robin Burchell: <robin.burchell@jolla.com>
  * All rights reserved.
  *
  * You may use this file under the terms of BSD license as follows:
@@ -29,31 +27,41 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.0
+import QtQuick 2.9
+import org.asteroid.controls 1.0
 
-WindowWrapperBase {
-    id: wrapper
-    ShaderEffect {
-        anchors.fill: parent
-        z: 2
+MouseArea {
+    id: ma
 
-        // source Item must be a texture provider
-        property Item source: wrapper.window
+    width: parent.width/3
+    height: width
 
-        fragmentShader: "
-                       uniform sampler2D source;
-                       uniform mediump float qt_Opacity;
-                       varying highp vec2 qt_TexCoord0;
-                       void main() {
-                           gl_FragColor = qt_Opacity * texture2D(source, qt_TexCoord0);
-                       }"
+    property alias icon : ic.name
+    property bool toggled : true
+    property bool togglable : true
+
+    signal checked
+    signal unchecked
+    onClicked: {
+        if (ma.togglable) toggled = !toggled;
+        ma.toggled ? ma.checked() : ma.unchecked()
     }
-    onWindowChanged: {
-        if (window != null) {
-            // do not paint the QWaylandSurfaceItem, just use it as
-            // a texture provider
-            window.setPaintEnabled(false)
-        }
+
+    Rectangle {
+        anchors.fill: parent
+        radius: width/2
+        anchors.margins: ma.width*0.1
+        color: "#222222"
+        opacity: ma.pressed ? 0.6 : ma.toggled ? 0.75 : 0.2
+    }
+
+    Icon {
+        id: ic
+        width: parent.width*0.5
+        height: width
+        anchors.centerIn: parent
+        color: ma.pressed ? "lightgrey" : "white"
+        opacity: ma.pressed ? 0.5 : ma.toggled ? 1 : (ma.togglable ? 0.3 : 1)
     }
 }
 

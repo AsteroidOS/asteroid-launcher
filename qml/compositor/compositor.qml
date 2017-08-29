@@ -30,7 +30,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.0
+import QtQuick 2.9
+import QtQuick.Window 2.1
 import org.nemomobile.lipstick 0.1
 import org.asteroid.controls 1.0
 import "desktop.js" as Desktop
@@ -39,6 +40,8 @@ import "compositor"
 Item {
     id: root
     anchors.fill: parent
+
+    rotation: Screen.angleBetween(Screen.primaryScreen, Lipstick.compositor.screenOrientation)
 
     Connections {
         target: comp != null ? comp.quickWindow : null
@@ -70,6 +73,9 @@ Item {
             width: parent.width
             height: parent.height
             visible: comp != null && comp.appActive
+
+            // Let app deal with rotation themselves
+            rotation: Screen.angleBetween(Lipstick.compositor.screenOrientation, Screen.primaryScreen)
         }
 
         Item {
@@ -107,8 +113,11 @@ Item {
 
         onGestureStarted: {
             swipeAnimation.stop()
-            cancelAnimation.stop()
-            if ((gesture == "down" || gesture == "right")) {
+            if (gesture == "down") {
+                Desktop.instance.onAboutToClose()
+                state = "swipe"
+            } else if(gesture == "right") {
+                Desktop.instance.onAboutToMinimize()
                 state = "swipe"
             }
         }
@@ -118,9 +127,7 @@ Item {
                 if (gestureArea.progress >= swipeThreshold) {
                     swipeAnimation.valueTo = inverted ? -max : max
                     swipeAnimation.start()
-                    if (gesture == "down") {
-                        Lipstick.compositor.closeClientForWindowId(comp.topmostWindow.window.windowId)
-                    }
+                    Lipstick.compositor.closeClientForWindowId(comp.topmostWindow.window.windowId)
                 } else {
                     cancelAnimation.start()
                 }
@@ -195,16 +202,11 @@ Item {
         WindowWrapperBase { }
     }
 
-    Component {
-        id: alphaWrapper
-        WindowWrapperAlpha { }
-    }
-
     Timer {
         id: delayTimer
         interval: 5000
         repeat: false
-        onTriggered: comp.setCurrentWindow(comp.homeWindow)
+        onTriggered: Lipstick.compositor.closeClientForWindowId(comp.topmostWindow.window.windowId)
     }
 
     Compositor {
@@ -256,10 +258,6 @@ Item {
             }
         }
 
-        onSensorOrientationChanged: {
-            screenOrientation = sensorOrientation
-        }
-
         onDisplayOff: {
             if (comp.topmostAlarmWindow == null)
                 delayTimer.start()
@@ -293,10 +291,7 @@ Item {
                 parent = appLayer
             }
 
-            var w;
-            if (isOverlayWindow) w = alphaWrapper.createObject(parent, { window: window })
-            else w = windowWrapper.createObject(parent, { window: window })
-
+            var w = windowWrapper.createObject(parent, { window: window })
             window.userData = w
 
             if (isHomeWindow) {
@@ -310,6 +305,9 @@ Item {
                 comp.topmostAlarmWindow = window
                 setCurrentWindow(window)
             } else {
+                w.x = width
+                w.moveInAnim.start()
+                cancelAnimation.start()
                 if (!comp.topmostAlarmWindow) {
                     setCurrentWindow(w)
                 }
@@ -321,7 +319,6 @@ Item {
         }
 
         onWindowRemoved: {
-            Desktop.instance.switcher.switchModel.removeWindowForTitle(window.title)
             var w = window.userData;
             if (window.category == "alarm") {
                 comp.topmostAlarmWindow = null

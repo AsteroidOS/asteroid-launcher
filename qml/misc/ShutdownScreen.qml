@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2015 Florent Revest <revestflo@gmail.com>
+ *               2014 Aleksi Suomalainen <suomalainen.aleksi@gmail.com>
  * All rights reserved.
  *
  * You may use this file under the terms of BSD license as follows:
@@ -27,37 +28,28 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.1
-import org.asteroid.controls 1.0
+import QtQuick 2.9
+import QtQuick.Window 2.0
+import org.nemomobile.lipstick 0.1
+import ".."
 
-MouseArea {
-    id: ma
+Rectangle {
+    id: shutdownWindow
+    width: parent.width
+    height: parent.height
+    color: "black"
+    property bool shouldVisible
+    opacity: shutdownScreen.windowVisible
 
-    width: parent.width/3
-    height: width
-
-    property alias icon : ic.name
-    property bool toggled : true
-    property bool togglable : true
-
-    signal checked
-    signal unchecked
-    onClicked: {
-        if (ma.togglable) toggled = !toggled;
-        ma.toggled ? ma.checked() : ma.unchecked()
+    Image {
+        anchors.centerIn: parent
+        source: shutdownMode ? "" : "qrc:/images/shutdown-logo.png"
     }
-    Rectangle {
-        anchors.fill: parent
-        radius: width/2
-        anchors.margins: ma.width*0.1
-        color: ma.pressed ? '#99222222' : ma.toggled ? '#BB222222' :  '#33222222'
-        Icon {
-            id: ic
-            width: parent.width*0.56
-            height: width
-            anchors.centerIn: parent
-            color: ma.pressed ? "lightgrey" : "white"
+
+    Behavior on opacity {
+        NumberAnimation {
+            duration: 500
+            onRunningChanged: if (!running && shutdownWindow.opacity == 0) shutdownScreen.windowVisible = false
         }
     }
 }
-

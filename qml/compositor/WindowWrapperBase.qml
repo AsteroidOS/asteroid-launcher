@@ -29,16 +29,19 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.0
+import QtQuick 2.9
 import org.asteroid.controls 1.0
 
 Item {
     id: wrapper
 
+    property alias moveInAnim: moveInAnimation
+
     property Item window
     width: window !== null ? window.width : 0
     height: window !== null ? window.height : 0
-    NumberAnimation on opacity { id: fadeInAnimation; running: false; from: 0; to: 1; duration: 150 }
+    NumberAnimation on x { id: moveInAnimation; running: false ; to: 0; duration: 100 }
+    NumberAnimation on opacity { id: fadeInAnimation; running: false; from: 0; to: 1; duration: 100 }
     function animateIn() { fadeInAnimation.start(); }
 
     Component.onCompleted: window.parent = wrapper

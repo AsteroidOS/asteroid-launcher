@@ -1,6 +1,5 @@
 /*
- * Copyright (C) 2015 Florent Revest <revestflo@gmail.com>
- *               2014 Aleksi Suomalainen <suomalainen.aleksi@gmail.com>
+ * Copyright (C) 2017 Florent Revest <revestflo@gmail.com>
  * All rights reserved.
  *
  * You may use this file under the terms of BSD license as follows:
@@ -28,28 +27,22 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.0
-import QtQuick.Window 2.0
-import org.nemomobile.lipstick 0.1
-import ".."
+import QtQuick 2.9
 
-Rectangle {
-    id: shutdownWindow
-    width: parent.width
-    height: parent.height
-    color: "black"
-    property bool shouldVisible
-    opacity: shutdownScreen.windowVisible
+MouseArea {
+    property alias text: content.text
 
-    Image {
-        anchors.centerIn: parent
-        source: shutdownMode ? "" : "qrc:/images/shutdown-logo.png"
+    Rectangle {
+        anchors.fill: parent
+        radius: height/2
+        color: parent.pressed ? "#99222222" : "#BB222222"
     }
 
-    Behavior on opacity {
-        NumberAnimation {
-            duration: 500
-            onRunningChanged: if (!running && shutdownWindow.opacity == 0) shutdownScreen.windowVisible = false
-        }
+    Text {
+        id: content
+        font.pixelSize: parent.height*0.4
+        color: "white"
+        anchors.centerIn: parent
     }
 }
+

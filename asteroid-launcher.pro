@@ -1,5 +1,3 @@
-# Main project file for Asteroid Launcher
-
 TEMPLATE = app
 TARGET = lipstick
 VERSION = 0.1
@@ -7,63 +5,63 @@ VERSION = 0.1
 INSTALLS = target
 target.path = /usr/bin
 
-styles.path = /usr/share/asteroid-launcher/
-styles.files = vars.conf
-
 watchfaces.path = /usr/share/asteroid-launcher/watchfaces
 watchfaces.files =  watchfaces/*
 
 qml.path = /usr/share/asteroid-launcher/qml
 qml.files = qml/MainScreen.qml \
-    qml/compositor.qml \
-    qml/LauncherItemDelegate.qml \
-    qml/AppSwitcher.qml \
-    qml/QuickSettings.qml \
-    qml/QuickSettingsToggle.qml \
-    qml/AppLauncher.qml \
-    qml/SwitcherItem.qml \
-    qml/FeedsPage.qml \
-    qml/USBModeSelector.qml \
-    qml/VolumeControl.qml \
-    qml/ShutdownScreen.qml
+    qml/applauncher/AppLauncher.qml \
+    qml/applauncher/LauncherItemDelegate.qml \
+    qml/today/Today.qml \
+    qml/compositor/compositor.qml \
+    qml/misc/PanelsGrid.qml \
+    qml/misc/USBModeSelector.qml \
+    qml/misc/VolumeControl.qml \
+    qml/misc/ShutdownScreen.qml \
+    qml/notifications/NotificationActions.qml \
+    qml/notifications/NotificationButton.qml \
+    qml/notifications/NotificationIndicator.qml \
+    qml/notifications/NotificationView.qml \
+    qml/notifications/NotificationsPanel.qml \
+    qml/quicksettings/QuickSettings.qml \
+    qml/quicksettings/QuickSettingsToggle.qml
 
 scripts.path = /usr/share/asteroid-launcher/qml/
-scripts.files =  qml/desktop.js
+scripts.files =  qml/misc/desktop.js \
+    qml/today/weathericons.js
 
 qmlcompositor.path = /usr/share/asteroid-launcher/qml/compositor
-qmlcompositor.files = qml/compositor/WindowWrapperMystic.qml \
-    qml/compositor/WindowWrapperBase.qml \
-    qml/compositor/WindowWrapperAlpha.qml
+qmlcompositor.files = qml/compositor/WindowWrapperBase.qml
 
 system.path = /usr/share/asteroid-launcher/qml/system
-system.files = qml/ShutdownScreen.qml
+system.files = qml/misc/ShutdownScreen.qml
 
 volumecontrol.path = /usr/share/asteroid-launcher/qml/volumecontrol
-volumecontrol.files = qml/VolumeControl.qml
+volumecontrol.files = qml/misc/VolumeControl.qml
 
 connectivity.path = /usr/share/asteroid-launcher/qml/connectivity
-connectivity.files = qml/USBModeSelector.qml \
-    qml/ConnectionSelector.qml \
-    qml/BluetoothAgent.qml
+connectivity.files = qml/misc/USBModeSelector.qml \
+    qml/misc/ConnectionSelector.qml \
+    qml/misc/BluetoothAgent.qml
 
 notifications.path = /usr/share/asteroid-launcher/qml/notifications
-notifications.files = qml/NotificationPreview.qml
+notifications.files = qml/notifications/NotificationPreview.qml
 
-INSTALLS += styles qml qmlcompositor scripts system volumecontrol connectivity notifications watchfaces
+INSTALLS += qml qmlcompositor scripts system volumecontrol connectivity notifications watchfaces
 
 CONFIG += qt link_pkgconfig
 QT += quick waylandcompositor
 DEFINES += QT_COMPOSITOR_QUICK
 HEADERS += \
-    launcherwindowmodel.h \
-    applauncherbackground.h
+    applauncherbackground.h \
+    gesturefilterarea.h
 
 MOC_DIR = .moc
 
 SOURCES += \
     main.cpp \
-    launcherwindowmodel.cpp \
-    applauncherbackground.cpp
+    applauncherbackground.cpp \
+    gesturefilterarea.cpp
 
 RESOURCES += \
     resources-qml.qrc
@@ -72,29 +70,21 @@ PKGCONFIG += lipstick-qt5
 
 OTHER_FILES += qml/*.qml \
     qml/MainScreen.qml \
-    qml/compositor.qml \
-    qml/LauncherItemDelegate.qml \
-    qml/AppSwitcher.qml \
-    qml/QuickSettings.qml \
-    qml/QuickSettingsToggle.qml \
-    qml/AppLauncher.qml \
-    qml/SwitcherItem.qml \
-    qml/compositor/WindowWrapperMystic.qml \
+    qml/applauncher/AppLauncher.qml \
+    qml/today/Today.qml \
+    qml/appswitcher/LauncherItemDelegate.qml \
+    qml/compositor/compositor.qml \
     qml/compositor/WindowWrapperBase.qml \
-    qml/compositor/WindowWrapperAlpha.qml \
-    qml/NotificationPreview.qml \
-    qml/FeedsPage.qml \
-	  vars.conf \
-    qml/USBModeSelector.qml \
-    qml/VolumeControl.qml \
-    qml/ShutdownScreen.qml
-
-lupdate_only{
-    SOURCES = qml/AppSwitcher.qml \
-              qml/FeedsPage.qml
-}
+    qml/misc/USBModeSelector.qml \
+    qml/misc/VolumeControl.qml \
+    qml/misc/ShutdownScreen.qml \
+    qml/notifications/NotificationPreview.qml \
+    qml/notifications/NotificationsPanel.qml \
+    qml/quicksettings/QuickSettings.qml \
+    qml/quicksettings/QuickSettingsToggle.qml
 
 TRANSLATIONS = i18n/asteroid-launcher.ca.ts \
+               i18n/asteroid-launcher.da.ts \
                i18n/asteroid-launcher.de_DE.ts \
                i18n/asteroid-launcher.el.ts \
                i18n/asteroid-launcher.es.ts \

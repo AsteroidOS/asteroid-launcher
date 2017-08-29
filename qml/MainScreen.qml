@@ -28,8 +28,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.1
-import QtQuick.Window 2.1
+import QtQuick 2.9
 import org.nemomobile.time 1.0
 import org.nemomobile.configuration 1.0
 import org.nemomobile.lipstick 0.1
@@ -40,7 +39,6 @@ import "desktop.js" as Desktop
 Item {
     id: desktop
     anchors.fill: parent;
-    property var switcher: null
 
     AppLauncherBackground { id: alb }
 
@@ -55,7 +53,6 @@ Item {
 
     Component.onCompleted: {
         Desktop.instance = desktop
-        Lipstick.compositor.screenOrientation = nativeOrientation
         LipstickSettings.lockScreen(true)
     }
 
@@ -77,106 +74,106 @@ Item {
         defaultValue: "file:///usr/share/asteroid-launcher/watchfaces/000-default-digital.qml"
     }
 
-    property bool switcherVisibleInHome: false;
+    Component { id: topPanel;    QuickSettings      { } }
+    Component { id: leftPanel;   NotificationsPanel { panelsGrid: grid } }
+    Component { id: centerPanel; Loader             { source: watchFaceSource.value } }
+    Component { id: rightPanel;  Today              { } }
+    Component { id: bottomPanel; AppLauncher        { } }
 
-    Component { id: topPage;    QuickSettings { id: quickSet; width: desktop.width; height: desktop.height } }
-    Component { id: leftPage;   AppSwitcher   { id: switcher; width: desktop.width; height: desktop.height; visibleInHome: switcherVisibleInHome; Component.onCompleted: { desktop.switcher = switcher }} }
-    Component { id: centerPage; Loader        { id: clock;    width: desktop.width; height: desktop.height; source: watchFaceSource.value } }
-    Component { id: rightPage;  FeedsPage     { id: feed;     width: desktop.width; height: desktop.height } }
-    Component { id: bottomPage; AppLauncher   { id: launcher; width: desktop.width; height: desktop.height; switcher: desktop.switcher } }
-
-    Component { id: centerRow; ListView { id: centerListView // The three columns of the center row
-            model: 3
-            orientation: ListView.Horizontal
-            width: desktop.width; height: desktop.height;
-            snapMode: ListView.SnapOneItem
-            cacheBuffer: width*3
-
-            delegate: Loader {
-                sourceComponent: {
-                    switch (index)
-                    {
-                        case 0: return leftPage
-                        case 1: return centerPage
-                        case 2: return rightPage
-                    }
-                }
-            }
-            contentItem.onWidthChanged: positionViewAtIndex(1, ListView.Beginning)
-            onContentXChanged: {
-                verticalListView.interactive = centerListView.contentX == width // Only allows vertical flicking for the center item
-                wallpaperDarkener.opacity = Math.abs(centerListView.contentX - width)/width*0.4
-                wallpaper.anchors.horizontalCenterOffset = (centerListView.contentX - width)*(-0.05)
-                switcherVisibleInHome = centerListView.contentX < width
-            }
-
-            Timer {
-                id: delayTimer
-                interval: 150
-                repeat: false
-                onTriggered: {
-                    verticalListView.positionViewAtIndex(1, ListView.Beginning);
-                    centerListView.positionViewAtIndex(1, ListView.Beginning);
-                }
-            }
-            Connections {
-                target: Lipstick.compositor
-                onDisplayOff: delayTimer.start();
-                onHomeActiveChanged: delayTimer.start();
-            }
-        }
-    }
-
-    ListView { // three rows
-        id: verticalListView
-        model: 3
-        orientation: ListView.Vertical
+    PanelsGrid {
+        id: grid 
         anchors.fill: parent
-        snapMode: ListView.SnapOneItem
-        cacheBuffer: height*3
+        Component.onCompleted: {
+            addPanel(0, 0, centerPanel)
+            var al = addPanel(0, 1, bottomPanel)
+            addPanel(1, 0, rightPanel)
+            var np = addPanel(-1, 0, leftPanel)
+            addPanel(0, -1, topPanel)
 
-        delegate:Loader {
-            sourceComponent: {
-                switch (index)
-                {
-                    case 0: return topPage
-                    case 1: return centerRow
-                    case 2: return bottomPage
-                }
-            }
+            rightIndicator.visible  = Qt.binding(function() { return grid.toLeftAllowed   || (grid.currentVerticalPos == 1 && al.toLeftAllowed )})
+            leftIndicator.visible   = Qt.binding(function() { return grid.toRightAllowed  || (grid.currentVerticalPos == 1 && al.toRightAllowed)})
+            topIndicator.visible    = Qt.binding(function() { return grid.toBottomAllowed    })
+            bottomIndicator.visible = Qt.binding(function() { return grid.toTopAllowed })
+
+            leftIndicator.keepExpanded = Qt.binding(function() { return !np.modelEmpty && grid.currentHorizontalPos == 0 && grid.currentVerticalPos == 0 })
         }
-        contentItem.onHeightChanged: positionViewAtIndex(1, ListView.Beginning)
-        onContentYChanged: {
-            var shift = verticalListView.contentY - height
-            wallpaper.anchors.verticalCenterOffset = shift*(-0.05)
 
-            if(shift == height) {
+        onNormalizedHorOffsetChanged: {
+                wallpaper.anchors.horizontalCenterOffset = normalizedHorOffset*width*(-0.05)
+                wallpaperDarkener.opacity = Math.abs(normalizedHorOffset)*0.4
+        }
+        onNormalizedVerOffsetChanged: {
+            wallpaper.anchors.verticalCenterOffset = height*normalizedVerOffset*(-0.05)
+
+            if(normalizedVerOffset == 1) {
                 bgCenterColor = Qt.binding(function() { return launcherCenterColor })
                 bgOuterColor = Qt.binding(function() { return launcherOuterColor })
             }
 
-            else if(shift > 0) {
-                var ratio = shift/height
-
+            else if(normalizedVerOffset > 0) {
                 bgCenterColor = Qt.rgba(
-                            launcherCenterColor.r * ratio + defaultCenterColor.r * (1-ratio),
-                            launcherCenterColor.g * ratio + defaultCenterColor.g * (1-ratio),
-                            launcherCenterColor.b * ratio + defaultCenterColor.b * (1-ratio)
+                            launcherCenterColor.r * normalizedVerOffset + defaultCenterColor.r * (1-normalizedVerOffset),
+                            launcherCenterColor.g * normalizedVerOffset + defaultCenterColor.g * (1-normalizedVerOffset),
+                            launcherCenterColor.b * normalizedVerOffset + defaultCenterColor.b * (1-normalizedVerOffset)
                         );
 
                 bgOuterColor = Qt.rgba(
-                            launcherOuterColor.r * ratio + defaultOuterColor.r * (1-ratio),
-                            launcherOuterColor.g * ratio + defaultOuterColor.g * (1-ratio),
-                            launcherOuterColor.b * ratio + defaultOuterColor.b * (1-ratio)
+                            launcherOuterColor.r * normalizedVerOffset + defaultOuterColor.r * (1-normalizedVerOffset),
+                            launcherOuterColor.g * normalizedVerOffset + defaultOuterColor.g * (1-normalizedVerOffset),
+                            launcherOuterColor.b * normalizedVerOffset + defaultOuterColor.b * (1-normalizedVerOffset)
                         );
             }
             else {
                 bgCenterColor = Qt.binding(function() { return defaultCenterColor })
                 bgOuterColor = Qt.binding(function() { return defaultOuterColor })
-                wallpaperDarkener.opacity = Math.abs(shift)/height*0.4
+                wallpaperDarkener.opacity = Math.abs(normalizedVerOffset)*0.4
             }
         }
     }
+
+    NotificationIndicator {
+        id: notifIndic
+        anchors.top: parent.top
+        anchors.topMargin: Dims.h(5)
+        height: Dims.h(8)
+        width: parent.width
+        panelsGrid: grid
+    }
+
+    Indicator {
+        id: rightIndicator
+        edge: Qt.RightEdge
+    }
+
+    Indicator {
+        id: leftIndicator
+        edge: Qt.LeftEdge
+    }
+
+    Indicator {
+        id: topIndicator
+        edge: Qt.TopEdge
+    }
+
+    Indicator {
+        id: bottomIndicator
+        edge: Qt.BottomEdge
+    }
+
+    Timer {
+        id: delayTimer
+        interval: 150
+        repeat: false
+        onTriggered: onAboutToClose()
+    }
+    Connections {
+        target: Lipstick.compositor
+        onDisplayOff: delayTimer.start();
+     }
+
+    function onAboutToClose() { grid.center() }
+
+    function onAboutToMinimize() { grid.moveToLauncher() }
 
 // Wallpaper
     ConfigurationValue {
@@ -201,8 +198,8 @@ Item {
 
     Item {
         id: wallpaper
-        width:parent.width*1.1
-        height:parent.height*1.1
+        width: Dims.w(110)
+        height:  Dims.h(110)
         z: -100
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
