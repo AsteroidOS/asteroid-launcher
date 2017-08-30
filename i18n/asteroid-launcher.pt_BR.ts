@@ -6,38 +6,38 @@
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="147"/>
         <source>Authorize:</source>
-        <translation type="unfinished"></translation>
+        <translation>Autorizar:</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="158"/>
         <source>Authorize</source>
-        <translation type="unfinished"></translation>
+        <translation>Autorizar</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="169"/>
         <source>Confirm:</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmar:</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="180"/>
         <source>Pass Key:</source>
-        <translation type="unfinished"></translation>
+        <translation>Senha:</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="195"/>
         <source>Enter Key</source>
-        <translation type="unfinished"></translation>
+        <translation>Digite a senha</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="202"/>
         <location filename="../qml/misc/BluetoothAgent.qml" line="213"/>
         <source>PIN Code:</source>
-        <translation type="unfinished"></translation>
+        <translation>Código PIN:</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="217"/>
         <source>Enter PIN Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Digite o código PIN</translation>
     </message>
 </context>
 <context>
@@ -45,17 +45,17 @@
     <message>
         <location filename="../qml/notifications/NotificationActions.qml" line="50"/>
         <source>Snooze</source>
-        <translation type="unfinished"></translation>
+        <translation>Adiar</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationActions.qml" line="56"/>
         <source>Dismiss all</source>
-        <translation type="unfinished"></translation>
+        <translation>Descartar todos</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationActions.qml" line="70"/>
         <source>Dismiss</source>
-        <translation type="unfinished"></translation>
+        <translation>Descartar</translation>
     </message>
 </context>
 <context>
@@ -63,27 +63,27 @@
     <message>
         <location filename="../qml/notifications/NotificationView.qml" line="55"/>
         <source>Now</source>
-        <translation type="unfinished"></translation>
+        <translation>Agora</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationView.qml" line="59"/>
         <source>m</source>
-        <translation type="unfinished"></translation>
+        <translation>m</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationView.qml" line="63"/>
         <source>h</source>
-        <translation type="unfinished"></translation>
+        <translation>h</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationView.qml" line="66"/>
         <source>d</source>
-        <translation type="unfinished"></translation>
+        <translation>d</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationView.qml" line="153"/>
         <source>Dismiss</source>
-        <translation type="unfinished"></translation>
+        <translation>Descartar</translation>
     </message>
 </context>
 <context>
@@ -99,7 +99,7 @@
     <message>
         <location filename="../qml/today/Today.qml" line="169"/>
         <source>No events today</source>
-        <translation type="unfinished"></translation>
+        <translation>Sem eventos hoje</translation>
     </message>
 </context>
 </TS>
