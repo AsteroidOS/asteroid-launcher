@@ -21,12 +21,12 @@
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="180"/>
         <source>Pass Key:</source>
-        <translation>Llave Maestra:</translation>
+        <translation>Clave de paso:</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="195"/>
         <source>Enter Key</source>
-        <translation>Introducir Llave</translation>
+        <translation>Introducir clave</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="202"/>
