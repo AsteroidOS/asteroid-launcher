@@ -6,38 +6,38 @@
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="147"/>
         <source>Authorize:</source>
-        <translation type="unfinished"></translation>
+        <translation>인증:</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="158"/>
         <source>Authorize</source>
-        <translation type="unfinished"></translation>
+        <translation>인증</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="169"/>
         <source>Confirm:</source>
-        <translation type="unfinished"></translation>
+        <translation>승인:</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="180"/>
         <source>Pass Key:</source>
-        <translation type="unfinished"></translation>
+        <translation>페어링 키:</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="195"/>
         <source>Enter Key</source>
-        <translation type="unfinished"></translation>
+        <translation>페어링 키 입력</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="202"/>
         <location filename="../qml/misc/BluetoothAgent.qml" line="213"/>
         <source>PIN Code:</source>
-        <translation type="unfinished"></translation>
+        <translation>PIN 코드:</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="217"/>
         <source>Enter PIN Code</source>
-        <translation type="unfinished"></translation>
+        <translation>PIN 코드 입력</translation>
     </message>
 </context>
 <context>
@@ -45,17 +45,17 @@
     <message>
         <location filename="../qml/notifications/NotificationActions.qml" line="50"/>
         <source>Snooze</source>
-        <translation type="unfinished"></translation>
+        <translation>미루기</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationActions.qml" line="56"/>
         <source>Dismiss all</source>
-        <translation type="unfinished"></translation>
+        <translation>모두 닫기</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationActions.qml" line="70"/>
         <source>Dismiss</source>
-        <translation type="unfinished"></translation>
+        <translation>닫기</translation>
     </message>
 </context>
 <context>
@@ -63,27 +63,27 @@
     <message>
         <location filename="../qml/notifications/NotificationView.qml" line="55"/>
         <source>Now</source>
-        <translation type="unfinished"></translation>
+        <translation>지금</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationView.qml" line="59"/>
         <source>m</source>
-        <translation type="unfinished"></translation>
+        <translation>분</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationView.qml" line="63"/>
         <source>h</source>
-        <translation type="unfinished"></translation>
+        <translation>시간</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationView.qml" line="66"/>
         <source>d</source>
-        <translation type="unfinished"></translation>
+        <translation>일</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationView.qml" line="153"/>
         <source>Dismiss</source>
-        <translation type="unfinished"></translation>
+        <translation>닫기</translation>
     </message>
 </context>
 <context>
@@ -99,7 +99,7 @@
     <message>
         <location filename="../qml/today/Today.qml" line="169"/>
         <source>No events today</source>
-        <translation type="unfinished"></translation>
+        <translation>오늘 일정 없음</translation>
     </message>
 </context>
 </TS>
