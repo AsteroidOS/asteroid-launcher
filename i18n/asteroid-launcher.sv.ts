@@ -6,17 +6,17 @@
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="147"/>
         <source>Authorize:</source>
-        <translation type="unfinished"></translation>
+        <translation>Auktorisera:</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="158"/>
         <source>Authorize</source>
-        <translation type="unfinished"></translation>
+        <translation>Auktorisera</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="169"/>
         <source>Confirm:</source>
-        <translation type="unfinished"></translation>
+        <translation>Bekräfta:</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="180"/>
@@ -26,18 +26,18 @@
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="195"/>
         <source>Enter Key</source>
-        <translation type="unfinished"></translation>
+        <translation>Ange nyckel</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="202"/>
         <location filename="../qml/misc/BluetoothAgent.qml" line="213"/>
         <source>PIN Code:</source>
-        <translation type="unfinished"></translation>
+        <translation>PIN-kod:</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="217"/>
         <source>Enter PIN Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Ange PIN-kod</translation>
     </message>
 </context>
 <context>
@@ -45,7 +45,7 @@
     <message>
         <location filename="../qml/notifications/NotificationActions.qml" line="50"/>
         <source>Snooze</source>
-        <translation type="unfinished"></translation>
+        <translation>Snooza</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationActions.qml" line="56"/>
@@ -63,12 +63,12 @@
     <message>
         <location filename="../qml/notifications/NotificationView.qml" line="55"/>
         <source>Now</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationView.qml" line="59"/>
         <source>m</source>
-        <translation type="unfinished"></translation>
+        <translation>m</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationView.qml" line="63"/>
@@ -78,7 +78,7 @@
     <message>
         <location filename="../qml/notifications/NotificationView.qml" line="66"/>
         <source>d</source>
-        <translation type="unfinished"></translation>
+        <translation>d</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationView.qml" line="153"/>
@@ -91,7 +91,7 @@
     <message>
         <location filename="../qml/notifications/NotificationsPanel.qml" line="148"/>
         <source>No notifications</source>
-        <translation>Inga notifikationer</translation>
+        <translation>Inga aviseringar</translation>
     </message>
 </context>
 <context>
@@ -99,7 +99,7 @@
     <message>
         <location filename="../qml/today/Today.qml" line="169"/>
         <source>No events today</source>
-        <translation type="unfinished"></translation>
+        <translation>Inga händelser idag</translation>
     </message>
 </context>
 </TS>
