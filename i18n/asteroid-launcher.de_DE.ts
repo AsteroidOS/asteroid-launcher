@@ -21,7 +21,7 @@
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="180"/>
         <source>Pass Key:</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort:</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="195"/>
