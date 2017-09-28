@@ -6,17 +6,17 @@
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="147"/>
         <source>Authorize:</source>
-        <translation type="unfinished"></translation>
+        <translation>Autorisieren:</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="158"/>
         <source>Authorize</source>
-        <translation type="unfinished"></translation>
+        <translation>Autorisieren</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="169"/>
         <source>Confirm:</source>
-        <translation type="unfinished"></translation>
+        <translation>Bestätigen:</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="180"/>
@@ -32,12 +32,12 @@
         <location filename="../qml/misc/BluetoothAgent.qml" line="202"/>
         <location filename="../qml/misc/BluetoothAgent.qml" line="213"/>
         <source>PIN Code:</source>
-        <translation type="unfinished"></translation>
+        <translation>PIN-Code:</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="217"/>
         <source>Enter PIN Code</source>
-        <translation type="unfinished"></translation>
+        <translation>PIN-Code eingeben</translation>
     </message>
 </context>
 <context>
@@ -50,12 +50,12 @@
     <message>
         <location filename="../qml/notifications/NotificationActions.qml" line="56"/>
         <source>Dismiss all</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle ablehnen</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationActions.qml" line="70"/>
         <source>Dismiss</source>
-        <translation type="unfinished"></translation>
+        <translation>Ablehnen</translation>
     </message>
 </context>
 <context>
@@ -63,7 +63,7 @@
     <message>
         <location filename="../qml/notifications/NotificationView.qml" line="55"/>
         <source>Now</source>
-        <translation type="unfinished"></translation>
+        <translation>Jetzt</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationView.qml" line="59"/>
@@ -83,7 +83,7 @@
     <message>
         <location filename="../qml/notifications/NotificationView.qml" line="153"/>
         <source>Dismiss</source>
-        <translation type="unfinished"></translation>
+        <translation>Ablehnen</translation>
     </message>
 </context>
 <context>
@@ -99,7 +99,7 @@
     <message>
         <location filename="../qml/today/Today.qml" line="169"/>
         <source>No events today</source>
-        <translation type="unfinished"></translation>
+        <translation>Heute keine Ereignisse</translation>
     </message>
 </context>
 </TS>
