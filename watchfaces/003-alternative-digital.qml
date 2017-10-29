@@ -31,11 +31,6 @@
 import QtQuick 2.1
 
 Item {
-    function twoDigits(x) {
-        if (x<10) return "0"+x;
-        else      return x;
-    }
-
     function prepareContext(ctx) {
         ctx.reset()
         ctx.fillStyle = "white"
@@ -60,8 +55,12 @@ Item {
             var ctx = getContext("2d")
             prepareContext(ctx)
 
-            ctx.font = "50 " + height*0.25 + "px sans-serif";
-            ctx.fillText(Qt.formatDateTime(wallClock.time, "hh:mm"), width*0.5, height*0.53);
+            var text;
+            if(use12H.value) text = Qt.formatDateTime(wallClock.time, "hh:mm ap")
+            else             text = Qt.formatDateTime(wallClock.time, "hh:mm")
+
+            ctx.font = "50 " + height*0.2 + "px sans-serif";
+            ctx.fillText(text, width*0.5, height*0.53);
         }
     }
 

@@ -34,11 +34,6 @@ Canvas {
     anchors.fill: parent
     renderTarget: Canvas.FramebufferObject 
 
-    function twoDigits(x) {
-        if (x<10) return "0"+x;
-        else      return x;
-    }
-
     onPaint: {
         var ctx = getContext("2d")
         ctx.reset()
@@ -59,8 +54,11 @@ Canvas {
         var centerX = width/2
         var centerY = height/2
 
-        var text = twoDigits(wallClock.time.getHours()) + ":" + twoDigits(wallClock.time.getMinutes())
-        var fontSize = height/5
+        var text;
+        if(use12H.value) text = Qt.formatDateTime(wallClock.time, "hh:mm ap")
+        else             text = Qt.formatDateTime(wallClock.time, "hh:mm")
+
+        var fontSize = height*0.17
         var verticalOffset = height*0.025
         var fontFamily = "Orbitron"
         ctx.font = medium + fontSize + px + fontFamily;

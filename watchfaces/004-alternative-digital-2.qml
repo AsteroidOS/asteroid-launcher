@@ -83,6 +83,25 @@ Item {
     }
 
     Canvas {
+        id: amPmCanvas
+        anchors.fill: parent
+        antialiasing: true
+        smooth: true
+        renderTarget: Canvas.FramebufferObject 
+        visible: use12H.value
+
+        property var am: false
+
+        onPaint: {
+            var ctx = getContext("2d")
+            prepareContext(ctx)
+            var ctx = getContext("2d")
+
+            ctx.font = "10 " + height/13 + "px Raleway"
+            ctx.fillText(Qt.formatTime(wallClock.time, "AP"), width*0.3, height*0.5);
+        }
+    }
+    Canvas {
         id: dateCanvas
         anchors.fill: parent
         antialiasing: true
@@ -107,6 +126,8 @@ Item {
             var hour = wallClock.time.getHours()
             var minute = wallClock.time.getMinutes()
             var date = wallClock.time.getDate()
+            var am = hour < 12
+            if(use12H.value) hour = hour % 12
             if(hourCanvas.hour != hour) {
                 hourCanvas.hour = hour
                 hourCanvas.requestPaint()
@@ -116,6 +137,9 @@ Item {
             } if(dateCanvas.date != date) {
                 dateCanvas.date = date
                 dateCanvas.requestPaint()
+            } if(amPmCanvas.am != am) {
+                amPmCanvas.am = am
+                amPmCanvas.requestPain()
             }
         }
     }
@@ -124,12 +148,16 @@ Item {
         var hour = wallClock.time.getHours()
         var minute = wallClock.time.getMinutes()
         var date = wallClock.time.getDate()
+        var am = hour < 12
+        if(use12H.value) hour = hour % 12
         hourCanvas.hour = hour
         hourCanvas.requestPaint()
         minuteCanvas.minute = minute
         minuteCanvas.requestPaint()
         dateCanvas.date = date
         dateCanvas.requestPaint()
+        amPmCanvas.am = am
+        amPmCanvas.requestPain()
     }
 }
 
