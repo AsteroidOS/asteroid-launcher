@@ -53,6 +53,12 @@ ListView {
         defaultValue: 0
     }
 
+    ConfigurationValue {
+        id: use12H
+        key: "/org/asteroidos/settings/use-12h-format"
+        defaultValue: false
+    }
+
     property bool weatherAvailable: {
         var day0Date    = new Date(timestampDay0.value*1000);
         var daysDiff = Math.round((todayClock.time-day0Date)/(1000*60*60*24));
@@ -127,13 +133,13 @@ ListView {
 
             Text {
                 id: hour
-                text: Qt.formatTime(model.occurrence.startTime, "hh:mm")
+                text: Qt.formatTime(model.occurrence.startTime, use12H.value ? "hh:mm AP" : "hh:mm")
                 color: "lightgrey"
                 horizontalAlignment: Text.AlignRight
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
                 width: parent.width/4
-                font.pixelSize: parent.height/3.5
+                font.pixelSize: use12H.value ? parent.height/3.3 : parent.height/2.5
             }
             Text {
                 id: title
