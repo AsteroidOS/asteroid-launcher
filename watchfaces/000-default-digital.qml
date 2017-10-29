@@ -88,6 +88,7 @@ Item {
         antialiasing: true
         smooth: true
         renderTarget: Canvas.FramebufferObject 
+        visible: use12H.value
 
         property var am: false
 
