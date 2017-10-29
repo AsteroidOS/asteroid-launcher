@@ -62,6 +62,12 @@ Item {
         updateFrequency: WallClock.Second
     }
 
+    ConfigurationValue {
+        id: use12H
+        key: "/org/asteroidos/settings/use-12h-format"
+        defaultValue: false
+    }
+
     Connections {
         target: Lipstick.compositor
         onDisplayAboutToBeOn: wallClock.enabled = true
