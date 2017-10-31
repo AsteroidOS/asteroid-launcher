@@ -33,21 +33,39 @@ import QtQuick 2.9
 import org.asteroid.controls 1.0
 import org.asteroid.utils 1.0
 
-Item {
-    id: wrapper
+ShaderEffect {
+    property real smoothness: 0.0007
+    property bool keepInner: true
 
-    property alias moveInAnim: moveInAnimation
+    property real end: 0.25
+    property real beginning: 0.25 - smoothness
 
-    property Item window
-    property bool smoothBorders: false
-    width: window !== null ? window.width : 0
-    height: window !== null ? window.height : 0
-    NumberAnimation on x { id: moveInAnimation; running: false ; to: 0; duration: 100 }
-    NumberAnimation on opacity { id: fadeInAnimation; running: false; from: 0; to: 1; duration: 100 }
-    function animateIn() { fadeInAnimation.start(); }
+    fragmentShader: "
+    #extension GL_OES_standard_derivatives: enable
+    #ifdef GL_ES
+        precision lowp float;
+    #endif // GL_ES
+    varying highp vec2 qt_TexCoord0;
+    uniform highp float qt_Opacity;
+    uniform lowp sampler2D source;
+    uniform lowp float end;
+    uniform lowp float beginning;
+    uniform bool keepInner;
 
-    Component.onCompleted: window.parent = wrapper
-
-    layer.enabled: smoothBorders && DeviceInfo.hasRoundScreen
-    layer.effect: CircleMaskShader { }
+    void main(void) {
+        lowp float x, y;
+        x = (qt_TexCoord0.x - 0.5);
+        y = (qt_TexCoord0.y - 0.5);
+        if(keepInner) {
+            gl_FragColor = texture2D(source, qt_TexCoord0).rgba
+                * step(x * x + y * y, 0.25)
+                * smoothstep((x * x + y * y) , end, beginning)
+                * qt_Opacity;
+        } else {
+            gl_FragColor = texture2D(source, qt_TexCoord0).rgba
+                * (1.0 - (step(x * x + y * y, 0.25)
+                * smoothstep((x * x + y * y) , end, beginning)))
+                * qt_Opacity;
+        }
+    }"
 }
