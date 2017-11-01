@@ -337,7 +337,7 @@ Item {
     Rectangle {
         anchors.fill: parent
         color: "black"
-        layer.enabled: DeviceInfo.hasRoundScreen
+        visible: DeviceInfo.hasRoundScreen
         layer.effect: CircleMaskShader {
             smoothness: 0.002
             keepInner: false
