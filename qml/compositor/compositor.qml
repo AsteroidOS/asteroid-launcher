@@ -338,6 +338,7 @@ Item {
         anchors.fill: parent
         color: "black"
         visible: DeviceInfo.hasRoundScreen
+        layer.enabled: DeviceInfo.hasRoundScreen
         layer.effect: CircleMaskShader {
             smoothness: 0.002
             keepInner: false
