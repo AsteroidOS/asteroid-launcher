@@ -109,7 +109,6 @@ Item {
             }
             height: timestamp.height
             width: height
-            color: "#FFFFFF"
         }
 
         Text {

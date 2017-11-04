@@ -135,7 +135,8 @@ Item {
         width: Dims.w(27)
         height: width
         name: "ios-mail-outline"
-        color: "lightgrey"
+        color: "white"
+        opacity: 0.8
         anchors.centerIn: parent
         anchors.verticalCenterOffset: -Dims.h(9)
     }
@@ -147,7 +148,8 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         text: qsTr("No notifications")
         font.pixelSize: Dims.l(6)
-        color: "lightgrey"
+        color: "white"
+        opacity: 0.8
     }
 }
 

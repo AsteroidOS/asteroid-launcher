@@ -99,7 +99,8 @@ ListView {
             height: parent.height
             width: Dims.w(50)
             text: IconTools.getIconCode(owmId.value, 0)
-            color: "lightgrey"
+            color: "white"
+            opacity: 0.8
             horizontalAlignment: Text.AlignRight
             verticalAlignment: Text.AlignVCenter
             font.family: "weathericons"
@@ -112,7 +113,8 @@ ListView {
             width: Dims.w(45)
             anchors.right: parent.right
             text: (minTemp.value-273) + "°\n" + (maxTemp.value-273) + "°"
-            color: "lightgrey"
+            color: "white"
+            opacity: 0.8
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
             font.pixelSize: Dims.l(5)
@@ -134,7 +136,8 @@ ListView {
             Text {
                 id: hour
                 text: Qt.formatTime(model.occurrence.startTime, use12H.value ? "hh:mm AP" : "hh:mm")
-                color: "lightgrey"
+                color: "white"
+                opacity: 0.8
                 horizontalAlignment: Text.AlignRight
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
@@ -162,7 +165,6 @@ ListView {
         width: Dims.w(27)
         height: width
         name: "ios-calendar-outline"
-        color: "lightgrey"
         anchors.centerIn: parent
         anchors.verticalCenterOffset: weatherAvailable ? Dims.h(1) : -Dims.h(9)
     }
@@ -174,6 +176,7 @@ ListView {
         anchors.horizontalCenter: parent.horizontalCenter
         text: qsTr("No events today")
         font.pixelSize: Dims.l(6)
-        color: "lightgrey"
+        color: "white"
+        opacity: 0.8
     }
 }
