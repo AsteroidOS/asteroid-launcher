@@ -99,11 +99,9 @@ Item {
 
     IconButton {
         id: cancelButton
-        width: Dims.w(20)
-        height: width
         iconColor: "#666666"
-        pressedIconColor: "#222222"
         iconName: "ios-close-circle-outline"
+        edge: undefinedEdge
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.horizontalCenterOffset: -Dims.w(12)
         anchors.bottom: parent.bottom
@@ -113,11 +111,9 @@ Item {
 
     IconButton {
         id: confirmButton
-        width: Dims.w(20)
-        height: width
         iconColor: "#666666"
-        pressedIconColor: "#222222"
         iconName: "ios-checkmark-circle-outline"
+        edge: undefinedEdge
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.horizontalCenterOffset: Dims.w(12)
         anchors.bottom: parent.bottom
