@@ -50,12 +50,12 @@
     <message>
         <location filename="../qml/notifications/NotificationActions.qml" line="56"/>
         <source>Dismiss all</source>
-        <translation>Alle ablehnen</translation>
+        <translation type="unfinished">Alle ablehnen</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationActions.qml" line="70"/>
         <source>Dismiss</source>
-        <translation>Ablehnen</translation>
+        <translation type="unfinished">Ablehnen</translation>
     </message>
 </context>
 <context>
@@ -83,7 +83,7 @@
     <message>
         <location filename="../qml/notifications/NotificationView.qml" line="153"/>
         <source>Dismiss</source>
-        <translation>Ablehnen</translation>
+        <translation type="unfinished">Ablehnen</translation>
     </message>
 </context>
 <context>
