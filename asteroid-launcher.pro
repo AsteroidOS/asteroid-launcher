@@ -31,7 +31,8 @@ scripts.files =  qml/misc/desktop.js \
     qml/today/weathericons.js
 
 qmlcompositor.path = /usr/share/asteroid-launcher/qml/compositor
-qmlcompositor.files = qml/compositor/WindowWrapperBase.qml
+qmlcompositor.files = qml/compositor/WindowWrapperBase.qml \
+                      qml/compositor/CircleMaskShader.qml
 
 system.path = /usr/share/asteroid-launcher/qml/system
 system.files = qml/misc/ShutdownScreen.qml
@@ -50,23 +51,25 @@ notifications.files = qml/notifications/NotificationPreview.qml
 INSTALLS += qml qmlcompositor scripts system volumecontrol connectivity notifications watchfaces
 
 CONFIG += qt link_pkgconfig
-QT += quick waylandcompositor
+QT += quick waylandcompositor dbus
 DEFINES += QT_COMPOSITOR_QUICK
 HEADERS += \
     applauncherbackground.h \
-    gesturefilterarea.h
+    gesturefilterarea.h \
+    notificationsnoozer.h
 
 MOC_DIR = .moc
 
 SOURCES += \
     main.cpp \
     applauncherbackground.cpp \
-    gesturefilterarea.cpp
+    gesturefilterarea.cpp \
+    notificationsnoozer.cpp
 
 RESOURCES += \
     resources-qml.qrc
 
-PKGCONFIG += lipstick-qt5
+PKGCONFIG += lipstick-qt5 timed-qt5
 
 OTHER_FILES += qml/*.qml \
     qml/MainScreen.qml \
@@ -75,6 +78,7 @@ OTHER_FILES += qml/*.qml \
     qml/appswitcher/LauncherItemDelegate.qml \
     qml/compositor/compositor.qml \
     qml/compositor/WindowWrapperBase.qml \
+    qml/compositor/CircleMaskShader.qml \
     qml/misc/USBModeSelector.qml \
     qml/misc/VolumeControl.qml \
     qml/misc/ShutdownScreen.qml \

@@ -29,6 +29,7 @@
 
 import QtQuick 2.9
 import org.asteroid.controls 1.0
+import org.asteroid.launcher 1.0
 
 Item {
     id: actions
@@ -46,10 +47,18 @@ Item {
         width: Dims.w(55)
         spacing: Dims.h(8)
 
+        NotificationSnoozer { id: snoozer }
+
         NotificationButton {
             text: qsTr("Snooze")
             width: parent.width
             height: Dims.h(20)
+            onClicked: {
+                if (notification.userRemovable) {
+                    if(snoozer.snooze(notification, 5))
+                        notification.removeRequested()
+                }
+            }
         }
 
         NotificationButton {
@@ -100,7 +109,6 @@ Item {
             }
             height: timestamp.height
             width: height
-            color: "#FFFFFF"
         }
 
         Text {

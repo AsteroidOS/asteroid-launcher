@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Florent Revest <revestflo@gmail.com>
+ * Copyright (C) 2017 Florent Revest <revestflo@gmail.com>
  * All rights reserved.
  *
  * You may use this file under the terms of BSD license as follows:
@@ -27,47 +27,18 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.1
+#ifndef NOTIFICATIONSNOOZER_H
+#define NOTIFICATIONSNOOZER_H
 
-Canvas {
-    id: rootitem
-    anchors.fill: parent
-    renderTarget: Canvas.FramebufferObject 
+#include <QObject>
 
-    onPaint: {
-        var ctx = getContext("2d")
-        ctx.reset()
-        ctx.fillStyle = "white"
-        ctx.textAlign = "center"
-        ctx.textBaseline = 'middle';
-        ctx.shadowColor = "black"
-        ctx.shadowOffsetX = 0
-        ctx.shadowOffsetY = 0
-        ctx.shadowBlur = 3
+#include <lipstick-qt5/lipsticknotification.h>
 
-        var medium = "57 "
-        var thin = "0 "
-        var light = "25 "
+class Q_DECL_EXPORT NotificationSnoozer : public QObject
+{
+    Q_OBJECT
+public:
+    Q_INVOKABLE bool snooze(LipstickNotification *notif, int minutes);
+};
 
-        var px = "px "
-
-        var centerX = width/2
-        var centerY = height/2
-
-        var text;
-        if(use12H.value) text = Qt.formatDateTime(wallClock.time, "hh:mm ap")
-        else             text = Qt.formatDateTime(wallClock.time, "hh:mm")
-
-        var fontSize = height*0.17
-        var verticalOffset = height*0.025
-        var fontFamily = "Orbitron"
-        ctx.font = medium + fontSize + px + fontFamily;
-        ctx.fillText(text, centerX, centerY+verticalOffset);
-    }
-
-    Connections {
-        target: wallClock
-        onTimeChanged: rootitem.requestPaint()
-    }
-}
-
+#endif // NOTIFICATIONSNOOZER_H

@@ -41,6 +41,7 @@
 
 #include "applauncherbackground.h"
 #include "gesturefilterarea.h"
+#include "notificationsnoozer.h"
 
 int main(int argc, char **argv)
 {
@@ -79,6 +80,7 @@ int main(int argc, char **argv)
 
     qmlRegisterType<AppLauncherBackground>("org.asteroid.launcher", 1, 0, "AppLauncherBackground");
     qmlRegisterType<GestureFilterArea>("org.asteroid.launcher", 1, 0, "GestureFilterArea");
+    qmlRegisterType<NotificationSnoozer>("org.asteroid.launcher", 1, 0, "NotificationSnoozer");
     app.setQmlPath("/usr/share/asteroid-launcher/qml/MainScreen.qml");
 
     // Give these to the environment inside the lipstick homescreen

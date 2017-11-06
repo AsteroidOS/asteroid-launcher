@@ -1,5 +1,7 @@
 /*
- * Copyright (C) 2016 Florent Revest <revestflo@gmail.com>
+ * Copyright (C) 2015 Florent Revest <revestflo@gmail.com>
+ *               2014 Aleksi Suomalainen <suomalainen.aleksi@gmail.com>
+ *               2013 Jolla Ltd.
  * All rights reserved.
  *
  * You may use this file under the terms of BSD license as follows:
@@ -27,47 +29,43 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.1
+import QtQuick 2.9
+import org.asteroid.controls 1.0
+import org.asteroid.utils 1.0
 
-Canvas {
-    id: rootitem
-    anchors.fill: parent
-    renderTarget: Canvas.FramebufferObject 
+ShaderEffect {
+    property real smoothness: 0.0007
+    property bool keepInner: true
 
-    onPaint: {
-        var ctx = getContext("2d")
-        ctx.reset()
-        ctx.fillStyle = "white"
-        ctx.textAlign = "center"
-        ctx.textBaseline = 'middle';
-        ctx.shadowColor = "black"
-        ctx.shadowOffsetX = 0
-        ctx.shadowOffsetY = 0
-        ctx.shadowBlur = 3
+    property real end: 0.25
+    property real beginning: 0.25 - smoothness
 
-        var medium = "57 "
-        var thin = "0 "
-        var light = "25 "
+    fragmentShader: "
+    #extension GL_OES_standard_derivatives: enable
+    #ifdef GL_ES
+        precision lowp float;
+    #endif // GL_ES
+    varying highp vec2 qt_TexCoord0;
+    uniform highp float qt_Opacity;
+    uniform lowp sampler2D source;
+    uniform lowp float end;
+    uniform lowp float beginning;
+    uniform bool keepInner;
 
-        var px = "px "
-
-        var centerX = width/2
-        var centerY = height/2
-
-        var text;
-        if(use12H.value) text = Qt.formatDateTime(wallClock.time, "hh:mm ap")
-        else             text = Qt.formatDateTime(wallClock.time, "hh:mm")
-
-        var fontSize = height*0.17
-        var verticalOffset = height*0.025
-        var fontFamily = "Orbitron"
-        ctx.font = medium + fontSize + px + fontFamily;
-        ctx.fillText(text, centerX, centerY+verticalOffset);
-    }
-
-    Connections {
-        target: wallClock
-        onTimeChanged: rootitem.requestPaint()
-    }
+    void main(void) {
+        lowp float x, y;
+        x = (qt_TexCoord0.x - 0.5);
+        y = (qt_TexCoord0.y - 0.5);
+        if(keepInner) {
+            gl_FragColor = texture2D(source, qt_TexCoord0).rgba
+                * step(x * x + y * y, 0.25)
+                * smoothstep((x * x + y * y) , end, beginning)
+                * qt_Opacity;
+        } else {
+            gl_FragColor = texture2D(source, qt_TexCoord0).rgba
+                * (1.0 - (step(x * x + y * y, 0.25)
+                * smoothstep((x * x + y * y) , end, beginning)))
+                * qt_Opacity;
+        }
+    }"
 }
-

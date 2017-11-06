@@ -34,6 +34,7 @@ import QtQuick 2.9
 import QtQuick.Window 2.1
 import org.nemomobile.lipstick 0.1
 import org.asteroid.controls 1.0
+import org.asteroid.utils 1.0
 import "desktop.js" as Desktop
 import "compositor"
 
@@ -305,6 +306,7 @@ Item {
                 comp.topmostAlarmWindow = window
                 setCurrentWindow(window)
             } else {
+                w.smoothBorders = true
                 w.x = width
                 w.moveInAnim.start()
                 cancelAnimation.start()
@@ -329,6 +331,17 @@ Item {
 
             if (window.userData)
                 window.userData.destroy()
+        }
+    }
+
+    Rectangle {
+        anchors.fill: parent
+        color: "black"
+        visible: DeviceInfo.hasRoundScreen
+        layer.enabled: DeviceInfo.hasRoundScreen
+        layer.effect: CircleMaskShader {
+            smoothness: 0.002
+            keepInner: false
         }
     }
 }

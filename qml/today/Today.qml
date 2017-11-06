@@ -53,6 +53,12 @@ ListView {
         defaultValue: 0
     }
 
+    ConfigurationValue {
+        id: use12H
+        key: "/org/asteroidos/settings/use-12h-format"
+        defaultValue: false
+    }
+
     property bool weatherAvailable: {
         var day0Date    = new Date(timestampDay0.value*1000);
         var daysDiff = Math.round((todayClock.time-day0Date)/(1000*60*60*24));
@@ -93,7 +99,8 @@ ListView {
             height: parent.height
             width: Dims.w(50)
             text: IconTools.getIconCode(owmId.value, 0)
-            color: "lightgrey"
+            color: "white"
+            opacity: 0.8
             horizontalAlignment: Text.AlignRight
             verticalAlignment: Text.AlignVCenter
             font.family: "weathericons"
@@ -106,7 +113,8 @@ ListView {
             width: Dims.w(45)
             anchors.right: parent.right
             text: (minTemp.value-273) + "°\n" + (maxTemp.value-273) + "°"
-            color: "lightgrey"
+            color: "white"
+            opacity: 0.8
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
             font.pixelSize: Dims.l(5)
@@ -127,13 +135,14 @@ ListView {
 
             Text {
                 id: hour
-                text: Qt.formatTime(model.occurrence.startTime, "hh:mm")
-                color: "lightgrey"
+                text: Qt.formatTime(model.occurrence.startTime, use12H.value ? "hh:mm AP" : "hh:mm")
+                color: "white"
+                opacity: 0.8
                 horizontalAlignment: Text.AlignRight
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
                 width: parent.width/4
-                font.pixelSize: parent.height/3.5
+                font.pixelSize: use12H.value ? parent.height/3.3 : parent.height/2.5
             }
             Text {
                 id: title
@@ -156,7 +165,6 @@ ListView {
         width: Dims.w(27)
         height: width
         name: "ios-calendar-outline"
-        color: "lightgrey"
         anchors.centerIn: parent
         anchors.verticalCenterOffset: weatherAvailable ? Dims.h(1) : -Dims.h(9)
     }
@@ -168,6 +176,7 @@ ListView {
         anchors.horizontalCenter: parent.horizontalCenter
         text: qsTr("No events today")
         font.pixelSize: Dims.l(6)
-        color: "lightgrey"
+        color: "white"
+        opacity: 0.8
     }
 }

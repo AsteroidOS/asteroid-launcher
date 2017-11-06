@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Florent Revest <revestflo@gmail.com>
+ * Copyright (C) 2017 Florent Revest <revestflo@gmail.com>
  * All rights reserved.
  *
  * You may use this file under the terms of BSD license as follows:
@@ -27,47 +27,47 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.1
+#include "notificationsnoozer.h"
 
-Canvas {
-    id: rootitem
-    anchors.fill: parent
-    renderTarget: Canvas.FramebufferObject 
+#include <timed-qt5/event>
+#include <timed-qt5/interface>
 
-    onPaint: {
-        var ctx = getContext("2d")
-        ctx.reset()
-        ctx.fillStyle = "white"
-        ctx.textAlign = "center"
-        ctx.textBaseline = 'middle';
-        ctx.shadowColor = "black"
-        ctx.shadowOffsetX = 0
-        ctx.shadowOffsetY = 0
-        ctx.shadowBlur = 3
+bool NotificationSnoozer::snooze(LipstickNotification *notif, int minutes)
+{
+    /* Build a notificationtool command to be triggered later */
+    QString notifCmd;
+    QTextStream cmdStream(&notifCmd);
 
-        var medium = "57 "
-        var thin = "0 "
-        var light = "25 "
+    cmdStream << "/usr/bin/notificationtool -o add";
 
-        var px = "px "
+    const QVariantHash hints(notif->hints());
+    QVariantHash::const_iterator hit = hints.constBegin(), hend = hints.constEnd();
+    for( ; hit != hend; ++hit)
+        cmdStream << " --hint=\"" << hit.key() << " " << hit.value().toString() << "\"";
 
-        var centerX = width/2
-        var centerY = height/2
+    cmdStream << " --application=\"" << notif->appName() << "\"";
+    cmdStream << " --icon=\"" << notif->appIcon() << "\"";
+    cmdStream << " --timeout=\"" << notif->expireTimeout() << "\"";
+    cmdStream << " \"" << notif->summary() << "\"";
+    cmdStream << " \"" << notif->body() << "\"";
 
-        var text;
-        if(use12H.value) text = Qt.formatDateTime(wallClock.time, "hh:mm ap")
-        else             text = Qt.formatDateTime(wallClock.time, "hh:mm")
+    /* Build a timed countdown that will run the notificationtool command */
+    Maemo::Timed::Interface interface;
+    Maemo::Timed::Event event;
 
-        var fontSize = height*0.17
-        var verticalOffset = height*0.025
-        var fontFamily = "Orbitron"
-        ctx.font = medium + fontSize + px + fontFamily;
-        ctx.fillText(text, centerX, centerY+verticalOffset);
-    }
+    if(!interface.isValid())
+        return false;
 
-    Connections {
-        target: wallClock
-        onTimeChanged: rootitem.requestPaint()
-    }
+    Maemo::Timed::Event::Action &act = event.addAction();
+    act.whenDue();
+    act.runCommand(notifCmd.toLatin1().data(), "ceres");
+
+    event.setAttribute("APPLICATION", "launcher");
+    event.setAttribute("type", "countdown");
+    event.setAttribute("timeOfDay", "1");
+    event.setTicker(time(NULL) + 60*minutes);
+
+    QDBusReply<uint> res = interface.add_event_sync(event);
+    return res.isValid();
 }
 
