@@ -45,7 +45,7 @@
     <message>
         <location filename="../qml/notifications/NotificationActions.qml" line="50"/>
         <source>Snooze</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Report d’alarme</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationActions.qml" line="56"/>
