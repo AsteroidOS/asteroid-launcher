@@ -139,7 +139,7 @@ Item {
                 dateCanvas.requestPaint()
             } if(amPmCanvas.am != am) {
                 amPmCanvas.am = am
-                amPmCanvas.requestPain()
+                amPmCanvas.requestPaint()
             }
         }
     }
@@ -157,7 +157,7 @@ Item {
         dateCanvas.date = date
         dateCanvas.requestPaint()
         amPmCanvas.am = am
-        amPmCanvas.requestPain()
+        amPmCanvas.requestPaint()
     }
 }
 
