@@ -6,22 +6,22 @@
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="147"/>
         <source>Authorize:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Authentification :</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="158"/>
         <source>Authorize</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Authentification</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="169"/>
         <source>Confirm:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Confirmer :</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="180"/>
         <source>Pass Key:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mot de Passe :</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="195"/>
