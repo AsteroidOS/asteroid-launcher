@@ -26,18 +26,18 @@
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="195"/>
         <source>Enter Key</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Saisir le mot de passe</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="202"/>
         <location filename="../qml/misc/BluetoothAgent.qml" line="213"/>
         <source>PIN Code:</source>
-        <translation type="unfinished"></translation>
+        <translation>Code PIN :</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="217"/>
         <source>Enter PIN Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Saisir le code PIN :</translation>
     </message>
 </context>
 <context>
