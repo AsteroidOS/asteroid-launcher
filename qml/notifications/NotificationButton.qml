@@ -28,6 +28,7 @@
  */
 
 import QtQuick 2.9
+import org.asteroid.controls 1.0
 
 MouseArea {
     property alias text: content.text
@@ -38,10 +39,9 @@ MouseArea {
         color: parent.pressed ? "#99222222" : "#BB222222"
     }
 
-    Text {
+    Label {
         id: content
         font.pixelSize: parent.height*0.4
-        color: "white"
         anchors.centerIn: parent
     }
 }

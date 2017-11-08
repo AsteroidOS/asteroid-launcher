@@ -135,20 +135,18 @@ Item {
         width: Dims.w(27)
         height: width
         name: "ios-mail-outline"
-        color: "white"
         opacity: 0.8
         anchors.centerIn: parent
         anchors.verticalCenterOffset: -Dims.h(9)
     }
 
-    Text {
+    Label {
         visible: modelEmpty
         anchors.topMargin: Dims.h(4)
         anchors.top: emptyIndicator.bottom
         anchors.horizontalCenter: parent.horizontalCenter
         text: qsTr("No notifications")
         font.pixelSize: Dims.l(6)
-        color: "white"
         opacity: 0.8
     }
 }
