@@ -60,7 +60,7 @@ Item {
         anchors.right: parent.right
         anchors.top: icon.bottom
         anchors.topMargin: Dims.h(3)
-        Text {
+        Label {
             id: summary
             anchors.top: parent.top
             width: Dims.w(70)
@@ -72,7 +72,7 @@ Item {
             elide: Text.ElideRight
         }
 
-        Text {
+        Label {
             id: body
             anchors.top: summary.bottom
             width: Dims.w(70)
@@ -80,7 +80,6 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             horizontalAlignment: Text.AlignHCenter
             color: "#666666"
-            font.pixelSize: Dims.h(7)
             font.bold: true
             clip: true
             maximumLineCount: 1

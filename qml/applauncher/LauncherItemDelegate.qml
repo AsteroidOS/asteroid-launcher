@@ -70,7 +70,7 @@ MouseArea {
         color: "#666666"
     }
 
-    Text {
+    Label {
         id: iconText
         anchors.top: icon.bottom
         width: parent.width

@@ -160,11 +160,10 @@ Item {
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
         }
-        Text {
+        Label {
             id: batteryIndicator
             font.pixelSize: parent.height/4
             text: batteryChargePercentage.value + "%"
-            color: "white"
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
         }

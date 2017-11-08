@@ -111,7 +111,7 @@ Item {
             width: height
         }
 
-        Text {
+        Label {
             id: timestamp
             color: "#b0b0b0"
             text: "35m"

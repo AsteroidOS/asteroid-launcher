@@ -95,11 +95,10 @@ ListView {
 
         FontLoader { source: "file:///usr/share/fonts/weathericons-regular-webfont.ttf" }
 
-        Text {
+        Label {
             height: parent.height
             width: Dims.w(50)
             text: IconTools.getIconCode(owmId.value, 0)
-            color: "white"
             opacity: 0.8
             horizontalAlignment: Text.AlignRight
             verticalAlignment: Text.AlignVCenter
@@ -108,12 +107,11 @@ ListView {
             visible: weatherAvailable
         }
 
-        Text {
+        Label {
             height: parent.height
             width: Dims.w(45)
             anchors.right: parent.right
             text: (minTemp.value-273) + "°\n" + (maxTemp.value-273) + "°"
-            color: "white"
             opacity: 0.8
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
@@ -133,10 +131,9 @@ ListView {
             height: Dims.h(25)
             width: parent.width
 
-            Text {
+            Label {
                 id: hour
                 text: Qt.formatTime(model.occurrence.startTime, use12H.value ? "hh:mm AP" : "hh:mm")
-                color: "white"
                 opacity: 0.8
                 horizontalAlignment: Text.AlignRight
                 anchors.verticalCenter: parent.verticalCenter
@@ -144,9 +141,8 @@ ListView {
                 width: parent.width/4
                 font.pixelSize: use12H.value ? parent.height/3.3 : parent.height/2.5
             }
-            Text {
+            Label {
                 id: title
-                color: "white"
                 anchors.left: hour.right
                 anchors.right: parent.right
                 anchors.leftMargin: 20
@@ -169,14 +165,13 @@ ListView {
         anchors.verticalCenterOffset: weatherAvailable ? Dims.h(1) : -Dims.h(9)
     }
 
-    Text {
+    Label {
         visible: modelEmpty
         anchors.topMargin: Dims.h(4)
         anchors.top: emptyIndicator.bottom
         anchors.horizontalCenter: parent.horizontalCenter
         text: qsTr("No events today")
         font.pixelSize: Dims.l(6)
-        color: "white"
         opacity: 0.8
     }
 }

@@ -79,7 +79,7 @@ Item {
             }
         }
 
-        Text {
+        Label {
             id: summary
             anchors.top: icon.bottom
             height: text == "" ? 0 : undefined
@@ -95,7 +95,7 @@ Item {
             text: notificationPreviewPresenter.notification != null ? notificationPreviewPresenter.notification.previewSummary : ""
         }
 
-        Text {
+        Label {
             id: body
             anchors.top: summary.bottom
             width: Dims.w(50)

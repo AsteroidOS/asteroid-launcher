@@ -90,9 +90,8 @@ MouseArea {
             width: 1
         }
 
-        Text {
+        Label {
             id: appName
-            color: "white"
             width: Dims.w(56)
             font.pixelSize: Dims.l(6)
             elide: Text.ElideRight
@@ -102,9 +101,8 @@ MouseArea {
                 onCurrentHorizontalPosChanged: updateTimestamp()
             }
 
-            Text {
+            Label {
                 id: timestamp
-                color: "white"
                 font.pixelSize: appName.font.pixelSize
                 horizontalAlignment: Text.AlignRight
                 anchors.top: appName.top
@@ -119,11 +117,9 @@ MouseArea {
             width: 1
         }
 
-        Text {
+        Label {
             id: summary
-            color: "white"
             font.bold: true
-            font.pixelSize: Dims.l(8)
             width: parent.width
             elide: Text.ElideRight
         }
@@ -134,10 +130,8 @@ MouseArea {
             width: 1
         }
 
-        Text {
+        Label {
             id: body
-            color: "white"
-            font.pixelSize: Dims.l(8)
             anchors.horizontalCenter: parent.horizontalCenter
             wrapMode: Text.Wrap
             width: parent.width
