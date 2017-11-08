@@ -50,12 +50,12 @@
     <message>
         <location filename="../qml/notifications/NotificationActions.qml" line="56"/>
         <source>Dismiss all</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Tout arrêter</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationActions.qml" line="70"/>
         <source>Dismiss</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Arrêter</translation>
     </message>
 </context>
 <context>
@@ -63,27 +63,27 @@
     <message>
         <location filename="../qml/notifications/NotificationView.qml" line="55"/>
         <source>Now</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Maintenant</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationView.qml" line="59"/>
         <source>m</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">m</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationView.qml" line="63"/>
         <source>h</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">h</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationView.qml" line="66"/>
         <source>d</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">j</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationView.qml" line="153"/>
         <source>Dismiss</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Annuler</translation>
     </message>
 </context>
 <context>
@@ -99,7 +99,7 @@
     <message>
         <location filename="../qml/today/Today.qml" line="169"/>
         <source>No events today</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Aucun événement aujourd&apos;hui</translation>
     </message>
 </context>
 </TS>
