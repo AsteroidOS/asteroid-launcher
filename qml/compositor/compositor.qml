@@ -107,7 +107,7 @@ Item {
         enabled: comp != null && comp.appActive
         z: 7
         anchors.fill: parent
-        acceptsDown: comp != null && !comp.topmostWindowRequestsGesturesDisabled
+        acceptsDown: true
         acceptsRight: comp != null && !comp.topmostWindowRequestsGesturesDisabled
 
         property real swipeThreshold: 0.15
