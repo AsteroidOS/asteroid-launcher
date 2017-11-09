@@ -93,17 +93,13 @@ ListView {
         width: parent.width
         height: Dims.h(25)
 
-        FontLoader { source: "file:///usr/share/fonts/weathericons-regular-webfont.ttf" }
-
-        Label {
-            height: parent.height
-            width: Dims.w(50)
-            text: IconTools.getIconCode(owmId.value, 0)
+        Icon {
+            name: IconTools.getIconName(owmId.value)
+            height: Dims.h(20)
+            width: height
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.horizontalCenter
             opacity: 0.8
-            horizontalAlignment: Text.AlignRight
-            verticalAlignment: Text.AlignVCenter
-            font.family: "weathericons"
-            font.pixelSize: Dims.l(15)
             visible: weatherAvailable
         }
 
