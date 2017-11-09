@@ -63,7 +63,7 @@
     <message>
         <location filename="../qml/notifications/NotificationView.qml" line="55"/>
         <source>Now</source>
-        <translation></translation>
+        <translation>ახლა</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationView.qml" line="59"/>
