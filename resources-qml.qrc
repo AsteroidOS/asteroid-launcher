@@ -4,4 +4,31 @@
         <file>images/diskBackground.svg</file>
         <file>images/diskBackgroundPressed.svg</file>
     </qresource>
+    <qresource prefix="/qml/">
+        <file alias="MainScreen.qml">qml/MainScreen.qml</file>
+        <file alias="AppLauncher.qml">qml/applauncher/AppLauncher.qml</file>
+        <file alias="LauncherItemDelegate.qml">qml/applauncher/LauncherItemDelegate.qml</file>
+        <file alias="Today.qml">qml/today/Today.qml</file>
+        <file alias="compositor.qml">qml/compositor/compositor.qml</file>
+        <file alias="PanelsGrid.qml">qml/misc/PanelsGrid.qml</file>
+        <file alias="USBModeSelector.qml">qml/misc/USBModeSelector.qml</file>
+        <file alias="ShutdownScreen.qml">qml/misc/ShutdownScreen.qml</file>
+        <file alias="NotificationActions.qml">qml/notifications/NotificationActions.qml</file>
+        <file alias="NotificationButton.qml">qml/notifications/NotificationButton.qml</file>
+        <file alias="NotificationIndicator.qml">qml/notifications/NotificationIndicator.qml</file>
+        <file alias="NotificationView.qml">qml/notifications/NotificationView.qml</file>
+        <file alias="NotificationsPanel.qml">qml/notifications/NotificationsPanel.qml</file>
+        <file alias="QuickSettings.qml">qml/quicksettings/QuickSettings.qml</file>
+        <file alias="QuickSettingsToggle.qml">qml/quicksettings/QuickSettingsToggle.qml</file>
+        <file alias="desktop.js">qml/misc/desktop.js</file>
+        <file alias="weathericons.js">qml/today/weathericons.js</file>
+        <file alias="compositor/WindowWrapperBase.qml">qml/compositor/WindowWrapperBase.qml</file>
+        <file alias="compositor/CircleMaskShader.qml">qml/compositor/CircleMaskShader.qml</file>
+        <file alias="system/ShutdownScreen.qml">qml/misc/ShutdownScreen.qml</file>
+        <file alias="volumecontrol/VolumeControl.qml">qml/misc/VolumeControl.qml</file>
+        <file alias="connectivity/USBModeSelector.qml">qml/misc/USBModeSelector.qml</file>
+        <file alias="connectivity/ConnectionSelector.qml">qml/misc/ConnectionSelector.qml</file>
+        <file alias="connectivity/BluetoothAgent.qml">qml/misc/BluetoothAgent.qml</file>
+        <file alias="notifications/NotificationPreview.qml">qml/notifications/NotificationPreview.qml</file>
+    </qresource>
 </RCC>
