@@ -163,6 +163,7 @@ ListView {
         name: "ios-calendar-outline"
         anchors.centerIn: parent
         anchors.verticalCenterOffset: weatherAvailable ? Dims.h(1) : -Dims.h(9)
+        opacity: 0.8
     }
 
     Label {
