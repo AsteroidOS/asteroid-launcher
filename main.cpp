@@ -45,7 +45,7 @@
 
 int main(int argc, char **argv)
 {
-    QmlPath::append("/usr/share/asteroid-launcher/qml");
+    QmlPath::append(":/qml/");
     HomeApplication app(argc, argv, QString());
 
     QTranslator translator;
@@ -53,7 +53,7 @@ int main(int argc, char **argv)
     app.installTranslator(&translator);
 
     QGuiApplication::setFont(QFont("Open Sans"));
-    app.setCompositorPath("/usr/share/asteroid-launcher/qml/compositor.qml");
+    app.setCompositorPath("qrc:/qml/compositor.qml");
     Qt::ScreenOrientation nativeOrientation = app.primaryScreen()->nativeOrientation();
     QByteArray v = qgetenv("LAUNCHER_NATIVEORIENTATION");
     if (!v.isEmpty()) {
@@ -81,7 +81,7 @@ int main(int argc, char **argv)
     qmlRegisterType<AppLauncherBackground>("org.asteroid.launcher", 1, 0, "AppLauncherBackground");
     qmlRegisterType<GestureFilterArea>("org.asteroid.launcher", 1, 0, "GestureFilterArea");
     qmlRegisterType<NotificationSnoozer>("org.asteroid.launcher", 1, 0, "NotificationSnoozer");
-    app.setQmlPath("/usr/share/asteroid-launcher/qml/MainScreen.qml");
+    app.setQmlPath("qrc:/qml/MainScreen.qml");
 
     // Give these to the environment inside the lipstick homescreen
     // Fixes a bug where some applications wouldn't launch, eg. terminal or browser
