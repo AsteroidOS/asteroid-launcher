@@ -127,7 +127,10 @@ Item {
             var minute = wallClock.time.getMinutes()
             var date = wallClock.time.getDate()
             var am = hour < 12
-            if(use12H.value) hour = hour % 12
+            if(use12H.value) {
+                hour = hour % 12
+                if (hour == 0) hour = 12;
+            }
             if(hourCanvas.hour != hour) {
                 hourCanvas.hour = hour
                 hourCanvas.requestPaint()
@@ -149,7 +152,10 @@ Item {
         var minute = wallClock.time.getMinutes()
         var date = wallClock.time.getDate()
         var am = hour < 12
-        if(use12H.value) hour = hour % 12
+        if(use12H.value) {
+            hour = hour % 12
+            if (hour == 0) hour = 12
+        }
         hourCanvas.hour = hour
         hourCanvas.requestPaint()
         minuteCanvas.minute = minute
