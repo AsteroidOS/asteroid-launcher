@@ -59,6 +59,12 @@ ListView {
         defaultValue: false
     }
 
+    ConfigurationValue {
+        id: useFahrenheit
+        key: "/org/asteroidos/settings/use-fahrenheit"
+        defaultValue: false
+    }
+
     property bool weatherAvailable: {
         var day0Date    = new Date(timestampDay0.value*1000);
         var daysDiff = Math.round((todayClock.time-day0Date)/(1000*60*60*24));
@@ -70,6 +76,14 @@ ListView {
         var daysDiff = Math.round((todayClock.time-day0Date)/(1000*60*60*24));
         if(daysDiff > 5) daysDiff = 5;
         return daysDiff;
+    }
+
+    function convertTemp(val) {
+        var celsius = (val-273);
+        if(!useFahrenheit.value)
+            return celsius + "°C";
+        else
+            return Math.round((((celsius)*9/5) + 32) * 10) / 10 + "°F";
     }
 
     ConfigurationValue {
@@ -107,7 +121,7 @@ ListView {
             height: parent.height
             width: Dims.w(45)
             anchors.right: parent.right
-            text: (minTemp.value-273) + "°\n" + (maxTemp.value-273) + "°"
+            text: convertTemp(minTemp.value) + "°\n" + convertTemp(maxTemp.value) + "°"
             opacity: 0.8
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
