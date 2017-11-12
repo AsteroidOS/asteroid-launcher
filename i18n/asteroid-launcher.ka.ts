@@ -6,38 +6,38 @@
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="147"/>
         <source>Authorize:</source>
-        <translation></translation>
+        <translation>ნების დართვა:</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="158"/>
         <source>Authorize</source>
-        <translation></translation>
+        <translation>ნების დართვა</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="169"/>
         <source>Confirm:</source>
-        <translation></translation>
+        <translation>დაადასტუროთ:</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="180"/>
         <source>Pass Key:</source>
-        <translation></translation>
+        <translation>დაკავშირების კოდი:</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="195"/>
         <source>Enter Key</source>
-        <translation></translation>
+        <translation>კოდის შეყვანა</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="202"/>
         <location filename="../qml/misc/BluetoothAgent.qml" line="213"/>
         <source>PIN Code:</source>
-        <translation></translation>
+        <translation>PIN კოდი:</translation>
     </message>
     <message>
         <location filename="../qml/misc/BluetoothAgent.qml" line="217"/>
         <source>Enter PIN Code</source>
-        <translation></translation>
+        <translation>შეიყვანეთ PIN კოდი</translation>
     </message>
 </context>
 <context>
@@ -45,17 +45,17 @@
     <message>
         <location filename="../qml/notifications/NotificationActions.qml" line="50"/>
         <source>Snooze</source>
-        <translation></translation>
+        <translation>ჩაჩუმება</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationActions.qml" line="56"/>
         <source>Dismiss all</source>
-        <translation></translation>
+        <translation>ყველას გასუფთავება</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationActions.qml" line="70"/>
         <source>Dismiss</source>
-        <translation></translation>
+        <translation>დახურვა</translation>
     </message>
 </context>
 <context>
@@ -68,22 +68,22 @@
     <message>
         <location filename="../qml/notifications/NotificationView.qml" line="59"/>
         <source>m</source>
-        <translation></translation>
+        <translation>წ</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationView.qml" line="63"/>
         <source>h</source>
-        <translation></translation>
+        <translation>ს</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationView.qml" line="66"/>
         <source>d</source>
-        <translation></translation>
+        <translation>დ</translation>
     </message>
     <message>
         <location filename="../qml/notifications/NotificationView.qml" line="153"/>
         <source>Dismiss</source>
-        <translation></translation>
+        <translation>დახურვა</translation>
     </message>
 </context>
 <context>
@@ -91,7 +91,7 @@
     <message>
         <location filename="../qml/notifications/NotificationsPanel.qml" line="148"/>
         <source>No notifications</source>
-        <translation></translation>
+        <translation>არარის შეტყობინებები</translation>
     </message>
 </context>
 <context>
@@ -99,7 +99,7 @@
     <message>
         <location filename="../qml/today/Today.qml" line="169"/>
         <source>No events today</source>
-        <translation></translation>
+        <translation>დღეს არ არსებობს მოვლენები</translation>
     </message>
 </context>
 </TS>
