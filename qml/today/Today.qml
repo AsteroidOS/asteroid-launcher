@@ -83,7 +83,7 @@ ListView {
         if(!useFahrenheit.value)
             return celsius + "°C";
         else
-            return Math.round((((celsius)*9/5) + 32) * 10) / 10 + "°F";
+            return Math.round(((celsius)*9/5) + 32) + "°F";
     }
 
     ConfigurationValue {
@@ -121,7 +121,7 @@ ListView {
             height: parent.height
             width: Dims.w(45)
             anchors.right: parent.right
-            text: convertTemp(minTemp.value) + "°\n" + convertTemp(maxTemp.value) + "°"
+            text: convertTemp(minTemp.value) + "\n" + convertTemp(maxTemp.value)
             opacity: 0.8
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
