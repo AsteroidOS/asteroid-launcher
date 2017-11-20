@@ -36,27 +36,7 @@ OTHER_FILES += qml/*.qml \
     qml/quicksettings/QuickSettings.qml \
     qml/quicksettings/QuickSettingsToggle.qml
 
-TRANSLATIONS = i18n/asteroid-launcher.ca.ts \
-               i18n/asteroid-launcher.da.ts \
-               i18n/asteroid-launcher.de_DE.ts \
-               i18n/asteroid-launcher.el.ts \
-               i18n/asteroid-launcher.es.ts \
-               i18n/asteroid-launcher.fa.ts \
-               i18n/asteroid-launcher.fi.ts \
-               i18n/asteroid-launcher.fr.ts \
-               i18n/asteroid-launcher.hu.ts \
-               i18n/asteroid-launcher.it.ts \
-               i18n/asteroid-launcher.kab.ts \
-               i18n/asteroid-launcher.ko.ts \
-               i18n/asteroid-launcher.nl_NL.ts \
-               i18n/asteroid-launcher.pl.ts \
-               i18n/asteroid-launcher.pt_BR.ts \
-               i18n/asteroid-launcher.ru.ts \
-               i18n/asteroid-launcher.sv.ts \
-               i18n/asteroid-launcher.ta.ts \
-               i18n/asteroid-launcher.tr.ts \
-               i18n/asteroid-launcher.uk.ts \
-               i18n/asteroid-launcher.zh_Hans.ts
+TRANSLATIONS = $$files(i18n/$$TARGET.*.ts)
 
 target.path = /usr/bin
 
