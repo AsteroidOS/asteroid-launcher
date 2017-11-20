@@ -74,19 +74,12 @@
     <message id="id-no-notifications">
         <location filename="../qml/notifications/NotificationsPanel.qml" line="149"/>
         <source>No notifications</source>
-        <translation type="unfinished">Καμία ειδοποίηση</translation>
+        <translation>Καμία ειδοποίηση</translation>
     </message>
     <message id="id-no-events-today">
         <location filename="../qml/today/Today.qml" line="185"/>
         <source>No events today</source>
         <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>NotificationsPanel</name>
-    <message>
-        <source>No notifications</source>
-        <translation type="vanished">Καμία ειδοποίηση</translation>
     </message>
 </context>
 </TS>

@@ -7,162 +7,79 @@
         <location filename="../qml/misc/BluetoothAgent.qml" line="143"/>
         <location filename="../qml/misc/BluetoothAgent.qml" line="155"/>
         <source>Authorize:</source>
-        <translation type="unfinished">Autorizar:</translation>
+        <translation>Autorizar:</translation>
     </message>
     <message id="id-btagent-confirm">
         <location filename="../qml/misc/BluetoothAgent.qml" line="167"/>
         <source>Confirm:</source>
-        <translation type="unfinished">Confirmar:</translation>
+        <translation>Confirmar:</translation>
     </message>
     <message id="id-btagent-passkey">
         <location filename="../qml/misc/BluetoothAgent.qml" line="179"/>
         <source>Pass Key:</source>
-        <translation type="unfinished">Clave de paso:</translation>
+        <translation>Clave de paso:</translation>
     </message>
     <message id="id-btagent-enterkey">
         <location filename="../qml/misc/BluetoothAgent.qml" line="195"/>
         <source>Enter Key</source>
-        <translation type="unfinished">Introducir clave</translation>
+        <translation>Introducir clave</translation>
     </message>
     <message id="id-btagent-pincode">
         <location filename="../qml/misc/BluetoothAgent.qml" line="203"/>
         <location filename="../qml/misc/BluetoothAgent.qml" line="215"/>
         <source>PIN Code:</source>
-        <translation type="unfinished">Código PIN:</translation>
+        <translation>Código PIN:</translation>
     </message>
     <message id="id-btagent-enter-pincode">
         <location filename="../qml/misc/BluetoothAgent.qml" line="220"/>
         <source>Enter PIN Code</source>
-        <translation type="unfinished">Introducir Código NIP</translation>
+        <translation>Introducir Código NIP</translation>
     </message>
     <message id="id-snooze">
         <location filename="../qml/notifications/NotificationActions.qml" line="54"/>
         <source>Snooze</source>
-        <translation type="unfinished">Dormitar</translation>
+        <translation>Dormitar</translation>
     </message>
     <message id="id-dismiss-all">
         <location filename="../qml/notifications/NotificationActions.qml" line="67"/>
         <source>Dismiss all</source>
-        <translation type="unfinished">Descartar todo</translation>
+        <translation>Descartar todo</translation>
     </message>
     <message id="id-dismiss">
         <location filename="../qml/notifications/NotificationActions.qml" line="82"/>
         <location filename="../qml/notifications/NotificationView.qml" line="152"/>
         <source>Dismiss</source>
-        <translation type="unfinished">Descartar</translation>
+        <translation>Descartar</translation>
     </message>
     <message id="id-now">
         <location filename="../qml/notifications/NotificationView.qml" line="56"/>
         <source>Now</source>
-        <translation type="unfinished">Ahora</translation>
+        <translation>Ahora</translation>
     </message>
     <message id="id-minute-abbrev">
         <location filename="../qml/notifications/NotificationView.qml" line="61"/>
         <source>m</source>
-        <translation type="unfinished">m</translation>
+        <translation>m</translation>
     </message>
     <message id="id-hour-abbrev">
         <location filename="../qml/notifications/NotificationView.qml" line="66"/>
         <source>h</source>
-        <translation type="unfinished">h</translation>
+        <translation>h</translation>
     </message>
     <message id="id-day-abbrev">
         <location filename="../qml/notifications/NotificationView.qml" line="70"/>
         <source>d</source>
-        <translation type="unfinished">d</translation>
+        <translation>d</translation>
     </message>
     <message id="id-no-notifications">
         <location filename="../qml/notifications/NotificationsPanel.qml" line="149"/>
         <source>No notifications</source>
-        <translation type="unfinished">No hay notificaciones</translation>
+        <translation>No hay notificaciones</translation>
     </message>
     <message id="id-no-events-today">
         <location filename="../qml/today/Today.qml" line="185"/>
         <source>No events today</source>
-        <translation type="unfinished">No hay eventos hoy</translation>
-    </message>
-</context>
-<context>
-    <name>BluetoothAgent</name>
-    <message>
-        <source>Authorize:</source>
-        <translation type="vanished">Autorizar:</translation>
-    </message>
-    <message>
-        <source>Authorize</source>
-        <translation type="vanished">Autorizar</translation>
-    </message>
-    <message>
-        <source>Confirm:</source>
-        <translation type="vanished">Confirmar:</translation>
-    </message>
-    <message>
-        <source>Pass Key:</source>
-        <translation type="vanished">Clave de paso:</translation>
-    </message>
-    <message>
-        <source>Enter Key</source>
-        <translation type="vanished">Introducir clave</translation>
-    </message>
-    <message>
-        <source>PIN Code:</source>
-        <translation type="vanished">Código PIN:</translation>
-    </message>
-    <message>
-        <source>Enter PIN Code</source>
-        <translation type="vanished">Introducir Código NIP</translation>
-    </message>
-</context>
-<context>
-    <name>NotificationActions</name>
-    <message>
-        <source>Snooze</source>
-        <translation type="vanished">Dormitar</translation>
-    </message>
-    <message>
-        <source>Dismiss all</source>
-        <translation type="vanished">Descartar todo</translation>
-    </message>
-    <message>
-        <source>Dismiss</source>
-        <translation type="vanished">Descartar</translation>
-    </message>
-</context>
-<context>
-    <name>NotificationView</name>
-    <message>
-        <source>Now</source>
-        <translation type="vanished">Ahora</translation>
-    </message>
-    <message>
-        <source>m</source>
-        <translation type="vanished">m</translation>
-    </message>
-    <message>
-        <source>h</source>
-        <translation type="vanished">h</translation>
-    </message>
-    <message>
-        <source>d</source>
-        <translation type="vanished">d</translation>
-    </message>
-    <message>
-        <source>Dismiss</source>
-        <translation type="vanished">Descartar</translation>
-    </message>
-</context>
-<context>
-    <name>NotificationsPanel</name>
-    <message>
-        <source>No notifications</source>
-        <translation type="vanished">No hay notificaciones</translation>
-    </message>
-</context>
-<context>
-    <name>Today</name>
-    <message>
-        <source>No events today</source>
-        <translation type="vanished">No hay eventos hoy</translation>
+        <translation>No hay eventos hoy</translation>
     </message>
 </context>
 </TS>

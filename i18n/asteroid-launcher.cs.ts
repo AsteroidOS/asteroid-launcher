@@ -74,26 +74,12 @@
     <message id="id-no-notifications">
         <location filename="../qml/notifications/NotificationsPanel.qml" line="149"/>
         <source>No notifications</source>
-        <translation type="unfinished">Žádná oznámení</translation>
+        <translation>Žádná oznámení</translation>
     </message>
     <message id="id-no-events-today">
         <location filename="../qml/today/Today.qml" line="185"/>
         <source>No events today</source>
         <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>AppSwitcher</name>
-    <message>
-        <source>No open apps</source>
-        <translation type="vanished">Žádné otevřené aplikace</translation>
-    </message>
-</context>
-<context>
-    <name>FeedsPage</name>
-    <message>
-        <source>No notifications</source>
-        <translation type="vanished">Žádná oznámení</translation>
     </message>
 </context>
 </TS>

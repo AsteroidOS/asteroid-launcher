@@ -7,12 +7,12 @@
         <location filename="../qml/misc/BluetoothAgent.qml" line="143"/>
         <location filename="../qml/misc/BluetoothAgent.qml" line="155"/>
         <source>Authorize:</source>
-        <translation type="unfinished">Auktorisera:</translation>
+        <translation>Auktorisera:</translation>
     </message>
     <message id="id-btagent-confirm">
         <location filename="../qml/misc/BluetoothAgent.qml" line="167"/>
         <source>Confirm:</source>
-        <translation type="unfinished">Bekräfta:</translation>
+        <translation>Bekräfta:</translation>
     </message>
     <message id="id-btagent-passkey">
         <location filename="../qml/misc/BluetoothAgent.qml" line="179"/>
@@ -22,23 +22,23 @@
     <message id="id-btagent-enterkey">
         <location filename="../qml/misc/BluetoothAgent.qml" line="195"/>
         <source>Enter Key</source>
-        <translation type="unfinished">Ange nyckel</translation>
+        <translation>Ange nyckel</translation>
     </message>
     <message id="id-btagent-pincode">
         <location filename="../qml/misc/BluetoothAgent.qml" line="203"/>
         <location filename="../qml/misc/BluetoothAgent.qml" line="215"/>
         <source>PIN Code:</source>
-        <translation type="unfinished">PIN-kod:</translation>
+        <translation>PIN-kod:</translation>
     </message>
     <message id="id-btagent-enter-pincode">
         <location filename="../qml/misc/BluetoothAgent.qml" line="220"/>
         <source>Enter PIN Code</source>
-        <translation type="unfinished">Ange PIN-kod</translation>
+        <translation>Ange PIN-kod</translation>
     </message>
     <message id="id-snooze">
         <location filename="../qml/notifications/NotificationActions.qml" line="54"/>
         <source>Snooze</source>
-        <translation type="unfinished">Snooza</translation>
+        <translation>Snooza</translation>
     </message>
     <message id="id-dismiss-all">
         <location filename="../qml/notifications/NotificationActions.qml" line="67"/>
@@ -54,12 +54,12 @@
     <message id="id-now">
         <location filename="../qml/notifications/NotificationView.qml" line="56"/>
         <source>Now</source>
-        <translation type="unfinished">Nu</translation>
+        <translation>Nu</translation>
     </message>
     <message id="id-minute-abbrev">
         <location filename="../qml/notifications/NotificationView.qml" line="61"/>
         <source>m</source>
-        <translation type="unfinished">m</translation>
+        <translation>m</translation>
     </message>
     <message id="id-hour-abbrev">
         <location filename="../qml/notifications/NotificationView.qml" line="66"/>
@@ -69,80 +69,17 @@
     <message id="id-day-abbrev">
         <location filename="../qml/notifications/NotificationView.qml" line="70"/>
         <source>d</source>
-        <translation type="unfinished">d</translation>
+        <translation>d</translation>
     </message>
     <message id="id-no-notifications">
         <location filename="../qml/notifications/NotificationsPanel.qml" line="149"/>
         <source>No notifications</source>
-        <translation type="unfinished">Inga aviseringar</translation>
+        <translation>Inga aviseringar</translation>
     </message>
     <message id="id-no-events-today">
         <location filename="../qml/today/Today.qml" line="185"/>
         <source>No events today</source>
-        <translation type="unfinished">Inga händelser idag</translation>
-    </message>
-</context>
-<context>
-    <name>BluetoothAgent</name>
-    <message>
-        <source>Authorize:</source>
-        <translation type="vanished">Auktorisera:</translation>
-    </message>
-    <message>
-        <source>Authorize</source>
-        <translation type="vanished">Auktorisera</translation>
-    </message>
-    <message>
-        <source>Confirm:</source>
-        <translation type="vanished">Bekräfta:</translation>
-    </message>
-    <message>
-        <source>Enter Key</source>
-        <translation type="vanished">Ange nyckel</translation>
-    </message>
-    <message>
-        <source>PIN Code:</source>
-        <translation type="vanished">PIN-kod:</translation>
-    </message>
-    <message>
-        <source>Enter PIN Code</source>
-        <translation type="vanished">Ange PIN-kod</translation>
-    </message>
-</context>
-<context>
-    <name>NotificationActions</name>
-    <message>
-        <source>Snooze</source>
-        <translation type="vanished">Snooza</translation>
-    </message>
-</context>
-<context>
-    <name>NotificationView</name>
-    <message>
-        <source>Now</source>
-        <translation type="vanished">Nu</translation>
-    </message>
-    <message>
-        <source>m</source>
-        <translation type="vanished">m</translation>
-    </message>
-    <message>
-        <source>d</source>
-        <translation type="vanished">d</translation>
-    </message>
-</context>
-<context>
-    <name>NotificationsPanel</name>
-    <message>
-        <source>No notifications</source>
-        <translation type="vanished">Inga aviseringar</translation>
-    </message>
-</context>
-<context>
-    <name>Today</name>
-    <message>
-        <source>No events today</source>
-        <translation type="vanished">Inga händelser idag</translation>
+        <translation>Inga händelser idag</translation>
     </message>
 </context>
 </TS>
