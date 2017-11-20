@@ -2,104 +2,167 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="nb_NO">
 <context>
-    <name>BluetoothAgent</name>
-    <message>
-        <location filename="../qml/misc/BluetoothAgent.qml" line="147"/>
+    <name></name>
+    <message id="id-btagent-authorize">
+        <location filename="../qml/misc/BluetoothAgent.qml" line="143"/>
+        <location filename="../qml/misc/BluetoothAgent.qml" line="155"/>
         <source>Authorize:</source>
-        <translation>Godkjenn:</translation>
+        <translation type="unfinished">Godkjenn:</translation>
     </message>
-    <message>
-        <location filename="../qml/misc/BluetoothAgent.qml" line="158"/>
-        <source>Authorize</source>
-        <translation>Godkjenn</translation>
-    </message>
-    <message>
-        <location filename="../qml/misc/BluetoothAgent.qml" line="169"/>
+    <message id="id-btagent-confirm">
+        <location filename="../qml/misc/BluetoothAgent.qml" line="167"/>
         <source>Confirm:</source>
-        <translation>Bekreft:</translation>
+        <translation type="unfinished">Bekreft:</translation>
     </message>
-    <message>
-        <location filename="../qml/misc/BluetoothAgent.qml" line="180"/>
+    <message id="id-btagent-passkey">
+        <location filename="../qml/misc/BluetoothAgent.qml" line="179"/>
         <source>Pass Key:</source>
-        <translation>Bekreftelsestast:</translation>
+        <translation type="unfinished">Bekreftelsestast:</translation>
     </message>
-    <message>
+    <message id="id-btagent-enterkey">
         <location filename="../qml/misc/BluetoothAgent.qml" line="195"/>
         <source>Enter Key</source>
-        <translation>Enter</translation>
+        <translation type="unfinished">Enter</translation>
     </message>
-    <message>
-        <location filename="../qml/misc/BluetoothAgent.qml" line="202"/>
-        <location filename="../qml/misc/BluetoothAgent.qml" line="213"/>
+    <message id="id-btagent-pincode">
+        <location filename="../qml/misc/BluetoothAgent.qml" line="203"/>
+        <location filename="../qml/misc/BluetoothAgent.qml" line="215"/>
         <source>PIN Code:</source>
-        <translation>PIN-kode:</translation>
+        <translation type="unfinished">PIN-kode:</translation>
+    </message>
+    <message id="id-btagent-enter-pincode">
+        <location filename="../qml/misc/BluetoothAgent.qml" line="220"/>
+        <source>Enter PIN Code</source>
+        <translation type="unfinished">Skriv inn PIN-kode</translation>
+    </message>
+    <message id="id-snooze">
+        <location filename="../qml/notifications/NotificationActions.qml" line="54"/>
+        <source>Snooze</source>
+        <translation type="unfinished">Slumre</translation>
+    </message>
+    <message id="id-dismiss-all">
+        <location filename="../qml/notifications/NotificationActions.qml" line="67"/>
+        <source>Dismiss all</source>
+        <translation type="unfinished">Avvis alle</translation>
+    </message>
+    <message id="id-dismiss">
+        <location filename="../qml/notifications/NotificationActions.qml" line="82"/>
+        <location filename="../qml/notifications/NotificationView.qml" line="152"/>
+        <source>Dismiss</source>
+        <translation type="unfinished">Avvis</translation>
+    </message>
+    <message id="id-now">
+        <location filename="../qml/notifications/NotificationView.qml" line="56"/>
+        <source>Now</source>
+        <translation type="unfinished">Nå</translation>
+    </message>
+    <message id="id-minute-abbrev">
+        <location filename="../qml/notifications/NotificationView.qml" line="61"/>
+        <source>m</source>
+        <translation type="unfinished">m</translation>
+    </message>
+    <message id="id-hour-abbrev">
+        <location filename="../qml/notifications/NotificationView.qml" line="66"/>
+        <source>h</source>
+        <translation type="unfinished">t</translation>
+    </message>
+    <message id="id-day-abbrev">
+        <location filename="../qml/notifications/NotificationView.qml" line="70"/>
+        <source>d</source>
+        <translation type="unfinished">d</translation>
+    </message>
+    <message id="id-no-notifications">
+        <location filename="../qml/notifications/NotificationsPanel.qml" line="149"/>
+        <source>No notifications</source>
+        <translation type="unfinished">Ingen merknader</translation>
+    </message>
+    <message id="id-no-events-today">
+        <location filename="../qml/today/Today.qml" line="185"/>
+        <source>No events today</source>
+        <translation type="unfinished">Ingen hendelser i dag</translation>
+    </message>
+</context>
+<context>
+    <name>BluetoothAgent</name>
+    <message>
+        <source>Authorize:</source>
+        <translation type="vanished">Godkjenn:</translation>
     </message>
     <message>
-        <location filename="../qml/misc/BluetoothAgent.qml" line="217"/>
+        <source>Authorize</source>
+        <translation type="vanished">Godkjenn</translation>
+    </message>
+    <message>
+        <source>Confirm:</source>
+        <translation type="vanished">Bekreft:</translation>
+    </message>
+    <message>
+        <source>Pass Key:</source>
+        <translation type="vanished">Bekreftelsestast:</translation>
+    </message>
+    <message>
+        <source>Enter Key</source>
+        <translation type="vanished">Enter</translation>
+    </message>
+    <message>
+        <source>PIN Code:</source>
+        <translation type="vanished">PIN-kode:</translation>
+    </message>
+    <message>
         <source>Enter PIN Code</source>
-        <translation>Skriv inn PIN-kode</translation>
+        <translation type="vanished">Skriv inn PIN-kode</translation>
     </message>
 </context>
 <context>
     <name>NotificationActions</name>
     <message>
-        <location filename="../qml/notifications/NotificationActions.qml" line="50"/>
         <source>Snooze</source>
-        <translation>Slumre</translation>
+        <translation type="vanished">Slumre</translation>
     </message>
     <message>
-        <location filename="../qml/notifications/NotificationActions.qml" line="56"/>
         <source>Dismiss all</source>
-        <translation>Avvis alle</translation>
+        <translation type="vanished">Avvis alle</translation>
     </message>
     <message>
-        <location filename="../qml/notifications/NotificationActions.qml" line="70"/>
         <source>Dismiss</source>
-        <translation>Avvis</translation>
+        <translation type="vanished">Avvis</translation>
     </message>
 </context>
 <context>
     <name>NotificationView</name>
     <message>
-        <location filename="../qml/notifications/NotificationView.qml" line="55"/>
         <source>Now</source>
-        <translation>Nå</translation>
+        <translation type="vanished">Nå</translation>
     </message>
     <message>
-        <location filename="../qml/notifications/NotificationView.qml" line="59"/>
         <source>m</source>
-        <translation>m</translation>
+        <translation type="vanished">m</translation>
     </message>
     <message>
-        <location filename="../qml/notifications/NotificationView.qml" line="63"/>
         <source>h</source>
-        <translation>t</translation>
+        <translation type="vanished">t</translation>
     </message>
     <message>
-        <location filename="../qml/notifications/NotificationView.qml" line="66"/>
         <source>d</source>
-        <translation>d</translation>
+        <translation type="vanished">d</translation>
     </message>
     <message>
-        <location filename="../qml/notifications/NotificationView.qml" line="153"/>
         <source>Dismiss</source>
-        <translation>Avvis</translation>
+        <translation type="vanished">Avvis</translation>
     </message>
 </context>
 <context>
     <name>NotificationsPanel</name>
     <message>
-        <location filename="../qml/notifications/NotificationsPanel.qml" line="148"/>
         <source>No notifications</source>
-        <translation>Ingen merknader</translation>
+        <translation type="vanished">Ingen merknader</translation>
     </message>
 </context>
 <context>
     <name>Today</name>
     <message>
-        <location filename="../qml/today/Today.qml" line="169"/>
         <source>No events today</source>
-        <translation>Ingen hendelser i dag</translation>
+        <translation type="vanished">Ingen hendelser i dag</translation>
     </message>
 </context>
 </TS>

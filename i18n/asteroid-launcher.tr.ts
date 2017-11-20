@@ -2,104 +2,167 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="tr">
 <context>
-    <name>BluetoothAgent</name>
-    <message>
-        <location filename="../qml/misc/BluetoothAgent.qml" line="147"/>
+    <name></name>
+    <message id="id-btagent-authorize">
+        <location filename="../qml/misc/BluetoothAgent.qml" line="143"/>
+        <location filename="../qml/misc/BluetoothAgent.qml" line="155"/>
         <source>Authorize:</source>
-        <translation>Yetkilendir:</translation>
+        <translation type="unfinished">Yetkilendir:</translation>
     </message>
-    <message>
-        <location filename="../qml/misc/BluetoothAgent.qml" line="158"/>
-        <source>Authorize</source>
-        <translation>Yetkilendir</translation>
-    </message>
-    <message>
-        <location filename="../qml/misc/BluetoothAgent.qml" line="169"/>
+    <message id="id-btagent-confirm">
+        <location filename="../qml/misc/BluetoothAgent.qml" line="167"/>
         <source>Confirm:</source>
-        <translation>Onayla:</translation>
+        <translation type="unfinished">Onayla:</translation>
     </message>
-    <message>
-        <location filename="../qml/misc/BluetoothAgent.qml" line="180"/>
+    <message id="id-btagent-passkey">
+        <location filename="../qml/misc/BluetoothAgent.qml" line="179"/>
         <source>Pass Key:</source>
-        <translation>Parola:</translation>
+        <translation type="unfinished">Parola:</translation>
     </message>
-    <message>
+    <message id="id-btagent-enterkey">
         <location filename="../qml/misc/BluetoothAgent.qml" line="195"/>
         <source>Enter Key</source>
-        <translation>Parolayı Gir</translation>
+        <translation type="unfinished">Parolayı Gir</translation>
     </message>
-    <message>
-        <location filename="../qml/misc/BluetoothAgent.qml" line="202"/>
-        <location filename="../qml/misc/BluetoothAgent.qml" line="213"/>
+    <message id="id-btagent-pincode">
+        <location filename="../qml/misc/BluetoothAgent.qml" line="203"/>
+        <location filename="../qml/misc/BluetoothAgent.qml" line="215"/>
         <source>PIN Code:</source>
-        <translation>PIN Kodu:</translation>
+        <translation type="unfinished">PIN Kodu:</translation>
+    </message>
+    <message id="id-btagent-enter-pincode">
+        <location filename="../qml/misc/BluetoothAgent.qml" line="220"/>
+        <source>Enter PIN Code</source>
+        <translation type="unfinished">PIN Kodunu Gir</translation>
+    </message>
+    <message id="id-snooze">
+        <location filename="../qml/notifications/NotificationActions.qml" line="54"/>
+        <source>Snooze</source>
+        <translation type="unfinished">Ertele</translation>
+    </message>
+    <message id="id-dismiss-all">
+        <location filename="../qml/notifications/NotificationActions.qml" line="67"/>
+        <source>Dismiss all</source>
+        <translation type="unfinished">Tümünü at</translation>
+    </message>
+    <message id="id-dismiss">
+        <location filename="../qml/notifications/NotificationActions.qml" line="82"/>
+        <location filename="../qml/notifications/NotificationView.qml" line="152"/>
+        <source>Dismiss</source>
+        <translation type="unfinished">At</translation>
+    </message>
+    <message id="id-now">
+        <location filename="../qml/notifications/NotificationView.qml" line="56"/>
+        <source>Now</source>
+        <translation type="unfinished">Şimdi</translation>
+    </message>
+    <message id="id-minute-abbrev">
+        <location filename="../qml/notifications/NotificationView.qml" line="61"/>
+        <source>m</source>
+        <translation type="unfinished">d</translation>
+    </message>
+    <message id="id-hour-abbrev">
+        <location filename="../qml/notifications/NotificationView.qml" line="66"/>
+        <source>h</source>
+        <translation type="unfinished">sa</translation>
+    </message>
+    <message id="id-day-abbrev">
+        <location filename="../qml/notifications/NotificationView.qml" line="70"/>
+        <source>d</source>
+        <translation type="unfinished">g</translation>
+    </message>
+    <message id="id-no-notifications">
+        <location filename="../qml/notifications/NotificationsPanel.qml" line="149"/>
+        <source>No notifications</source>
+        <translation type="unfinished">Bildirim yok</translation>
+    </message>
+    <message id="id-no-events-today">
+        <location filename="../qml/today/Today.qml" line="185"/>
+        <source>No events today</source>
+        <translation type="unfinished">Bugün etkinlik yok</translation>
+    </message>
+</context>
+<context>
+    <name>BluetoothAgent</name>
+    <message>
+        <source>Authorize:</source>
+        <translation type="vanished">Yetkilendir:</translation>
     </message>
     <message>
-        <location filename="../qml/misc/BluetoothAgent.qml" line="217"/>
+        <source>Authorize</source>
+        <translation type="vanished">Yetkilendir</translation>
+    </message>
+    <message>
+        <source>Confirm:</source>
+        <translation type="vanished">Onayla:</translation>
+    </message>
+    <message>
+        <source>Pass Key:</source>
+        <translation type="vanished">Parola:</translation>
+    </message>
+    <message>
+        <source>Enter Key</source>
+        <translation type="vanished">Parolayı Gir</translation>
+    </message>
+    <message>
+        <source>PIN Code:</source>
+        <translation type="vanished">PIN Kodu:</translation>
+    </message>
+    <message>
         <source>Enter PIN Code</source>
-        <translation>PIN Kodunu Gir</translation>
+        <translation type="vanished">PIN Kodunu Gir</translation>
     </message>
 </context>
 <context>
     <name>NotificationActions</name>
     <message>
-        <location filename="../qml/notifications/NotificationActions.qml" line="50"/>
         <source>Snooze</source>
-        <translation>Ertele</translation>
+        <translation type="vanished">Ertele</translation>
     </message>
     <message>
-        <location filename="../qml/notifications/NotificationActions.qml" line="56"/>
         <source>Dismiss all</source>
-        <translation>Tümünü at</translation>
+        <translation type="vanished">Tümünü at</translation>
     </message>
     <message>
-        <location filename="../qml/notifications/NotificationActions.qml" line="70"/>
         <source>Dismiss</source>
-        <translation>At</translation>
+        <translation type="vanished">At</translation>
     </message>
 </context>
 <context>
     <name>NotificationView</name>
     <message>
-        <location filename="../qml/notifications/NotificationView.qml" line="55"/>
         <source>Now</source>
-        <translation>Şimdi</translation>
+        <translation type="vanished">Şimdi</translation>
     </message>
     <message>
-        <location filename="../qml/notifications/NotificationView.qml" line="59"/>
         <source>m</source>
-        <translation>d</translation>
+        <translation type="vanished">d</translation>
     </message>
     <message>
-        <location filename="../qml/notifications/NotificationView.qml" line="63"/>
         <source>h</source>
-        <translation>sa</translation>
+        <translation type="vanished">sa</translation>
     </message>
     <message>
-        <location filename="../qml/notifications/NotificationView.qml" line="66"/>
         <source>d</source>
-        <translation>g</translation>
+        <translation type="vanished">g</translation>
     </message>
     <message>
-        <location filename="../qml/notifications/NotificationView.qml" line="153"/>
         <source>Dismiss</source>
-        <translation>At</translation>
+        <translation type="vanished">At</translation>
     </message>
 </context>
 <context>
     <name>NotificationsPanel</name>
     <message>
-        <location filename="../qml/notifications/NotificationsPanel.qml" line="148"/>
         <source>No notifications</source>
-        <translation>Bildirim yok</translation>
+        <translation type="vanished">Bildirim yok</translation>
     </message>
 </context>
 <context>
     <name>Today</name>
     <message>
-        <location filename="../qml/today/Today.qml" line="169"/>
         <source>No events today</source>
-        <translation>Bugün etkinlik yok</translation>
+        <translation type="vanished">Bugün etkinlik yok</translation>
     </message>
 </context>
 </TS>

@@ -2,104 +2,167 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ka">
 <context>
-    <name>BluetoothAgent</name>
-    <message>
-        <location filename="../qml/misc/BluetoothAgent.qml" line="147"/>
+    <name></name>
+    <message id="id-btagent-authorize">
+        <location filename="../qml/misc/BluetoothAgent.qml" line="143"/>
+        <location filename="../qml/misc/BluetoothAgent.qml" line="155"/>
         <source>Authorize:</source>
-        <translation>ნების დართვა:</translation>
+        <translation type="unfinished">ნების დართვა:</translation>
     </message>
-    <message>
-        <location filename="../qml/misc/BluetoothAgent.qml" line="158"/>
-        <source>Authorize</source>
-        <translation>ნების დართვა</translation>
-    </message>
-    <message>
-        <location filename="../qml/misc/BluetoothAgent.qml" line="169"/>
+    <message id="id-btagent-confirm">
+        <location filename="../qml/misc/BluetoothAgent.qml" line="167"/>
         <source>Confirm:</source>
-        <translation>დაადასტუროთ:</translation>
+        <translation type="unfinished">დაადასტუროთ:</translation>
     </message>
-    <message>
-        <location filename="../qml/misc/BluetoothAgent.qml" line="180"/>
+    <message id="id-btagent-passkey">
+        <location filename="../qml/misc/BluetoothAgent.qml" line="179"/>
         <source>Pass Key:</source>
-        <translation>დაკავშირების კოდი:</translation>
+        <translation type="unfinished">დაკავშირების კოდი:</translation>
     </message>
-    <message>
+    <message id="id-btagent-enterkey">
         <location filename="../qml/misc/BluetoothAgent.qml" line="195"/>
         <source>Enter Key</source>
-        <translation>კოდის შეყვანა</translation>
+        <translation type="unfinished">კოდის შეყვანა</translation>
     </message>
-    <message>
-        <location filename="../qml/misc/BluetoothAgent.qml" line="202"/>
-        <location filename="../qml/misc/BluetoothAgent.qml" line="213"/>
+    <message id="id-btagent-pincode">
+        <location filename="../qml/misc/BluetoothAgent.qml" line="203"/>
+        <location filename="../qml/misc/BluetoothAgent.qml" line="215"/>
         <source>PIN Code:</source>
-        <translation>PIN კოდი:</translation>
+        <translation type="unfinished">PIN კოდი:</translation>
+    </message>
+    <message id="id-btagent-enter-pincode">
+        <location filename="../qml/misc/BluetoothAgent.qml" line="220"/>
+        <source>Enter PIN Code</source>
+        <translation type="unfinished">შეიყვანეთ PIN კოდი</translation>
+    </message>
+    <message id="id-snooze">
+        <location filename="../qml/notifications/NotificationActions.qml" line="54"/>
+        <source>Snooze</source>
+        <translation type="unfinished">ჩაჩუმება</translation>
+    </message>
+    <message id="id-dismiss-all">
+        <location filename="../qml/notifications/NotificationActions.qml" line="67"/>
+        <source>Dismiss all</source>
+        <translation type="unfinished">ყველას გასუფთავება</translation>
+    </message>
+    <message id="id-dismiss">
+        <location filename="../qml/notifications/NotificationActions.qml" line="82"/>
+        <location filename="../qml/notifications/NotificationView.qml" line="152"/>
+        <source>Dismiss</source>
+        <translation type="unfinished">დახურვა</translation>
+    </message>
+    <message id="id-now">
+        <location filename="../qml/notifications/NotificationView.qml" line="56"/>
+        <source>Now</source>
+        <translation type="unfinished">ახლა</translation>
+    </message>
+    <message id="id-minute-abbrev">
+        <location filename="../qml/notifications/NotificationView.qml" line="61"/>
+        <source>m</source>
+        <translation type="unfinished">წ</translation>
+    </message>
+    <message id="id-hour-abbrev">
+        <location filename="../qml/notifications/NotificationView.qml" line="66"/>
+        <source>h</source>
+        <translation type="unfinished">ს</translation>
+    </message>
+    <message id="id-day-abbrev">
+        <location filename="../qml/notifications/NotificationView.qml" line="70"/>
+        <source>d</source>
+        <translation type="unfinished">დ</translation>
+    </message>
+    <message id="id-no-notifications">
+        <location filename="../qml/notifications/NotificationsPanel.qml" line="149"/>
+        <source>No notifications</source>
+        <translation type="unfinished">არარის შეტყობინებები</translation>
+    </message>
+    <message id="id-no-events-today">
+        <location filename="../qml/today/Today.qml" line="185"/>
+        <source>No events today</source>
+        <translation type="unfinished">დღეს არ არსებობს მოვლენები</translation>
+    </message>
+</context>
+<context>
+    <name>BluetoothAgent</name>
+    <message>
+        <source>Authorize:</source>
+        <translation type="vanished">ნების დართვა:</translation>
     </message>
     <message>
-        <location filename="../qml/misc/BluetoothAgent.qml" line="217"/>
+        <source>Authorize</source>
+        <translation type="vanished">ნების დართვა</translation>
+    </message>
+    <message>
+        <source>Confirm:</source>
+        <translation type="vanished">დაადასტუროთ:</translation>
+    </message>
+    <message>
+        <source>Pass Key:</source>
+        <translation type="vanished">დაკავშირების კოდი:</translation>
+    </message>
+    <message>
+        <source>Enter Key</source>
+        <translation type="vanished">კოდის შეყვანა</translation>
+    </message>
+    <message>
+        <source>PIN Code:</source>
+        <translation type="vanished">PIN კოდი:</translation>
+    </message>
+    <message>
         <source>Enter PIN Code</source>
-        <translation>შეიყვანეთ PIN კოდი</translation>
+        <translation type="vanished">შეიყვანეთ PIN კოდი</translation>
     </message>
 </context>
 <context>
     <name>NotificationActions</name>
     <message>
-        <location filename="../qml/notifications/NotificationActions.qml" line="50"/>
         <source>Snooze</source>
-        <translation>ჩაჩუმება</translation>
+        <translation type="vanished">ჩაჩუმება</translation>
     </message>
     <message>
-        <location filename="../qml/notifications/NotificationActions.qml" line="56"/>
         <source>Dismiss all</source>
-        <translation>ყველას გასუფთავება</translation>
+        <translation type="vanished">ყველას გასუფთავება</translation>
     </message>
     <message>
-        <location filename="../qml/notifications/NotificationActions.qml" line="70"/>
         <source>Dismiss</source>
-        <translation>დახურვა</translation>
+        <translation type="vanished">დახურვა</translation>
     </message>
 </context>
 <context>
     <name>NotificationView</name>
     <message>
-        <location filename="../qml/notifications/NotificationView.qml" line="55"/>
         <source>Now</source>
-        <translation>ახლა</translation>
+        <translation type="vanished">ახლა</translation>
     </message>
     <message>
-        <location filename="../qml/notifications/NotificationView.qml" line="59"/>
         <source>m</source>
-        <translation>წ</translation>
+        <translation type="vanished">წ</translation>
     </message>
     <message>
-        <location filename="../qml/notifications/NotificationView.qml" line="63"/>
         <source>h</source>
-        <translation>ს</translation>
+        <translation type="vanished">ს</translation>
     </message>
     <message>
-        <location filename="../qml/notifications/NotificationView.qml" line="66"/>
         <source>d</source>
-        <translation>დ</translation>
+        <translation type="vanished">დ</translation>
     </message>
     <message>
-        <location filename="../qml/notifications/NotificationView.qml" line="153"/>
         <source>Dismiss</source>
-        <translation>დახურვა</translation>
+        <translation type="vanished">დახურვა</translation>
     </message>
 </context>
 <context>
     <name>NotificationsPanel</name>
     <message>
-        <location filename="../qml/notifications/NotificationsPanel.qml" line="148"/>
         <source>No notifications</source>
-        <translation>არარის შეტყობინებები</translation>
+        <translation type="vanished">არარის შეტყობინებები</translation>
     </message>
 </context>
 <context>
     <name>Today</name>
     <message>
-        <location filename="../qml/today/Today.qml" line="169"/>
         <source>No events today</source>
-        <translation>დღეს არ არსებობს მოვლენები</translation>
+        <translation type="vanished">დღეს არ არსებობს მოვლენები</translation>
     </message>
 </context>
 </TS>
