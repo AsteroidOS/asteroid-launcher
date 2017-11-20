@@ -145,7 +145,8 @@ Item {
         anchors.topMargin: Dims.h(4)
         anchors.top: emptyIndicator.bottom
         anchors.horizontalCenter: parent.horizontalCenter
-        text: qsTr("No notifications")
+        //% "No notifications"
+        text: qsTrId("id-no-notifications")
         font.pixelSize: Dims.l(6)
         opacity: 0.8
     }

@@ -139,7 +139,8 @@ Item {
         onStateChanged: {
             switch(agent.state) {
                 case BluetoothAgent.AuthService:
-                    summary.text = qsTr("Authorize:")
+                    //% "Authorize:"
+                    summary.text = qsTrId("id-btagent-authorize")
                     body.text = agent.pinCode
                     text.visible = true
                     inputField.text = ""
@@ -150,7 +151,8 @@ Item {
                     break;
 
                 case BluetoothAgent.ReqAuthorization:
-                    summary.text = qsTr("Authorize")
+                    //% "Authorize:"
+                    summary.text = qsTrId("id-btagent-authorize")
                     body.text = ""
                     text.visible = true
                     inputField.text = ""
@@ -161,7 +163,8 @@ Item {
                     break;
 
                 case BluetoothAgent.ReqConfirmation:
-                    summary.text = qsTr("Confirm:")
+                    //% "Confirm:"
+                    summary.text = qsTrId("id-btagent-confirm")
                     body.text = agent.passkey
                     text.visible = true
                     inputField.text = ""
@@ -172,7 +175,8 @@ Item {
                     break;
 
                 case BluetoothAgent.DispPasskey:
-                    summary.text = qsTr("Pass Key:")
+                    //% "Pass Key:"
+                    summary.text = qsTrId("id-btagent-passkey")
                     body.text = agent.passkey
                     text.visible = true
                     inputField.text = ""
@@ -187,14 +191,16 @@ Item {
                     body.text = ""
                     text.visible = false
                     inputField.text = ""
-                    inputField.previewText = qsTr("Enter Key")
+                    //% "Enter Key"
+                    inputField.previewText = qsTrId("id-btagent-enterkey")
                     inputField.visible = true
                     cancelButton.visible = true
                     confirmButton.visible = true
                     break;
 
                 case BluetoothAgent.DispPinCode:
-                    summary.text = qsTr("PIN Code:")
+                    //% "PIN Code:"
+                    summary.text = qsTrId("id-btagent-pincode")
                     body.text = agent.pinCode
                     text.visible = true
                     inputField.text = ""
@@ -205,11 +211,13 @@ Item {
                     break;
 
                 case BluetoothAgent.ReqPinCode:
-                    summary.text = qsTr("PIN Code:")
+                    //% "PIN Code:"
+                    summary.text = qsTrId("id-btagent-pincode")
                     body.text = ""
                     text.visible = false
                     inputField.text = ""
-                    inputField.previewText = qsTr("Enter PIN Code")
+                    //% "Enter PIN Code"
+                    inputField.previewText = qsTrId("id-btagent-enter-pincode")
                     inputField.visible = true
                     cancelButton.visible = true
                     confirmButton.visible = true

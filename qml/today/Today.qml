@@ -181,7 +181,8 @@ ListView {
         anchors.topMargin: Dims.h(4)
         anchors.top: emptyIndicator.bottom
         anchors.horizontalCenter: parent.horizontalCenter
-        text: qsTr("No events today")
+        //% "No events today"
+        text: qsTrId("id-no-events-today")
         font.pixelSize: Dims.l(6)
         opacity: 0.8
     }

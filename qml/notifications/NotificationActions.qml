@@ -50,7 +50,8 @@ Item {
         NotificationSnoozer { id: snoozer }
 
         NotificationButton {
-            text: qsTr("Snooze")
+            //% "Snooze"
+            text: qsTrId("id-snooze")
             width: parent.width
             height: Dims.h(20)
             onClicked: {
@@ -62,7 +63,8 @@ Item {
         }
 
         NotificationButton {
-            text: qsTr("Dismiss all")
+            //% "Dismiss all"
+            text: qsTrId("id-dismiss-all")
             width: parent.width
             height: Dims.h(20)
             onClicked: {
@@ -76,7 +78,8 @@ Item {
         }
 
         NotificationButton {
-            text: qsTr("Dismiss")
+            //% "Dismiss"
+            text: qsTrId("id-dismiss")
             width: parent.width
             height: Dims.h(20)
             onClicked: if (notification.userRemovable) notification.removeRequested()
