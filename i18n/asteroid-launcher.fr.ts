@@ -49,7 +49,7 @@
         <location filename="../qml/notifications/NotificationActions.qml" line="82"/>
         <location filename="../qml/notifications/NotificationView.qml" line="152"/>
         <source>Dismiss</source>
-        <translation type="unfinished"></translation>
+        <translation>Annuler</translation>
     </message>
     <message id="id-now">
         <location filename="../qml/notifications/NotificationView.qml" line="56"/>
