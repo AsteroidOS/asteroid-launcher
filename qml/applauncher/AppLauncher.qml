@@ -108,16 +108,4 @@ ListView {
 
         currentPos = Math.round(lowerStop+ratio)
     }
-
-    Label {
-        id: emptyIndicator
-        visible: launcherModel.itemCount === 0
-        horizontalAlignment: Text.AlignHCenter
-
-        text: "<b>No apps<br>installed</b>"
-        anchors {
-            verticalCenter: parent.verticalCenter
-            horizontalCenter: parent.horizontalCenter
-        }
-    }
 }

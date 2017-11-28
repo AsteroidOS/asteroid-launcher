@@ -40,19 +40,7 @@ MouseArea {
     property alias iconName: icon.name
     property alias iconCaption: iconText.text
 
-    onClicked: {
-        // TODO: disallow if close mode enabled
-        if (model.object.type !== LauncherModel.Folder) {
-            model.object.launchApplication()
-        } else {
-            if (!folderLoader.visible) {
-                folderLoader.visible = true
-                folderLoader.model = model.object
-            } else {
-                folderLoader.visible = false
-            }
-        }
-    }
+    onClicked: model.object.launchApplication()
 
     Image {
         anchors.fill: parent
