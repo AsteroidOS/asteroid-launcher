@@ -1,5 +1,5 @@
 TEMPLATE = app
-TARGET = lipstick
+TARGET = asteroid-launcher
 VERSION = 0.1
 
 QT += quick waylandcompositor dbus
