@@ -44,7 +44,7 @@ MouseArea {
 
     Image {
         anchors.fill: parent
-        source: launcherItem.pressed ? "qrc:/images/diskBackgroundPressed.svg" : "qrc:/images/diskBackground.svg"
+        source: launcherItem.pressed | fakePressed ? "qrc:/images/diskBackgroundPressed.svg" : "qrc:/images/diskBackground.svg"
         sourceSize.width: width
         sourceSize.height: height
     }

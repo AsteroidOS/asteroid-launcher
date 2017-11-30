@@ -39,6 +39,7 @@ ListView {
     orientation: ListView.Horizontal
     snapMode: ListView.SnapToItem
 
+    property bool fakePressed:     false
     property bool toTopAllowed:    false
     property bool toBottomAllowed: false
     property bool toLeftAllowed:   true
