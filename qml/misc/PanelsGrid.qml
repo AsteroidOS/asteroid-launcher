@@ -88,14 +88,6 @@ GestureFilterArea {
         currentVerticalPos = posY
     }
 
-    function center() {
-        moveTo(0, 0)
-    }
-
-    function moveToLauncher() {
-        moveTo(0, 1)
-    }
-
     onWidthChanged: {
         for(var name in panels) {
             if(panels[name] !== undefined) {
@@ -149,20 +141,28 @@ GestureFilterArea {
 
     /* Swipe handling */
 
+    property alias contentX: content.x
+    property alias contentY: content.y
+
     onSwipeMoved: {
         if(horizontal) {
-            var contentX = content.x + delta
+            contentX = content.x + delta
             var currentPanelX = -currentHorizontalPos*panelWidth
             contentX = Math.min(contentX, currentPanelX + (toRightAllowed ? panelWidth  : 0))
             contentX = Math.max(contentX, currentPanelX + (toLeftAllowed  ? -panelWidth : 0))
-            content.x = contentX
         } else {
-            var contentY = content.y + delta
+            contentY = content.y + delta
             var currentPanelY = -currentVerticalPos*panelHeight
             contentY = Math.min(contentY, currentPanelY + (toBottomAllowed ? panelHeight  : 0))
             contentY = Math.max(contentY, currentPanelY + (toTopAllowed    ? -panelHeight : 0))
-            content.y = contentY
         }
+    }
+
+    function animateIndicators() {
+        rightIndicator.animateFar()
+        leftIndicator.animateFar()
+        topIndicator.animateFar()
+        bottomIndicator.animateFar()
     }
 
     onSwipeReleased: {
@@ -188,10 +188,7 @@ GestureFilterArea {
             }
         }
 
-        rightIndicator.animateFar()
-        leftIndicator.animateFar()
-        topIndicator.animateFar()
-        bottomIndicator.animateFar()
+        animateIndicators()
     }
 
     NumberAnimation {

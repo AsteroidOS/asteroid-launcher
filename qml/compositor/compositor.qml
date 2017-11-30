@@ -115,10 +115,10 @@ Item {
         onGestureStarted: {
             swipeAnimation.stop()
             if (gesture == "down") {
-                Desktop.instance.onAboutToClose()
+                Desktop.onAboutToClose()
                 state = "swipe"
             } else if(gesture == "right") {
-                Desktop.instance.onAboutToMinimize()
+                Desktop.onAboutToMinimize()
                 state = "swipe"
             }
         }

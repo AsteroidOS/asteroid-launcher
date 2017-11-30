@@ -52,7 +52,7 @@ Item {
     property var launcherOuterColor: defaultOuterColor
 
     Component.onCompleted: {
-        Desktop.instance = desktop
+        Desktop.panelsGrid = grid
         LipstickSettings.lockScreen(true)
     }
 
@@ -102,6 +102,8 @@ Item {
             bottomIndicator.visible = Qt.binding(function() { return grid.toTopAllowed })
 
             leftIndicator.keepExpanded = Qt.binding(function() { return !np.modelEmpty && grid.currentHorizontalPos == 0 && grid.currentVerticalPos == 0 })
+
+            Desktop.appLauncher = al
         }
 
         onNormalizedHorOffsetChanged: {
@@ -146,40 +148,21 @@ Item {
         panelsGrid: grid
     }
 
-    Indicator {
-        id: rightIndicator
-        edge: Qt.RightEdge
-    }
-
-    Indicator {
-        id: leftIndicator
-        edge: Qt.LeftEdge
-    }
-
-    Indicator {
-        id: topIndicator
-        edge: Qt.TopEdge
-    }
-
-    Indicator {
-        id: bottomIndicator
-        edge: Qt.BottomEdge
-    }
+    Indicator { id: rightIndicator; edge: Qt.RightEdge }
+    Indicator { id: leftIndicator; edge: Qt.LeftEdge }
+    Indicator { id: topIndicator; edge: Qt.TopEdge }
+    Indicator { id: bottomIndicator; edge: Qt.BottomEdge }
 
     Timer {
-        id: delayTimer
+        id: lockscreenDelay
         interval: 150
         repeat: false
-        onTriggered: onAboutToClose()
+        onTriggered: Desktop.onAboutToClose()
     }
     Connections {
         target: Lipstick.compositor
-        onDisplayOff: delayTimer.start();
+        onDisplayOff: lockscreenDelay.start();
      }
-
-    function onAboutToClose() { grid.center() }
-
-    function onAboutToMinimize() { grid.moveToLauncher() }
 
 // Wallpaper
     ConfigurationValue {
