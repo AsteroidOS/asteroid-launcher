@@ -36,7 +36,7 @@ Item {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: parent.height/17
 
-        text: Qt.formatDate(wallClock.time, "<b>ddd</b> d MMM")
+        text: wallClock.time.toLocaleString(Qt.locale(), "<b>ddd</b> d MMM")
     }
 
     Canvas {

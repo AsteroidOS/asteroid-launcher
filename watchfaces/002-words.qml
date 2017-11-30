@@ -93,6 +93,6 @@ Item {
             right: parent.right
         }
 
-        text: Qt.formatDate(wallClock.time, "<b>ddd</b> d MMM")
+        text: wallClock.time.toLocaleString(Qt.locale(), "<b>ddd</b> d MMM")
     }
 }

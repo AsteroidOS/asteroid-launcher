@@ -98,7 +98,7 @@ Item {
             var ctx = getContext("2d")
 
             ctx.font = "10 " + height/13 + "px Raleway"
-            ctx.fillText(Qt.formatTime(wallClock.time, "AP"), width*0.3, height*0.5);
+            ctx.fillText(wallClock.time.toLocaleString(Qt.locale(), "AP"), width*0.3, height*0.5);
         }
     }
     Canvas {
@@ -116,7 +116,7 @@ Item {
             var ctx = getContext("2d")
 
             ctx.font = "10 " + height/13 + "px Raleway"
-            ctx.fillText(Qt.formatDate(wallClock.time, "dMMM"), width*0.7, height*0.5);
+            ctx.fillText(wallClock.time.toLocaleString(Qt.locale(), "dMMM"), width*0.7, height*0.5);
         }
     }
 

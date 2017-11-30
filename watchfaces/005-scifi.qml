@@ -55,8 +55,8 @@ Canvas {
         var centerY = height/2
 
         var text;
-        if(use12H.value) text = Qt.formatDateTime(wallClock.time, "hh:mm ap")
-        else             text = Qt.formatDateTime(wallClock.time, "hh:mm")
+        if(use12H.value) text = wallClock.time.toLocaleString(Qt.locale(), "hh:mm ap")
+        else             text = wallClock.time.toLocaleString(Qt.locale(), "hh:mm")
 
         var fontSize = height*0.17
         var verticalOffset = height*0.025

@@ -56,8 +56,8 @@ Item {
             prepareContext(ctx)
 
             var text;
-            if(use12H.value) text = Qt.formatDateTime(wallClock.time, "hh:mm ap")
-            else             text = Qt.formatDateTime(wallClock.time, "hh:mm")
+            if(use12H.value) text = wallClock.time.toLocaleString(Qt.locale(), "hh:mm ap")
+            else             text = wallClock.time.toLocaleString(Qt.locale(), "hh:mm")
 
             ctx.font = "50 " + height*0.2 + "px sans-serif";
             ctx.fillText(text, width*0.5, height*0.53);
@@ -79,7 +79,7 @@ Item {
             var ctx = getContext("2d")
 
             ctx.font = "57 " + height*0.05 + "px sans-serif";
-            ctx.fillText(Qt.formatDate(wallClock.time, "ddd d MMM"), width*0.5, width*0.7);
+            ctx.fillText(wallClock.time.toLocaleString(Qt.locale(), "ddd d MMM"), width*0.5, width*0.7);
         }
     }
 
