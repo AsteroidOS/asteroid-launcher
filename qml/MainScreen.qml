@@ -63,6 +63,7 @@ Item {
         Item {
             anchors.fill: parent
             z: 8
+            Tutorial { }
             FirstRunConfig { }
         }
     }
