@@ -58,7 +58,7 @@ Item {
         centerIcon.name = "logo-asteroidos"
         //% "Welcome."
         title.text = qsTrId("id-tutorial-welcome-title") + localeManager.changesObserver
-        //% "This is AteroidOS."
+        //% "This is AsteroidOS."
         subtitle.text = qsTrId("id-tutorial-welcome-subtitle") + localeManager.changesObserver
     }
 
