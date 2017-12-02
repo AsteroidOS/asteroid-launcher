@@ -61,10 +61,10 @@ MouseArea {
     Label {
         id: iconText
         anchors.top: icon.bottom
-        width: parent.width
-        elide: Text.ElideRight
+        width: Dims.w(50)
         horizontalAlignment: Text.AlignHCenter
         anchors.topMargin: Dims.h(4)
+        anchors.horizontalCenter: parent.horizontalCenter
         color: "#666666"
         font.pixelSize: Dims.l(5)
         font.weight: Font.Medium
