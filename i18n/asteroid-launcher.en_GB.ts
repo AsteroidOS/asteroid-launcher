@@ -81,5 +81,115 @@
         <source>No events today</source>
         <translation>No events today</translation>
     </message>
+    <message id="id-date-page">
+        <location filename="../qml/firstrun/FirstRunConfig.qml" line="196"/>
+        <source>Date</source>
+        <translation>Date</translation>
+    </message>
+    <message id="id-add-alarm">
+        <location filename="../qml/firstrun/FakeAlarmclock.qml" line="75"/>
+        <source>Add an alarm</source>
+        <translation>Add an alarm</translation>
+    </message>
+    <message id="id-time">
+        <location filename="../qml/firstrun/FakeAlarmclock.qml" line="115"/>
+        <source>Time</source>
+        <translation>Time</translation>
+    </message>
+    <message id="id-language-page">
+        <location filename="../qml/firstrun/FirstRunConfig.qml" line="171"/>
+        <source>Language</source>
+        <translation>Language</translation>
+    </message>
+    <message id="id-time-page">
+        <location filename="../qml/firstrun/FirstRunConfig.qml" line="185"/>
+        <source>Time</source>
+        <translation>Time</translation>
+    </message>
+    <message id="id-tutorial-welcome-title">
+        <location filename="../qml/firstrun/Tutorial.qml" line="60"/>
+        <source>Welcome !</source>
+        <translation>Welcome !</translation>
+    </message>
+    <message id="id-tutorial-welcome-subtitle">
+        <location filename="../qml/firstrun/Tutorial.qml" line="62"/>
+        <source>Let me guide you.</source>
+        <translation>Let me guide you.</translation>
+    </message>
+    <message id="id-tutorial-indicators-title">
+        <location filename="../qml/firstrun/Tutorial.qml" line="73"/>
+        <source>Indicators</source>
+        <translation>Indicators</translation>
+    </message>
+    <message id="id-tutorial-indicators-subtitle">
+        <location filename="../qml/firstrun/Tutorial.qml" line="75"/>
+        <source>Show you possible gestures.</source>
+        <translation>Show you possible gestures.</translation>
+    </message>
+    <message id="id-tutorial-notifications-title">
+        <location filename="../qml/firstrun/Tutorial.qml" line="93"/>
+        <source>Notifications</source>
+        <translation>Notifications</translation>
+    </message>
+    <message id="id-tutorial-notifications-subtitle">
+        <location filename="../qml/firstrun/Tutorial.qml" line="95"/>
+        <source>Can be accessed on the left.</source>
+        <translation>Can be accessed on the left.</translation>
+    </message>
+    <message id="id-tutorial-today-title">
+        <location filename="../qml/firstrun/Tutorial.qml" line="122"/>
+        <source>Today&apos;s Events</source>
+        <translation>Today&apos;s Events</translation>
+    </message>
+    <message id="id-tutorial-today-subtitle">
+        <location filename="../qml/firstrun/Tutorial.qml" line="124"/>
+        <source>On the right.</source>
+        <translation>On the right.</translation>
+    </message>
+    <message id="id-tutorial-quicksettings-title">
+        <location filename="../qml/firstrun/Tutorial.qml" line="167"/>
+        <source>Quick Settings</source>
+        <translation>Quick Settings</translation>
+    </message>
+    <message id="id-tutorial-quicksettings-subtitle">
+        <location filename="../qml/firstrun/Tutorial.qml" line="169"/>
+        <source>Are up here.</source>
+        <translation>Are up here.</translation>
+    </message>
+    <message id="id-tutorial-applications-title">
+        <location filename="../qml/firstrun/Tutorial.qml" line="212"/>
+        <source>Applications</source>
+        <translation>Applications</translation>
+    </message>
+    <message id="id-tutorial-applications-subtitle">
+        <location filename="../qml/firstrun/Tutorial.qml" line="214"/>
+        <source>Down there.</source>
+        <translation>Down there.</translation>
+    </message>
+    <message id="id-tutorial-startapp-title">
+        <location filename="../qml/firstrun/Tutorial.qml" line="257"/>
+        <source>Start an app</source>
+        <translation>Start an app</translation>
+    </message>
+    <message id="id-tutorial-startapp-subtitle">
+        <location filename="../qml/firstrun/Tutorial.qml" line="259"/>
+        <source>By pressing its icon.</source>
+        <translation>By pressing its icon.</translation>
+    </message>
+    <message id="id-tutorial-leaveapp-title">
+        <location filename="../qml/firstrun/Tutorial.qml" line="318"/>
+        <source>Leave an app</source>
+        <translation>Leave an app</translation>
+    </message>
+    <message id="id-tutorial-leaveapp-subtitle">
+        <location filename="../qml/firstrun/Tutorial.qml" line="320"/>
+        <source>With a left to right gesture</source>
+        <translation>With a left to right gesture</translation>
+    </message>
+    <message id="id-tutorial-enjoy-title">
+        <location filename="../qml/firstrun/Tutorial.qml" line="382"/>
+        <source>Enjoy!</source>
+        <translation>Enjoy!</translation>
+    </message>
 </context>
 </TS>
