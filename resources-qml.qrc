@@ -20,6 +20,7 @@
         <file alias="NotificationsPanel.qml">qml/notifications/NotificationsPanel.qml</file>
         <file alias="QuickSettings.qml">qml/quicksettings/QuickSettings.qml</file>
         <file alias="QuickSettingsToggle.qml">qml/quicksettings/QuickSettingsToggle.qml</file>
+        <file alias="FirstRunConfig.qml">qml/firstrun/FirstRunConfig.qml</file>
         <file alias="desktop.js">qml/misc/desktop.js</file>
         <file alias="weathericons.js">qml/today/weathericons.js</file>
         <file alias="compositor/WindowWrapperBase.qml">qml/compositor/WindowWrapperBase.qml</file>

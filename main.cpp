@@ -41,6 +41,7 @@
 #include <localemanager.h>
 
 #include "applauncherbackground.h"
+#include "firstrun.h"
 #include "launcherlocalemanager.h"
 #include "gesturefilterarea.h"
 #include "notificationsnoozer.h"
@@ -50,6 +51,7 @@ int main(int argc, char **argv)
     QmlPath::append(":/qml/");
     HomeApplication app(argc, argv, QString());
 
+    FirstRun *firstRun = new FirstRun();
     LauncherLocaleManager *launcherLocaleManager = new LauncherLocaleManager();
     QObject::connect(app.localeManager(), SIGNAL(localeChanged()), launcherLocaleManager, SLOT(onLocaleChanged()));
 
@@ -78,6 +80,7 @@ int main(int argc, char **argv)
     if (nativeOrientation == Qt::PrimaryOrientation)
         nativeOrientation = app.primaryScreen()->primaryOrientation();
     app.engine()->rootContext()->setContextProperty("nativeOrientation", nativeOrientation);
+    app.engine()->rootContext()->setContextProperty("firstRun", firstRun);
 
     qmlRegisterType<AppLauncherBackground>("org.asteroid.launcher", 1, 0, "AppLauncherBackground");
     qmlRegisterType<GestureFilterArea>("org.asteroid.launcher", 1, 0, "GestureFilterArea");

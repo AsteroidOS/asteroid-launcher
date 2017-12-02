@@ -54,6 +54,17 @@ Item {
     Component.onCompleted: {
         Desktop.panelsGrid = grid
         LipstickSettings.lockScreen(true)
+        if(firstRun.isFirstRun())
+            firstRunComponent.createObject(desktop)
+    }
+
+    Component {
+        id: firstRunComponent
+        Item {
+            anchors.fill: parent
+            z: 8
+            FirstRunConfig { }
+        }
     }
 
     WallClock {

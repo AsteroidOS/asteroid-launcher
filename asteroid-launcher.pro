@@ -4,17 +4,19 @@ VERSION = 0.1
 
 QT += quick waylandcompositor dbus
 CONFIG += qt link_pkgconfig qtquickcompiler
-PKGCONFIG += lipstick-qt5 timed-qt5
+PKGCONFIG += lipstick-qt5 timed-qt5 mlite5
 
 SOURCES += \
     main.cpp \
     applauncherbackground.cpp \
+    firstrun.cpp \
     gesturefilterarea.cpp \
     launcherlocalemanager.cpp \
     notificationsnoozer.cpp
 
 HEADERS += \
     applauncherbackground.h \
+    firstrun.h \
     gesturefilterarea.h \
     launcherlocalemanager.h \
     notificationsnoozer.h
