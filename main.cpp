@@ -38,8 +38,10 @@
 #include <lipstickqmlpath.h>
 #include <homeapplication.h>
 #include <homewindow.h>
+#include <localemanager.h>
 
 #include "applauncherbackground.h"
+#include "launcherlocalemanager.h"
 #include "gesturefilterarea.h"
 #include "notificationsnoozer.h"
 
@@ -48,9 +50,8 @@ int main(int argc, char **argv)
     QmlPath::append(":/qml/");
     HomeApplication app(argc, argv, QString());
 
-    QTranslator translator;
-    translator.load(QLocale(), "asteroid-launcher", ".", "/usr/share/translations", ".qm");
-    app.installTranslator(&translator);
+    LauncherLocaleManager *launcherLocaleManager = new LauncherLocaleManager();
+    QObject::connect(app.localeManager(), SIGNAL(localeChanged()), launcherLocaleManager, SLOT(onLocaleChanged()));
 
     QGuiApplication::setFont(QFont("Open Sans"));
     app.setCompositorPath("qrc:/qml/compositor.qml");

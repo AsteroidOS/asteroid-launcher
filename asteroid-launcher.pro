@@ -10,11 +10,13 @@ SOURCES += \
     main.cpp \
     applauncherbackground.cpp \
     gesturefilterarea.cpp \
+    launcherlocalemanager.cpp \
     notificationsnoozer.cpp
 
 HEADERS += \
     applauncherbackground.h \
     gesturefilterarea.h \
+    launcherlocalemanager.h \
     notificationsnoozer.h
 
 RESOURCES += \
