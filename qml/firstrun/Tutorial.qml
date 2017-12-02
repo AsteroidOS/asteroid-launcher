@@ -56,9 +56,9 @@ Item {
 
     Component.onCompleted: {
         centerIcon.name = "logo-asteroidos"
-        //% "Welcome !"
+        //% "Welcome."
         title.text = qsTrId("id-tutorial-welcome-title") + localeManager.changesObserver
-        //% "Let me guide you."
+        //% "This is AsteroidOS."
         subtitle.text = qsTrId("id-tutorial-welcome-subtitle") + localeManager.changesObserver
     }
 
@@ -71,7 +71,7 @@ Item {
                     centerIcon.name = "ios-move"
                     //% "Indicators"
                     title.text = qsTrId("id-tutorial-indicators-title") + localeManager.changesObserver
-                    //% "Show you possible gestures."
+                    //% "show you possible gestures."
                     subtitle.text = qsTrId("id-tutorial-indicators-subtitle") + localeManager.changesObserver
                     nextButton.enabled = true 
                 }
@@ -91,7 +91,7 @@ Item {
                         centerIcon.name = "ios-arrow-round-back"
                         //% "Notifications"
                         title.text = qsTrId("id-tutorial-notifications-title") + localeManager.changesObserver
-                        //% "Can be accessed on the left."
+                        //% "can be accessed on the left."
                         subtitle.text = qsTrId("id-tutorial-notifications-subtitle") + localeManager.changesObserver
                     }
                 }
@@ -120,7 +120,7 @@ Item {
                         centerIcon.name = "ios-arrow-round-forward"
                         //% "Today's Events"
                         title.text = qsTrId("id-tutorial-today-title") + localeManager.changesObserver
-                        //% "On the right."
+                        //% "are on the right."
                         subtitle.text = qsTrId("id-tutorial-today-subtitle") + localeManager.changesObserver
                         finger.x = Dims.w(10)
                         finger.y = Dims.h(43)
@@ -165,7 +165,7 @@ Item {
                         centerIcon.name = "ios-arrow-round-up"
                         //% "Quick Settings"
                         title.text = qsTrId("id-tutorial-quicksettings-title") + localeManager.changesObserver
-                        //% "Are up here."
+                        //% "are up here."
                         subtitle.text = qsTrId("id-tutorial-quicksettings-subtitle") + localeManager.changesObserver
                         finger.x = Dims.w(76)
                         finger.y = Dims.h(43)
@@ -208,9 +208,9 @@ Item {
                 ScriptAction {
                     script: {
                         centerIcon.name = "ios-arrow-round-down"
-                        //% "Applications"
+                        //% "Apps"
                         title.text = qsTrId("id-tutorial-applications-title") + localeManager.changesObserver
-                        //% "Down there."
+                        //% "are down there."
                         subtitle.text = qsTrId("id-tutorial-applications-subtitle") + localeManager.changesObserver
                         finger.y = Dims.h(10)
                         finger.x = Dims.w(43)
@@ -255,7 +255,7 @@ Item {
                         centerIcon.name = "ios-log-in"
                         //% "Start an app"
                         title.text = qsTrId("id-tutorial-startapp-title") + localeManager.changesObserver
-                        //% "By pressing its icon."
+                        //% "by pressing its icon."
                         subtitle.text = qsTrId("id-tutorial-startapp-subtitle") + localeManager.changesObserver
                         finger.x = Dims.w(43)
                         finger.y = Dims.w(76)
@@ -316,7 +316,7 @@ Item {
                         centerIcon.name = "ios-log-out"
                         //% "Leave an app"
                         title.text = qsTrId("id-tutorial-leaveapp-title") + localeManager.changesObserver
-                        //% "With a left to right gesture"
+                        //% "following a rightward gesture"
                         subtitle.text = qsTrId("id-tutorial-leaveapp-subtitle") + localeManager.changesObserver
                         finger.y = Dims.h(43)
                         finger.x = Dims.w(43)

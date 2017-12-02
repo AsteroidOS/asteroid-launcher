@@ -72,12 +72,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message id="id-no-notifications">
-        <location filename="../qml/notifications/NotificationsPanel.qml" line="149"/>
+        <location filename="../qml/notifications/NotificationsPanel.qml" line="151"/>
         <source>No notifications</source>
         <translation>Ei ilmoituksia</translation>
     </message>
     <message id="id-no-events-today">
-        <location filename="../qml/today/Today.qml" line="185"/>
+        <location filename="../qml/today/Today.qml" line="187"/>
         <source>No events today</source>
         <translation type="unfinished"></translation>
     </message>
@@ -108,12 +108,12 @@
     </message>
     <message id="id-tutorial-welcome-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="60"/>
-        <source>Welcome !</source>
+        <source>Welcome.</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="id-tutorial-welcome-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="62"/>
-        <source>Let me guide you.</source>
+        <source>This is AsteroidOS.</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="id-tutorial-indicators-title">
@@ -123,7 +123,7 @@
     </message>
     <message id="id-tutorial-indicators-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="75"/>
-        <source>Show you possible gestures.</source>
+        <source>show you possible gestures.</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="id-tutorial-notifications-title">
@@ -133,7 +133,7 @@
     </message>
     <message id="id-tutorial-notifications-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="95"/>
-        <source>Can be accessed on the left.</source>
+        <source>can be accessed on the left.</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="id-tutorial-today-title">
@@ -143,7 +143,7 @@
     </message>
     <message id="id-tutorial-today-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="124"/>
-        <source>On the right.</source>
+        <source>are on the right.</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="id-tutorial-quicksettings-title">
@@ -153,17 +153,17 @@
     </message>
     <message id="id-tutorial-quicksettings-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="169"/>
-        <source>Are up here.</source>
+        <source>are up here.</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="id-tutorial-applications-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="212"/>
-        <source>Applications</source>
+        <source>Apps</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="id-tutorial-applications-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="214"/>
-        <source>Down there.</source>
+        <source>are down there.</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="id-tutorial-startapp-title">
@@ -173,7 +173,7 @@
     </message>
     <message id="id-tutorial-startapp-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="259"/>
-        <source>By pressing its icon.</source>
+        <source>by pressing its icon.</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="id-tutorial-leaveapp-title">
@@ -183,7 +183,7 @@
     </message>
     <message id="id-tutorial-leaveapp-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="320"/>
-        <source>With a left to right gesture</source>
+        <source>following a rightward gesture</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="id-tutorial-enjoy-title">

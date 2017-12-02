@@ -72,12 +72,12 @@
         <translation>d</translation>
     </message>
     <message id="id-no-notifications">
-        <location filename="../qml/notifications/NotificationsPanel.qml" line="149"/>
+        <location filename="../qml/notifications/NotificationsPanel.qml" line="151"/>
         <source>No notifications</source>
         <translation>Žádná oznámení</translation>
     </message>
     <message id="id-no-events-today">
-        <location filename="../qml/today/Today.qml" line="185"/>
+        <location filename="../qml/today/Today.qml" line="187"/>
         <source>No events today</source>
         <translation>Dnes žádné události</translation>
     </message>
@@ -108,13 +108,13 @@
     </message>
     <message id="id-tutorial-welcome-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="60"/>
-        <source>Welcome !</source>
-        <translation>Vítejte!</translation>
+        <source>Welcome.</source>
+        <translation>Vítejte.</translation>
     </message>
     <message id="id-tutorial-welcome-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="62"/>
-        <source>Let me guide you.</source>
-        <translation>Dovolte nám provést vás.</translation>
+        <source>This is AsteroidOS.</source>
+        <translation type="unfinished">Dovolte nám provést vás.</translation>
     </message>
     <message id="id-tutorial-indicators-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="73"/>
@@ -123,8 +123,8 @@
     </message>
     <message id="id-tutorial-indicators-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="75"/>
-        <source>Show you possible gestures.</source>
-        <translation>Ukázat možná gesta.</translation>
+        <source>show you possible gestures.</source>
+        <translation type="unfinished">Ukázat možná gesta.</translation>
     </message>
     <message id="id-tutorial-notifications-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="93"/>
@@ -133,8 +133,8 @@
     </message>
     <message id="id-tutorial-notifications-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="95"/>
-        <source>Can be accessed on the left.</source>
-        <translation>Je přístupné vlevo.</translation>
+        <source>can be accessed on the left.</source>
+        <translation type="unfinished">Je přístupné vlevo.</translation>
     </message>
     <message id="id-tutorial-today-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="122"/>
@@ -143,8 +143,8 @@
     </message>
     <message id="id-tutorial-today-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="124"/>
-        <source>On the right.</source>
-        <translation>Napravo</translation>
+        <source>are on the right.</source>
+        <translation type="unfinished">Napravo</translation>
     </message>
     <message id="id-tutorial-quicksettings-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="167"/>
@@ -153,18 +153,18 @@
     </message>
     <message id="id-tutorial-quicksettings-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="169"/>
-        <source>Are up here.</source>
-        <translation>Jsou zde nahoře.</translation>
+        <source>are up here.</source>
+        <translation type="unfinished">Jsou zde nahoře.</translation>
     </message>
     <message id="id-tutorial-applications-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="212"/>
-        <source>Applications</source>
-        <translation>Aplikace</translation>
+        <source>Apps</source>
+        <translation type="unfinished">Aplikace</translation>
     </message>
     <message id="id-tutorial-applications-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="214"/>
-        <source>Down there.</source>
-        <translation>Tam dole.</translation>
+        <source>are down there.</source>
+        <translation type="unfinished">Tam dole.</translation>
     </message>
     <message id="id-tutorial-startapp-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="257"/>
@@ -173,8 +173,8 @@
     </message>
     <message id="id-tutorial-startapp-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="259"/>
-        <source>By pressing its icon.</source>
-        <translation>Stiskem její ikony.</translation>
+        <source>by pressing its icon.</source>
+        <translation type="unfinished">Stiskem její ikony.</translation>
     </message>
     <message id="id-tutorial-leaveapp-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="318"/>
@@ -183,8 +183,8 @@
     </message>
     <message id="id-tutorial-leaveapp-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="320"/>
-        <source>With a left to right gesture</source>
-        <translation>Gestem zleva doprava</translation>
+        <source>following a rightward gesture</source>
+        <translation type="unfinished">Gestem zleva doprava</translation>
     </message>
     <message id="id-tutorial-enjoy-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="382"/>
