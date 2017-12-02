@@ -53,21 +53,21 @@ MouseArea {
 
             if(delta < 60*1000)
                 //% "Now"
-                timestamp.text = qsTrId("id-now")
+                timestamp.text = qsTrId("id-now") + localeManager.changesObserver
             else {
                 delta = parseInt(delta/(1000*60))
                 if(delta < 60) {
                     //% "m"
-                    timestamp.text = delta + qsTrId("id-minute-abbrev")
+                    timestamp.text = delta + qsTrId("id-minute-abbrev") + localeManager.changesObserver
                 } else {
                     delta = parseInt(delta/60)
                     if(delta < 60) {
                         //% "h"
-                        timestamp.text = delta + qsTrId("id-hour-abbrev")
+                        timestamp.text = delta + qsTrId("id-hour-abbrev") + localeManager.changesObserver
                     } else {
                         delta = parseInt(delta/24)
                         //% "d"
-                        timestamp.text = delta + qsTrId("id-day-abbrev")
+                        timestamp.text = delta + qsTrId("id-day-abbrev") + localeManager.changesObserver
                     }
                 }
             }
@@ -149,7 +149,7 @@ MouseArea {
 
         NotificationButton {
             //% "Dismiss"
-            text: qsTrId("id-dismiss")
+            text: qsTrId("id-dismiss") + localeManager.changesObserver
             anchors.horizontalCenter: parent.horizontalCenter
             width: Dims.w(55)
             height: Dims.h(20)

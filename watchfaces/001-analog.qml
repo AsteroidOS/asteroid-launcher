@@ -82,4 +82,9 @@ Item {
             ctx.stroke()
         }
     }
+
+    Connections {
+        target: localeManager
+        onChangesObserverChanged: dateDisplay.text = Qt.binding(function() { return wallClock.time.toLocaleString(Qt.locale(), "<b>ddd</b> d MMM") })
+    }
 }

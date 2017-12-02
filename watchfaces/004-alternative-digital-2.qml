@@ -165,5 +165,15 @@ Item {
         amPmCanvas.am = am
         amPmCanvas.requestPaint()
     }
+
+    Connections {
+        target: localeManager
+        onChangesObserverChanged: {
+            hourCanvas.requestPaint()
+            minuteCanvas.requestPaint()
+            dateCanvas.requestPaint()
+            amPmCanvas.requestPaint()
+        }
+    }
 }
 

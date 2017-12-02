@@ -107,4 +107,12 @@ Item {
         dateCanvas.date = date
         dateCanvas.requestPaint()
     }
+
+    Connections {
+        target: localeManager
+        onChangesObserverChanged: {
+            hourMinuteCanvas.requestPaint()
+            dateCanvas.requestPaint()
+        }
+    }
 }

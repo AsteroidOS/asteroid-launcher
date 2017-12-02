@@ -182,7 +182,7 @@ ListView {
         anchors.top: emptyIndicator.bottom
         anchors.horizontalCenter: parent.horizontalCenter
         //% "No events today"
-        text: qsTrId("id-no-events-today")
+        text: qsTrId("id-no-events-today") + localeManager.changesObserver
         font.pixelSize: Dims.l(6)
         opacity: 0.8
     }

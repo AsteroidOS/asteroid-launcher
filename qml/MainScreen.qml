@@ -80,6 +80,15 @@ Item {
         defaultValue: "file:///usr/share/asteroid-launcher/watchfaces/000-default-digital.qml"
     }
 
+    Connections {
+        target: localeManager
+        onChangesObserverChanged: {
+            var bkp = watchFaceSource.value
+            watchFaceSource.value = ""
+            watchFaceSource.value = bkp
+        }
+    }
+
     Component { id: topPanel;    QuickSettings      { } }
     Component { id: leftPanel;   NotificationsPanel { panelsGrid: grid } }
     Component { id: centerPanel; Loader             { source: watchFaceSource.value } }

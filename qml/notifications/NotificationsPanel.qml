@@ -146,7 +146,7 @@ Item {
         anchors.top: emptyIndicator.bottom
         anchors.horizontalCenter: parent.horizontalCenter
         //% "No notifications"
-        text: qsTrId("id-no-notifications")
+        text: qsTrId("id-no-notifications") + localeManager.changesObserver
         font.pixelSize: Dims.l(6)
         opacity: 0.8
     }

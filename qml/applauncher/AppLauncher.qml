@@ -63,7 +63,7 @@ ListView {
         width: appsListView.width
         height: appsListView.width
         iconName: model.object.iconId == "" ? "ios-help" : model.object.iconId
-        iconCaption: model.object.title.toUpperCase()
+        iconCaption: model.object.title.toUpperCase() + localeManager.changesObserver
         enabled: !appsListView.dragging
     }
 

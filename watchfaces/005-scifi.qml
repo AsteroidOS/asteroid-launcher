@@ -69,5 +69,10 @@ Canvas {
         target: wallClock
         onTimeChanged: rootitem.requestPaint()
     }
+
+    Connections {
+        target: localeManager
+        onChangesObserverChanged: rootitem.requestPaint()
+    }
 }
 

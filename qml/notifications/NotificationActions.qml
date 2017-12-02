@@ -51,7 +51,7 @@ Item {
 
         NotificationButton {
             //% "Snooze"
-            text: qsTrId("id-snooze")
+            text: qsTrId("id-snooze") + localeManager.changesObserver
             width: parent.width
             height: Dims.h(20)
             onClicked: {
@@ -64,7 +64,7 @@ Item {
 
         NotificationButton {
             //% "Dismiss all"
-            text: qsTrId("id-dismiss-all")
+            text: qsTrId("id-dismiss-all") + localeManager.changesObserver
             width: parent.width
             height: Dims.h(20)
             onClicked: {
@@ -79,7 +79,7 @@ Item {
 
         NotificationButton {
             //% "Dismiss"
-            text: qsTrId("id-dismiss")
+            text: qsTrId("id-dismiss") + localeManager.changesObserver
             width: parent.width
             height: Dims.h(20)
             onClicked: if (notification.userRemovable) notification.removeRequested()
