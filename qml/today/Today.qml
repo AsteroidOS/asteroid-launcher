@@ -180,7 +180,9 @@ ListView {
         visible: modelEmpty
         anchors.topMargin: Dims.h(4)
         anchors.top: emptyIndicator.bottom
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.left: parent.left
+        anchors.right: parent.right
+        horizontalAlignment: Text.AlignHCenter
         //% "No events today"
         text: qsTrId("id-no-events-today") + localeManager.changesObserver
         font.pixelSize: Dims.l(6)

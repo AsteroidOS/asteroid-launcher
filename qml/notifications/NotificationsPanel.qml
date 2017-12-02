@@ -144,7 +144,9 @@ Item {
         visible: modelEmpty
         anchors.topMargin: Dims.h(4)
         anchors.top: emptyIndicator.bottom
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.left: parent.left
+        anchors.right: parent.right
+        horizontalAlignment: Text.AlignHCenter
         //% "No notifications"
         text: qsTrId("id-no-notifications") + localeManager.changesObserver
         font.pixelSize: Dims.l(6)
