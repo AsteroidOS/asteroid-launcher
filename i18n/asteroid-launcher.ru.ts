@@ -183,7 +183,7 @@
     </message>
     <message id="id-tutorial-leaveapp-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="320"/>
-        <source>following a rightward gesture</source>
+        <source>following a rightward gesture.</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="id-tutorial-enjoy-title">

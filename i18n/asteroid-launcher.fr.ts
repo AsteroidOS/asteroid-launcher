@@ -184,7 +184,7 @@
     <message id="id-tutorial-leaveapp-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="320"/>
         <source>following a rightward gesture</source>
-        <translation>En la glissant vers la droite</translation>
+        <translation>en la glissant vers la droite.</translation>
     </message>
     <message id="id-tutorial-enjoy-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="382"/>

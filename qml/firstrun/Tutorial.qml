@@ -316,7 +316,7 @@ Item {
                         centerIcon.name = "ios-log-out"
                         //% "Leave an app"
                         title.text = qsTrId("id-tutorial-leaveapp-title") + localeManager.changesObserver
-                        //% "following a rightward gesture"
+                        //% "following a rightward gesture."
                         subtitle.text = qsTrId("id-tutorial-leaveapp-subtitle") + localeManager.changesObserver
                         finger.y = Dims.h(43)
                         finger.x = Dims.w(43)
