@@ -114,7 +114,7 @@
     <message id="id-tutorial-welcome-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="62"/>
         <source>This is AsteroidOS.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dette er AsteroidOS.</translation>
     </message>
     <message id="id-tutorial-indicators-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="73"/>
@@ -134,7 +134,7 @@
     <message id="id-tutorial-notifications-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="95"/>
         <source>can be accessed on the left.</source>
-        <translation type="unfinished">kan nås fra venstresiden.</translation>
+        <translation>kan nås fra venstresiden.</translation>
     </message>
     <message id="id-tutorial-today-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="122"/>
@@ -164,7 +164,7 @@
     <message id="id-tutorial-applications-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="214"/>
         <source>are down there.</source>
-        <translation type="unfinished">her nede.</translation>
+        <translation>er der nede.</translation>
     </message>
     <message id="id-tutorial-startapp-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="257"/>
@@ -184,7 +184,7 @@
     <message id="id-tutorial-leaveapp-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="320"/>
         <source>following a rightward gesture.</source>
-        <translation type="unfinished">I en håndvending fra venstre til høyre.</translation>
+        <translation>i en høyrevendt håndvending.</translation>
     </message>
     <message id="id-tutorial-enjoy-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="382"/>
