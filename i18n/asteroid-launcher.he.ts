@@ -114,7 +114,7 @@
     <message id="id-tutorial-welcome-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="62"/>
         <source>This is AsteroidOS.</source>
-        <translation type="unfinished">נתחיל בהדרכה.</translation>
+        <translation>כאן AsteroidOS.</translation>
     </message>
     <message id="id-tutorial-indicators-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="73"/>
@@ -124,67 +124,67 @@
     <message id="id-tutorial-indicators-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="75"/>
         <source>show you possible gestures.</source>
-        <translation type="unfinished">הצגת מחוות אפשריות.</translation>
+        <translation>מציגים מחוות אפשריות.</translation>
     </message>
     <message id="id-tutorial-notifications-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="93"/>
         <source>Notifications</source>
-        <translation>התרעות</translation>
+        <translation>להתרעות</translation>
     </message>
     <message id="id-tutorial-notifications-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="95"/>
         <source>can be accessed on the left.</source>
-        <translation type="unfinished">ניתן לגשת משמאל.</translation>
+        <translation>ניתן לגשת משמאל.</translation>
     </message>
     <message id="id-tutorial-today-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="122"/>
         <source>Today&apos;s Events</source>
-        <translation>אירועי היום</translation>
+        <translation>לאירועי היום</translation>
     </message>
     <message id="id-tutorial-today-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="124"/>
         <source>are on the right.</source>
-        <translation type="unfinished">מימין.</translation>
+        <translation>מימין.</translation>
     </message>
     <message id="id-tutorial-quicksettings-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="167"/>
         <source>Quick Settings</source>
-        <translation>הגדרות מהירות</translation>
+        <translation>להגדרות מהירות</translation>
     </message>
     <message id="id-tutorial-quicksettings-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="169"/>
         <source>are up here.</source>
-        <translation type="unfinished">כאן למעלה.</translation>
+        <translation>כאן למעלה.</translation>
     </message>
     <message id="id-tutorial-applications-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="212"/>
         <source>Apps</source>
-        <translation type="unfinished">יישומונים</translation>
+        <translation>ליישומונים</translation>
     </message>
     <message id="id-tutorial-applications-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="214"/>
         <source>are down there.</source>
-        <translation type="unfinished">שם למטה.</translation>
+        <translation>שם למטה.</translation>
     </message>
     <message id="id-tutorial-startapp-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="257"/>
         <source>Start an app</source>
-        <translation>התחלת יישומון</translation>
+        <translation>ניתן להפעיל יישומון</translation>
     </message>
     <message id="id-tutorial-startapp-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="259"/>
         <source>by pressing its icon.</source>
-        <translation type="unfinished">על ידי לחיצה על הסמל שלו.</translation>
+        <translation>על ידי לחיצה על הסמל שלו.</translation>
     </message>
     <message id="id-tutorial-leaveapp-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="318"/>
         <source>Leave an app</source>
-        <translation>יציאה מיישומון</translation>
+        <translation>ליציאה מיישומון</translation>
     </message>
     <message id="id-tutorial-leaveapp-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="320"/>
         <source>following a rightward gesture.</source>
-        <translation type="unfinished">עם מחווה לימין או לשמאל.</translation>
+        <translation>מחווה לימין.</translation>
     </message>
     <message id="id-tutorial-enjoy-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="382"/>
