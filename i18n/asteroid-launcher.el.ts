@@ -89,7 +89,7 @@
     <message id="id-add-alarm">
         <location filename="../qml/firstrun/FakeAlarmclock.qml" line="75"/>
         <source>Add an alarm</source>
-        <translation>Προσθήκη ειδοποίησης</translation>
+        <translation>Προσθήκη αφύπνισης</translation>
     </message>
     <message id="id-time">
         <location filename="../qml/firstrun/FakeAlarmclock.qml" line="115"/>
