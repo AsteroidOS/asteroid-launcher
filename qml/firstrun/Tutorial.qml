@@ -57,9 +57,9 @@ Item {
     Component.onCompleted: {
         centerIcon.name = "logo-asteroidos"
         //% "Welcome."
-        title.text = qsTrId("id-tutorial-welcome-title") + localeManager.changesObserver
+        title.text = Qt.binding(function() { return qsTrId("id-tutorial-welcome-title") + localeManager.changesObserver })
         //% "This is AsteroidOS."
-        subtitle.text = qsTrId("id-tutorial-welcome-subtitle") + localeManager.changesObserver
+        subtitle.text = Qt.binding(function() { return qsTrId("id-tutorial-welcome-subtitle") + localeManager.changesObserver })
     }
 
     transitions: [
@@ -70,9 +70,9 @@ Item {
                 script: {
                     centerIcon.name = "ios-move"
                     //% "Indicators"
-                    title.text = qsTrId("id-tutorial-indicators-title") + localeManager.changesObserver
+                    title.text = qsTrId("id-tutorial-indicators-title")
                     //% "show you possible gestures."
-                    subtitle.text = qsTrId("id-tutorial-indicators-subtitle") + localeManager.changesObserver
+                    subtitle.text = qsTrId("id-tutorial-indicators-subtitle")
                     nextButton.enabled = true 
                 }
             }
@@ -90,9 +90,9 @@ Item {
                     script: {
                         centerIcon.name = "ios-arrow-round-back"
                         //% "Notifications"
-                        title.text = qsTrId("id-tutorial-notifications-title") + localeManager.changesObserver
+                        title.text = qsTrId("id-tutorial-notifications-title")
                         //% "can be accessed on the left."
-                        subtitle.text = qsTrId("id-tutorial-notifications-subtitle") + localeManager.changesObserver
+                        subtitle.text = qsTrId("id-tutorial-notifications-subtitle")
                     }
                 }
 
@@ -119,9 +119,9 @@ Item {
                     script: {
                         centerIcon.name = "ios-arrow-round-forward"
                         //% "Today's Events"
-                        title.text = qsTrId("id-tutorial-today-title") + localeManager.changesObserver
+                        title.text = qsTrId("id-tutorial-today-title")
                         //% "are on the right."
-                        subtitle.text = qsTrId("id-tutorial-today-subtitle") + localeManager.changesObserver
+                        subtitle.text = qsTrId("id-tutorial-today-subtitle")
                         finger.x = Dims.w(10)
                         finger.y = Dims.h(43)
                         finger.opacity = 0.8
@@ -164,9 +164,9 @@ Item {
                     script: {
                         centerIcon.name = "ios-arrow-round-up"
                         //% "Quick Settings"
-                        title.text = qsTrId("id-tutorial-quicksettings-title") + localeManager.changesObserver
+                        title.text = qsTrId("id-tutorial-quicksettings-title")
                         //% "are up here."
-                        subtitle.text = qsTrId("id-tutorial-quicksettings-subtitle") + localeManager.changesObserver
+                        subtitle.text = qsTrId("id-tutorial-quicksettings-subtitle")
                         finger.x = Dims.w(76)
                         finger.y = Dims.h(43)
                         finger.opacity = 0.8
@@ -209,9 +209,9 @@ Item {
                     script: {
                         centerIcon.name = "ios-arrow-round-down"
                         //% "Apps"
-                        title.text = qsTrId("id-tutorial-applications-title") + localeManager.changesObserver
+                        title.text = qsTrId("id-tutorial-applications-title")
                         //% "are down there."
-                        subtitle.text = qsTrId("id-tutorial-applications-subtitle") + localeManager.changesObserver
+                        subtitle.text = qsTrId("id-tutorial-applications-subtitle")
                         finger.y = Dims.h(10)
                         finger.x = Dims.w(43)
                         finger.opacity = 0.8
@@ -254,9 +254,9 @@ Item {
                     script: {
                         centerIcon.name = "ios-log-in"
                         //% "Start an app"
-                        title.text = qsTrId("id-tutorial-startapp-title") + localeManager.changesObserver
+                        title.text = qsTrId("id-tutorial-startapp-title")
                         //% "by pressing its icon."
-                        subtitle.text = qsTrId("id-tutorial-startapp-subtitle") + localeManager.changesObserver
+                        subtitle.text = qsTrId("id-tutorial-startapp-subtitle")
                         finger.x = Dims.w(43)
                         finger.y = Dims.w(76)
                         finger.opacity = 0.8
@@ -315,9 +315,9 @@ Item {
                     script: {
                         centerIcon.name = "ios-log-out"
                         //% "Leave an app"
-                        title.text = qsTrId("id-tutorial-leaveapp-title") + localeManager.changesObserver
+                        title.text = qsTrId("id-tutorial-leaveapp-title")
                         //% "following a rightward gesture."
-                        subtitle.text = qsTrId("id-tutorial-leaveapp-subtitle") + localeManager.changesObserver
+                        subtitle.text = qsTrId("id-tutorial-leaveapp-subtitle")
                         finger.y = Dims.h(43)
                         finger.x = Dims.w(43)
                         finger.opacity = 0.8
@@ -379,7 +379,7 @@ Item {
 
                         centerIcon.name = "ios-happy-outline"
                         //% "Enjoy!"
-                        title.text = qsTrId("id-tutorial-enjoy-title") + localeManager.changesObserver
+                        title.text = qsTrId("id-tutorial-enjoy-title")
                         subtitle.text = ""
                         nextButton.iconName = "ios-arrow-dropright"
                         finger.x = Dims.w(00)
