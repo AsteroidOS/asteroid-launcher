@@ -45,12 +45,16 @@ bool FirstRun::isFirstRun()
 
 void FirstRun::startFirstRun()
 {
-    m_mceDbus->asyncCall("set_config", QDBusObjectPath("/system/osso/dsm/display/display_never_blank").path(), QVariant(1));
+    m_mceDbus->asyncCall("set_config", QDBusObjectPath("/system/osso/dsm/display/inhibit_blank_mode").path(), QVariant(3));
+    m_mceDbus->asyncCall("req_tklock_mode_change", "unlocked");
+    m_mceDbus->asyncCall("set_config", QDBusObjectPath("/system/osso/dsm/locks/tklock_blank_disable").path(), QVariant(1));
 }
 
 void FirstRun::stopFirstRun()
 {
-    m_mceDbus->asyncCall("set_config", QDBusObjectPath("/system/osso/dsm/display/display_never_blank").path(), QVariant(0));
+    m_mceDbus->asyncCall("set_config", QDBusObjectPath("/system/osso/dsm/display/inhibit_blank_mode").path(), QVariant(0));
+    m_mceDbus->asyncCall("req_tklock_mode_change", "locked");
+    m_mceDbus->asyncCall("set_config", QDBusObjectPath("/system/osso/dsm/locks/tklock_blank_disable").path(), QVariant(0));
 
     firstRunDone->set(true);
 }
