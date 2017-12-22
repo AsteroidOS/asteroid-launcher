@@ -34,55 +34,178 @@ import org.asteroid.launcher 1.0
 Item {
     id: actions
 
+    property QtObject panelsGrid
     property QtObject notification
     property QtObject notificationModel
 
     property bool forbidLeft:  true
     property bool forbidRight: true
+    property bool forbidBottom: false
 
-    Column {
-        id: column
-        anchors.centerIn: parent
+    property string timestampStr: ""
 
-        width: Dims.w(55)
-        spacing: Dims.h(8)
+    onNotificationChanged: {
+        if(notification !== undefined && notification !== null)
+            updateTimestamp()
+    }
 
-        NotificationSnoozer { id: snoozer }
+    function updateTimestamp() {
+        var currentTime = new Date
+        var delta = (currentTime.getTime() - notification.timestamp.getTime())
 
-        NotificationButton {
-            //% "Snooze"
-            text: qsTrId("id-snooze") + localeManager.changesObserver
-            width: parent.width
-            height: Dims.h(20)
-            onClicked: {
-                if (notification.userRemovable) {
-                    if(snoozer.snooze(notification, 5))
-                        notification.removeRequested()
+        if(delta < 60*1000)
+            //% "Now"
+            timestampStr = qsTrId("id-now") + localeManager.changesObserver
+        else {
+            delta = parseInt(delta/(1000*60))
+            if(delta < 60) {
+                //% "m"
+                timestampStr = delta + qsTrId("id-minute-abbrev") + localeManager.changesObserver
+            } else {
+                delta = parseInt(delta/60)
+                if(delta < 60) {
+                    //% "h"
+                    timestampStr = delta + qsTrId("id-hour-abbrev") + localeManager.changesObserver
+                } else {
+                    delta = parseInt(delta/24)
+                    //% "d"
+                    timestampStr = delta + qsTrId("id-day-abbrev") + localeManager.changesObserver
                 }
             }
         }
+    }
 
-        NotificationButton {
-            //% "Dismiss all"
-            text: qsTrId("id-dismiss-all") + localeManager.changesObserver
-            width: parent.width
-            height: Dims.h(20)
-            onClicked: {
-                for(var i = 0 ; i < notificationModel.itemCount ; i++) {
-                    var notifI = notificationModel.get(i)
-                    if (notifI.userRemovable) {
-                        notifI.removeRequested()
+    Connections {
+        target: panelsGrid
+        onCurrentHorizontalPosChanged: {
+            if(forbidBottom)
+                layerStack.pop(layerStack.currentLayer)
+            updateTimestamp()
+        }
+    }
+
+    NotificationSnoozer { id: snoozer }
+
+    LayerStack {
+        id: layerStack
+        win: null
+        firstPage: actionsComponent
+        onLayersChanged: {
+            actions.forbidBottom = layers.length > 0
+            leftIndicator.visible = layers.length > 0
+            leftIndicator.animateFar()
+            panelsGrid.changeAllowedDirections()
+        }
+    }
+
+    Component {
+        id: actionsComponent
+
+        Item {
+            Column {
+                id: column
+
+                anchors.centerIn: parent
+                width: Dims.w(55)
+                spacing: Dims.h(8)
+
+                NotificationButton {
+                    //% "Snooze"
+                    text: qsTrId("id-snooze") + localeManager.changesObserver
+                    width: parent.width
+                    height: Dims.h(20)
+                    onClicked: layerStack.push(snoozeLayer)
+                }
+
+                NotificationButton {
+                    //% "Dismiss all"
+                    text: qsTrId("id-dismiss-all") + localeManager.changesObserver
+                    width: parent.width
+                    height: Dims.h(20)
+                    onClicked: {
+                        for(var i = 0 ; i < notificationModel.itemCount ; i++) {
+                            var notifI = notificationModel.get(i)
+                            if (notifI.userRemovable) {
+                                notifI.removeRequested()
+                            }
+                        }
                     }
                 }
+
+                NotificationButton {
+                    //% "Dismiss"
+                    text: qsTrId("id-dismiss") + localeManager.changesObserver
+                    width: parent.width
+                    height: Dims.h(20)
+                    onClicked: if (notification.userRemovable) notification.removeRequested()
+                }
             }
         }
+    }
 
-        NotificationButton {
-            //% "Dismiss"
-            text: qsTrId("id-dismiss") + localeManager.changesObserver
-            width: parent.width
-            height: Dims.h(20)
-            onClicked: if (notification.userRemovable) notification.removeRequested()
+    Component {
+        id: snoozeLayer
+
+        Item {
+            id: snoozeLayerContent
+            property var pop
+
+            PageHeader {
+                id: title
+                //% "Snooze"
+                text: qsTrId("id-snooze")
+            }
+
+            Grid {
+                anchors.fill: parent
+                columns: 2
+                spacing: Dims.l(8)
+                anchors.margins: Dims.l(20)
+
+                NotificationButton {
+                    //% "m"
+                    text: "10" + qsTrId("id-minute-abbrev") + localeManager.changesObserver
+                    onClicked: {
+                        if(snoozer.snooze(notification, 10))
+                            notification.removeRequested()
+                    }
+                    width: Dims.l(26)
+                    height: width
+                }
+
+                NotificationButton {
+                    //% "m"
+                    text: "30" + qsTrId("id-minute-abbrev") + localeManager.changesObserver
+                    onClicked: {
+                        if(snoozer.snooze(notification, 30))
+                            notification.removeRequested()
+                    }
+                    width: Dims.l(26)
+                    height: width
+                }
+
+                NotificationButton {
+                    //% "h"
+                    text: "1" + qsTrId("id-hour-abbrev") + localeManager.changesObserver
+                    onClicked: {
+                        if(snoozer.snooze(notification, 60))
+                            notification.removeRequested()
+                    }
+                    width: Dims.l(26)
+                    height: width
+                }
+
+                NotificationButton {
+                    //% "h"
+                    text: "3" + qsTrId("id-hour-abbrev") + localeManager.changesObserver
+                    onClicked: {
+                        if(snoozer.snooze(notification, 180))
+                            notification.removeRequested()
+                    }
+                    width: Dims.l(26)
+                    height: width
+                }
+            }
         }
     }
 
@@ -117,8 +240,10 @@ Item {
         Label {
             id: timestamp
             color: "#b0b0b0"
-            text: "35m"
+            text: timestampStr
             font.pixelSize: Dims.l(6)
         }
     }
+
+    Indicator { id: leftIndicator; edge: Qt.LeftEdge }
 }
