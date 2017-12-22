@@ -41,7 +41,7 @@ MouseArea {
 
     Label {
         id: content
-        font.pixelSize: parent.height*0.4
+        font.pixelSize: Dims.l(8)
         anchors.centerIn: parent
     }
 }
