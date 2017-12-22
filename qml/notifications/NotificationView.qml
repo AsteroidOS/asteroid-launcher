@@ -48,29 +48,29 @@ MouseArea {
     }
 
     function updateTimestamp() {
-            var currentTime = new Date
-            var delta = (currentTime.getTime() - notification.timestamp.getTime())
+        var currentTime = new Date
+        var delta = (currentTime.getTime() - notification.timestamp.getTime())
 
-            if(delta < 60*1000)
-                //% "Now"
-                timestamp.text = qsTrId("id-now") + localeManager.changesObserver
-            else {
-                delta = parseInt(delta/(1000*60))
+        if(delta < 60*1000)
+            //% "Now"
+            timestamp.text = qsTrId("id-now") + localeManager.changesObserver
+        else {
+            delta = parseInt(delta/(1000*60))
+            if(delta < 60) {
+                //% "m"
+                timestamp.text = delta + qsTrId("id-minute-abbrev") + localeManager.changesObserver
+            } else {
+                delta = parseInt(delta/60)
                 if(delta < 60) {
-                    //% "m"
-                    timestamp.text = delta + qsTrId("id-minute-abbrev") + localeManager.changesObserver
+                    //% "h"
+                    timestamp.text = delta + qsTrId("id-hour-abbrev") + localeManager.changesObserver
                 } else {
-                    delta = parseInt(delta/60)
-                    if(delta < 60) {
-                        //% "h"
-                        timestamp.text = delta + qsTrId("id-hour-abbrev") + localeManager.changesObserver
-                    } else {
-                        delta = parseInt(delta/24)
-                        //% "d"
-                        timestamp.text = delta + qsTrId("id-day-abbrev") + localeManager.changesObserver
-                    }
+                    delta = parseInt(delta/24)
+                    //% "d"
+                    timestamp.text = delta + qsTrId("id-day-abbrev") + localeManager.changesObserver
                 }
             }
+        }
     }
 
     onPressed: prevY = mouse.y
