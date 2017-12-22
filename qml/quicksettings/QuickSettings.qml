@@ -44,18 +44,11 @@ Item {
     property bool forbidLeft:  true
     property bool forbidRight: true
 
-    Connections {
-        target: lipstickSettings;
-        onLockscreenVisibleChanged: {
-            if(lipstickSettings.lockscreenVisible) batteryChargePercentage.subscribe()
-            else batteryChargePercentage.unsubscribe()
-        }
-    }
-
     ContextProperty {
         id: batteryChargePercentage
         key: "Battery.ChargePercentage"
         value: "100"
+        Component.onCompleted: batteryChargePercentage.subscribe()
     }
 
     ContextProperty {
