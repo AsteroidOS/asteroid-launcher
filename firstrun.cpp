@@ -31,10 +31,11 @@
 
 #include <QDebug>
 #include <QDBusPendingCall>
+#include <QDBusVariant>
 
 FirstRun::FirstRun()
 {
-    m_mceDbus = new QDBusInterface("com.nokia.mce", "/com/nokia/mce/request", "com.nokia.mce.request");
+    m_mceDbus = new QDBusInterface("com.nokia.mce", "/com/nokia/mce/request", "com.nokia.mce.request", QDBusConnection::systemBus());
     firstRunDone = new MGConfItem("/org/asteroidos/launcher/firstRunDone", this);
 }
 
@@ -45,12 +46,16 @@ bool FirstRun::isFirstRun()
 
 void FirstRun::startFirstRun()
 {
-    m_mceDbus->asyncCall("set_config", QDBusObjectPath("/system/osso/dsm/display/display_never_blank").path(), QVariant(1));
+    m_mceDbus->asyncCall("set_config", QDBusObjectPath("/system/osso/dsm/display/inhibit_blank_mode").path(), QVariant::fromValue(QDBusVariant(3)));
+    m_mceDbus->asyncCall("req_tklock_mode_change", "unlocked");
+    m_mceDbus->asyncCall("set_config", QDBusObjectPath("/system/osso/dsm/locks/tklock_blank_disable").path(), QVariant::fromValue(QDBusVariant(1)));
 }
 
 void FirstRun::stopFirstRun()
 {
-    m_mceDbus->asyncCall("set_config", QDBusObjectPath("/system/osso/dsm/display/display_never_blank").path(), QVariant(0));
+    m_mceDbus->asyncCall("set_config", QDBusObjectPath("/system/osso/dsm/display/inhibit_blank_mode").path(), QVariant::fromValue(QDBusVariant(0)));
+    m_mceDbus->asyncCall("req_tklock_mode_change", "locked");
+    m_mceDbus->asyncCall("set_config", QDBusObjectPath("/system/osso/dsm/locks/tklock_blank_disable").path(), QVariant::fromValue(QDBusVariant(0)));
 
     firstRunDone->set(true);
 }

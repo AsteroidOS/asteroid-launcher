@@ -65,6 +65,7 @@ Item {
                     
             var notifActions = panelsGrid.addPanel(-index-1, -1, notificationActionsComp)
             notifActions.notification = item
+            notifActions.panelsGrid = panelsGrid
             notifActions.notificationModel = notifModel
             if(index > 0) {
                 var notifView = panelsGrid.addPanel(-index-1, 0, notificationViewComp)

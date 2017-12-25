@@ -41,86 +41,57 @@ import "compositor"
 Item {
     id: root
     anchors.fill: parent
-
     rotation: Screen.angleBetween(Screen.primaryScreen, Lipstick.compositor.screenOrientation)
 
-    Connections {
-        target: comp != null ? comp.quickWindow : null
-        onActiveFocusItemChanged: {
-            // Search for the layer of the focus item
-            var focusedLayer = comp.activeFocusItem
-            while (focusedLayer && focusedLayer.parent !== layersParent)
-                focusedLayer = focusedLayer.parent
-
-            // reparent the overlay to the found layer
-            overlayLayer.parent = focusedLayer ? focusedLayer : overlayLayer.parent
-        }
+    Item {
+        id: homeLayer
+        z: 1
+        anchors.fill: parent
     }
 
     Item {
-        id: layersParent
+        id: appLayer
+        z: 2
+
+        opacity: (width-2*gestureArea.value)/width
+        x: gestureArea.active &&  gestureArea.horizontal ? gestureArea.value : 0
+        y: gestureArea.active && !gestureArea.horizontal ? gestureArea.value : 0
+
+        width: parent.width
+        height: parent.height
+
+        // Let app deal with rotation themselves
+        rotation: Screen.angleBetween(Lipstick.compositor.screenOrientation, Screen.primaryScreen)
+    }
+
+    Item {
+        id: notificationLayer
+        z: 3
         anchors.fill: parent
+    }
 
-        Item {
-            id: homeLayer
-            z: comp != null && comp.homeActive ? 4 : 1
-            anchors.fill: parent
-        }
-
-        Item {
-            id: appLayer
-            z: 2
-
-            width: parent.width
-            height: parent.height
-            visible: comp != null && comp.appActive
-
-            // Let app deal with rotation themselves
-            rotation: Screen.angleBetween(Lipstick.compositor.screenOrientation, Screen.primaryScreen)
-        }
-
-        Item {
-            id: overlayLayer
-            z: 5
-
-            visible: comp != null && comp.appActive
-        }
-
-        Item {
-            id: notificationLayer
-            z: 6
-        }
-
-        Item {
-            id: agentLayer
-            z: 7
-        }
-
-        Item {
-            id: alarmsLayer
-            z: 3
-        }
+    Item {
+        id: agentLayer
+        z: 4
+        anchors.fill: parent
     }
 
     BorderGestureArea {
         id: gestureArea
-        enabled: comp != null && comp.appActive
-        z: 7
+        enabled: comp.appActive
+        z: 5
         anchors.fill: parent
         acceptsDown: true
-        acceptsRight: comp != null && !comp.topmostWindowRequestsGesturesDisabled
+        acceptsRight: !comp.topmostWindowRequestsGesturesDisabled
 
         property real swipeThreshold: 0.15
 
         onGestureStarted: {
             swipeAnimation.stop()
-            if (gesture == "down") {
+            if (gesture == "down")
                 Desktop.onAboutToClose()
-                state = "swipe"
-            } else if(gesture == "right") {
+            else if(gesture == "right")
                 Desktop.onAboutToMinimize()
-                state = "swipe"
-            }
         }
 
         onGestureFinished: {
@@ -132,50 +103,22 @@ Item {
                 } else {
                     cancelAnimation.start()
                 }
-            } else if (comp.homeActive){
+            } else if (comp.homeActive) {
                 cancelAnimation.start()
             }
         }
 
-        states: [
-            State {
-                name: "swipe"
-
-                PropertyChanges {
-                    target: gestureArea
-                    delayReset: true
-                }
-
-                PropertyChanges {
-                    target: comp != null ? (comp.topmostAlarmWindow == null ? appLayer : alarmsLayer) : null
-                    opacity: (width-2*gestureArea.value)/width
-                    x: gestureArea.horizontal ? gestureArea.value : 0
-                    y: gestureArea.horizontal ? 0 : gestureArea.value
-                }
-            }
-        ]
-
-        SequentialAnimation {
+        NumberAnimation {
             id: cancelAnimation
-
-            NumberAnimation {
-                target: gestureArea
-                property: "value"
-                to: 0
-                duration: 200
-                easing.type: Easing.OutQuint
-            }
-
-            PropertyAction {
-                target: gestureArea
-                property: "state"
-                value: ""
-            }
+            target: gestureArea
+            property: "value"
+            to: 0
+            duration: 200
+            easing.type: Easing.OutQuint
         }
 
         SequentialAnimation {
             id: swipeAnimation
-
             property alias valueTo: valueAnimation.to
 
             NumberAnimation {
@@ -188,12 +131,6 @@ Item {
 
             ScriptAction {
                 script: comp.setCurrentWindow(comp.homeWindow)
-            }
-
-            PropertyAction {
-                target: gestureArea
-                property: "state"
-                value: ""
             }
         }
     }
@@ -227,7 +164,6 @@ Item {
 
         // The application window that was most recently topmost
         property Item topmostApplicationWindow
-        property Item topmostAlarmWindow: null
 
         readonly property bool topmostWindowRequestsGesturesDisabled: topmostWindow && topmostWindow.window
                                                                       && (topmostWindow.window.windowFlags & 1)
@@ -248,9 +184,7 @@ Item {
 
             topmostWindow = w;
 
-            if (topmostWindow == homeWindow || topmostWindow == null) {
-                clearKeyboardFocus()
-            } else {
+            if (topmostWindow != homeWindow && topmostWindow != null) {
                 if (topmostApplicationWindow) topmostApplicationWindow.visible = false
                 topmostApplicationWindow = topmostWindow
                 topmostApplicationWindow.visible = true
@@ -259,35 +193,21 @@ Item {
             }
         }
 
-        onDisplayOff: {
-            if (comp.topmostAlarmWindow == null)
-                delayTimer.start()
-        }
-
+        onDisplayOff: delayTimer.start()
         onDisplayAboutToBeOn: delayTimer.stop()
 
         onWindowAdded: {
             var isHomeWindow = window.isInProcess && comp.homeWindow == null && window.title === "Home"
             var isDialogWindow = window.category === "dialog"
             var isNotificationWindow = window.category == "notification"
-            var isOverlayWindow =  window.category == "overlay"
-            var isAlarmWindow = window.category == "alarm"
             var isAgentWindow = window.category == "agent"
             var parent = null
-            if (window.category == "cover") {
-                window.visible = false
-                return
-            }
             if (isHomeWindow) {
                 parent = homeLayer
             } else if (isNotificationWindow) {
                 parent = notificationLayer
-            } else if (isOverlayWindow){
-                parent = overlayLayer
-            } else if (isAgentWindow){
+            } else if (isAgentWindow) {
                 parent = agentLayer
-            } else if (isAlarmWindow) {
-                parent = alarmsLayer
             } else {
                 parent = appLayer
             }
@@ -298,34 +218,19 @@ Item {
             if (isHomeWindow) {
                 comp.homeWindow = w
                 setCurrentWindow(homeWindow)
-            } else if (isNotificationWindow || isOverlayWindow || isAgentWindow) {
-
-            } else if (isDialogWindow){
-                setCurrentWindow(window)
-            } else if (isAlarmWindow){
-                comp.topmostAlarmWindow = window
-                setCurrentWindow(window)
-            } else {
+            } else if (!isNotificationWindow && !isAgentWindow && !isDialogWindow) {
                 w.smoothBorders = true
                 w.x = width
                 w.moveInAnim.start()
                 cancelAnimation.start()
-                if (!comp.topmostAlarmWindow) {
-                    setCurrentWindow(w)
-                }
+                setCurrentWindow(w)
             }
         }
 
-        onWindowRaised: {
-            windowToFront(window.windowId)
-        }
+        onWindowRaised:  windowToFront(window.windowId)
 
         onWindowRemoved: {
             var w = window.userData;
-            if (window.category == "alarm") {
-                comp.topmostAlarmWindow = null
-                setCurrentWindow(comp.homeWindow)
-            }
             if (comp.topmostWindow == w)
                 setCurrentWindow(comp.homeWindow);
 
@@ -337,6 +242,7 @@ Item {
     Rectangle {
         anchors.fill: parent
         color: "black"
+        z: 6
         visible: DeviceInfo.hasRoundScreen
         layer.enabled: DeviceInfo.hasRoundScreen
         layer.effect: CircleMaskShader {
