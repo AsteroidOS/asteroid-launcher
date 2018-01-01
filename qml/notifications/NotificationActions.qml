@@ -94,7 +94,8 @@ Item {
             actions.forbidBottom = layers.length > 0
             leftIndicator.visible = layers.length > 0
             leftIndicator.animateFar()
-            panelsGrid.changeAllowedDirections()
+            if(panelsGrid !== null)
+                panelsGrid.changeAllowedDirections()
         }
     }
 
