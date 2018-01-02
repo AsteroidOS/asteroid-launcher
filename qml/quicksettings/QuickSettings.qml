@@ -99,7 +99,7 @@ Item {
     QuickSettingsToggle {
         id: bluetoothToggle
         anchors.centerIn: parent
-        icon: "ios-bluetooth"
+        icon: btStatus.connected ? "ios-bluetooth-connected" : "ios-bluetooth"
         onChecked:   btStatus.powered = true
         onUnchecked: btStatus.powered = false
         Component.onCompleted: toggled = btStatus.powered
