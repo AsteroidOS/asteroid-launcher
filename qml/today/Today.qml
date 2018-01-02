@@ -105,11 +105,11 @@ ListView {
     footer: Item { height: Dims.h(25) }
     header: Item {
         width: parent.width
-        height: Dims.h(25)
+        height: Dims.h(35)
 
         Icon {
             name: IconTools.getIconName(owmId.value)
-            height: Dims.h(20)
+            height: Dims.h(15)
             width: height
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.horizontalCenter
@@ -121,12 +121,31 @@ ListView {
             height: parent.height
             width: Dims.w(45)
             anchors.right: parent.right
+            anchors.top: parent.top
             text: convertTemp(minTemp.value) + "\n" + convertTemp(maxTemp.value)
             opacity: 0.8
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
             font.pixelSize: Dims.l(5)
             visible: weatherAvailable
+        }
+
+        Label {
+            //% "Today"
+            text: qsTrId("id-today")
+            visible: !modelEmpty
+            height: Dims.h(10)
+            font.pixelSize: Dims.l(6)
+            font.capitalization: Font.SmallCaps
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            leftPadding: DeviceInfo.hasRoundScreen ? Dims.w(25) : 0
+            rightPadding: DeviceInfo.hasRoundScreen ? Dims.w(25) : 0
+            wrapMode: Text.WordWrap
+            maximumLineCount: 1
         }
     }
 
@@ -138,27 +157,27 @@ ListView {
 
     delegate: Component {
         Item {
-            height: Dims.h(25)
+            height: Dims.h(15)
             width: parent.width
 
             Label {
                 id: hour
                 text: model.occurrence.startTime.toLocaleString(Qt.locale(), use12H.value ? "hh:mm AP" : "hh:mm")
                 opacity: 0.8
-                horizontalAlignment: Text.AlignHCenter
+                horizontalAlignment: Text.AlignRight
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
                 width: parent.width*0.3
-                font.pixelSize: parent.height/4.0
+                font.pixelSize: Dims.l(5)
             }
             Label {
                 id: title
                 anchors.left: hour.right
                 anchors.right: parent.right
-                anchors.leftMargin: 20
+                anchors.leftMargin: Dims.w(4)
                 text: model.event.displayLabel
                 anchors.verticalCenter: parent.verticalCenter
-                font.pixelSize: parent.height/3
+                font.pixelSize: Dims.h(7)
             }
         }
     }
