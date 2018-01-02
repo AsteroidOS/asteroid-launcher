@@ -145,11 +145,11 @@ ListView {
                 id: hour
                 text: model.occurrence.startTime.toLocaleString(Qt.locale(), use12H.value ? "hh:mm AP" : "hh:mm")
                 opacity: 0.8
-                horizontalAlignment: Text.AlignRight
+                horizontalAlignment: Text.AlignHCenter
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
-                width: parent.width/4
-                font.pixelSize: use12H.value ? parent.height/3.3 : parent.height/2.5
+                width: parent.width*0.3
+                font.pixelSize: parent.height/4.0
             }
             Label {
                 id: title
