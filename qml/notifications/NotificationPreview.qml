@@ -42,74 +42,78 @@ Item {
         id: notificationArea
         anchors.fill: parent
         enabled: state == "show"
-        onClicked: if (notificationPreviewPresenter.notification != null) notificationPreviewPresenter.notification.actionInvoked("default")
+        onClicked: notificationArea.state = "hide"
 
-        Image {
+        Rectangle {
             anchors.fill: parent
-            source: notificationArea.pressed ? "qrc:/images/diskBackgroundPressed.svg" : "qrc:/images/diskBackground.svg"
-            sourceSize.width: width
-            sourceSize.height: height
+            color: "#000000"
+            opacity: notificationArea.pressed ? 0.85 : 0.8
         }
 
-        Icon {
-            id: icon
-            anchors.centerIn: parent
-            anchors.verticalCenterOffset: -parent.height*0.2
-            width: Dims.w(20)
-            height: width
-            color: "#666666"
-            name: {
-                var notif = notificationPreviewPresenter.notification;
-                if(notif==null)
-                    return "";
+        Item {
+            anchors.verticalCenter: parent.verticalCenter
+            width: parent.width
+            height: icon.anchors.topMargin + icon.height + summary.anchors.topMargin + summary.height + body.anchors.topMargin + body.height
 
-                function noicon(str) {
-                    return str === "" || str === null || str === undefined;
-                }
-                // icon for asteroid internal, appIcon for notifications from android
-                if(noicon(notif.icon) && noicon(notif.appIcon))
-                    return "ios-mail-outline";
-                if(noicon(notif.icon) && !noicon(notif.appIcon))
-                    return notif.appIcon;
-                if(!noicon(notif.icon) && noicon(notif.appIcon))
+            Icon {
+                id: icon
+                anchors.top: parent.top
+                anchors.topMargin: Dims.iconButtonMargin
+                anchors.horizontalCenter: parent.horizontalCenter
+                width: Dims.w(20)
+                height: width
+                color: "#FFFFFF"
+                name: {
+                    var notif = notificationPreviewPresenter.notification;
+                    if(notif==null)
+                        return "";
+
+                    function noicon(str) {
+                        return str === "" || str === null || str === undefined;
+                    }
+                    if(noicon(notif.icon) && noicon(notif.appIcon))
+                        return "ios-mail-outline";
+                    if(noicon(notif.icon) && !noicon(notif.appIcon))
+                        return notif.appIcon;
+                    if(!noicon(notif.icon) && noicon(notif.appIcon))
+                        return notif.icon;
+
                     return notif.icon;
-
-                // prefer asteroid internal
-                return notif.icon;
+                }
             }
-        }
 
-        Label {
-            id: summary
-            anchors.top: icon.bottom
-            height: text == "" ? 0 : undefined
-            width: Dims.w(70)
-            horizontalAlignment: Text.AlignHCenter
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.topMargin: Dims.h(3)
-            color: "#666666"
-            font.pixelSize: Dims.l(5)
-            font.bold: true
-            clip: true
-            elide: Text.ElideRight
-            text: notificationPreviewPresenter.notification != null ? notificationPreviewPresenter.notification.previewSummary : ""
-        }
+            Label {
+                id: summary
+                anchors.top: icon.bottom
+                height: text == "" ? 0 : undefined
+                width: Dims.w(90)
+                horizontalAlignment: Text.AlignHCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.topMargin: text == "" ? 0 : Dims.h(3)
+                color: "#FFFFFF"
+                font.pixelSize: Dims.l(6)
+                font.bold: true
+                clip: true
+                elide: Text.ElideRight
+                text: notificationPreviewPresenter.notification != null ? notificationPreviewPresenter.notification.previewSummary : ""
+            }
 
-        Label {
-            id: body
-            anchors.top: summary.bottom
-            width: Dims.w(50)
-            horizontalAlignment: Text.AlignHCenter
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.topMargin: Dims.h(6)
-            color: "#666666"
-            font.pixelSize: Dims.h(5)
-            font.bold: summary.text == ""
-            clip: true
-            maximumLineCount: 3
-            elide: Text.ElideRight
-            wrapMode: Text.Wrap
-            text: notificationPreviewPresenter.notification != null ? notificationPreviewPresenter.notification.previewBody : ""
+            Label {
+                id: body
+                anchors.top: summary.bottom
+                width: Dims.w(80)
+                horizontalAlignment: Text.AlignHCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.topMargin: Dims.h(3)
+                color: "#FFFFFF"
+                font.pixelSize: Dims.h(6)
+                font.bold: summary.text == ""
+                clip: true
+                maximumLineCount: 4
+                elide: Text.ElideRight
+                wrapMode: Text.Wrap
+                text: notificationPreviewPresenter.notification != null ? notificationPreviewPresenter.notification.previewBody : ""
+            }
         }
 
         states: [
@@ -146,14 +150,14 @@ Item {
             Transition {
                 to: "show"
                 SequentialAnimation {
-                    NumberAnimation { property: "opacity"; duration: 200 }
+                    OpacityAnimator { duration: 300 }
                     ScriptAction { scriptName: "notificationShown" }
                 }
             },
             Transition {
                 to: "hide"
                 SequentialAnimation {
-                    NumberAnimation { property: "opacity"; duration: 200 }
+                    OpacityAnimator { duration: 300 }
                     ScriptAction { scriptName: "notificationHidden" }
                 }
             }
