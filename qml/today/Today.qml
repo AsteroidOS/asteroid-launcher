@@ -29,6 +29,7 @@
 
 import QtQuick 2.9
 import org.asteroid.controls 1.0
+import org.asteroid.utils 1.0
 import org.nemomobile.calendar 1.0
 import org.nemomobile.configuration 1.0
 import org.nemomobile.time 1.0
