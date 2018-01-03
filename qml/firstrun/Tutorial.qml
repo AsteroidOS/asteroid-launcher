@@ -133,7 +133,9 @@ Item {
                     NumberAnimation { target: finger; property: "x"; from: Dims.w(10); to: Dims.w(76); duration: 600 }
                 }
 
-                ScriptAction { script: finger.opacity = 0.0 }
+                ScriptAction { script: { Desktop.panelsGrid.currentHorizontalPos = -1
+                                         Desktop.panelsGrid.animateIndicators()
+                                         finger.opacity = 0.0 } }
                 PauseAnimation { duration: pauseDuration }
                 ScriptAction { script: finger.opacity = 0.8 }
 
@@ -142,7 +144,9 @@ Item {
                     NumberAnimation { target: finger; property: "x"; from: Dims.w(76); to: Dims.w(10); duration: 600 }
                 }
 
-                ScriptAction { script: finger.opacity = 0.0 }
+                ScriptAction { script: { Desktop.panelsGrid.currentHorizontalPos = 0
+                                         Desktop.panelsGrid.animateIndicators()
+                                         finger.opacity = 0.0 } }
 
                 ParallelAnimation {
                     OpacityAnimator { target: background;   from: 0.0; to: backgroundOpacity; duration: opacityAnimDuration }
@@ -178,7 +182,9 @@ Item {
                     NumberAnimation { target: finger; property: "x"; from: Dims.w(76); to: Dims.w(10); duration: 600 }
                 }
 
-                ScriptAction { script: finger.opacity = 0.0 }
+                ScriptAction { script: { Desktop.panelsGrid.currentHorizontalPos = 1
+                                         Desktop.panelsGrid.animateIndicators()
+                                         finger.opacity = 0.0 } }
                 PauseAnimation { duration: pauseDuration }
                 ScriptAction { script: finger.opacity = 0.8 }
 
@@ -187,7 +193,9 @@ Item {
                     NumberAnimation { target: finger; property: "x"; from: Dims.w(10); to: Dims.w(76); duration: 600 }
                 }
 
-                ScriptAction { script: finger.opacity = 0.0 }
+                ScriptAction { script: { Desktop.panelsGrid.currentHorizontalPos = 0
+                                         Desktop.panelsGrid.animateIndicators()
+                                         finger.opacity = 0.0 } }
 
                 ParallelAnimation {
                     OpacityAnimator { target: background;   from: 0.0; to: backgroundOpacity; duration: opacityAnimDuration }
@@ -223,7 +231,9 @@ Item {
                     NumberAnimation { target: finger; property: "y"; from: Dims.h(10); to: Dims.h(76); duration: 600 }
                 }
 
-                ScriptAction { script: finger.opacity = 0.0 }
+                ScriptAction { script: { Desktop.panelsGrid.currentVerticalPos = -1
+                                         Desktop.panelsGrid.animateIndicators()
+                                         finger.opacity = 0.0 } }
                 PauseAnimation { duration: pauseDuration }
                 ScriptAction { script: finger.opacity = 0.8 }
 
@@ -232,7 +242,9 @@ Item {
                     NumberAnimation { target: finger; property: "y"; from: Dims.h(76); to: Dims.h(10); duration: 600 }
                 }
 
-                ScriptAction { script: finger.opacity = 0.0 }
+                ScriptAction { script: { Desktop.panelsGrid.currentVerticalPos = 0
+                                         Desktop.panelsGrid.animateIndicators()
+                                         finger.opacity = 0.0 } }
 
                 ParallelAnimation {
                     OpacityAnimator { target: background;   from: 0.0; to: backgroundOpacity; duration: opacityAnimDuration }
@@ -267,7 +279,9 @@ Item {
                     NumberAnimation { target: Desktop.panelsGrid; property: "contentY"; from: 0.0; to: -Dims.h(100); duration: 600 }
                     NumberAnimation { target: finger; property: "y"; from: Dims.h(76); to: Dims.h(10); duration: 600 }
                 }
-                ScriptAction { script: { finger.opacity = 0.0 } }
+                ScriptAction { script: { Desktop.panelsGrid.currentVerticalPos = 1
+                                         Desktop.panelsGrid.animateIndicators()
+                                         finger.opacity = 0.0 } }
                 PauseAnimation { duration: pauseDuration }
                 ScriptAction {
                     script: {
@@ -281,7 +295,9 @@ Item {
                     NumberAnimation { target: Desktop.appLauncher; property: "contentX"; from: 0.0; to: Dims.w(200); duration: 600 }
                     NumberAnimation { target: finger; property: "x"; from: Dims.w(80); to: Dims.w(-20); duration: 500 }
                 }
-                ScriptAction { script: finger.opacity = 0.0 }
+                ScriptAction { script: { Desktop.panelsGrid.currentVerticalPos = 1
+                                         Desktop.panelsGrid.animateIndicators()
+                                         finger.opacity = 0.0 } }
                 PauseAnimation { duration: 300 }
                 ScriptAction { script: finger.opacity = 0.8 }
                 ParallelAnimation {
@@ -339,6 +355,7 @@ Item {
                 }
 
                 NumberAnimation { target: fakeAlarmclock; property: "x"; from: Dims.w(100); to: 0.0; duration: 200 }
+                ScriptAction { script: fakeAlarmclock.animIndicators() }
                 PauseAnimation { duration: pauseDuration }
 
                 ScriptAction {
@@ -356,6 +373,7 @@ Item {
                 }
 
                 NumberAnimation { target: fakeAlarmclock; property: "contentX"; from: 0.0; to: Dims.w(100); duration: 200 }
+                ScriptAction { script: fakeAlarmclock.animIndicators() }
 
                 ParallelAnimation {
                     OpacityAnimator { target: background;   from: 0.0; to: backgroundOpacity; duration: opacityAnimDuration }
@@ -392,6 +410,7 @@ Item {
                     NumberAnimation { target: fakeAlarmclock; property: "contentX"; from: Dims.w(100); to: 0.0; duration: 600 }
                     NumberAnimation { target: finger; property: "x"; from: Dims.w(00); to: Dims.w(80); duration: 600 }
                 }
+                ScriptAction { script: fakeAlarmclock.animIndicators() }
 
                 ScriptAction { script: finger.opacity = 0.0 }
                 PauseAnimation { duration: pauseDuration }
@@ -421,7 +440,9 @@ Item {
                     NumberAnimation { target: Desktop.panelsGrid; property: "contentY"; from: -Dims.h(100); to: 0.0; duration: 600 }
                     NumberAnimation { target: finger; property: "y"; from: Dims.h(10); to: Dims.h(76); duration: 600 }
                 }
-                ScriptAction { script: finger.opacity = 0.0 }
+                ScriptAction { script: { Desktop.panelsGrid.currentVerticalPos = 0
+                                         Desktop.panelsGrid.animateIndicators()
+                                         finger.opacity = 0.0 } }
 
                 ParallelAnimation {
                     OpacityAnimator { target: background;   from: 0.0; to: backgroundOpacity; duration: opacityAnimDuration }
