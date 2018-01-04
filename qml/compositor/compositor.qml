@@ -156,7 +156,9 @@ Item {
         property Item topmostWindow
 
         // Only used to change blank timeout when on watchface or elsewhere
-        onHomeActiveChanged: lipstickSettings.lockscreenVisible = homeActive
+        property bool longTimeout: homeActive
+        Component.onCompleted: longTimeout = Qt.binding(function() { return homeActive && (Desktop.panelsGrid.currentVerticalPos == 0 && Desktop.panelsGrid.currentHorizontalPos == 0) })
+        onLongTimeoutChanged: lipstickSettings.lockscreenVisible = longTimeout
 
         // True if the home window is the topmost window
         homeActive: topmostWindow == comp.homeWindow
