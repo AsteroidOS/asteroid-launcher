@@ -153,52 +153,52 @@
     <message id="id-tutorial-today-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="122"/>
         <source>Today&apos;s Events</source>
-        <translation type="unfinished"></translation>
+        <translation>Dagens händelser</translation>
     </message>
     <message id="id-tutorial-today-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="124"/>
         <source>are on the right.</source>
-        <translation type="unfinished"></translation>
+        <translation>är till höger.</translation>
     </message>
     <message id="id-tutorial-quicksettings-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="167"/>
         <source>Quick Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Snabbinställningar</translation>
     </message>
     <message id="id-tutorial-quicksettings-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="169"/>
         <source>are up here.</source>
-        <translation type="unfinished"></translation>
+        <translation>är här uppe.</translation>
     </message>
     <message id="id-tutorial-applications-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="212"/>
         <source>Apps</source>
-        <translation type="unfinished"></translation>
+        <translation>Appar</translation>
     </message>
     <message id="id-tutorial-applications-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="214"/>
         <source>are down there.</source>
-        <translation type="unfinished"></translation>
+        <translation>är där nere.</translation>
     </message>
     <message id="id-tutorial-startapp-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="257"/>
         <source>Start an app</source>
-        <translation type="unfinished"></translation>
+        <translation>Starta en app</translation>
     </message>
     <message id="id-tutorial-startapp-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="259"/>
         <source>by pressing its icon.</source>
-        <translation type="unfinished"></translation>
+        <translation>genom att trycka på dess ikon.</translation>
     </message>
     <message id="id-tutorial-leaveapp-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="318"/>
         <source>Leave an app</source>
-        <translation type="unfinished"></translation>
+        <translation>Lämna en app</translation>
     </message>
     <message id="id-tutorial-leaveapp-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="320"/>
         <source>following a rightward gesture.</source>
-        <translation type="unfinished"></translation>
+        <translation>följer en högergest.</translation>
     </message>
     <message id="id-tutorial-enjoy-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="382"/>
