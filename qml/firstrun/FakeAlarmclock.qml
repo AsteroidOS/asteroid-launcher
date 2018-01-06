@@ -43,6 +43,14 @@ FlatMesh {
     property alias contentX: contentArea.contentX
     property bool fakePressed: false
 
+    Indicator { id: leftIndicator; edge: Qt.LeftEdge }
+    Indicator { id: topIndicator; edge: Qt.TopEdge }
+
+    function animIndicators() {
+        leftIndicator.animate();
+        topIndicator.animate();
+    }
+
     Flickable {
         id: contentArea
         anchors.fill: parent

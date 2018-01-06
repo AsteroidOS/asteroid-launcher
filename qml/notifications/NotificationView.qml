@@ -94,23 +94,25 @@ MouseArea {
             width: 1
         }
 
-        Label {
-            id: appName
-            width: Dims.w(56)
-            font.pixelSize: Dims.l(6)
-            elide: Text.ElideRight
+        Row {
+            height: Dims.h(10)
 
-            Connections {
-                target: panelsGrid
-                onCurrentHorizontalPosChanged: updateTimestamp()
+            Label {
+                id: appName
+                width: Dims.w(56)
+                font.pixelSize: Dims.l(6)
+                elide: Text.ElideRight
+
+                Connections {
+                    target: panelsGrid
+                    onCurrentHorizontalPosChanged: updateTimestamp()
+                }
             }
 
             Label {
                 id: timestamp
                 font.pixelSize: appName.font.pixelSize
                 horizontalAlignment: Text.AlignRight
-                anchors.top: appName.top
-                anchors.left: appName.right
                 width: Dims.w(14)
             }
         }

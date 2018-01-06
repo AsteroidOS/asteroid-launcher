@@ -36,48 +36,62 @@
         <translation>PIN Kodunu Gir</translation>
     </message>
     <message id="id-snooze">
-        <location filename="../qml/notifications/NotificationActions.qml" line="54"/>
+        <location filename="../qml/notifications/NotificationActions.qml" line="115"/>
+        <location filename="../qml/notifications/NotificationActions.qml" line="157"/>
         <source>Snooze</source>
         <translation>Ertele</translation>
     </message>
     <message id="id-dismiss-all">
-        <location filename="../qml/notifications/NotificationActions.qml" line="67"/>
+        <location filename="../qml/notifications/NotificationActions.qml" line="123"/>
         <source>Dismiss all</source>
         <translation>Tümünü at</translation>
     </message>
     <message id="id-dismiss">
-        <location filename="../qml/notifications/NotificationActions.qml" line="82"/>
-        <location filename="../qml/notifications/NotificationView.qml" line="152"/>
+        <location filename="../qml/notifications/NotificationActions.qml" line="138"/>
+        <location filename="../qml/notifications/NotificationView.qml" line="154"/>
         <source>Dismiss</source>
         <translation>At</translation>
     </message>
     <message id="id-now">
+        <location filename="../qml/notifications/NotificationActions.qml" line="58"/>
         <location filename="../qml/notifications/NotificationView.qml" line="56"/>
         <source>Now</source>
         <translation>Şimdi</translation>
     </message>
     <message id="id-minute-abbrev">
+        <location filename="../qml/notifications/NotificationActions.qml" line="63"/>
+        <location filename="../qml/notifications/NotificationActions.qml" line="168"/>
+        <location filename="../qml/notifications/NotificationActions.qml" line="179"/>
         <location filename="../qml/notifications/NotificationView.qml" line="61"/>
         <source>m</source>
         <translation>d</translation>
     </message>
     <message id="id-hour-abbrev">
+        <location filename="../qml/notifications/NotificationActions.qml" line="68"/>
+        <location filename="../qml/notifications/NotificationActions.qml" line="190"/>
+        <location filename="../qml/notifications/NotificationActions.qml" line="201"/>
         <location filename="../qml/notifications/NotificationView.qml" line="66"/>
         <source>h</source>
         <translation>sa</translation>
     </message>
     <message id="id-day-abbrev">
+        <location filename="../qml/notifications/NotificationActions.qml" line="72"/>
         <location filename="../qml/notifications/NotificationView.qml" line="70"/>
         <source>d</source>
         <translation>g</translation>
     </message>
     <message id="id-no-notifications">
-        <location filename="../qml/notifications/NotificationsPanel.qml" line="151"/>
+        <location filename="../qml/notifications/NotificationsPanel.qml" line="152"/>
         <source>No notifications</source>
         <translation>Bildirim yok</translation>
     </message>
+    <message id="id-today">
+        <location filename="../qml/today/Today.qml" line="135"/>
+        <source>Today</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message id="id-no-events-today">
-        <location filename="../qml/today/Today.qml" line="187"/>
+        <location filename="../qml/today/Today.qml" line="206"/>
         <source>No events today</source>
         <translation>Bugün etkinlik yok</translation>
     </message>
@@ -87,12 +101,12 @@
         <translation>Tarih</translation>
     </message>
     <message id="id-add-alarm">
-        <location filename="../qml/firstrun/FakeAlarmclock.qml" line="75"/>
+        <location filename="../qml/firstrun/FakeAlarmclock.qml" line="77"/>
         <source>Add an alarm</source>
         <translation>Alarm ekle</translation>
     </message>
     <message id="id-time">
-        <location filename="../qml/firstrun/FakeAlarmclock.qml" line="115"/>
+        <location filename="../qml/firstrun/FakeAlarmclock.qml" line="117"/>
         <source>Time</source>
         <translation>Saat</translation>
     </message>
