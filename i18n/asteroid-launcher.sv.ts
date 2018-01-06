@@ -88,7 +88,7 @@
     <message id="id-today">
         <location filename="../qml/today/Today.qml" line="135"/>
         <source>Today</source>
-        <translation type="unfinished"></translation>
+        <translation>Idag</translation>
     </message>
     <message id="id-no-events-today">
         <location filename="../qml/today/Today.qml" line="206"/>
@@ -203,7 +203,7 @@
     <message id="id-tutorial-enjoy-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="382"/>
         <source>Enjoy!</source>
-        <translation type="unfinished"></translation>
+        <translation>Mycket nöje!</translation>
     </message>
 </context>
 </TS>
