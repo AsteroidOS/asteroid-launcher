@@ -138,12 +138,12 @@
     <message id="id-tutorial-indicators-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="75"/>
         <source>show you possible gestures.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar gestos posibles.</translation>
     </message>
     <message id="id-tutorial-notifications-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="93"/>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Notificaciones</translation>
     </message>
     <message id="id-tutorial-notifications-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="95"/>
@@ -153,7 +153,7 @@
     <message id="id-tutorial-today-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="122"/>
         <source>Today&apos;s Events</source>
-        <translation type="unfinished"></translation>
+        <translation>Acontecimientos de hoy</translation>
     </message>
     <message id="id-tutorial-today-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="124"/>
@@ -163,7 +163,7 @@
     <message id="id-tutorial-quicksettings-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="167"/>
         <source>Quick Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajustes rápidos</translation>
     </message>
     <message id="id-tutorial-quicksettings-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="169"/>
@@ -173,7 +173,7 @@
     <message id="id-tutorial-applications-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="212"/>
         <source>Apps</source>
-        <translation type="unfinished"></translation>
+        <translation>Aplicaciones</translation>
     </message>
     <message id="id-tutorial-applications-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="214"/>
@@ -183,7 +183,7 @@
     <message id="id-tutorial-startapp-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="257"/>
         <source>Start an app</source>
-        <translation type="unfinished"></translation>
+        <translation>Iniciar una app</translation>
     </message>
     <message id="id-tutorial-startapp-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="259"/>
@@ -193,7 +193,7 @@
     <message id="id-tutorial-leaveapp-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="318"/>
         <source>Leave an app</source>
-        <translation type="unfinished"></translation>
+        <translation>Salir de una app</translation>
     </message>
     <message id="id-tutorial-leaveapp-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="320"/>
@@ -203,7 +203,7 @@
     <message id="id-tutorial-enjoy-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="382"/>
         <source>Enjoy!</source>
-        <translation type="unfinished"></translation>
+        <translation>¡Disfruta!</translation>
     </message>
 </context>
 </TS>
