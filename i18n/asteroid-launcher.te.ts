@@ -7,12 +7,12 @@
         <location filename="../qml/misc/BluetoothAgent.qml" line="143"/>
         <location filename="../qml/misc/BluetoothAgent.qml" line="155"/>
         <source>Authorize:</source>
-        <translation>ఆధరైజ్:</translation>
+        <translation>ధ్రువీకరించు:</translation>
     </message>
     <message id="id-btagent-confirm">
         <location filename="../qml/misc/BluetoothAgent.qml" line="167"/>
         <source>Confirm:</source>
-        <translation>కంఫర్మ్:</translation>
+        <translation>నిర్ధారించు:</translation>
     </message>
     <message id="id-btagent-passkey">
         <location filename="../qml/misc/BluetoothAgent.qml" line="179"/>
@@ -22,7 +22,7 @@
     <message id="id-btagent-enterkey">
         <location filename="../qml/misc/BluetoothAgent.qml" line="195"/>
         <source>Enter Key</source>
-        <translation>ఎంటర్ కీ</translation>
+        <translation>కీ వ్రాయండి</translation>
     </message>
     <message id="id-btagent-pincode">
         <location filename="../qml/misc/BluetoothAgent.qml" line="203"/>
@@ -33,7 +33,7 @@
     <message id="id-btagent-enter-pincode">
         <location filename="../qml/misc/BluetoothAgent.qml" line="220"/>
         <source>Enter PIN Code</source>
-        <translation>ఎంటర్ పిన్ కోడ్:</translation>
+        <translation>పిన్ కోడ్ రాయండి</translation>
     </message>
     <message id="id-snooze">
         <location filename="../qml/notifications/NotificationActions.qml" line="115"/>
@@ -44,13 +44,13 @@
     <message id="id-dismiss-all">
         <location filename="../qml/notifications/NotificationActions.qml" line="123"/>
         <source>Dismiss all</source>
-        <translation>డిస్మిస్ ఆల్</translation>
+        <translation>అన్ని రద్దు చేయి</translation>
     </message>
     <message id="id-dismiss">
         <location filename="../qml/notifications/NotificationActions.qml" line="138"/>
         <location filename="../qml/notifications/NotificationView.qml" line="154"/>
         <source>Dismiss</source>
-        <translation>డిస్మిస్</translation>
+        <translation>రద్దు చేయి</translation>
     </message>
     <message id="id-now">
         <location filename="../qml/notifications/NotificationActions.qml" line="58"/>
@@ -138,7 +138,7 @@
     <message id="id-tutorial-indicators-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="75"/>
         <source>show you possible gestures.</source>
-        <translation>సాధ్యమైన హావభావాలను చూపించండి</translation>
+        <translation>సాధ్యమైన హావభావాలను చూపించండి.</translation>
     </message>
     <message id="id-tutorial-notifications-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="93"/>
@@ -204,7 +204,7 @@
     <message id="id-tutorial-enjoy-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="382"/>
         <source>Enjoy!</source>
-        <translation>పండగ చేస్కో!</translation>
+        <translation>ఆనందించండి!</translation>
     </message>
 </context>
 </TS>
