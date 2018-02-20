@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2016 - Sylvia van Os <iamsylvie@openmailbox.org>
+ * Copyright (C) 2018 - Timo Könnecke <el-t-mo@arcor.de>
+ *               2016 - Sylvia van Os <iamsylvie@openmailbox.org>
  *               2015 - Florent Revest <revestflo@gmail.com>
  *               2012 - Vasiliy Sorokin <sorokin.vasiliy@gmail.com>
  *                      Aleksey Mikhailichenko <a.v.mich@gmail.com>
@@ -24,6 +25,7 @@ import QtQuick 2.1
 
 Item {
     Text {
+        z: 1
         id: dateDisplay
 
         font.pixelSize: parent.height/17
@@ -40,12 +42,16 @@ Item {
     }
 
     Canvas {
+        z: 2
+        id: hourHand
+        property var hour: 0
         anchors.fill: parent
         smooth: true
         renderTarget: Canvas.FramebufferObject 
         onPaint: {
             var ctx = getContext("2d")
             var rot = (wallClock.time.getHours() - 3 + wallClock.time.getMinutes()/60) / 12
+            ctx.reset()
             ctx.lineWidth = 3
             ctx.strokeStyle = "white"
             ctx.shadowColor = "#80000000"
@@ -62,12 +68,16 @@ Item {
     }
 
     Canvas {
+        z: 3
+        id: minuteHand
+        property var minute: 0
         anchors.fill: parent
         smooth: true
         renderTarget: Canvas.FramebufferObject 
         onPaint: {
             var ctx = getContext("2d")
             var rot = (wallClock.time.getMinutes() - 15)/60
+            ctx.reset()
             ctx.lineWidth = 3
             ctx.strokeStyle = "white"
             ctx.shadowColor = "#80000000"
@@ -87,4 +97,32 @@ Item {
         target: localeManager
         onChangesObserverChanged: dateDisplay.text = Qt.binding(function() { return wallClock.time.toLocaleString(Qt.locale(), "<b>ddd</b> d MMM") })
     }
+    Connections {
+        target: wallClock
+        onTimeChanged: {
+            var hour = wallClock.time.getHours()
+            var minute = wallClock.time.getMinutes()
+            var date = wallClock.time.getDate()
+            if(minuteHand.minute != minute) {
+                minuteHand.minute = minute
+                minuteHand.requestPaint()
+                minuteDisplay.requestPaint()
+            }if(hourHand.hour != hour) {
+                hourHand.hour = hour
+                hourHand.requestPaint()
+            }
+        }
+     }
+
+     Component.onCompleted: {
+        var hour = wallClock.time.getHours()
+        var minute = wallClock.time.getMinutes()
+        var date = wallClock.time.getDate()
+        minuteHand.minute = minute
+        minuteHand.requestPaint()
+        hourHand.hour = hour
+        hourHand.requestPaint()
+
+     }
+
 }
