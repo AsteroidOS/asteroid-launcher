@@ -24,27 +24,24 @@
 import QtQuick 2.1
 
 Item {
+
     Text {
         z: 1
         id: dateDisplay
-
         font.pixelSize: parent.height/17
         color: "white"
         style: Text.Outline; styleColor: "#80000000"
         opacity: 0.8
         horizontalAlignment: Text.AlignHCenter
-
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
         anchors.bottomMargin: parent.height/17
-
         text: wallClock.time.toLocaleString(Qt.locale(), "<b>ddd</b> d MMM")
     }
 
     Canvas {
         z: 2
         id: hourHand
-        property var hour: 0
         anchors.fill: parent
         smooth: true
         renderTarget: Canvas.FramebufferObject 
@@ -70,7 +67,6 @@ Item {
     Canvas {
         z: 3
         id: minuteHand
-        property var minute: 0
         anchors.fill: parent
         smooth: true
         renderTarget: Canvas.FramebufferObject 
@@ -100,29 +96,13 @@ Item {
     Connections {
         target: wallClock
         onTimeChanged: {
-            var hour = wallClock.time.getHours()
-            var minute = wallClock.time.getMinutes()
-            var date = wallClock.time.getDate()
-            if(minuteHand.minute != minute) {
-                minuteHand.minute = minute
-                minuteHand.requestPaint()
-                minuteDisplay.requestPaint()
-            }if(hourHand.hour != hour) {
-                hourHand.hour = hour
-                hourHand.requestPaint()
-            }
+             minuteHand.requestPaint()
+             hourHand.requestPaint()
         }
-     }
+    }
 
-     Component.onCompleted: {
-        var hour = wallClock.time.getHours()
-        var minute = wallClock.time.getMinutes()
-        var date = wallClock.time.getDate()
-        minuteHand.minute = minute
+    Component.onCompleted: {
         minuteHand.requestPaint()
-        hourHand.hour = hour
         hourHand.requestPaint()
-
      }
-
 }
