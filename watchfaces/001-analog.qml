@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2016 - Sylvia van Os <iamsylvie@openmailbox.org>
+ * Copyright (C) 2018 - Timo Könnecke <el-t-mo@arcor.de>
+ *               2016 - Sylvia van Os <iamsylvie@openmailbox.org>
  *               2015 - Florent Revest <revestflo@gmail.com>
  *               2012 - Vasiliy Sorokin <sorokin.vasiliy@gmail.com>
  *                      Aleksey Mikhailichenko <a.v.mich@gmail.com>
@@ -23,29 +24,31 @@
 import QtQuick 2.1
 
 Item {
-    Text {
-        id: dateDisplay
 
+    Text {
+        z: 1
+        id: dateDisplay
         font.pixelSize: parent.height/17
         color: "white"
         style: Text.Outline; styleColor: "#80000000"
         opacity: 0.8
         horizontalAlignment: Text.AlignHCenter
-
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
         anchors.bottomMargin: parent.height/17
-
         text: wallClock.time.toLocaleString(Qt.locale(), "<b>ddd</b> d MMM")
     }
 
     Canvas {
+        z: 2
+        id: hourHand
         anchors.fill: parent
         smooth: true
         renderTarget: Canvas.FramebufferObject 
         onPaint: {
             var ctx = getContext("2d")
             var rot = (wallClock.time.getHours() - 3 + wallClock.time.getMinutes()/60) / 12
+            ctx.reset()
             ctx.lineWidth = 3
             ctx.strokeStyle = "white"
             ctx.shadowColor = "#80000000"
@@ -62,12 +65,15 @@ Item {
     }
 
     Canvas {
+        z: 3
+        id: minuteHand
         anchors.fill: parent
         smooth: true
         renderTarget: Canvas.FramebufferObject 
         onPaint: {
             var ctx = getContext("2d")
             var rot = (wallClock.time.getMinutes() - 15)/60
+            ctx.reset()
             ctx.lineWidth = 3
             ctx.strokeStyle = "white"
             ctx.shadowColor = "#80000000"
@@ -87,4 +93,16 @@ Item {
         target: localeManager
         onChangesObserverChanged: dateDisplay.text = Qt.binding(function() { return wallClock.time.toLocaleString(Qt.locale(), "<b>ddd</b> d MMM") })
     }
+    Connections {
+        target: wallClock
+        onTimeChanged: {
+             minuteHand.requestPaint()
+             hourHand.requestPaint()
+        }
+    }
+
+    Component.onCompleted: {
+        minuteHand.requestPaint()
+        hourHand.requestPaint()
+     }
 }
