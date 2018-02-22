@@ -107,7 +107,7 @@ Item {
 
     NonGraphicalFeedback {
         id: feedback
-        event: "information_tacticon"
+        event: "press"
     }
 
     ProfileControl {
