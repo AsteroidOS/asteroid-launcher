@@ -7,17 +7,17 @@
         <location filename="../qml/misc/BluetoothAgent.qml" line="143"/>
         <location filename="../qml/misc/BluetoothAgent.qml" line="155"/>
         <source>Authorize:</source>
-        <translation type="unfinished"></translation>
+        <translation>مجوز:</translation>
     </message>
     <message id="id-btagent-confirm">
         <location filename="../qml/misc/BluetoothAgent.qml" line="167"/>
         <source>Confirm:</source>
-        <translation type="unfinished"></translation>
+        <translation>تائید:</translation>
     </message>
     <message id="id-btagent-passkey">
         <location filename="../qml/misc/BluetoothAgent.qml" line="179"/>
         <source>Pass Key:</source>
-        <translation type="unfinished"></translation>
+        <translation>رمز عبور:</translation>
     </message>
     <message id="id-btagent-enterkey">
         <location filename="../qml/misc/BluetoothAgent.qml" line="195"/>
@@ -148,62 +148,62 @@
     <message id="id-tutorial-notifications-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="95"/>
         <source>can be accessed on the left.</source>
-        <translation type="unfinished"></translation>
+        <translation>از سمت چپ قابل دسترسی است.</translation>
     </message>
     <message id="id-tutorial-today-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="122"/>
         <source>Today&apos;s Events</source>
-        <translation type="unfinished"></translation>
+        <translation>رویداد های امروز</translation>
     </message>
     <message id="id-tutorial-today-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="124"/>
         <source>are on the right.</source>
-        <translation type="unfinished"></translation>
+        <translation>در سمت راست هستند.</translation>
     </message>
     <message id="id-tutorial-quicksettings-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="167"/>
         <source>Quick Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>تنظیمات سریع</translation>
     </message>
     <message id="id-tutorial-quicksettings-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="169"/>
         <source>are up here.</source>
-        <translation type="unfinished"></translation>
+        <translation>این بالا هستند.</translation>
     </message>
     <message id="id-tutorial-applications-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="212"/>
         <source>Apps</source>
-        <translation type="unfinished"></translation>
+        <translation>برنامه ها</translation>
     </message>
     <message id="id-tutorial-applications-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="214"/>
         <source>are down there.</source>
-        <translation type="unfinished"></translation>
+        <translation>این پایین هستند.</translation>
     </message>
     <message id="id-tutorial-startapp-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="257"/>
         <source>Start an app</source>
-        <translation type="unfinished"></translation>
+        <translation>برنامه ای را باز کن</translation>
     </message>
     <message id="id-tutorial-startapp-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="259"/>
         <source>by pressing its icon.</source>
-        <translation type="unfinished"></translation>
+        <translation>با لمس نشانگر آن.</translation>
     </message>
     <message id="id-tutorial-leaveapp-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="318"/>
         <source>Leave an app</source>
-        <translation type="unfinished"></translation>
+        <translation>برنامه را ببند</translation>
     </message>
     <message id="id-tutorial-leaveapp-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="320"/>
         <source>following a rightward gesture.</source>
-        <translation type="unfinished"></translation>
+        <translation>با کشیدن به سمت راست.</translation>
     </message>
     <message id="id-tutorial-enjoy-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="382"/>
         <source>Enjoy!</source>
-        <translation type="unfinished"></translation>
+        <translation>لذت ببر!</translation>
     </message>
 </context>
 </TS>
