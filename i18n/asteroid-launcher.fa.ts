@@ -22,41 +22,41 @@
     <message id="id-btagent-enterkey">
         <location filename="../qml/misc/BluetoothAgent.qml" line="195"/>
         <source>Enter Key</source>
-        <translation type="unfinished"></translation>
+        <translation>رمز را وارد کنید</translation>
     </message>
     <message id="id-btagent-pincode">
         <location filename="../qml/misc/BluetoothAgent.qml" line="203"/>
         <location filename="../qml/misc/BluetoothAgent.qml" line="215"/>
         <source>PIN Code:</source>
-        <translation type="unfinished"></translation>
+        <translation>پین کد:</translation>
     </message>
     <message id="id-btagent-enter-pincode">
         <location filename="../qml/misc/BluetoothAgent.qml" line="220"/>
         <source>Enter PIN Code</source>
-        <translation type="unfinished"></translation>
+        <translation>پین کد را وارد کنید</translation>
     </message>
     <message id="id-snooze">
         <location filename="../qml/notifications/NotificationActions.qml" line="115"/>
         <location filename="../qml/notifications/NotificationActions.qml" line="157"/>
         <source>Snooze</source>
-        <translation type="unfinished"></translation>
+        <translation>تعویق</translation>
     </message>
     <message id="id-dismiss-all">
         <location filename="../qml/notifications/NotificationActions.qml" line="123"/>
         <source>Dismiss all</source>
-        <translation type="unfinished"></translation>
+        <translation>فراموشی همه</translation>
     </message>
     <message id="id-dismiss">
         <location filename="../qml/notifications/NotificationActions.qml" line="138"/>
         <location filename="../qml/notifications/NotificationView.qml" line="154"/>
         <source>Dismiss</source>
-        <translation type="unfinished"></translation>
+        <translation>فراموش کن</translation>
     </message>
     <message id="id-now">
         <location filename="../qml/notifications/NotificationActions.qml" line="58"/>
         <location filename="../qml/notifications/NotificationView.qml" line="56"/>
         <source>Now</source>
-        <translation type="unfinished"></translation>
+        <translation>الان</translation>
     </message>
     <message id="id-minute-abbrev">
         <location filename="../qml/notifications/NotificationActions.qml" line="63"/>
@@ -64,7 +64,7 @@
         <location filename="../qml/notifications/NotificationActions.qml" line="179"/>
         <location filename="../qml/notifications/NotificationView.qml" line="61"/>
         <source>m</source>
-        <translation type="unfinished"></translation>
+        <translation>د</translation>
     </message>
     <message id="id-hour-abbrev">
         <location filename="../qml/notifications/NotificationActions.qml" line="68"/>
@@ -72,63 +72,63 @@
         <location filename="../qml/notifications/NotificationActions.qml" line="201"/>
         <location filename="../qml/notifications/NotificationView.qml" line="66"/>
         <source>h</source>
-        <translation type="unfinished"></translation>
+        <translation>س</translation>
     </message>
     <message id="id-day-abbrev">
         <location filename="../qml/notifications/NotificationActions.qml" line="72"/>
         <location filename="../qml/notifications/NotificationView.qml" line="70"/>
         <source>d</source>
-        <translation type="unfinished"></translation>
+        <translation>ر</translation>
     </message>
     <message id="id-no-notifications">
         <location filename="../qml/notifications/NotificationsPanel.qml" line="152"/>
         <source>No notifications</source>
-        <translation>بدون آگاهی</translation>
+        <translation>اعلانی وجود ندارد</translation>
     </message>
     <message id="id-today">
         <location filename="../qml/today/Today.qml" line="135"/>
         <source>Today</source>
-        <translation type="unfinished"></translation>
+        <translation>امروز</translation>
     </message>
     <message id="id-no-events-today">
         <location filename="../qml/today/Today.qml" line="206"/>
         <source>No events today</source>
-        <translation type="unfinished"></translation>
+        <translation>امروز رویدادی وجود ندارد</translation>
     </message>
     <message id="id-date-page">
         <location filename="../qml/firstrun/FirstRunConfig.qml" line="196"/>
         <source>Date</source>
-        <translation type="unfinished"></translation>
+        <translation>تاریخ</translation>
     </message>
     <message id="id-add-alarm">
         <location filename="../qml/firstrun/FakeAlarmclock.qml" line="77"/>
         <source>Add an alarm</source>
-        <translation type="unfinished"></translation>
+        <translation>افزودن هشدار</translation>
     </message>
     <message id="id-time">
         <location filename="../qml/firstrun/FakeAlarmclock.qml" line="117"/>
         <source>Time</source>
-        <translation type="unfinished"></translation>
+        <translation>زمان</translation>
     </message>
     <message id="id-language-page">
         <location filename="../qml/firstrun/FirstRunConfig.qml" line="171"/>
         <source>Language</source>
-        <translation type="unfinished"></translation>
+        <translation>زبان</translation>
     </message>
     <message id="id-time-page">
         <location filename="../qml/firstrun/FirstRunConfig.qml" line="185"/>
         <source>Time</source>
-        <translation type="unfinished"></translation>
+        <translation>زمان</translation>
     </message>
     <message id="id-tutorial-welcome-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="60"/>
         <source>Welcome.</source>
-        <translation type="unfinished"></translation>
+        <translation>خوش آمدید.</translation>
     </message>
     <message id="id-tutorial-welcome-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="62"/>
         <source>This is AsteroidOS.</source>
-        <translation type="unfinished"></translation>
+        <translation>این، آستروید اواس است.</translation>
     </message>
     <message id="id-tutorial-indicators-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="73"/>
@@ -138,12 +138,12 @@
     <message id="id-tutorial-indicators-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="75"/>
         <source>show you possible gestures.</source>
-        <translation type="unfinished"></translation>
+        <translation>نمایش حرکات دستی موجود.</translation>
     </message>
     <message id="id-tutorial-notifications-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="93"/>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>اعلان ها</translation>
     </message>
     <message id="id-tutorial-notifications-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="95"/>
