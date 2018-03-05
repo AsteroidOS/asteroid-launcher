@@ -123,7 +123,7 @@
     <message id="id-tutorial-welcome-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="60"/>
         <source>Welcome.</source>
-        <translation>Wilkommen.</translation>
+        <translation>Willkommen.</translation>
     </message>
     <message id="id-tutorial-welcome-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="62"/>
