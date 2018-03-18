@@ -47,7 +47,8 @@ void LauncherLocaleManager::onLocaleChanged()
     qApp->installTranslator(m_translator);
 
     QDBusInterface systemdInterface("org.freedesktop.systemd1", "/org/freedesktop/systemd1", "org.freedesktop.systemd1.Manager", QDBusConnection::sessionBus());
-    systemdInterface.call("SetEnvironment", QStringList() << ("LANG=" + QLocale().bcp47Name()));
+
+    systemdInterface.call("SetEnvironment", QStringList() << ("LANG=" + QString::fromLocal8Bit(qgetenv("LANG"))));
     systemdInterface.call("RestartUnit", "booster-qtcomponents-qt5.service", "replace");
 }
 
