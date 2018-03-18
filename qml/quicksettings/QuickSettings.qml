@@ -79,6 +79,7 @@ Item {
 
     DisplaySettings {
         id: displaySettings
+        onBrightnessChanged: updateBrightnessToggle()
     }
 
     QuickSettingsToggle {
@@ -88,7 +89,11 @@ Item {
         icon: "ios-sunny"
         onChecked: displaySettings.brightness = 100
         onUnchecked: displaySettings.brightness = 0
-        Component.onCompleted: toggled = displaySettings.brightness > 80
+        Component.onCompleted: updateBrightnessToggle()
+    }
+
+    function updateBrightnessToggle() {
+        toggled = displaySettings.brightness > 80
     }
 
     BluetoothStatus {
