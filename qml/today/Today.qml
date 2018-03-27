@@ -67,9 +67,9 @@ ListView {
     }
 
     property bool weatherAvailable: {
-        var day0Date    = new Date(timestampDay0.value*1000);
+        var day0Date = new Date(timestampDay0.value*1000);
         var daysDiff = Math.round((todayClock.time-day0Date)/(1000*60*60*24));
-        return daysDiff < 5
+        return daysDiff < 5 && daysDiff >= 0
     }
 
     property int dayNb: {

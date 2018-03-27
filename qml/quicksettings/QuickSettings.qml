@@ -93,7 +93,7 @@ Item {
     }
 
     function updateBrightnessToggle() {
-        toggled = displaySettings.brightness > 80
+        brightnessToggle.toggled = displaySettings.brightness > 80
     }
 
     BluetoothStatus {
