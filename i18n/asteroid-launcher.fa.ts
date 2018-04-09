@@ -133,7 +133,7 @@
     <message id="id-tutorial-indicators-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="73"/>
         <source>Indicators</source>
-        <translation type="unfinished"></translation>
+        <translation>نشان‌دهنده</translation>
     </message>
     <message id="id-tutorial-indicators-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="75"/>
