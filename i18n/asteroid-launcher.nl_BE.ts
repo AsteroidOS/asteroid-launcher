@@ -64,7 +64,7 @@
         <location filename="../qml/notifications/NotificationActions.qml" line="179"/>
         <location filename="../qml/notifications/NotificationView.qml" line="61"/>
         <source>m</source>
-        <translation></translation>
+        <source>m</source>
     </message>
     <message id="id-hour-abbrev">
         <location filename="../qml/notifications/NotificationActions.qml" line="68"/>
@@ -78,7 +78,7 @@
         <location filename="../qml/notifications/NotificationActions.qml" line="72"/>
         <location filename="../qml/notifications/NotificationView.qml" line="70"/>
         <source>d</source>
-        <translation></translation>
+        <source>d</source>
     </message>
     <message id="id-no-notifications">
         <location filename="../qml/notifications/NotificationsPanel.qml" line="152"/>
