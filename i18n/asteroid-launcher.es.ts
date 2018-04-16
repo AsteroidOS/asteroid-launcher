@@ -33,13 +33,13 @@
     <message id="id-btagent-enter-pincode">
         <location filename="../qml/misc/BluetoothAgent.qml" line="220"/>
         <source>Enter PIN Code</source>
-        <translation>Introducir Código PIN</translation>
+        <translation>Introducir código PIN</translation>
     </message>
     <message id="id-snooze">
         <location filename="../qml/notifications/NotificationActions.qml" line="115"/>
         <location filename="../qml/notifications/NotificationActions.qml" line="157"/>
         <source>Snooze</source>
-        <translation>Dormitar</translation>
+        <translation>Posponer</translation>
     </message>
     <message id="id-dismiss-all">
         <location filename="../qml/notifications/NotificationActions.qml" line="123"/>
@@ -138,7 +138,7 @@
     <message id="id-tutorial-indicators-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="75"/>
         <source>show you possible gestures.</source>
-        <translation>Mostrar gestos posibles.</translation>
+        <translation>Muestra los gestos posibles.</translation>
     </message>
     <message id="id-tutorial-notifications-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="93"/>
@@ -148,12 +148,12 @@
     <message id="id-tutorial-notifications-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="95"/>
         <source>can be accessed on the left.</source>
-        <translation>está disponible a la izquierda.</translation>
+        <translation>se puede acceder desde la izquierda.</translation>
     </message>
     <message id="id-tutorial-today-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="122"/>
         <source>Today&apos;s Events</source>
-        <translation>Acontecimientos de hoy</translation>
+        <translation>Eventos de hoy</translation>
     </message>
     <message id="id-tutorial-today-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="124"/>
