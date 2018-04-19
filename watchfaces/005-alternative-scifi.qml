@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2016 Florent Revest <revestflo@gmail.com>
+ * Copyright (C) 2018 - Timo Könnecke <el-t-mo@arcor.de>
+ *               2016 - Florent Revest <revestflo@gmail.com>
  * All rights reserved.
  *
  * You may use this file under the terms of BSD license as follows:
@@ -30,6 +31,8 @@
 import QtQuick 2.1
 
 Item {
+    id: rootitem
+
     function twoDigits(x) {
         if (x<10) return "0"+x;
         else      return x;
@@ -38,85 +41,158 @@ Item {
     function prepareContext(ctx) {
         ctx.reset()
         ctx.fillStyle = "white"
-        ctx.textAlign = "center"
-        ctx.textBaseline = 'middle';
-        ctx.shadowColor = "black"
-        ctx.shadowOffsetX = 0
-        ctx.shadowOffsetY = 0
-        ctx.shadowBlur = 3
+        ctx.shadowColor = Qt.rgba(0, 0, 0, 0.80)
+        ctx.shadowOffsetX = parent.height*0.00625
+        ctx.shadowOffsetY = parent.height*0.00625
+        ctx.shadowBlur = parent.height*0.0156
+    }
+
+    Canvas {
+        id: dowCanvas
+        anchors.fill: parent
+        renderTarget: Canvas.FramebufferObject
+
+        onPaint: {
+            var ctx = getContext("2d")
+            prepareContext(ctx)
+            ctx.shadowBlur = parent.height*0.00625
+            ctx.textAlign = "center"
+            ctx.textBaseline = "middle"
+
+            var bold = "0 "
+            var px = "px "
+
+            var centerX = width*0.373
+            var centerY = height/2*0.57
+            var verticalOffset = height*0.05
+
+            var text;
+            text = wallClock.time.toLocaleString(Qt.locale(), "dddd").toUpperCase()
+
+            var fontSize = height*0.051
+            var fontFamily = "Xolonium"
+            ctx.font = bold + fontSize + px + fontFamily;
+            ctx.fillText(text, centerX, centerY+verticalOffset);
+        }
     }
 
     Canvas {
         id: hourCanvas
         anchors.fill: parent
-        antialiasing: true
-        smooth: true
-        renderTarget: Canvas.FramebufferObject 
+        renderTarget: Canvas.FramebufferObject
 
         property var hour: 0
 
         onPaint: {
             var ctx = getContext("2d")
             prepareContext(ctx)
+            ctx.textAlign = "right"
+            ctx.textBaseline = "right"
 
-            ctx.font = "57 " + height/3 + "px Roboto"
-            ctx.fillText(twoDigits(hour), width*0.5, height*0.36);
+            var bold = "60 "
+            var px = "px "
+
+            var centerX = width/2*1.25
+            var centerY = height/2
+            var verticalOffset = height*0.12
+
+            var text;
+            text = twoDigits(hour)
+
+            var fontSize = height*0.36
+            var fontFamily = "Xolonium"
+            ctx.font = bold + fontSize + px + fontFamily;
+            ctx.fillText(text, centerX, centerY+verticalOffset);
         }
     }
 
     Canvas {
         id: minuteCanvas
         anchors.fill: parent
-        antialiasing: true
-        smooth: true
-        renderTarget: Canvas.FramebufferObject 
+        renderTarget: Canvas.FramebufferObject
 
         property var minute: 0
 
         onPaint: {
             var ctx = getContext("2d")
             prepareContext(ctx)
+            ctx.shadowBlur = 3
+            ctx.textAlign = "left"
+            ctx.textBaseline = "left"
 
-            ctx.font = "25 " + height/3 + "px Roboto"
-            ctx.fillText(twoDigits(minute), width*0.5, height*0.71);
+            var thin = "0 "
+            var px = "px "
+
+            var centerX = width/2*1.268
+            var centerY = height/2
+            var verticalOffset = height*0.112
+
+            var text;
+            text = wallClock.time.toLocaleString(Qt.locale(), "mm")
+
+            var fontSize = height*0.17
+            var fontFamily = "Xolonium"
+            ctx.font = thin + fontSize + px + fontFamily;
+            ctx.fillText(text, centerX, centerY+verticalOffset);
         }
     }
 
     Canvas {
         id: amPmCanvas
         anchors.fill: parent
-        antialiasing: true
-        smooth: true
-        renderTarget: Canvas.FramebufferObject 
-        visible: use12H.value
-
+        renderTarget: Canvas.FramebufferObject
         property var am: false
 
         onPaint: {
             var ctx = getContext("2d")
             prepareContext(ctx)
-            var ctx = getContext("2d")
+            ctx.shadowBlur = parent.height*0.00625 //2 px on 320x320
+            ctx.textAlign = "left"
+            ctx.textBaseline = "left"
 
-            ctx.font = "10 " + height/13 + "px Raleway"
-            ctx.fillText(wallClock.time.toLocaleString(Qt.locale(), "AP"), width*0.3, height*0.5);
+            var bold = "64 "
+            var px = "px "
+
+            var centerX = width/2*1.29
+            var centerY = height/2*0.83
+            var verticalOffset = height*0.05
+
+            var text;
+            text = wallClock.time.toLocaleString(Qt.locale("en_EN"), "ap").toUpperCase()
+
+            var fontSize = height*0.057
+            var fontFamily = "Xolonium"
+            ctx.font = bold + fontSize + px + fontFamily;
+            if(use12H.value) ctx.fillText(text, centerX, centerY+verticalOffset);
         }
     }
+
     Canvas {
         id: dateCanvas
         anchors.fill: parent
-        antialiasing: true
-        smooth: true
-        renderTarget: Canvas.FramebufferObject 
-
-        property var date: 0
+        renderTarget: Canvas.FramebufferObject
 
         onPaint: {
             var ctx = getContext("2d")
             prepareContext(ctx)
-            var ctx = getContext("2d")
+            ctx.shadowBlur = parent.height*0.00625
+            ctx.textAlign = "center"
+            ctx.textBaseline = "middle"
 
-            ctx.font = "10 " + height/13 + "px Raleway"
-            ctx.fillText(wallClock.time.toLocaleString(Qt.locale(), "dMMM"), width*0.7, height*0.5);
+            var thin = "0 "
+            var px = "px "
+
+            var centerX = width*0.626
+            var centerY = height/2*1.27
+            var verticalOffset = height*0.05
+
+            var text;
+            text = wallClock.time.toLocaleString(Qt.locale(), "dd MMMM").toUpperCase()
+
+            var fontSize = height*0.051
+            var fontFamily = "Xolonium"
+            ctx.font = thin + fontSize + px + fontFamily;
+            ctx.fillText(text, centerX, centerY+verticalOffset);
         }
     }
 
@@ -137,9 +213,8 @@ Item {
             } if(minuteCanvas.minute != minute) {
                 minuteCanvas.minute = minute
                 minuteCanvas.requestPaint()
-            } if(dateCanvas.date != date) {
-                dateCanvas.date = date
                 dateCanvas.requestPaint()
+                dowCanvas.requestPaint()
             } if(amPmCanvas.am != am) {
                 amPmCanvas.am = am
                 amPmCanvas.requestPaint()
@@ -150,7 +225,6 @@ Item {
     Component.onCompleted: {
         var hour = wallClock.time.getHours()
         var minute = wallClock.time.getMinutes()
-        var date = wallClock.time.getDate()
         var am = hour < 12
         if(use12H.value) {
             hour = hour % 12
@@ -160,8 +234,8 @@ Item {
         hourCanvas.requestPaint()
         minuteCanvas.minute = minute
         minuteCanvas.requestPaint()
-        dateCanvas.date = date
         dateCanvas.requestPaint()
+        dowCanvas.requestPaint()
         amPmCanvas.am = am
         amPmCanvas.requestPaint()
     }
@@ -172,8 +246,8 @@ Item {
             hourCanvas.requestPaint()
             minuteCanvas.requestPaint()
             dateCanvas.requestPaint()
+            dowCanvas.requestPaint()
             amPmCanvas.requestPaint()
         }
     }
 }
-
