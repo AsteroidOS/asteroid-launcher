@@ -44,13 +44,13 @@
     <message id="id-dismiss-all">
         <location filename="../qml/notifications/NotificationActions.qml" line="123"/>
         <source>Dismiss all</source>
-        <translation>Alle ablehnen</translation>
+        <translation>Alle verwerfen</translation>
     </message>
     <message id="id-dismiss">
         <location filename="../qml/notifications/NotificationActions.qml" line="138"/>
         <location filename="../qml/notifications/NotificationView.qml" line="154"/>
         <source>Dismiss</source>
-        <translation>Ablehnen</translation>
+        <translation>Verwerfen</translation>
     </message>
     <message id="id-now">
         <location filename="../qml/notifications/NotificationActions.qml" line="58"/>
