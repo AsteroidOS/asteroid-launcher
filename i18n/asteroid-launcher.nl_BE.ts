@@ -183,7 +183,7 @@
     <message id="id-tutorial-startapp-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="257"/>
         <source>Start an app</source>
-        <translation>Start een toepassing</translation>
+        <translation>Start nen app</translation>
     </message>
     <message id="id-tutorial-startapp-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="259"/>
@@ -193,7 +193,7 @@
     <message id="id-tutorial-leaveapp-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="318"/>
         <source>Leave an app</source>
-        <translation>Verlaat een toepassing</translation>
+        <translation>Verlaat nen app</translation>
     </message>
     <message id="id-tutorial-leaveapp-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="320"/>
