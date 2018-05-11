@@ -50,7 +50,7 @@ Item {
     Canvas {
         id: dowCanvas
         anchors.fill: parent
-        renderTarget: Canvas.FramebufferObject
+        renderStrategy: Canvas.Threaded
 
         onPaint: {
             var ctx = getContext("2d")
@@ -79,7 +79,7 @@ Item {
     Canvas {
         id: hourCanvas
         anchors.fill: parent
-        renderTarget: Canvas.FramebufferObject
+        renderStrategy: Canvas.Threaded
 
         property var hour: 0
 
@@ -109,7 +109,7 @@ Item {
     Canvas {
         id: minuteCanvas
         anchors.fill: parent
-        renderTarget: Canvas.FramebufferObject
+        renderStrategy: Canvas.Threaded
 
         property var minute: 0
 
@@ -140,7 +140,7 @@ Item {
     Canvas {
         id: amPmCanvas
         anchors.fill: parent
-        renderTarget: Canvas.FramebufferObject
+        renderStrategy: Canvas.Threaded
         property var am: false
 
         onPaint: {
@@ -170,7 +170,7 @@ Item {
     Canvas {
         id: dateCanvas
         anchors.fill: parent
-        renderTarget: Canvas.FramebufferObject
+        renderStrategy: Canvas.Threaded
 
         onPaint: {
             var ctx = getContext("2d")

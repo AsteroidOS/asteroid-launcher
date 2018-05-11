@@ -33,7 +33,7 @@ Item {
         anchors.fill: parent
         antialiasing: true
         smooth: true
-        renderTarget: Canvas.FramebufferObject
+        renderStrategy: Canvas.Threaded
         onPaint: {
             var ctx = getContext("2d")
             ctx.reset()
@@ -51,6 +51,7 @@ Item {
         property var hour: 0
         anchors.fill: parent
         smooth: true
+        renderStrategy: Canvas.Threaded
         onPaint: {
             var ctx = getContext("2d")
             ctx.reset()
@@ -86,6 +87,7 @@ Item {
         property var minute: 0
         anchors.fill: parent
         smooth: true
+        renderStrategy: Canvas.Threaded
         onPaint: {
             var ctx = getContext("2d")
             ctx.reset()
@@ -121,6 +123,7 @@ Item {
         property var second: 0
         anchors.fill: parent
         smooth: true
+        renderStrategy: Canvas.Threaded
         onPaint: {
             var ctx = getContext("2d")
             ctx.reset()
@@ -164,7 +167,7 @@ Item {
         anchors.fill: parent
         antialiasing: true
         smooth: true
-        renderTarget: Canvas.FramebufferObject
+        renderStrategy: Canvas.Threaded
         property var voffset: -parent.height*0.022
         property var hoffset: -parent.height*0.007
         onPaint: {
@@ -195,6 +198,7 @@ Item {
         id: hourStrokes
         anchors.fill: parent
         smooth: true
+        renderStrategy: Canvas.Threaded
         onPaint: {
             var ctx = getContext("2d")
 
@@ -216,6 +220,7 @@ Item {
         id: minuteStrokes
         anchors.fill: parent
         smooth: true
+        renderStrategy: Canvas.Threaded
         onPaint: {
             var ctx = getContext("2d")
             ctx.lineWidth = parent.width*0.007

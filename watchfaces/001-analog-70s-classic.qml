@@ -99,6 +99,7 @@ Item {
         property var rotH: (hour-3 + wallClock.time.getMinutes()/60) / 12
         anchors.fill: parent
         smooth: true
+        renderStrategy: Canvas.Threaded
         onPaint: {
             var ctx = getContext("2d")
             ctx.reset()
@@ -139,6 +140,7 @@ Item {
         property var rotM: (minute - 15)/60
         anchors.fill: parent
         smooth: true
+        renderStrategy: Canvas.Threaded
         onPaint: {
             var ctx = getContext("2d")
             ctx.reset()
@@ -182,6 +184,7 @@ Item {
         property var second: 0
         anchors.fill: parent
         smooth: true
+        renderStrategy: Canvas.Threaded
         onPaint: {
             var ctx = getContext("2d")
             ctx.reset()
@@ -214,6 +217,7 @@ Item {
         id: nailDot
         anchors.fill: parent
         smooth: true
+        renderStrategy: Canvas.Threaded
         onPaint: {
             var ctx = getContext("2d")
             ctx.reset()
@@ -234,6 +238,7 @@ Item {
         id: hourStrokes
         anchors.fill: parent
         smooth: true
+        renderStrategy: Canvas.Threaded
         onPaint: {
             var ctx = getContext("2d")
 
@@ -262,6 +267,7 @@ Item {
         id: min5Strokes
         anchors.fill: parent
         smooth: true
+        renderStrategy: Canvas.Threaded
         onPaint: {
             var ctx = getContext("2d")
 
@@ -290,6 +296,7 @@ Item {
         id: minuteStrokes
         anchors.fill: parent
         smooth: true
+        renderStrategy: Canvas.Threaded
         onPaint: {
             var ctx = getContext("2d")
             ctx.lineWidth = parent.width*0.008

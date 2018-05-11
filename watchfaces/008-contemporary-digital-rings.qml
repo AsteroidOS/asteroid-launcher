@@ -57,7 +57,7 @@ Item {
         property var second: 0
         anchors.fill: parent
         smooth: true
-        renderTarget: Canvas.FramebufferObject 
+        renderStrategy: Canvas.Threaded
         onPaint: {
             var ctx = getContext("2d")
             var rot = (wallClock.time.getSeconds() - 15)*6
@@ -76,7 +76,7 @@ Item {
         property var minute: 0
         anchors.fill: parent
         smooth: true
-        renderTarget: Canvas.FramebufferObject 
+        renderStrategy: Canvas.Threaded
         onPaint: {
             var ctx = getContext("2d")
             var rot = (minute -15 )*6
@@ -94,7 +94,7 @@ Item {
         property var hour: 0
         anchors.fill: parent
         smooth: true
-        renderTarget: Canvas.FramebufferObject 
+        renderStrategy: Canvas.Threaded
         onPaint: {
             var ctx = getContext("2d")
             var rot = 0.5 * (60 * (hour-3) + wallClock.time.getMinutes())
