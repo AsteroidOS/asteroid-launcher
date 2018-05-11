@@ -47,4 +47,7 @@ target.path = /usr/bin
 watchfaces.path = /usr/share/asteroid-launcher/watchfaces
 watchfaces.files =  watchfaces/*
 
-INSTALLS = target watchfaces
+watchfaces-img.path = /usr/share/asteroid-launcher/watchfaces-img
+watchfaces-img.files =  watchfaces-img/*
+
+INSTALLS = target watchfaces watchfaces-img
