@@ -39,24 +39,24 @@
         <location filename="../qml/notifications/NotificationActions.qml" line="115"/>
         <location filename="../qml/notifications/NotificationActions.qml" line="157"/>
         <source>Snooze</source>
-        <translation>подремать</translation>
+        <translation>Спящий режим</translation>
     </message>
     <message id="id-dismiss-all">
         <location filename="../qml/notifications/NotificationActions.qml" line="123"/>
         <source>Dismiss all</source>
-        <translation>отклонить все</translation>
+        <translation>Отклонять все</translation>
     </message>
     <message id="id-dismiss">
         <location filename="../qml/notifications/NotificationActions.qml" line="138"/>
         <location filename="../qml/notifications/NotificationView.qml" line="154"/>
         <source>Dismiss</source>
-        <translation>отклонить</translation>
+        <translation>Отклонить</translation>
     </message>
     <message id="id-now">
         <location filename="../qml/notifications/NotificationActions.qml" line="58"/>
         <location filename="../qml/notifications/NotificationView.qml" line="56"/>
         <source>Now</source>
-        <translation>сейчас</translation>
+        <translation>Сейчас</translation>
     </message>
     <message id="id-minute-abbrev">
         <location filename="../qml/notifications/NotificationActions.qml" line="63"/>
@@ -64,7 +64,7 @@
         <location filename="../qml/notifications/NotificationActions.qml" line="179"/>
         <location filename="../qml/notifications/NotificationView.qml" line="61"/>
         <source>m</source>
-        <translation>m</translation>
+        <translation>м</translation>
     </message>
     <message id="id-hour-abbrev">
         <location filename="../qml/notifications/NotificationActions.qml" line="68"/>
@@ -72,18 +72,18 @@
         <location filename="../qml/notifications/NotificationActions.qml" line="201"/>
         <location filename="../qml/notifications/NotificationView.qml" line="66"/>
         <source>h</source>
-        <translation>h</translation>
+        <translation>ч</translation>
     </message>
     <message id="id-day-abbrev">
         <location filename="../qml/notifications/NotificationActions.qml" line="72"/>
         <location filename="../qml/notifications/NotificationView.qml" line="70"/>
         <source>d</source>
-        <translation>d</translation>
+        <translation>д</translation>
     </message>
     <message id="id-no-notifications">
         <location filename="../qml/notifications/NotificationsPanel.qml" line="152"/>
         <source>No notifications</source>
-        <translation>Нет сообщений</translation>
+        <translation>Нет уведомлений</translation>
     </message>
     <message id="id-today">
         <location filename="../qml/today/Today.qml" line="135"/>
@@ -93,7 +93,7 @@
     <message id="id-no-events-today">
         <location filename="../qml/today/Today.qml" line="206"/>
         <source>No events today</source>
-        <translation>нет никаких событий на сегодня</translation>
+        <translation>На сегодня без событий</translation>
     </message>
     <message id="id-date-page">
         <location filename="../qml/firstrun/FirstRunConfig.qml" line="196"/>
@@ -103,12 +103,12 @@
     <message id="id-add-alarm">
         <location filename="../qml/firstrun/FakeAlarmclock.qml" line="77"/>
         <source>Add an alarm</source>
-        <translation>добавить будильник</translation>
+        <translation>Добавить будильник</translation>
     </message>
     <message id="id-time">
         <location filename="../qml/firstrun/FakeAlarmclock.qml" line="117"/>
         <source>Time</source>
-        <translation>время</translation>
+        <translation>Время</translation>
     </message>
     <message id="id-language-page">
         <location filename="../qml/firstrun/FirstRunConfig.qml" line="171"/>
@@ -123,7 +123,7 @@
     <message id="id-tutorial-welcome-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="60"/>
         <source>Welcome.</source>
-        <translation>добро пожаловать.</translation>
+        <translation>Добро пожаловать.</translation>
     </message>
     <message id="id-tutorial-welcome-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="62"/>
@@ -143,27 +143,27 @@
     <message id="id-tutorial-notifications-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="93"/>
         <source>Notifications</source>
-        <translation>Сообщения</translation>
+        <translation>Уведомления</translation>
     </message>
     <message id="id-tutorial-notifications-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="95"/>
         <source>can be accessed on the left.</source>
-        <translation>можно получить доступ слева.</translation>
+        <translation>Доступно слева.</translation>
     </message>
     <message id="id-tutorial-today-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="122"/>
         <source>Today&apos;s Events</source>
-        <translation>сегодняшние события</translation>
+        <translation>События на сегодня</translation>
     </message>
     <message id="id-tutorial-today-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="124"/>
         <source>are on the right.</source>
-        <translation>находятся справа.</translation>
+        <translation>Находятся справа.</translation>
     </message>
     <message id="id-tutorial-quicksettings-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="167"/>
         <source>Quick Settings</source>
-        <translation>быстрые настройки</translation>
+        <translation>Быстрые настройки</translation>
     </message>
     <message id="id-tutorial-quicksettings-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="169"/>
@@ -183,17 +183,17 @@
     <message id="id-tutorial-startapp-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="257"/>
         <source>Start an app</source>
-        <translation>запуск приложения</translation>
+        <translation>Запуск приложения</translation>
     </message>
     <message id="id-tutorial-startapp-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="259"/>
         <source>by pressing its icon.</source>
-        <translation>нажав на аппликацию.</translation>
+        <translation>нажав на иконку.</translation>
     </message>
     <message id="id-tutorial-leaveapp-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="318"/>
         <source>Leave an app</source>
-        <translation>отпустите аппликацию</translation>
+        <translation>Покинуть приложение</translation>
     </message>
     <message id="id-tutorial-leaveapp-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="320"/>
@@ -203,7 +203,7 @@
     <message id="id-tutorial-enjoy-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="382"/>
         <source>Enjoy!</source>
-        <translation>увлекайтесь!</translation>
+        <translation>Увлекайтесь!</translation>
     </message>
 </context>
 </TS>
