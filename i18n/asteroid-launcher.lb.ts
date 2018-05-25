@@ -44,7 +44,7 @@
     <message id="id-dismiss-all">
         <location filename="../qml/notifications/NotificationActions.qml" line="123"/>
         <source>Dismiss all</source>
-        <translation></translation>
+        <translation>All verwerfen</translation>
     </message>
     <message id="id-dismiss">
         <location filename="../qml/notifications/NotificationActions.qml" line="138"/>
@@ -72,7 +72,7 @@
         <location filename="../qml/notifications/NotificationActions.qml" line="201"/>
         <location filename="../qml/notifications/NotificationView.qml" line="66"/>
         <source>h</source>
-        <translation></translation>
+        <translation>s</translation>
     </message>
     <message id="id-day-abbrev">
         <location filename="../qml/notifications/NotificationActions.qml" line="72"/>
