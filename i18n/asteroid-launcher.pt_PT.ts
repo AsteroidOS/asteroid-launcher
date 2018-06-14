@@ -39,7 +39,7 @@
         <location filename="../qml/notifications/NotificationActions.qml" line="115"/>
         <location filename="../qml/notifications/NotificationActions.qml" line="157"/>
         <source>Snooze</source>
-        <translation>Não disturbar</translation>
+        <translation>Suspender alarme</translation>
     </message>
     <message id="id-dismiss-all">
         <location filename="../qml/notifications/NotificationActions.qml" line="123"/>
@@ -153,7 +153,7 @@
     <message id="id-tutorial-today-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="122"/>
         <source>Today&apos;s Events</source>
-        <translation type="unfinished">Eventos de Hoje</translation>
+        <translation>Eventos de Hoje</translation>
     </message>
     <message id="id-tutorial-today-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="124"/>
@@ -163,7 +163,7 @@
     <message id="id-tutorial-quicksettings-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="167"/>
         <source>Quick Settings</source>
-        <translation type="unfinished">Definições rápidas</translation>
+        <translation>Definições rápidas</translation>
     </message>
     <message id="id-tutorial-quicksettings-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="169"/>
@@ -188,7 +188,7 @@
     <message id="id-tutorial-startapp-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="259"/>
         <source>by pressing its icon.</source>
-        <translation type="unfinished">pressionando o seu icone.</translation>
+        <translation>pressionando o seu icone.</translation>
     </message>
     <message id="id-tutorial-leaveapp-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="318"/>
