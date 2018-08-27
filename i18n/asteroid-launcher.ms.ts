@@ -88,7 +88,7 @@
     <message id="id-today">
         <location filename="../qml/today/Today.qml" line="135"/>
         <source>Today</source>
-        <translation>Hari Ini</translation>
+        <translation>Hari ini</translation>
     </message>
     <message id="id-no-events-today">
         <location filename="../qml/today/Today.qml" line="206"/>
