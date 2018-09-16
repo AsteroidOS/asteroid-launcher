@@ -11,8 +11,6 @@
         <file alias="Today.qml">qml/today/Today.qml</file>
         <file alias="compositor.qml">qml/compositor/compositor.qml</file>
         <file alias="PanelsGrid.qml">qml/misc/PanelsGrid.qml</file>
-        <file alias="USBModeSelector.qml">qml/misc/USBModeSelector.qml</file>
-        <file alias="ShutdownScreen.qml">qml/misc/ShutdownScreen.qml</file>
         <file alias="NotificationActions.qml">qml/notifications/NotificationActions.qml</file>
         <file alias="NotificationButton.qml">qml/notifications/NotificationButton.qml</file>
         <file alias="NotificationIndicator.qml">qml/notifications/NotificationIndicator.qml</file>
