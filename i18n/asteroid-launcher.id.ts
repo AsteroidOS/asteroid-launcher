@@ -7,56 +7,56 @@
         <location filename="../qml/misc/BluetoothAgent.qml" line="143"/>
         <location filename="../qml/misc/BluetoothAgent.qml" line="155"/>
         <source>Authorize:</source>
-        <translation type="unfinished"></translation>
+        <translation>Mengizinkan:</translation>
     </message>
     <message id="id-btagent-confirm">
         <location filename="../qml/misc/BluetoothAgent.qml" line="167"/>
         <source>Confirm:</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfirmasi:</translation>
     </message>
     <message id="id-btagent-passkey">
         <location filename="../qml/misc/BluetoothAgent.qml" line="179"/>
         <source>Pass Key:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kata Kunci:</translation>
     </message>
     <message id="id-btagent-enterkey">
         <location filename="../qml/misc/BluetoothAgent.qml" line="195"/>
         <source>Enter Key</source>
-        <translation type="unfinished"></translation>
+        <translation>Masukkan Kunci</translation>
     </message>
     <message id="id-btagent-pincode">
         <location filename="../qml/misc/BluetoothAgent.qml" line="203"/>
         <location filename="../qml/misc/BluetoothAgent.qml" line="215"/>
         <source>PIN Code:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kode PIN:</translation>
     </message>
     <message id="id-btagent-enter-pincode">
         <location filename="../qml/misc/BluetoothAgent.qml" line="220"/>
         <source>Enter PIN Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Masukkan Kode PIN</translation>
     </message>
     <message id="id-snooze">
         <location filename="../qml/notifications/NotificationActions.qml" line="115"/>
         <location filename="../qml/notifications/NotificationActions.qml" line="157"/>
         <source>Snooze</source>
-        <translation type="unfinished"></translation>
+        <translation>Tunda</translation>
     </message>
     <message id="id-dismiss-all">
         <location filename="../qml/notifications/NotificationActions.qml" line="123"/>
         <source>Dismiss all</source>
-        <translation type="unfinished"></translation>
+        <translation>Hentikan semua</translation>
     </message>
     <message id="id-dismiss">
         <location filename="../qml/notifications/NotificationActions.qml" line="138"/>
         <location filename="../qml/notifications/NotificationView.qml" line="154"/>
         <source>Dismiss</source>
-        <translation type="unfinished"></translation>
+        <translation>Hentikan</translation>
     </message>
     <message id="id-now">
         <location filename="../qml/notifications/NotificationActions.qml" line="58"/>
         <location filename="../qml/notifications/NotificationView.qml" line="56"/>
         <source>Now</source>
-        <translation type="unfinished"></translation>
+        <translation>Sekarang</translation>
     </message>
     <message id="id-minute-abbrev">
         <location filename="../qml/notifications/NotificationActions.qml" line="63"/>
@@ -64,7 +64,7 @@
         <location filename="../qml/notifications/NotificationActions.qml" line="179"/>
         <location filename="../qml/notifications/NotificationView.qml" line="61"/>
         <source>m</source>
-        <translation type="unfinished"></translation>
+        <translation>m</translation>
     </message>
     <message id="id-hour-abbrev">
         <location filename="../qml/notifications/NotificationActions.qml" line="68"/>
@@ -72,139 +72,139 @@
         <location filename="../qml/notifications/NotificationActions.qml" line="201"/>
         <location filename="../qml/notifications/NotificationView.qml" line="66"/>
         <source>h</source>
-        <translation type="unfinished"></translation>
+        <translation>j</translation>
     </message>
     <message id="id-day-abbrev">
         <location filename="../qml/notifications/NotificationActions.qml" line="72"/>
         <location filename="../qml/notifications/NotificationView.qml" line="70"/>
         <source>d</source>
-        <translation type="unfinished"></translation>
+        <translation>h</translation>
     </message>
     <message id="id-no-notifications">
         <location filename="../qml/notifications/NotificationsPanel.qml" line="152"/>
         <source>No notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Tak ada notifikasi</translation>
     </message>
     <message id="id-today">
         <location filename="../qml/today/Today.qml" line="135"/>
         <source>Today</source>
-        <translation type="unfinished"></translation>
+        <translation>Hari ini</translation>
     </message>
     <message id="id-no-events-today">
         <location filename="../qml/today/Today.qml" line="206"/>
         <source>No events today</source>
-        <translation type="unfinished"></translation>
+        <translation>Tak ada acara hari ini</translation>
     </message>
     <message id="id-date-page">
         <location filename="../qml/firstrun/FirstRunConfig.qml" line="196"/>
         <source>Date</source>
-        <translation type="unfinished"></translation>
+        <translation>Tanggal</translation>
     </message>
     <message id="id-add-alarm">
         <location filename="../qml/firstrun/FakeAlarmclock.qml" line="77"/>
         <source>Add an alarm</source>
-        <translation type="unfinished"></translation>
+        <translation>Tambahkan alarm</translation>
     </message>
     <message id="id-time">
         <location filename="../qml/firstrun/FakeAlarmclock.qml" line="117"/>
         <source>Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Waktu</translation>
     </message>
     <message id="id-language-page">
         <location filename="../qml/firstrun/FirstRunConfig.qml" line="171"/>
         <source>Language</source>
-        <translation type="unfinished"></translation>
+        <translation>Bahasa</translation>
     </message>
     <message id="id-time-page">
         <location filename="../qml/firstrun/FirstRunConfig.qml" line="185"/>
         <source>Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Waktu</translation>
     </message>
     <message id="id-tutorial-welcome-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="60"/>
         <source>Welcome.</source>
-        <translation type="unfinished"></translation>
+        <translation>Selamat Datang.</translation>
     </message>
     <message id="id-tutorial-welcome-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="62"/>
         <source>This is AsteroidOS.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ini adalah AsteroidOS.</translation>
     </message>
     <message id="id-tutorial-indicators-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="73"/>
         <source>Indicators</source>
-        <translation type="unfinished"></translation>
+        <translation>Indikator</translation>
     </message>
     <message id="id-tutorial-indicators-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="75"/>
         <source>show you possible gestures.</source>
-        <translation type="unfinished"></translation>
+        <translation>Menunjukkan Anda gerakan yang mungkin.</translation>
     </message>
     <message id="id-tutorial-notifications-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="93"/>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Notifikasi</translation>
     </message>
     <message id="id-tutorial-notifications-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="95"/>
         <source>can be accessed on the left.</source>
-        <translation type="unfinished"></translation>
+        <translation>dapat diakses disebelah kiri.</translation>
     </message>
     <message id="id-tutorial-today-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="122"/>
         <source>Today&apos;s Events</source>
-        <translation type="unfinished"></translation>
+        <translation>Acara Hari Ini</translation>
     </message>
     <message id="id-tutorial-today-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="124"/>
         <source>are on the right.</source>
-        <translation type="unfinished"></translation>
+        <translation>ada di sebelah kanan.</translation>
     </message>
     <message id="id-tutorial-quicksettings-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="167"/>
         <source>Quick Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Pengaturan Cepat</translation>
     </message>
     <message id="id-tutorial-quicksettings-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="169"/>
         <source>are up here.</source>
-        <translation type="unfinished"></translation>
+        <translation>di atas sini.</translation>
     </message>
     <message id="id-tutorial-applications-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="212"/>
         <source>Apps</source>
-        <translation type="unfinished"></translation>
+        <translation>Apk</translation>
     </message>
     <message id="id-tutorial-applications-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="214"/>
         <source>are down there.</source>
-        <translation type="unfinished"></translation>
+        <translation>dibawah sini.</translation>
     </message>
     <message id="id-tutorial-startapp-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="257"/>
         <source>Start an app</source>
-        <translation type="unfinished"></translation>
+        <translation>Mulai aplikasi</translation>
     </message>
     <message id="id-tutorial-startapp-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="259"/>
         <source>by pressing its icon.</source>
-        <translation type="unfinished"></translation>
+        <translation>dengan menekan ikonnya.</translation>
     </message>
     <message id="id-tutorial-leaveapp-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="318"/>
         <source>Leave an app</source>
-        <translation type="unfinished"></translation>
+        <translation>Tinggalkan aplikasi</translation>
     </message>
     <message id="id-tutorial-leaveapp-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="320"/>
         <source>following a rightward gesture.</source>
         <oldsource>following a rightward gesture</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>mengikuti gerakan ke kanan.</translation>
     </message>
     <message id="id-tutorial-enjoy-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="382"/>
         <source>Enjoy!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nikmati!</translation>
     </message>
 </context>
 </TS>
