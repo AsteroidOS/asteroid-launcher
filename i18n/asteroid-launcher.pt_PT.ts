@@ -138,7 +138,7 @@
     <message id="id-tutorial-indicators-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="75"/>
         <source>show you possible gestures.</source>
-        <translation>Mostrar gestos possiveis.</translation>
+        <translation>Mostrar gestos possíveis.</translation>
     </message>
     <message id="id-tutorial-notifications-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="93"/>
@@ -148,12 +148,12 @@
     <message id="id-tutorial-notifications-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="95"/>
         <source>can be accessed on the left.</source>
-        <translation>pode ser acessado na esquerda.</translation>
+        <translation>pode ser acedido à esquerda.</translation>
     </message>
     <message id="id-tutorial-today-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="122"/>
         <source>Today&apos;s Events</source>
-        <translation>Eventos de Hoje</translation>
+        <translation>Eventos de hoje</translation>
     </message>
     <message id="id-tutorial-today-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="124"/>
@@ -188,7 +188,7 @@
     <message id="id-tutorial-startapp-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="259"/>
         <source>by pressing its icon.</source>
-        <translation>pressionando o seu icone.</translation>
+        <translation>pressionando o seu ícone.</translation>
     </message>
     <message id="id-tutorial-leaveapp-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="318"/>
