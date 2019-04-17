@@ -39,7 +39,7 @@
         <location filename="../qml/notifications/NotificationActions.qml" line="115"/>
         <location filename="../qml/notifications/NotificationActions.qml" line="157"/>
         <source>Snooze</source>
-        <translation>Suspender alarme</translation>
+        <translation>Adiar alarme</translation>
     </message>
     <message id="id-dismiss-all">
         <location filename="../qml/notifications/NotificationActions.qml" line="123"/>
@@ -128,7 +128,7 @@
     <message id="id-tutorial-welcome-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="62"/>
         <source>This is AsteroidOS.</source>
-        <translation>Este é o AsteroidOS.</translation>
+        <translation>Isto é o AsteroidOS.</translation>
     </message>
     <message id="id-tutorial-indicators-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="73"/>
@@ -138,7 +138,7 @@
     <message id="id-tutorial-indicators-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="75"/>
         <source>show you possible gestures.</source>
-        <translation>Mostrar gestos possíveis.</translation>
+        <translation>mostram os gestos possíveis.</translation>
     </message>
     <message id="id-tutorial-notifications-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="93"/>
@@ -148,7 +148,7 @@
     <message id="id-tutorial-notifications-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="95"/>
         <source>can be accessed on the left.</source>
-        <translation>pode ser acedido à esquerda.</translation>
+        <translation>podem ser acedidos à esquerda.</translation>
     </message>
     <message id="id-tutorial-today-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="122"/>
@@ -199,7 +199,7 @@
         <location filename="../qml/firstrun/Tutorial.qml" line="320"/>
         <source>following a rightward gesture.</source>
         <oldsource>following a rightward gesture</oldsource>
-        <translation>seguindo um gesto à direita.</translation>
+        <translation>deslizando para a direita.</translation>
     </message>
     <message id="id-tutorial-enjoy-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="382"/>
