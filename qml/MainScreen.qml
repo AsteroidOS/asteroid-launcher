@@ -38,7 +38,8 @@ import "desktop.js" as Desktop
 
 Item {
     id: desktop
-    anchors.fill: parent;
+    width: Dims.w(100)
+    height: Dims.h(100)
 
     AppLauncherBackground { id: alb }
 
