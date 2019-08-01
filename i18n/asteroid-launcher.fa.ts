@@ -7,7 +7,7 @@
         <location filename="../qml/misc/BluetoothAgent.qml" line="143"/>
         <location filename="../qml/misc/BluetoothAgent.qml" line="155"/>
         <source>Authorize:</source>
-        <translation>مجوز:</translation>
+        <translation>تصدیق:</translation>
     </message>
     <message id="id-btagent-confirm">
         <location filename="../qml/misc/BluetoothAgent.qml" line="167"/>
@@ -17,23 +17,23 @@
     <message id="id-btagent-passkey">
         <location filename="../qml/misc/BluetoothAgent.qml" line="179"/>
         <source>Pass Key:</source>
-        <translation>رمز عبور:</translation>
+        <translation>کلید عبور:</translation>
     </message>
     <message id="id-btagent-enterkey">
         <location filename="../qml/misc/BluetoothAgent.qml" line="195"/>
         <source>Enter Key</source>
-        <translation>رمز را وارد کنید</translation>
+        <translation>ورود کلید</translation>
     </message>
     <message id="id-btagent-pincode">
         <location filename="../qml/misc/BluetoothAgent.qml" line="203"/>
         <location filename="../qml/misc/BluetoothAgent.qml" line="215"/>
         <source>PIN Code:</source>
-        <translation>پین کد:</translation>
+        <translation>رمز پین:</translation>
     </message>
     <message id="id-btagent-enter-pincode">
         <location filename="../qml/misc/BluetoothAgent.qml" line="220"/>
         <source>Enter PIN Code</source>
-        <translation>پین کد را وارد کنید</translation>
+        <translation>ورود رمز پین</translation>
     </message>
     <message id="id-snooze">
         <location filename="../qml/notifications/NotificationActions.qml" line="115"/>
@@ -44,19 +44,19 @@
     <message id="id-dismiss-all">
         <location filename="../qml/notifications/NotificationActions.qml" line="123"/>
         <source>Dismiss all</source>
-        <translation>فراموشی همه</translation>
+        <translation>دور ریختن همه</translation>
     </message>
     <message id="id-dismiss">
         <location filename="../qml/notifications/NotificationActions.qml" line="138"/>
         <location filename="../qml/notifications/NotificationView.qml" line="154"/>
         <source>Dismiss</source>
-        <translation>فراموش کن</translation>
+        <translation>دور ریختن</translation>
     </message>
     <message id="id-now">
         <location filename="../qml/notifications/NotificationActions.qml" line="58"/>
         <location filename="../qml/notifications/NotificationView.qml" line="56"/>
         <source>Now</source>
-        <translation>الان</translation>
+        <translation>اکنون</translation>
     </message>
     <message id="id-minute-abbrev">
         <location filename="../qml/notifications/NotificationActions.qml" line="63"/>
@@ -83,7 +83,7 @@
     <message id="id-no-notifications">
         <location filename="../qml/notifications/NotificationsPanel.qml" line="152"/>
         <source>No notifications</source>
-        <translation>اعلانی وجود ندارد</translation>
+        <translation>بدون آگاهی</translation>
     </message>
     <message id="id-today">
         <location filename="../qml/today/Today.qml" line="135"/>
@@ -128,32 +128,32 @@
     <message id="id-tutorial-welcome-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="62"/>
         <source>This is AsteroidOS.</source>
-        <translation>این، آستروید اواس است.</translation>
+        <translation>این، سیستم‌عامل استروید است.</translation>
     </message>
     <message id="id-tutorial-indicators-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="73"/>
         <source>Indicators</source>
-        <translation>نشان‌دهنده</translation>
+        <translation>نشانگرها</translation>
     </message>
     <message id="id-tutorial-indicators-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="75"/>
         <source>show you possible gestures.</source>
-        <translation>نمایش حرکات دستی موجود.</translation>
+        <translation>نمایش حرکات موجود به شما.</translation>
     </message>
     <message id="id-tutorial-notifications-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="93"/>
         <source>Notifications</source>
-        <translation>اعلان ها</translation>
+        <translation>آگاهی‌ها</translation>
     </message>
     <message id="id-tutorial-notifications-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="95"/>
         <source>can be accessed on the left.</source>
-        <translation>از سمت چپ قابل دسترسی است.</translation>
+        <translation>از سمت چپ قابل دسترسی هستند.</translation>
     </message>
     <message id="id-tutorial-today-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="122"/>
         <source>Today&apos;s Events</source>
-        <translation>رویداد های امروز</translation>
+        <translation>رویدادهای امروز</translation>
     </message>
     <message id="id-tutorial-today-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="124"/>
@@ -173,7 +173,7 @@
     <message id="id-tutorial-applications-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="212"/>
         <source>Apps</source>
-        <translation>برنامه ها</translation>
+        <translation>کاره‌ها</translation>
     </message>
     <message id="id-tutorial-applications-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="214"/>
@@ -183,27 +183,27 @@
     <message id="id-tutorial-startapp-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="257"/>
         <source>Start an app</source>
-        <translation>برنامه ای را باز کن</translation>
+        <translation>گشودن یک کاره با لمس</translation>
     </message>
     <message id="id-tutorial-startapp-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="259"/>
         <source>by pressing its icon.</source>
-        <translation>با لمس نشانگر آن.</translation>
+        <translation>نقشک آن انجام می‌شود.</translation>
     </message>
     <message id="id-tutorial-leaveapp-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="318"/>
         <source>Leave an app</source>
-        <translation>برنامه را ببند</translation>
+        <translation>با کشیدن به سمت راست</translation>
     </message>
     <message id="id-tutorial-leaveapp-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="320"/>
         <source>following a rightward gesture.</source>
-        <translation>با کشیدن به سمت راست.</translation>
+        <translation>از کاره خارج می‌شوید.</translation>
     </message>
     <message id="id-tutorial-enjoy-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="382"/>
         <source>Enjoy!</source>
-        <translation>لذت ببر!</translation>
+        <translation>لذّت ببرید!</translation>
     </message>
 </context>
 </TS>
