@@ -7,12 +7,12 @@
         <location filename="../qml/misc/BluetoothAgent.qml" line="143"/>
         <location filename="../qml/misc/BluetoothAgent.qml" line="155"/>
         <source>Authorize:</source>
-        <translation>Autorize:</translation>
+        <translation>Autorizar:</translation>
     </message>
     <message id="id-btagent-confirm">
         <location filename="../qml/misc/BluetoothAgent.qml" line="167"/>
         <source>Confirm:</source>
-        <translation>Confirme:</translation>
+        <translation>Confirmar:</translation>
     </message>
     <message id="id-btagent-passkey">
         <location filename="../qml/misc/BluetoothAgent.qml" line="179"/>
@@ -33,7 +33,7 @@
     <message id="id-btagent-enter-pincode">
         <location filename="../qml/misc/BluetoothAgent.qml" line="220"/>
         <source>Enter PIN Code</source>
-        <translation>Digite o código PIN</translation>
+        <translation>Digite o CÓDIGO</translation>
     </message>
     <message id="id-snooze">
         <location filename="../qml/notifications/NotificationActions.qml" line="115"/>
@@ -50,7 +50,7 @@
         <location filename="../qml/notifications/NotificationActions.qml" line="138"/>
         <location filename="../qml/notifications/NotificationView.qml" line="154"/>
         <source>Dismiss</source>
-        <translation>Dispensar</translation>
+        <translation>Ignorar</translation>
     </message>
     <message id="id-now">
         <location filename="../qml/notifications/NotificationActions.qml" line="58"/>
@@ -138,7 +138,7 @@
     <message id="id-tutorial-indicators-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="75"/>
         <source>show you possible gestures.</source>
-        <translation>mostram os gestos possíveis.</translation>
+        <translation>mostra-lhe possíveis gestos.</translation>
     </message>
     <message id="id-tutorial-notifications-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="93"/>
@@ -163,7 +163,7 @@
     <message id="id-tutorial-quicksettings-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="167"/>
         <source>Quick Settings</source>
-        <translation>Definições rápidas</translation>
+        <translation>Definições Rápidas</translation>
     </message>
     <message id="id-tutorial-quicksettings-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="169"/>
