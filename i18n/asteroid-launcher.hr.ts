@@ -148,7 +148,7 @@
     <message id="id-tutorial-notifications-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="95"/>
         <source>can be accessed on the left.</source>
-        <translation>se mogu naći ulijevo.</translation>
+        <translation>se mogu naći lijevo.</translation>
     </message>
     <message id="id-tutorial-today-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="122"/>
@@ -168,7 +168,7 @@
     <message id="id-tutorial-quicksettings-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="169"/>
         <source>are up here.</source>
-        <translation>se nalaze gore.</translation>
+        <translation>se nalaze ovdje gore.</translation>
     </message>
     <message id="id-tutorial-applications-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="212"/>
@@ -178,7 +178,7 @@
     <message id="id-tutorial-applications-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="214"/>
         <source>are down there.</source>
-        <translation>se nalaze dolje.</translation>
+        <translation>se nalaze tamo dolje.</translation>
     </message>
     <message id="id-tutorial-startapp-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="257"/>
