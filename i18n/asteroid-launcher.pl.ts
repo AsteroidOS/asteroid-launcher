@@ -103,7 +103,7 @@
     <message id="id-add-alarm">
         <location filename="../qml/firstrun/FakeAlarmclock.qml" line="77"/>
         <source>Add an alarm</source>
-        <translation>Ustaw alarm</translation>
+        <translation>Dodaj alarm</translation>
     </message>
     <message id="id-time">
         <location filename="../qml/firstrun/FakeAlarmclock.qml" line="117"/>
