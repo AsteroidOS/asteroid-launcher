@@ -128,7 +128,7 @@
     <message id="id-tutorial-welcome-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="62"/>
         <source>This is AsteroidOS.</source>
-        <translation>Hier ist AsteroidOS</translation>
+        <translation>Hier ist AsteroidOS.</translation>
     </message>
     <message id="id-tutorial-indicators-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="73"/>
