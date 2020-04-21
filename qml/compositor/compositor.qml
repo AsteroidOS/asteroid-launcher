@@ -221,6 +221,9 @@ Item {
                 comp.homeWindow = w
                 setCurrentWindow(homeWindow)
             } else if (!isNotificationWindow && !isAgentWindow && !isDialogWindow) {
+                if (topmostApplicationWindow != null) {
+                    Lipstick.compositor.closeClientForWindowId(topmostApplicationWindow.window.windowId)
+                }
                 w.smoothBorders = true
                 w.x = width
                 w.moveInAnim.start()
