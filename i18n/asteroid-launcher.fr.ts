@@ -17,7 +17,7 @@
     <message id="id-btagent-passkey">
         <location filename="../qml/misc/BluetoothAgent.qml" line="179"/>
         <source>Pass Key:</source>
-        <translation>Mot de Passe :</translation>
+        <translation>Mot de passe :</translation>
     </message>
     <message id="id-btagent-enterkey">
         <location filename="../qml/misc/BluetoothAgent.qml" line="195"/>
@@ -44,13 +44,13 @@
     <message id="id-dismiss-all">
         <location filename="../qml/notifications/NotificationActions.qml" line="123"/>
         <source>Dismiss all</source>
-        <translation>Tout fermer</translation>
+        <translation>Tout annuler</translation>
     </message>
     <message id="id-dismiss">
         <location filename="../qml/notifications/NotificationActions.qml" line="138"/>
         <location filename="../qml/notifications/NotificationView.qml" line="154"/>
         <source>Dismiss</source>
-        <translation>Fermer</translation>
+        <translation>Annuler</translation>
     </message>
     <message id="id-now">
         <location filename="../qml/notifications/NotificationActions.qml" line="58"/>
@@ -64,7 +64,7 @@
         <location filename="../qml/notifications/NotificationActions.qml" line="179"/>
         <location filename="../qml/notifications/NotificationView.qml" line="61"/>
         <source>m</source>
-        <translation>m</translation>
+        <translation>min</translation>
     </message>
     <message id="id-hour-abbrev">
         <location filename="../qml/notifications/NotificationActions.qml" line="68"/>
@@ -163,7 +163,7 @@
     <message id="id-tutorial-quicksettings-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="167"/>
         <source>Quick Settings</source>
-        <translation>Les Réglages Rapides</translation>
+        <translation>Les Réglages rapides</translation>
     </message>
     <message id="id-tutorial-quicksettings-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="169"/>
@@ -173,7 +173,7 @@
     <message id="id-tutorial-applications-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="212"/>
         <source>Apps</source>
-        <translation>Les Apps</translation>
+        <translation>Les Applis</translation>
     </message>
     <message id="id-tutorial-applications-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="214"/>
@@ -183,7 +183,7 @@
     <message id="id-tutorial-startapp-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="257"/>
         <source>Start an app</source>
-        <translation>Lancez une app</translation>
+        <translation>Lancez une appli</translation>
     </message>
     <message id="id-tutorial-startapp-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="259"/>
@@ -193,7 +193,7 @@
     <message id="id-tutorial-leaveapp-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="318"/>
         <source>Leave an app</source>
-        <translation>Quittez une app</translation>
+        <translation>Quittez une appli</translation>
     </message>
     <message id="id-tutorial-leaveapp-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="320"/>
@@ -204,7 +204,7 @@
     <message id="id-tutorial-enjoy-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="382"/>
         <source>Enjoy!</source>
-        <translation>Enjoy !</translation>
+        <translation>Amusez-vous bien !</translation>
     </message>
 </context>
 </TS>
