@@ -22,7 +22,7 @@
     <message id="id-btagent-enterkey">
         <location filename="../qml/misc/BluetoothAgent.qml" line="195"/>
         <source>Enter Key</source>
-        <translation>Введите ключ:</translation>
+        <translation>Введите ключ</translation>
     </message>
     <message id="id-btagent-pincode">
         <location filename="../qml/misc/BluetoothAgent.qml" line="203"/>
