@@ -7,7 +7,7 @@
         <location filename="../qml/misc/BluetoothAgent.qml" line="143"/>
         <location filename="../qml/misc/BluetoothAgent.qml" line="155"/>
         <source>Authorize:</source>
-        <translation>Авторизация:</translation>
+        <translation>Авторизовать:</translation>
     </message>
     <message id="id-btagent-confirm">
         <location filename="../qml/misc/BluetoothAgent.qml" line="167"/>
@@ -22,7 +22,7 @@
     <message id="id-btagent-enterkey">
         <location filename="../qml/misc/BluetoothAgent.qml" line="195"/>
         <source>Enter Key</source>
-        <translation>Введите пароль</translation>
+        <translation>Введите ключ:</translation>
     </message>
     <message id="id-btagent-pincode">
         <location filename="../qml/misc/BluetoothAgent.qml" line="203"/>
