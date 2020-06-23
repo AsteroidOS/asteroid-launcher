@@ -40,7 +40,8 @@ import "compositor"
 
 Item {
     id: root
-    anchors.fill: parent
+    width: Dims.w(100)
+    height: Dims.h(100)
     rotation: Screen.angleBetween(Screen.primaryScreen, Lipstick.compositor.screenOrientation)
 
     Item {
