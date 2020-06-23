@@ -40,8 +40,8 @@ Item {
 
     property Item window
     property bool smoothBorders: false
-    width: window !== null ? window.width : 0
-    height: window !== null ? window.height : 0
+    width: window !== null ? Dims.w(100) : 0
+    height: window !== null ? Dims.h(100) : 0
     NumberAnimation on x { id: moveInAnimation; running: false ; to: 0; duration: 100 }
     NumberAnimation on opacity { id: fadeInAnimation; running: false; from: 0; to: 1; duration: 100 }
     function animateIn() { fadeInAnimation.start(); }
