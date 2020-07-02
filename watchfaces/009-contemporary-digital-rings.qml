@@ -207,11 +207,11 @@ Item {
             if(secondCanvas.second != second) {
                 secondCanvas.second = second
                 secondCanvas.requestPaint()
+            } if(hourCanvas.hour != hour) {
+                hourCanvas.hour = hour
             }if(minuteCanvas.minute != minute) {
                 minuteCanvas.minute = minute
                 minuteCanvas.requestPaint()
-            } if(hourCanvas.hour != hour) {
-                hourCanvas.hour = hour
                 hourCanvas.requestPaint()
             }
         }

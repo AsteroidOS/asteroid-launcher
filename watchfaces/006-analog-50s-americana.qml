@@ -265,11 +265,11 @@ Item {
             if(secondHand.second != second) {
                 secondHand.second = second
                 secondHand.requestPaint()
+            }if(hourHand.hour != hour) {
+                hourHand.hour = hour
             }if(minuteHand.minute != minute) {
                 minuteHand.minute = minute
                 minuteHand.requestPaint()
-            }if(hourHand.hour != hour) {
-                hourHand.hour = hour
                 hourHand.requestPaint()
             }
         }
