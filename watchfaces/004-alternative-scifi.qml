@@ -238,6 +238,9 @@ Item {
         dowCanvas.requestPaint()
         amPmCanvas.am = am
         amPmCanvas.requestPaint()
+
+        burnInProtectionManager.widthOffset = Qt.binding(function() { return width*0.2})
+        burnInProtectionManager.heightOffset = Qt.binding(function() { return height*0.2})
     }
 
     Connections {

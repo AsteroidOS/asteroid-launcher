@@ -128,7 +128,7 @@ Item {
         target: panelsGrid
 
         function makeVisible() {
-            if(panelsGrid.currentVerticalPos == 0 && panelsGrid.currentHorizontalPos < 0) {
+            if((panelsGrid.currentVerticalPos == 0 && panelsGrid.currentHorizontalPos < 0) && !Lipstick.compositor.displayAmbient) {
                 notifIndic.visible = true
                 moveTo(panelsGrid.currentHorizontalPos+1)
             } else

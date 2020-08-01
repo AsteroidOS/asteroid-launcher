@@ -33,7 +33,7 @@ Item {
     Rectangle {
         id: layer2mask
         width: parent.width; height: parent.height
-        color: Qt.rgba(0, 0, 0, 0.8)
+        color: displayAmbient ? Qt.rgba(1, 1, 1, 0.7) : Qt.rgba(0, 0, 0, 0.8)
         visible: true
         opacity: 0.0
         layer.enabled: true
@@ -79,6 +79,7 @@ Item {
             font.family: "League Spartan"
             font.styleName: "Bold"
             color: Qt.rgba(1, 1, 1, 1)
+            visible: !displayAmbient
             anchors {
                 bottom: parent.verticalCenter
                 bottomMargin: -parent.height*0.05
@@ -147,13 +148,19 @@ Item {
         layer.samplerName: "maskSource"
         layer.effect: ShaderEffect {
             property variant source: layer2mask
+            property bool keepInner: displayAmbient
             fragmentShader: "
                     varying highp vec2 qt_TexCoord0;
                     uniform highp float qt_Opacity;
                     uniform lowp sampler2D source;
                     uniform lowp sampler2D maskSource;
+                    uniform bool keepInner;
                     void main(void) {
-                        gl_FragColor = texture2D(source, qt_TexCoord0.st) * (1.0-texture2D(maskSource, qt_TexCoord0.st).a) * qt_Opacity;
+                        if (keepInner) {
+                            gl_FragColor = texture2D(source, qt_TexCoord0.st) * (texture2D(maskSource, qt_TexCoord0.st).a) * qt_Opacity;
+                        } else {
+                            gl_FragColor = texture2D(source, qt_TexCoord0.st) * (1.0-texture2D(maskSource, qt_TexCoord0.st).a) * qt_Opacity;
+                        }
                     }
                 "
         }

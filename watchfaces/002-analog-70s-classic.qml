@@ -185,6 +185,7 @@ Item {
         anchors.fill: parent
         smooth: true
         renderStrategy: Canvas.Threaded
+        visible: !displayAmbient
         onPaint: {
             var ctx = getContext("2d")
             ctx.reset()

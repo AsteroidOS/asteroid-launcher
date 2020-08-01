@@ -34,6 +34,7 @@ Item {
         antialiasing: true
         smooth: true
         renderStrategy: Canvas.Threaded
+        visible: !displayAmbient
         onPaint: {
             var ctx = getContext("2d")
             ctx.reset()
@@ -61,7 +62,7 @@ Item {
             ctx.shadowBlur = 3
             ctx.beginPath()
             ctx.lineWidth = parent.height*0.0031
-            ctx.fillStyle = Qt.rgba(0, 0, 0, 1)
+            ctx.fillStyle = displayAmbient ? Qt.rgba(1, 1, 1, 0.7) : Qt.rgba(0, 0, 0, 1)
             ctx.strokeStyle = Qt.rgba(1, 1, 1, 0.4)
             ctx.moveTo(parent.width/2+Math.cos(((hour-3 + wallClock.time.getMinutes()/60) / 12) * 2 * Math.PI)*width*0.275,
                        parent.height/2+Math.sin(((hour-3 + wallClock.time.getMinutes()/60) / 12) * 2 * Math.PI)*width*0.275)
@@ -97,7 +98,7 @@ Item {
             ctx.shadowBlur = 2
             ctx.beginPath()
             ctx.lineWidth = parent.height*0.0031
-            ctx.fillStyle = Qt.rgba(0, 0, 0, 1)
+            ctx.fillStyle = displayAmbient ? Qt.rgba(1, 1, 1, 0.7) : Qt.rgba(0, 0, 0, 1)
             ctx.strokeStyle = Qt.rgba(1, 1, 1, 0.4)
             ctx.moveTo(parent.width/2+Math.cos(((minute - 15)/60) * 2 * Math.PI)*width*0.44,
                        parent.height/2+Math.sin(((minute - 15)/60) * 2 * Math.PI)*width*0.44)
@@ -124,6 +125,7 @@ Item {
         anchors.fill: parent
         smooth: true
         renderStrategy: Canvas.Threaded
+        visible: !displayAmbient
         onPaint: {
             var ctx = getContext("2d")
             ctx.reset()
@@ -174,8 +176,8 @@ Item {
             var ctx = getContext("2d")
             ctx.reset()
             ctx.lineWidth = parent.height*0.0031
-            ctx.fillStyle = Qt.rgba(0.1, 0.1, 0.1, 1)
-            ctx.strokeStyle = Qt.rgba(1, 1, 1, 0.3)
+            ctx.fillStyle = displayAmbient ? Qt.rgba(1, 1, 1, 0.8) : Qt.rgba(0.1, 0.1, 0.1, 1)
+            ctx.strokeStyle = displayAmbient ? Qt.rgba(1, 1, 1, 0.9) : Qt.rgba(1, 1, 1, 0.3)
             ctx.textAlign = "center"
             ctx.textBaseline = 'middle';
             ctx.translate(parent.width/2, parent.height/2)
@@ -244,7 +246,7 @@ Item {
         z: 5
         renderType: Text.NativeRendering
         font.pixelSize: parent.height*0.08
-        color: "black"
+        color: displayAmbient ? Qt.rgba(1, 1, 1, 0.7) : "black"
         font.family: "Fyodor"
         horizontalAlignment: Text.AlignHCenter
         anchors {
@@ -254,6 +256,15 @@ Item {
             verticalCenterOffset: parent.height*0.195
         }
         text: Qt.formatDate(wallClock.time, "MMM dd")
+    }
+
+
+    Connections {
+        target: compositor
+        onDisplayAmbientChanged: {
+            minuteHand.requestPaint()
+            hourHand.requestPaint()
+        }
     }
 
     Connections {

@@ -83,4 +83,11 @@ Item {
         }
         text: wallClock.time.toLocaleString(Qt.locale(), "mm")
     }
+
+    Component.onCompleted: {
+        burnInProtectionManager.leftOffset = Qt.binding(function() { return width*0.4})
+        burnInProtectionManager.rightOffset = Qt.binding(function() { return width*0.05})
+        burnInProtectionManager.topOffset = Qt.binding(function() { return height*0.4})
+        burnInProtectionManager.bottomOffset = Qt.binding(function() { return height*0.05})
+    }
 }

@@ -145,7 +145,10 @@ Item {
         id: delayTimer
         interval: 5000
         repeat: false
-        onTriggered: Lipstick.compositor.closeClientForWindowId(comp.topmostWindow.window.windowId)
+        onTriggered: {
+            Lipstick.compositor.closeClientForWindowId(comp.topmostWindow.window.windowId)
+            Lipstick.compositor.setAmbientUpdatesEnabled(true)
+        }
     }
 
     Compositor {

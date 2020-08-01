@@ -164,5 +164,8 @@ Item {
         dateCanvas.requestPaint()
         amPmCanvas.am = am
         amPmCanvas.requestPaint()
+
+        burnInProtectionManager.widthOffset = Qt.binding(function() { return width*0.32})
+        burnInProtectionManager.heightOffset = Qt.binding(function() { return height*0.7})
     }
 }

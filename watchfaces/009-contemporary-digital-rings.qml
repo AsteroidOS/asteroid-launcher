@@ -58,6 +58,7 @@ Item {
         anchors.fill: parent
         smooth: true
         renderStrategy: Canvas.Threaded
+        visible: !displayAmbient
         onPaint: {
             var ctx = getContext("2d")
             var rot = (wallClock.time.getSeconds() - 15)*6
@@ -77,6 +78,7 @@ Item {
         anchors.fill: parent
         smooth: true
         renderStrategy: Canvas.Threaded
+        visible: !displayAmbient
         onPaint: {
             var ctx = getContext("2d")
             var rot = (minute -15 )*6
@@ -95,6 +97,7 @@ Item {
         anchors.fill: parent
         smooth: true
         renderStrategy: Canvas.Threaded
+        visible: !displayAmbient
         onPaint: {
             var ctx = getContext("2d")
             var rot = 0.5 * (60 * (hour-3) + wallClock.time.getMinutes())
@@ -161,6 +164,7 @@ Item {
             left: hourDisplay.right;
         }
         text: wallClock.time.toLocaleString(Qt.locale(), "ss")
+        visible: !displayAmbient
     }
 
     Text {
@@ -201,6 +205,7 @@ Item {
     Connections {
         target: wallClock
         onTimeChanged: {
+            if (displayAmbient) return
             var hour = wallClock.time.getHours()
             var minute = wallClock.time.getMinutes()
             var second = wallClock.time.getSeconds()
@@ -227,5 +232,8 @@ Item {
         minuteCanvas.requestPaint()
         hourCanvas.hour = hour
         hourCanvas.requestPaint()
+
+        burnInProtectionManager.widthOffset = Qt.binding(function() { return width*0.3})
+        burnInProtectionManager.heightOffset = Qt.binding(function() { return height*0.3})
     }
 }
