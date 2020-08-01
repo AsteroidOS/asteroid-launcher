@@ -160,7 +160,7 @@ Item {
         antialiasing: true
         smooth: true
         renderStrategy: Canvas.Threaded
-        visible: !use12H.value
+        visible: !use12H.value && !displayAmbient
 
         property var second: 0
 
@@ -233,6 +233,9 @@ Item {
         monthCanvas.requestPaint()
         amPmCanvas.am = am
         amPmCanvas.requestPaint()
+
+        burnInProtectionManager.widthOffset = Qt.binding(function() { return width*0.2})
+        burnInProtectionManager.heightOffset = Qt.binding(function() { return height*0.2})
     }
 
     Connections {

@@ -52,6 +52,10 @@ Item {
     property var launcherCenterColor: defaultCenterColor
     property var launcherOuterColor: defaultOuterColor
 
+    property var displayAmbient: Lipstick.compositor.displayAmbient
+
+    property var compositor: Lipstick.compositor
+
     Component.onCompleted: {
         Desktop.panelsGrid = grid
         LipstickSettings.lockScreen(true)
@@ -69,6 +73,58 @@ Item {
         }
     }
 
+    Item {
+        id: burnInProtectionManager
+
+        // Maximum offset before components from other grid becomes visible.
+        property int maximumWidthOffset: Dims.w(27)
+        property int maximumHeightOffset: Dims.h(27)
+
+        property int leftOffset: Dims.w(2)
+        property int rightOffset: Dims.w(2)
+        property int topOffset: Dims.h(2)
+        property int bottomOffset: Dims.h(2)
+
+        // The maximum allowed movement in x and y direction.
+        property int widthOffset
+        property int heightOffset
+
+        // Enable/disable burn in protection.
+        enabled: true
+
+        onHeightOffsetChanged: {
+            topOffset = heightOffset/2
+            bottomOffset = topOffset
+        }
+
+        onWidthOffsetChanged: {
+            leftOffset = widthOffset/2
+            rightOffset = leftOffset
+        }
+
+        onLeftOffsetChanged: if (leftOffset > maximumWidthOffset/2) leftOffset = maximumWidthOffset/2
+        onRightOffsetChanged: if (rightOffset > maximumWidthOffset/2) rightOffset = maximumWidthOffset/2
+        onTopOffsetChanged: if (topOffset > maximumHeightOffset/2) topOffset = maximumHeightOffset/2
+        onBottomOffsetChanged: if (bottomOffset > maximumHeightOffset/2) bottomOffset = maximumHeightOffset/2
+
+        function setActiveWatchFaceArea(x, y, w, h) {
+            leftOffset = Math.min(x, maximumWidthOffset/2)
+            topOffset = Math.min(y, maximumHeightOffset/2)
+            rightOffset = Math.min(Dims.w(100)-w-x, maximumWidthOffset/2)
+            bottomOffset = Math.min(Dims.h(100)-h-y, maximumHeightOffset/2)
+        }
+        function setCenterWatchFaceArea(w, h) {
+            widthOffset = Dims.w(100)-w
+            heightOffset = Dims.h(100)-h
+        }
+        function resetOffsets() {
+            leftOffset = Dims.w(2)
+            rightOffset = Dims.w(2)
+            topOffset = Dims.h(2)
+            bottomOffset = Dims.h(2)
+        }
+    }
+
     WallClock {
         id: wallClock
         enabled: true
@@ -81,16 +137,40 @@ Item {
         defaultValue: false
     }
 
+    Timer {
+        id: wallClockAmbientTimeout
+        interval: 200
+        repeat: false
+        onTriggered: Lipstick.compositor.setAmbientUpdatesEnabled(false)
+    }
+
     Connections {
         target: Lipstick.compositor
-        onDisplayAboutToBeOn: wallClock.enabled = true
+        onDisplayAboutToBeOn: {
+            wallClockAmbientTimeout.stop()
+            wallClock.enabled = true
+        }
         onDisplayAboutToBeOff: wallClock.enabled = false
+        onDisplayOn: if (Lipstick.compositor.ambientEnabled) grid.moveTo(0, 0)
+        onDisplayAmbientChanged: wallpaperAnimation.duration = 300
+        onDisplayAmbientEntered: wallpaperDarkener.opacity = 1;
+        onDisplayAmbientLeft: wallpaperDarkener.opacity = 0;
+        onDisplayAmbientUpdate: {
+            // Perform burn in protection
+            if (burnInProtectionManager.enabled) {
+                grid.contentX = Math.random()*(burnInProtectionManager.leftOffset + burnInProtectionManager.rightOffset)-burnInProtectionManager.leftOffset
+                grid.contentY = Math.random()*(burnInProtectionManager.topOffset + burnInProtectionManager.bottomOffset)-burnInProtectionManager.topOffset
+            }
+            // Give watchface some time to update, then go back to deep sleep.
+            wallClockAmbientTimeout.start();
+        }
     }
 
     ConfigurationValue {
         id: watchFaceSource
         key: "/desktop/asteroid/watchface"
         defaultValue: "file:///usr/share/asteroid-launcher/watchfaces/000-default-digital.qml"
+        onValueChanged: burnInProtectionManager.resetOffsets()
     }
 
     Connections {
@@ -118,10 +198,10 @@ Item {
             var np = addPanel(-1, 0, leftPanel)
             addPanel(0, -1, topPanel)
 
-            rightIndicator.visible  = Qt.binding(function() { return grid.toLeftAllowed   || (grid.currentVerticalPos == 1 && al.toLeftAllowed )})
-            leftIndicator.visible   = Qt.binding(function() { return grid.toRightAllowed  || (grid.currentVerticalPos == 1 && al.toRightAllowed)})
-            topIndicator.visible    = Qt.binding(function() { return grid.toBottomAllowed    })
-            bottomIndicator.visible = Qt.binding(function() { return grid.toTopAllowed })
+            rightIndicator.visible  = Qt.binding(function() { return ((grid.toLeftAllowed   || (grid.currentVerticalPos == 1 && al.toLeftAllowed )) && !displayAmbient)})
+            leftIndicator.visible   = Qt.binding(function() { return ((grid.toRightAllowed  || (grid.currentVerticalPos == 1 && al.toRightAllowed)) && !displayAmbient)})
+            topIndicator.visible    = Qt.binding(function() { return (grid.toBottomAllowed && !displayAmbient)   })
+            bottomIndicator.visible = Qt.binding(function() { return (grid.toTopAllowed  && !displayAmbient)})
 
             leftIndicator.keepExpanded = Qt.binding(function() { return !np.modelEmpty && grid.currentHorizontalPos == 0 && grid.currentVerticalPos == 0 })
 
@@ -129,10 +209,16 @@ Item {
         }
 
         onNormalizedHorOffsetChanged: {
+                if (displayAmbient) return
+                wallpaperAnimation.duration = 0
+
                 wallpaper.anchors.horizontalCenterOffset = normalizedHorOffset*width*(-0.05)
                 wallpaperDarkener.opacity = Math.abs(normalizedHorOffset)*0.4
         }
         onNormalizedVerOffsetChanged: {
+            if (displayAmbient) return
+            wallpaperAnimation.duration = 0
+
             wallpaper.anchors.verticalCenterOffset = height*normalizedVerOffset*(-0.05)
 
             if(normalizedVerOffset == 1) {
@@ -214,6 +300,7 @@ Item {
         z: -100
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
+        Behavior on opacity { NumberAnimation { duration: 400 } }
 
         Component {
             id: imageWallpaper
@@ -232,5 +319,7 @@ Item {
         z: -99
         color: "#000000"
         opacity: 0.0
+        visible: opacity != 0.0
+        Behavior on opacity { NumberAnimation { id:wallpaperAnimation } }
     }
 }

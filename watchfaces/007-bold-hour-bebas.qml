@@ -32,6 +32,7 @@ Item {
         anchors.fill: parent
         smooth: true
         renderStrategy: Canvas.Threaded
+        visible: !displayAmbient
         onPaint: {
             var ctx = getContext("2d")
             var rot = (wallClock.time.getMinutes() -15 )*6
@@ -128,5 +129,8 @@ Item {
         minuteCircle.minute = minute
         minuteCircle.requestPaint()
         minuteArc.requestPaint()
+
+        burnInProtectionManager.widthOffset = Qt.binding(function() { return width*0.3})
+        burnInProtectionManager.heightOffset = Qt.binding(function() { return height*0.3})
     }
 }

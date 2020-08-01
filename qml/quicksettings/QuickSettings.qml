@@ -74,7 +74,7 @@ Item {
         icon: "ios-unlock"
         togglable: false
         toggled: false
-        onUnchecked: mce_dbus.call("req_display_state_off", undefined)
+        onUnchecked: mce_dbus.call("req_display_state_lpm", undefined)
     }
 
     DisplaySettings {
