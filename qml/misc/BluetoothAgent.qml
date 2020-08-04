@@ -165,7 +165,7 @@ Item {
                 case BluetoothAgent.ReqConfirmation:
                     //% "Confirm:"
                     summary.text = qsTrId("id-btagent-confirm") + localeManager.changesObserver
-                    body.text = agent.passkey
+                    body.text = ("000000" + agent.passkey).substr(-6,6)  // padded to 6 digits
                     text.visible = true
                     inputField.text = ""
                     inputField.previewText = ""
@@ -177,7 +177,7 @@ Item {
                 case BluetoothAgent.DispPasskey:
                     //% "Pass Key:"
                     summary.text = qsTrId("id-btagent-passkey") + localeManager.changesObserver
-                    body.text = agent.passkey
+                    body.text = ("000000" + agent.passkey).substr(-6,6)  // padded to 6 digits
                     text.visible = true
                     inputField.text = ""
                     inputField.previewText = ""
