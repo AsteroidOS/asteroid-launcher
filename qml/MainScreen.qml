@@ -151,15 +151,24 @@ Item {
             wallClock.enabled = true
         }
         onDisplayAboutToBeOff: wallClock.enabled = false
-        onDisplayOn: if (Lipstick.compositor.ambientEnabled) grid.moveTo(0, 0)
+        onDisplayOn: {
+            grid.animateIndicators()
+            if (Lipstick.compositor.ambientEnabled) grid.moveTo(0, 0)
+        }
         onDisplayAmbientChanged: wallpaperAnimation.duration = 300
-        onDisplayAmbientEntered: wallpaperDarkener.opacity = 1;
-        onDisplayAmbientLeft: wallpaperDarkener.opacity = 0;
+        onDisplayAmbientEntered: wallpaperDarkener.opacity = 1
+        onDisplayAmbientLeft: {
+            wallpaperDarkener.opacity = 0
+            if (burnInProtectionManager.enabled) leftIndicator.anchors.verticalCenterOffset = 0
+        }
         onDisplayAmbientUpdate: {
             // Perform burn in protection
             if (burnInProtectionManager.enabled) {
                 grid.contentX = Math.random()*(burnInProtectionManager.leftOffset + burnInProtectionManager.rightOffset)-burnInProtectionManager.leftOffset
                 grid.contentY = Math.random()*(burnInProtectionManager.topOffset + burnInProtectionManager.bottomOffset)-burnInProtectionManager.topOffset
+
+                leftIndicator.anchors.horizontalCenterOffset = (Math.random()*2)*leftIndicator.finWidth
+                leftIndicator.anchors.verticalCenterOffset = (Math.random()-0.5)*4*leftIndicator.finWidth
             }
             // Give watchface some time to update, then go back to deep sleep.
             wallClockAmbientTimeout.start();
@@ -199,7 +208,7 @@ Item {
             addPanel(0, -1, topPanel)
 
             rightIndicator.visible  = Qt.binding(function() { return ((grid.toLeftAllowed   || (grid.currentVerticalPos == 1 && al.toLeftAllowed )) && !displayAmbient)})
-            leftIndicator.visible   = Qt.binding(function() { return ((grid.toRightAllowed  || (grid.currentVerticalPos == 1 && al.toRightAllowed)) && !displayAmbient)})
+            leftIndicator.visible   = Qt.binding(function() { return ((grid.toRightAllowed  || (grid.currentVerticalPos == 1 && al.toRightAllowed)) && (!displayAmbient || !np.modelEmpty))})
             topIndicator.visible    = Qt.binding(function() { return (grid.toBottomAllowed && !displayAmbient)   })
             bottomIndicator.visible = Qt.binding(function() { return (grid.toTopAllowed  && !displayAmbient)})
 
@@ -280,7 +289,7 @@ Item {
 
         function updateWallpaper() {
             var endsWithQml = /qml$/;
-            if(endsWithQml.test(wallpaperSource.value)) {
+            if (endsWithQml.test(wallpaperSource.value)) {
                 wallpaperLoader.sourceComponent = undefined
                 wallpaperLoader.source = wallpaperSource.value
             } else {
