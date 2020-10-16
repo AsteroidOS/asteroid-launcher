@@ -98,7 +98,7 @@
     <message id="id-date-page">
         <location filename="../qml/firstrun/FirstRunConfig.qml" line="196"/>
         <source>Date</source>
-        <translation type="unfinished"></translation>
+        <translation>Asakud</translation>
     </message>
     <message id="id-add-alarm">
         <location filename="../qml/firstrun/FakeAlarmclock.qml" line="77"/>
@@ -108,32 +108,32 @@
     <message id="id-time">
         <location filename="../qml/firstrun/FakeAlarmclock.qml" line="117"/>
         <source>Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Akud</translation>
     </message>
     <message id="id-language-page">
         <location filename="../qml/firstrun/FirstRunConfig.qml" line="171"/>
         <source>Language</source>
-        <translation type="unfinished"></translation>
+        <translation>Tutlayt</translation>
     </message>
     <message id="id-time-page">
         <location filename="../qml/firstrun/FirstRunConfig.qml" line="185"/>
         <source>Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Akud</translation>
     </message>
     <message id="id-tutorial-welcome-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="60"/>
         <source>Welcome.</source>
-        <translation type="unfinished"></translation>
+        <translation>Berrek.</translation>
     </message>
     <message id="id-tutorial-welcome-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="62"/>
         <source>This is AsteroidOS.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wa iga AsteroidOS.</translation>
     </message>
     <message id="id-tutorial-indicators-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="73"/>
         <source>Indicators</source>
-        <translation type="unfinished"></translation>
+        <translation>Inemmalen</translation>
     </message>
     <message id="id-tutorial-indicators-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="75"/>
