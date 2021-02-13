@@ -22,7 +22,7 @@
     <message id="id-btagent-enterkey">
         <location filename="../qml/misc/BluetoothAgent.qml" line="195"/>
         <source>Enter Key</source>
-        <translation>Введите ключ</translation>
+        <translation>Введите пароль</translation>
     </message>
     <message id="id-btagent-pincode">
         <location filename="../qml/misc/BluetoothAgent.qml" line="203"/>
@@ -148,7 +148,7 @@
     <message id="id-tutorial-notifications-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="95"/>
         <source>can be accessed on the left.</source>
-        <translation>Доступно слева.</translation>
+        <translation>могут быть доступны слева.</translation>
     </message>
     <message id="id-tutorial-today-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="122"/>
@@ -158,7 +158,7 @@
     <message id="id-tutorial-today-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="124"/>
         <source>are on the right.</source>
-        <translation>Находятся справа.</translation>
+        <translation>находятся справа.</translation>
     </message>
     <message id="id-tutorial-quicksettings-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="167"/>
@@ -203,7 +203,7 @@
     <message id="id-tutorial-enjoy-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="382"/>
         <source>Enjoy!</source>
-        <translation>Увлекайтесь!</translation>
+        <translation>Наслаждайтесь!</translation>
     </message>
 </context>
 </TS>
