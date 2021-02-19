@@ -97,38 +97,42 @@ void GestureFilterArea::mouseMoveEvent(QMouseEvent *event) {
     m_velocityX = (m_velocityX*(m_counter-1) + (event->windowPos().x()-m_prevPos.x()))/m_counter;
     m_velocityY = (m_velocityY*(m_counter-1) + (event->windowPos().y()-m_prevPos.y()))/m_counter;
     if(m_tracing) {
-        if(m_velocityX > m_threshold) {
-            m_tracing = false;
-            if(m_toRightAllowed) {
-                m_horizontal = true;
-                grabMouse();
+        if (abs(m_velocityX) > abs(m_velocityY)) {
+            if(m_velocityX > m_threshold) {
+                m_tracing = false;
+                if(m_toRightAllowed) {
+                    m_horizontal = true;
+                    grabMouse();
+                }
+                else
+                    m_pressed = false;
+            } else if(m_velocityX < -m_threshold) {
+                m_tracing = false;
+                if(m_toLeftAllowed) {
+                    m_horizontal = true;
+                    grabMouse();
+                }
+                else
+                    m_pressed = false;
             }
-            else
-                m_pressed = false;
-        } else if(m_velocityX < -m_threshold) {
-            m_tracing = false;
-            if(m_toLeftAllowed) {
-                m_horizontal = true;
-                grabMouse();
+        } else {
+            if(m_velocityY > m_threshold) {
+                m_tracing = false;
+                if(m_toBottomAllowed) {
+                    m_horizontal = false;
+                    grabMouse();
+                }
+                else
+                    m_pressed = false;
+            } else if(m_velocityY < -m_threshold) {
+                m_tracing = false;
+                if(m_toTopAllowed) {
+                    m_horizontal = false;
+                    grabMouse();
+                }
+                else
+                    m_pressed = false;
             }
-            else
-                m_pressed = false;
-        } else if(m_velocityY > m_threshold) {
-            m_tracing = false;
-            if(m_toBottomAllowed) {
-                m_horizontal = false;
-                grabMouse();
-            }
-            else
-                m_pressed = false;
-        } else if(m_velocityY < -m_threshold) {
-            m_tracing = false;
-            if(m_toTopAllowed) {
-                m_horizontal = false;
-                grabMouse();
-            }
-            else
-                m_pressed = false;
         }
     } else if(m_pressed) {
         qreal delta;
