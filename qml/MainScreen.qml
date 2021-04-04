@@ -146,22 +146,22 @@ Item {
 
     Connections {
         target: Lipstick.compositor
-        onDisplayAboutToBeOn: {
+        function onDisplayAboutToBeOn() {
             wallClockAmbientTimeout.stop()
             wallClock.enabled = true
         }
-        onDisplayAboutToBeOff: wallClock.enabled = false
-        onDisplayOn: {
+        function onDisplayAboutToBeOff() { wallClock.enabled = false }
+        function onDisplayOn() {
             grid.animateIndicators()
             if (Lipstick.compositor.ambientEnabled) grid.moveTo(0, 0)
         }
-        onDisplayAmbientChanged: wallpaperAnimation.duration = 300
-        onDisplayAmbientEntered: wallpaperDarkener.opacity = 1
-        onDisplayAmbientLeft: {
+        function onDisplayAmbientChanged() { wallpaperAnimation.duration = 300 }
+        function onDisplayAmbientEntered() { wallpaperDarkener.opacity = 1 }
+        function onDisplayAmbientLeft() {
             wallpaperDarkener.opacity = 0
             if (burnInProtectionManager.enabled) leftIndicator.anchors.verticalCenterOffset = 0
         }
-        onDisplayAmbientUpdate: {
+        function onDisplayAmbientUpdate() {
             // Perform burn in protection
             if (burnInProtectionManager.enabled) {
                 grid.contentX = Math.random()*(burnInProtectionManager.leftOffset + burnInProtectionManager.rightOffset)-burnInProtectionManager.leftOffset
@@ -184,7 +184,7 @@ Item {
 
     Connections {
         target: localeManager
-        onChangesObserverChanged: {
+        function onChangesObserverChanged() {
             var bkp = watchFaceSource.value
             watchFaceSource.value = ""
             watchFaceSource.value = bkp
@@ -277,9 +277,10 @@ Item {
         repeat: false
         onTriggered: Desktop.onAboutToClose()
     }
+
     Connections {
         target: Lipstick.compositor
-        onDisplayOff: lockscreenDelay.start();
+        function onDisplayOff() { lockscreenDelay.start() }
      }
 
 // Wallpaper

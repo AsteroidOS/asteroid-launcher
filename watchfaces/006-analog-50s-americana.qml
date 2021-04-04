@@ -261,7 +261,7 @@ Item {
 
     Connections {
         target: compositor
-        onDisplayAmbientChanged: {
+        function onDisplayAmbientChanged() {
             minuteHand.requestPaint()
             hourHand.requestPaint()
             numberStrokes.requestPaint()
@@ -270,7 +270,7 @@ Item {
 
     Connections {
         target: wallClock
-        onTimeChanged: {
+        function onTimeChanged() {
             var hour = wallClock.time.getHours()
             var minute = wallClock.time.getMinutes()
             var second = wallClock.time.getSeconds()
