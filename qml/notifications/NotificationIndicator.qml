@@ -135,8 +135,8 @@ Item {
                 notifIndic.visible = false
         }
 
-        onCurrentHorizontalPosChanged: makeVisible()
-        onCurrentVerticalPosChanged: makeVisible()
+        function onCurrentHorizontalPosChanged() { makeVisible() }
+        function onCurrentVerticalPosChanged() { makeVisible() }
     }
 
     NotificationListModel {
