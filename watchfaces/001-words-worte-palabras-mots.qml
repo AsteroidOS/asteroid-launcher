@@ -203,7 +203,7 @@ Item {
 
     Connections {
         target: localeManager
-        onChangesObserverChanged: {
+        function onChangesObserverChanged() {
             timeDisplay.text = Qt.binding(function() { return generateTime(wallClock.time) })
             dateDisplay.text = Qt.binding(function() { return wallClock.time.toLocaleString(Qt.locale(), "<b>ddd</b> d MMM") })
         }

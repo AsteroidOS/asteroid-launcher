@@ -226,7 +226,7 @@ Item {
 
     Connections {
         target: wallClock
-        onTimeChanged: {
+        function onTimeChanged() {
             if (displayAmbient) return
             var hour = wallClock.time.getHours()
             var minute = wallClock.time.getMinutes()
