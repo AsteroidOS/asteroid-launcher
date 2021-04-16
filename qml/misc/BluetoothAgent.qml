@@ -28,6 +28,7 @@
  */
 
 import QtQuick 2.9
+import QtGraphicalEffects 1.12
 import org.asteroid.controls 1.0
 import org.nemomobile.lipstick 0.1
 
@@ -37,11 +38,27 @@ Item {
     width: initialSize.width
     height: initialSize.height
 
-    Image {
+    Item {
+        id: circleWrapper
         anchors.fill: parent
-        source: "qrc:/images/diskBackground.svg"
-        sourceSize.width: width
-        sourceSize.height: height
+        Rectangle {
+            id: circle
+            anchors.centerIn: parent
+            width: parent.width*0.7
+            height: parent.height*0.7
+            radius: width/2
+            color: "#f4f4f4"
+        }
+    }
+    DropShadow {
+        anchors.fill: circleWrapper
+        horizontalOffset: 0
+        verticalOffset: 0
+        radius: 8.0
+        samples: 17
+        color: "#80000000"
+        source: circleWrapper
+        cached: true
     }
 
     Icon {

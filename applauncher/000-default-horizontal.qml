@@ -31,45 +31,107 @@
  */
 
 import QtQuick 2.9
+import QtGraphicalEffects 1.12
 import org.asteroid.controls 1.0
-import org.nemomobile.lipstick 0.1
 
 ListView {
     id: appsListView
     orientation: ListView.Horizontal
     snapMode: ListView.SnapToItem
+    anchors.fill: parent
+    clip: true
 
-    property bool fakePressed:     false
-    property bool toTopAllowed:    false
-    property bool toBottomAllowed: false
-    property bool toLeftAllowed:   true
-    property bool toRightAllowed:  false
     property int currentPos: 0
 
     onCurrentPosChanged: {
-        toLeftAllowed = (currentPos!=launcherModel.itemCount-1)
-        toRightAllowed  = (currentPos!=0)
-
         rightIndicator.animate()
         leftIndicator.animate()
         topIndicator.animate()
         bottomIndicator.animate()
     }
 
-    model: LauncherModel { id: launcherModel }
+    Connections {
+        target: grid
+        function onCurrentVerticalPosChanged() {
+            if (grid.currentVerticalPos == 1) {
+                grid.changeAllowedDirections()
+            }
+        }
+    }
 
-    delegate: LauncherItemDelegate {
+    model: launcherModel
+
+    delegate: MouseArea {
         id: launcherItem
         width: appsListView.width
         height: appsListView.width
-        iconName: model.object.iconId == "" ? "ios-help" : model.object.iconId
-        iconCaption: model.object.title.toUpperCase() + localeManager.changesObserver
         enabled: !appsListView.dragging
+
+        onClicked: model.object.launchApplication()
+
+        Item {
+            id: circleWrapper
+            anchors.fill: parent
+            Rectangle {
+                id: circle
+                anchors.centerIn: parent
+                width: parent.width*0.7
+                height: parent.height*0.7
+                radius: width/2
+                color: launcherItem.pressed | fakePressed ? "#cccccc" : "#f4f4f4"
+            }
+        }
+        DropShadow {
+            anchors.fill: circleWrapper
+            horizontalOffset: 0
+            verticalOffset: 0
+            radius: 8.0
+            samples: 17
+            color: "#80000000"
+            source: circleWrapper
+            cached: true
+        }
+
+        Icon {
+            id: icon
+            anchors.centerIn: parent
+            anchors.verticalCenterOffset: -Dims.h(3)
+            width: parent.width * 0.31
+            height: width
+            color: "#666666"
+            name: model.object.iconId == "" ? "ios-help" : model.object.iconId
+        }
+
+        Label {
+            id: iconText
+            anchors.top: icon.bottom
+            width: parent.width * 0.5
+            horizontalAlignment: Text.AlignHCenter
+            anchors.topMargin: Dims.h(4)
+            anchors.horizontalCenter: parent.horizontalCenter
+            color: "#666666"
+            font.pixelSize: ((appsListView.width > appsListView.height ? appsListView.height : appsListView.width) / Dims.l(100)) * Dims.l(5)
+            font.weight: Font.Medium
+            text: model.object.title.toUpperCase() + localeManager.changesObserver
+        }
     }
 
     Component.onCompleted: {
         launcherCenterColor = alb.centerColor(launcherModel.get(0).filePath);
         launcherOuterColor = alb.outerColor(launcherModel.get(0).filePath);
+
+        toLeftAllowed = Qt.binding(function() { return !atXEnd })
+        toRightAllowed = Qt.binding(function() { return !atXBeginning })
+
+        toTopAllowed = false
+        toBottomAllowed = true
+        forbidTop = false
+        forbidBottom = false
+        forbidLeft = false
+        forbidRight = false
+        if (grid.currentVerticalPos == 1) {
+            grid.changeAllowedDirections()
+        }
     }
 
     onContentXChanged: {
