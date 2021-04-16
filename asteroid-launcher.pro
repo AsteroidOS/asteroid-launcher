@@ -26,9 +26,7 @@ RESOURCES += \
 
 OTHER_FILES += qml/*.qml \
     qml/MainScreen.qml \
-    qml/applauncher/AppLauncher.qml \
     qml/today/Today.qml \
-    qml/appswitcher/LauncherItemDelegate.qml \
     qml/compositor/compositor.qml \
     qml/compositor/WindowWrapperBase.qml \
     qml/compositor/CircleMaskShader.qml \
@@ -44,10 +42,13 @@ TRANSLATIONS = $$files(i18n/$$TARGET.*.ts)
 
 target.path = /usr/bin
 
+applauncher.path = /usr/share/asteroid-launcher/applauncher
+applauncher.files =  applauncher/*
+
 watchfaces.path = /usr/share/asteroid-launcher/watchfaces
 watchfaces.files =  watchfaces/*
 
 watchfaces-img.path = /usr/share/asteroid-launcher/watchfaces-img
 watchfaces-img.files =  watchfaces-img/*
 
-INSTALLS = target watchfaces watchfaces-img
+INSTALLS = target applauncher watchfaces watchfaces-img

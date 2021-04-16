@@ -1,13 +1,9 @@
 <RCC>
     <qresource prefix="/">
         <file>images/shutdown-logo.png</file>
-        <file>images/diskBackground.svg</file>
-        <file>images/diskBackgroundPressed.svg</file>
     </qresource>
     <qresource prefix="/qml/">
         <file alias="MainScreen.qml">qml/MainScreen.qml</file>
-        <file alias="AppLauncher.qml">qml/applauncher/AppLauncher.qml</file>
-        <file alias="LauncherItemDelegate.qml">qml/applauncher/LauncherItemDelegate.qml</file>
         <file alias="Today.qml">qml/today/Today.qml</file>
         <file alias="compositor.qml">qml/compositor/compositor.qml</file>
         <file alias="PanelsGrid.qml">qml/misc/PanelsGrid.qml</file>

@@ -144,6 +144,10 @@ Item {
         onTriggered: Lipstick.compositor.setAmbientUpdatesEnabled(false)
     }
 
+    LauncherModel {
+        id: launcherModel
+    }
+
     Connections {
         target: Lipstick.compositor
         function onDisplayAboutToBeOn() {
@@ -182,12 +186,21 @@ Item {
         onValueChanged: burnInProtectionManager.resetOffsets()
     }
 
+    ConfigurationValue {
+        id: appLauncherSource
+        key: "/desktop/asteroid/applauncher"
+        defaultValue: "file:///usr/share/asteroid-launcher/applauncher/000-default-horizontal.qml"
+    }
+
     Connections {
         target: localeManager
         function onChangesObserverChanged() {
-            var bkp = watchFaceSource.value
+            var watchFaceSourceBackup = watchFaceSource.value
             watchFaceSource.value = ""
-            watchFaceSource.value = bkp
+            watchFaceSource.value = watchFaceSourceBackup
+            var appLauncherSourceBackup = appLauncherSource.value
+            appLauncherSource.value = ""
+            appLauncherSource.value = appLauncherSourceBackup
         }
     }
 
@@ -195,7 +208,27 @@ Item {
     Component { id: leftPanel;   NotificationsPanel { panelsGrid: grid } }
     Component { id: centerPanel; Loader             { source: watchFaceSource.value } }
     Component { id: rightPanel;  Today              { } }
-    Component { id: bottomPanel; AppLauncher        { } }
+    Component {
+        id: bottomPanel
+        Loader {
+            id: appLauncher
+            property bool fakePressed:     false
+            property bool toTopAllowed:    true
+            property bool toBottomAllowed: true
+            property bool toLeftAllowed:   true
+            property bool toRightAllowed:  true
+            property bool forbidTop: false
+            property bool forbidBottom: false
+            property bool forbidLeft: false
+            property bool forbidRight: false
+            source: appLauncherSource.value
+            onStatusChanged: {
+                if (appLauncher.status == Loader.Ready) {
+                    Desktop.appLauncher = appLauncher.item
+                }
+            }
+        }
+    }
 
     PanelsGrid {
         id: grid 
@@ -207,14 +240,12 @@ Item {
             var np = addPanel(-1, 0, leftPanel)
             addPanel(0, -1, topPanel)
 
-            rightIndicator.visible  = Qt.binding(function() { return ((grid.toLeftAllowed   || (grid.currentVerticalPos == 1 && al.toLeftAllowed )) && !displayAmbient)})
-            leftIndicator.visible   = Qt.binding(function() { return ((grid.toRightAllowed  || (grid.currentVerticalPos == 1 && al.toRightAllowed)) && (!displayAmbient || !np.modelEmpty))})
-            topIndicator.visible    = Qt.binding(function() { return (grid.toBottomAllowed && !displayAmbient)   })
-            bottomIndicator.visible = Qt.binding(function() { return (grid.toTopAllowed  && !displayAmbient)})
+            rightIndicator.visible  = Qt.binding(function() { return ((grid.toLeftAllowed   || (grid.currentVerticalPos == 1 && al.toLeftAllowed ))   && !displayAmbient)})
+            leftIndicator.visible   = Qt.binding(function() { return ((grid.toRightAllowed  || (grid.currentVerticalPos == 1 && al.toRightAllowed))   && (!displayAmbient || !np.modelEmpty))})
+            topIndicator.visible    = Qt.binding(function() { return ((grid.toBottomAllowed || (grid.currentVerticalPos == 1 && al.toBottomAllowed )) && !displayAmbient)})
+            bottomIndicator.visible = Qt.binding(function() { return ((grid.toTopAllowed    || (grid.currentVerticalPos == 1 && al.toTopAllowed ))    && !displayAmbient)})
 
             leftIndicator.keepExpanded = Qt.binding(function() { return !np.modelEmpty && grid.currentHorizontalPos == 0 && grid.currentVerticalPos == 0 })
-
-            Desktop.appLauncher = al
         }
 
         onNormalizedHorOffsetChanged: {
