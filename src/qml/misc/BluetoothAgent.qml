@@ -136,7 +136,7 @@ Item {
 
     Connections {
         target: agent
-        onStateChanged: {
+        function onStateChanged() {
             switch(agent.state) {
                 case BluetoothAgent.AuthService:
                     //% "Authorize:"

@@ -29,7 +29,7 @@
  */
 
 import QtQuick 2.9
-import org.freedesktop.contextkit 1.0
+import Nemo.Mce 1.0
 import Nemo.DBus 2.0
 import org.nemomobile.systemsettings 1.0
 import Nemo.Ngf 1.0
@@ -44,17 +44,12 @@ Item {
     property bool forbidLeft:  true
     property bool forbidRight: true
 
-    ContextProperty {
+    MceBatteryLevel {
         id: batteryChargePercentage
-        key: "Battery.ChargePercentage"
-        value: "100"
-        Component.onCompleted: batteryChargePercentage.subscribe()
     }
 
-    ContextProperty {
-        id: batteryIsCharging
-        key: "Battery.IsCharging"
-        value: false
+    MceBatteryState {
+        id: batteryChargeState
     }
 
     DBusInterface {
@@ -149,9 +144,9 @@ Item {
         Icon {
             id: batteryIcon
             name: {
-                if(batteryIsCharging.value)                 return "ios-battery-charging"
-                else if(batteryChargePercentage.value > 15) return "ios-battery-full"
-                else                                        return "ios-battery-dead"
+                if(batteryChargeState.value == MceBatteryState.Charging) return "ios-battery-charging"
+                else if(batteryChargePercentage.percent > 15)            return "ios-battery-full"
+                else                                                     return "ios-battery-dead"
             }
             width:  parent.height/2
             height: width
@@ -161,7 +156,7 @@ Item {
         Label {
             id: batteryIndicator
             font.pixelSize: parent.height/4
-            text: batteryChargePercentage.value + "%"
+            text: batteryChargePercentage.percent + "%"
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
         }

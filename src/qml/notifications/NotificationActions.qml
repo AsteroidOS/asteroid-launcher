@@ -77,7 +77,7 @@ Item {
 
     Connections {
         target: panelsGrid
-        onCurrentHorizontalPosChanged: {
+        function onCurrentHorizontalPosChanged() {
             if(forbidBottom)
                 layerStack.pop(layerStack.currentLayer)
             updateTimestamp()
