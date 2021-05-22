@@ -116,10 +116,11 @@ GestureFilterArea {
         var currentPanel = panels[currentHorizontalPos + "x" + currentVerticalPos]
         if(currentPanel === undefined) return
 
-        var topPanelName =    currentHorizontalPos + "x" + (currentVerticalPos-1)
-        var bottomPanelName = currentHorizontalPos + "x" + (currentVerticalPos+1)
-        var leftPanelName =   (currentHorizontalPos-1) + "x" + currentVerticalPos
-        var rightPanelName =  (currentHorizontalPos+1) + "x" + currentVerticalPos
+        var currentPanelName = currentHorizontalPos + "x" + currentVerticalPos
+        var topPanelName =     currentHorizontalPos + "x" + (currentVerticalPos-1)
+        var bottomPanelName =  currentHorizontalPos + "x" + (currentVerticalPos+1)
+        var leftPanelName =    (currentHorizontalPos-1) + "x" + currentVerticalPos
+        var rightPanelName =   (currentHorizontalPos+1) + "x" + currentVerticalPos
 
         toTopAllowed    = false
         toBottomAllowed = false
@@ -132,6 +133,9 @@ GestureFilterArea {
                 else if(name.localeCompare(bottomPanelName)===0 && currentPanel.forbidBottom !== true) toTopAllowed = true
                 else if(name.localeCompare(leftPanelName)===0 && currentPanel.forbidLeft !== true)     toRightAllowed = true
                 else if(name.localeCompare(rightPanelName)===0 && currentPanel.forbidRight !== true)   toLeftAllowed = true
+
+                if (name.localeCompare(currentPanelName)===0) panels[name].visible = true
+                else panels[name].visible = false
             }
         }
     }
@@ -143,6 +147,16 @@ GestureFilterArea {
 
     property alias contentX: content.x
     property alias contentY: content.y
+
+    onContentXChanged: {
+        panels[(currentHorizontalPos+1) + "x" + currentVerticalPos].visible = true
+        panels[(currentHorizontalPos-1) + "x" + currentVerticalPos].visible = true
+    }
+
+    onContentYChanged: {
+        panels[currentHorizontalPos + "x" + (currentVerticalPos-1)].visible = true
+        panels[currentHorizontalPos + "x" + (currentVerticalPos+1)].visible = true
+    }
 
     onSwipeMoved: {
         if(horizontal) {
