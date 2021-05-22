@@ -252,7 +252,7 @@ Item {
             else {
                 bgCenterColor = Qt.binding(function() { return defaultCenterColor })
                 bgOuterColor = Qt.binding(function() { return defaultOuterColor })
-                wallpaperDarkener.opacity = Math.abs(normalizedVerOffset)*0.4
+                if (!displayAmbient) wallpaperDarkener.opacity = Math.abs(normalizedVerOffset)*0.4
             }
         }
     }
