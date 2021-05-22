@@ -116,10 +116,11 @@ GestureFilterArea {
         var currentPanel = panels[currentHorizontalPos + "x" + currentVerticalPos]
         if(currentPanel === undefined) return
 
-        var topPanelName =    currentHorizontalPos + "x" + (currentVerticalPos-1)
-        var bottomPanelName = currentHorizontalPos + "x" + (currentVerticalPos+1)
-        var leftPanelName =   (currentHorizontalPos-1) + "x" + currentVerticalPos
-        var rightPanelName =  (currentHorizontalPos+1) + "x" + currentVerticalPos
+        var currentPanelName = currentHorizontalPos + "x" + currentVerticalPos
+        var topPanelName =     currentHorizontalPos + "x" + (currentVerticalPos-1)
+        var bottomPanelName =  currentHorizontalPos + "x" + (currentVerticalPos+1)
+        var leftPanelName =    (currentHorizontalPos-1) + "x" + currentVerticalPos
+        var rightPanelName =   (currentHorizontalPos+1) + "x" + currentVerticalPos
 
         toTopAllowed    = false
         toBottomAllowed = false
@@ -128,10 +129,27 @@ GestureFilterArea {
 
         for(var name in panels) {
             if(panels[name] !== undefined) {
-                if(name.localeCompare(topPanelName)===0 && currentPanel.forbidTop !== true)            toBottomAllowed = true
-                else if(name.localeCompare(bottomPanelName)===0 && currentPanel.forbidBottom !== true) toTopAllowed = true
-                else if(name.localeCompare(leftPanelName)===0 && currentPanel.forbidLeft !== true)     toRightAllowed = true
-                else if(name.localeCompare(rightPanelName)===0 && currentPanel.forbidRight !== true)   toLeftAllowed = true
+                if(name.localeCompare(topPanelName)===0) {
+                    if (currentPanel.forbidTop !== true) toBottomAllowed = true
+                    panels[name].visible = true;
+                }
+                else if(name.localeCompare(bottomPanelName)===0) {
+                    if (currentPanel.forbidBottom !== true) toTopAllowed = true
+                    panels[name].visible = true;
+                }
+                else if(name.localeCompare(leftPanelName)===0) {
+                    if (currentPanel.forbidLeft !== true) toRightAllowed = true
+                    panels[name].visible = true;
+                }
+                else if(name.localeCompare(rightPanelName)===0) {
+                    if (currentPanel.forbidRight !== true) toLeftAllowed = true
+                    panels[name].visible = true;
+                }
+                else if(name.localeCompare(currentPanelName)===0) {
+                    panels[name].visible = true;
+                } else {
+                    panels[name].visible = false;
+                }
             }
         }
     }
