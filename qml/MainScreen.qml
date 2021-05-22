@@ -218,17 +218,18 @@ Item {
         }
 
         onNormalizedHorOffsetChanged: {
-                if (displayAmbient) return
-                wallpaperAnimation.duration = 0
-
-                wallpaper.anchors.horizontalCenterOffset = normalizedHorOffset*width*(-0.05)
-                wallpaperDarkener.opacity = Math.abs(normalizedHorOffset)*0.4
-        }
-        onNormalizedVerOffsetChanged: {
             if (displayAmbient) return
             wallpaperAnimation.duration = 0
 
-            wallpaper.anchors.verticalCenterOffset = height*normalizedVerOffset*(-0.05)
+            wallpaper.anchors.horizontalCenterOffset = normalizedHorOffset*width*(-0.05)
+            wallpaperDarkener.opacity = Math.abs(normalizedHorOffset)*0.4
+        }
+        onNormalizedVerOffsetChanged: {
+            if (!displayAmbient) {
+                wallpaperAnimation.duration = 0
+
+                wallpaper.anchors.verticalCenterOffset = height*normalizedVerOffset*(-0.05)
+            }
 
             if(normalizedVerOffset == 1) {
                 bgCenterColor = Qt.binding(function() { return launcherCenterColor })
