@@ -179,7 +179,7 @@ Item {
 
     Connections {
         target: wallClock
-        onTimeChanged: {
+        function onTimeChanged() {
             var hour = wallClock.time.getHours()
             var minute = wallClock.time.getMinutes()
             var second = wallClock.time.getSeconds()
@@ -240,7 +240,7 @@ Item {
 
     Connections {
         target: localeManager
-        onChangesObserverChanged: {
+        function onChangesObserverChanged() {
             hourCanvas.requestPaint()
             minuteCanvas.requestPaint()
             secondCanvas.requestPaint()

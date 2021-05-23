@@ -105,7 +105,7 @@ MouseArea {
 
                 Connections {
                     target: panelsGrid
-                    onCurrentHorizontalPosChanged: updateTimestamp()
+                    function onCurrentHorizontalPosChanged() { updateTimestamp() }
                 }
             }
 
