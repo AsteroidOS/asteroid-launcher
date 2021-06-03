@@ -126,7 +126,10 @@ Item {
             verticalCenter: parent.verticalCenter
             verticalCenterOffset: parent.height * 0.0281
         }
-        text: wallClock.time.toLocaleString(Qt.locale(), "HH")
+        text: if (use12H.value) {
+                  wallClock.time.toLocaleString(Qt.locale(), "hh ap").slice(0, 2) }
+              else
+                  wallClock.time.toLocaleString(Qt.locale(), "HH")
     }
 
     Text {
@@ -202,6 +205,25 @@ Item {
         text: wallClock.time.toLocaleString(Qt.locale(), "<b>dd</b> MMMM")
     }
 
+    Text {
+        id: pmDisplay
+        visible: use12H.value
+        font.pixelSize: parent.height*0.05
+        font.family: "Titillium"
+        font.styleName:'Semibold'
+        color: Qt.rgba(1, 1, 1, 1)
+        style: Text.Outline
+        styleColor: Qt.rgba(0, 0, 0, 0.5)
+        horizontalAlignment: Text.AlignHCenter
+        anchors {
+            bottomMargin: +parent.height*0.018
+            bottom: dowDisplay.top
+            left: parent.left
+            right: parent.right
+        }
+        text: wallClock.time.toLocaleString(Qt.locale(), "<b>ap</b>")
+    }
+
     Connections {
         target: wallClock
         onTimeChanged: {
@@ -209,12 +231,12 @@ Item {
             var hour = wallClock.time.getHours()
             var minute = wallClock.time.getMinutes()
             var second = wallClock.time.getSeconds()
-            if(secondCanvas.second != second) {
+            if(secondCanvas.second !== second) {
                 secondCanvas.second = second
                 secondCanvas.requestPaint()
-            } if(hourCanvas.hour != hour) {
+            } if(hourCanvas.hour !== hour) {
                 hourCanvas.hour = hour
-            }if(minuteCanvas.minute != minute) {
+            }if(minuteCanvas.minute !== minute) {
                 minuteCanvas.minute = minute
                 minuteCanvas.requestPaint()
                 hourCanvas.requestPaint()
