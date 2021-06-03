@@ -135,7 +135,6 @@ GestureFilterArea {
                 else if(name.localeCompare(rightPanelName)===0 && currentPanel.forbidRight !== true)   toLeftAllowed = true
 
                 if (name.localeCompare(currentPanelName)===0) panels[name].visible = true
-                else panels[name].visible = false
             }
         }
     }
@@ -149,13 +148,13 @@ GestureFilterArea {
     property alias contentY: content.y
 
     onContentXChanged: {
-        panels[(currentHorizontalPos+1) + "x" + currentVerticalPos].visible = true
-        panels[(currentHorizontalPos-1) + "x" + currentVerticalPos].visible = true
+        if (panels[(currentHorizontalPos+1) + "x" + currentVerticalPos] !== undefined) panels[(currentHorizontalPos+1) + "x" + currentVerticalPos].visible = true
+        if (panels[(currentHorizontalPos-1) + "x" + currentVerticalPos] !== undefined) panels[(currentHorizontalPos-1) + "x" + currentVerticalPos].visible = true
     }
 
     onContentYChanged: {
-        panels[currentHorizontalPos + "x" + (currentVerticalPos-1)].visible = true
-        panels[currentHorizontalPos + "x" + (currentVerticalPos+1)].visible = true
+        if (panels[currentHorizontalPos + "x" + (currentVerticalPos-1)] !== undefined) panels[currentHorizontalPos + "x" + (currentVerticalPos-1)].visible = true
+        if (panels[currentHorizontalPos + "x" + (currentVerticalPos+1)] !== undefined) panels[currentHorizontalPos + "x" + (currentVerticalPos+1)].visible = true
     }
 
     onSwipeMoved: {
@@ -209,5 +208,13 @@ GestureFilterArea {
         id: contentAnim
         target: content
         duration: 100
+        onStopped: {
+            var currentPanelName = currentHorizontalPos + "x" + currentVerticalPos
+            for(var name in panels) {
+                if(panels[name] !== undefined) {
+                    if (name.localeCompare(currentPanelName) !==0)  panels[name].visible = false
+                }
+            }
+        }
     }
 }
