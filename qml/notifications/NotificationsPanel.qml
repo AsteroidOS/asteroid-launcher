@@ -53,6 +53,7 @@ Item {
                     var notif = firstNotifView.notification
                     firstNotifView.destroy()
                     var notifView = panelsGrid.addPanel(-2, 0, notificationViewComp)
+                    notifView.visible = false
                     notifView.notification = notif
                     notifView.panelsGrid = panelsGrid
                 } else if(firstNotifView !== null) {
@@ -64,11 +65,13 @@ Item {
             }
                     
             var notifActions = panelsGrid.addPanel(-index-1, -1, notificationActionsComp)
+            notifActions.visible = false
             notifActions.notification = item
             notifActions.panelsGrid = panelsGrid
             notifActions.notificationModel = notifModel
             if(index > 0) {
                 var notifView = panelsGrid.addPanel(-index-1, 0, notificationViewComp)
+                notifView.visible = false
                 notifView.notification = item
                 notifView.panelsGrid = panelsGrid
             } else {
@@ -101,6 +104,7 @@ Item {
                     panelsGrid.removePanel(-i, -1)
 
                     var notifActions = panelsGrid.addPanel(-1, -1, notificationActionsComp)
+                    notifActions.visible = false
                     notifActions.notification = notifModel.get(0)
                     notifActions.notificationModel = notifModel
 
