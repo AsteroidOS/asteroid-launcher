@@ -56,7 +56,12 @@ Item {
             color: Qt.rgba(1, 1, 1, 1)
             y: parent.height/3-height/2+voffset
             x: -parent.width*0.055
-            text: wallClock.time.toLocaleString(Qt.locale(), "<b>HH</b>").replace(/1/g,"&nbsp;1&nbsp;")
+            text: if (use12H.value) {
+                      wallClock.time.toLocaleString(Qt.locale(), "hh ap").slice(0, 2).replace(/1/g," 1 ") }
+                  else
+                      wallClock.time.toLocaleString(Qt.locale(), "HH").replace(/1/g," 1 ")
+
+
         }
 
         Text {

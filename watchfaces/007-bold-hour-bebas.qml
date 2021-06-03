@@ -66,7 +66,10 @@ Item {
         horizontalAlignment: Text.AlignHCenter
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
-        text: wallClock.time.toLocaleString(Qt.locale(), "HH")
+        text: if (use12H.value) {
+                  wallClock.time.toLocaleString(Qt.locale(), "hh ap").slice(0, 2) }
+              else
+                  wallClock.time.toLocaleString(Qt.locale(), "HH")
     }
 
     Canvas {
@@ -115,7 +118,7 @@ Item {
         onTimeChanged: {
             var hour = wallClock.time.getHours()
             var minute = wallClock.time.getMinutes()
-            if(minuteCircle.minute != minute) {
+            if(minuteCircle.minute !== minute) {
                 minuteCircle.minute = minute
                 minuteCircle.requestPaint()
                 minuteArc.requestPaint()

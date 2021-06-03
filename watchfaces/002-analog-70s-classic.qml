@@ -58,7 +58,10 @@ Item {
             top: dayDisplay.bottom
             topMargin: parent.height * 0.0156
         }
-        text: wallClock.time.toLocaleString(Qt.locale(), "<b>HH</b>:mm")
+        text: if (use12H.value) {
+                  wallClock.time.toLocaleString(Qt.locale(), "hh ap").slice(0, 2) + wallClock.time.toLocaleString(Qt.locale(), ":mm") }
+              else
+                  wallClock.time.toLocaleString(Qt.locale(), "HH:mm")
     }
 
     Text {
@@ -327,12 +330,12 @@ Item {
             var hour = wallClock.time.getHours()
             var minute = wallClock.time.getMinutes()
             var second = wallClock.time.getSeconds()
-            if(secondHand.second != second) {
+            if(secondHand.second !== second) {
                 secondHand.second = second
                 secondHand.requestPaint()
-            }if(hourHand.hour != hour) {
+            }if(hourHand.hour !== hour) {
                 hourHand.hour = hour
-            }if(minuteHand.minute != minute) {
+            }if(minuteHand.minute !== minute) {
                 minuteHand.minute = minute
                 minuteHand.requestPaint()
                 hourHand.requestPaint()
