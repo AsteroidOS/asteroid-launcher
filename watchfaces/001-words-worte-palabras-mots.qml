@@ -85,14 +85,14 @@ Item {
         }
 
         function generateTimeDe(time) {
-            var nextHour   = [false, false, false, false, false, false, false, false, false, true, true, true, true]
+            var nextHour   = [false, false, false, false, false, true, true, true, true, true, true, true, true]
             var minutes = Math.round(time.getMinutes()/5)
             var hours = (time.getHours() + (nextHour[minutes] ? 1 : 0)) % 12
 
-            var minutesList = ["UHR", "<b>fünf</b><br>nach", "<b>zehn</b><br>nach", "<b>viertel</b><br>nach", "<b>zwanzig</b>", "<b>fünf</b><br> vor halb", "<b>halb</b>", "<b>fünf</b><br> nach halb", "<b>vierzig</b>", "<b>viertel</b><br>vor", "<b>zehn</b><br>vor", "<b>fünf</b><br>vor", "UHR"]
-            var hoursList = ["<b>zwölf</b>", minutesList[minutes] == "UHR" ? "<b>ein</b>" : "<b>eins</b>", "<b>zwei</b>", "<b>drei</b>", "<b>vier</b>", "<b>fünf</b>", "<b>sechs</b>", "<b>sieben</b>", "<b>acht</b>", "<b>neun</b>", "<b>zehn</b>", "<b>elf</b>"]
-            var minutesFirst = [false, true, true, true, false, true, true, true, false, true, true, true, false]
-            var hourSuffix = [false, false, false, false ,true, false, false, false, true, false, false, false, false]
+            var minutesList = ["UHR", "<b>fünf</b><br>nach", "<b>zehn</b><br>nach", "<b>viertel</b><br>nach", "<b>zwanzig</b><br>nach", "<b>fünf</b><br> vor halb", "<b>halb</b>", "<b>fünf</b><br> nach halb", "<b>zwanzig</b><br>vor", "<b>viertel</b><br>vor", "<b>zehn</b><br>vor", "<b>fünf</b><br>vor", "UHR"]
+            var hoursList = ["<b>zwölf</b>", minutesList[minutes] === "UHR" ? "<b>ein</b>" : "<b>eins</b>", "<b>zwei</b>", "<b>drei</b>", "<b>vier</b>", "<b>fünf</b>", "<b>sechs</b>", "<b>sieben</b>", "<b>acht</b>", "<b>neun</b>", "<b>zehn</b>", "<b>elf</b>"]
+            var minutesFirst = [false, true, true, true, true, true, true, true, true, true, true, true, false]
+            var hourSuffix = [false, false, false, false ,false, false, false, false, false, false, false, false, false]
 
 
 
@@ -142,7 +142,7 @@ Item {
         id: timeDisplay
 
         textFormat: Text.RichText
-        font.pixelSize: Qt.locale().name.substring(0,2) == "fr" ? parent.height * 0.135 : Qt.locale().name.substring(0,2) == "es" ? parent.height * 0.145 : parent.height * 0.15
+        font.pixelSize: Qt.locale().name.substring(0,2) === "fr" ? parent.height * 0.135 : Qt.locale().name.substring(0,2) === "es" ? parent.height * 0.145 : parent.height * 0.15
         font.weight: Font.Light
         lineHeight: 0.85
         color: "white"
@@ -156,7 +156,7 @@ Item {
             right: parent.right
         }
 
-        text: Qt.locale().name.substring(0,2) == "de" ? generateTimeDe(wallClock.time): Qt.locale().name.substring(0,2) == "es" ? generateTimeEs(wallClock.time): Qt.locale().name.substring(0,2) == "fr" ? generateTimeFr(wallClock.time): generateTimeEn(wallClock.time)
+        text: Qt.locale().name.substring(0,2) === "de" ? generateTimeDe(wallClock.time): Qt.locale().name.substring(0,2) === "es" ? generateTimeEs(wallClock.time): Qt.locale().name.substring(0,2) === "fr" ? generateTimeFr(wallClock.time): generateTimeEn(wallClock.time)
     }
 
     Text {
