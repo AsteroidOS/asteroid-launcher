@@ -98,7 +98,7 @@
     <message id="id-date-page">
         <location filename="../qml/firstrun/FirstRunConfig.qml" line="196"/>
         <source>Date</source>
-        <translation>تاريخ</translation>
+        <translation>التاريخ</translation>
     </message>
     <message id="id-add-alarm">
         <location filename="../qml/firstrun/FakeAlarmclock.qml" line="77"/>
