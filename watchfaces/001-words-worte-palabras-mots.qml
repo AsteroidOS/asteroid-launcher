@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2018 - Timo Könnecke <el-t-mo@arcor.de>
+ * Copyright (C) 2021 - Oliver Geneser <olivergeneser@gmail.com>
+ *               2018 - Timo Könnecke <el-t-mo@arcor.de>
  *               2016 - Sylvia van Os <iamsylvie@openmailbox.org>
  *               2015 - Florent Revest <revestflo@gmail.com>
  *               2014 - Aleksi Suomalainen <suomalainen.aleksi@gmail.com>
@@ -139,6 +140,28 @@ Item {
             return start + generatedString + end
         }
 
+        function generateTimeDa(time) {
+            var minutesList = ["", "<b>fem</b><br>over", "<b>ti</b><br>over", "<b>kvart</b><br>over", "<b>tyve</b><br>over", "femog<br>tyve", "<b>halv</b>", "femog<br>tredive", "<b>fyrre</b>", "<b>kvart</b><br><b>I</b>", "<b>ti</b><br><b>I</b>", "<b>fem</b><br><b>I</b>", ""]
+            var hoursList = ["<b>tolv</b>", "<b>et</b>", "<b>to</b>", "<b>tre</b>", "<b>fire</b>", "<b>fem</b>", "<b>seks</b>", "<b>syv</b>", "<b>otte</b>", "<b>ni</b>", "<b>ti</b>", "<b>elleve</b>"]
+            var minutesFirst = [false, true, true, true, true, false, true, false, false, true, true, true, false]
+            var nextHour = [false, false, false, false, false, false, true, false, false, true, true, true, false]
+
+            var minutes = Math.round(time.getMinutes()/5)
+            var hours = (time.getHours() + (nextHour[minutes] ? 1 : 0)) % 12
+
+            var start = "<p style=\"text-align:center\">"
+            var newline = "<br>"
+            var end = "</p>"
+
+            if (minutesFirst[minutes]) {
+                var generatedString = minutesList[minutes].toUpperCase() + newline + hoursList[hours].toUpperCase()
+            } else {
+                var generatedString = hoursList[hours].toUpperCase() + newline + minutesList[minutes].toUpperCase()
+            }
+
+            return start + generatedString + end
+        }
+
         id: timeDisplay
 
         textFormat: Text.RichText
@@ -156,7 +179,7 @@ Item {
             right: parent.right
         }
 
-        text: Qt.locale().name.substring(0,2) === "de" ? generateTimeDe(wallClock.time): Qt.locale().name.substring(0,2) === "es" ? generateTimeEs(wallClock.time): Qt.locale().name.substring(0,2) === "fr" ? generateTimeFr(wallClock.time): generateTimeEn(wallClock.time)
+        text: Qt.locale().name.substring(0,2) === "de" ? generateTimeDe(wallClock.time): Qt.locale().name.substring(0,2) === "es" ? generateTimeEs(wallClock.time): Qt.locale().name.substring(0,2) === "fr" ? generateTimeFr(wallClock.time): Qt.locale().name.substring(0,2) === "da" ? generateTimeDa(wallClock.time): generateTimeEn(wallClock.time)
     }
 
     Text {
