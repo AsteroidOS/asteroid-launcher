@@ -121,7 +121,7 @@ Item {
             var minutesList = ["pile", "<b>cinq</b>", "<b>dix</b>", "et <b>quart</b>", "<b>vingt</b>", "<b>vingt-cinq</b>", "et <b>demie</b>", "moins<br><b>vingt-cinq</b>", "moins<br><b>vingt</b>", "moins le<br><b>quart</b>", "moins <b>dix</b>", "moins <b>cinq</b>", "pile"]
             var hoursList = ["<b>douze</b><br>heures", "<b>une</b><br>heure", "<b>deux</b><br>heures", "<b>trois</b><br>heures", "<b>quatre</b><br>heures", "<b>cinq</b><br>heures", "<b>six</b><br>heures", "<b>sept</b><br>heures", "<b>huit</b><br>heures", "<b>neuf</b><br>heures", "<b>dix</b><br>heures", "<b>onze</b><br>heures"]
             var minutesFirst = [false, false, false, false, false, false, false, false, false, false, false, false, false]
-            var nextHour = [false, false, false, false, false, false, true, true, true, true, true, true, true]
+            var nextHour = [false, false, false, false, false, false, false, false, false, false, false, false, false]
 
             var minutes = Math.round(time.getMinutes()/5)
             var hours = (time.getHours() + (nextHour[minutes] ? 1 : 0)) % 12
