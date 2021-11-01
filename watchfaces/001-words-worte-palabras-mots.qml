@@ -121,7 +121,7 @@ Item {
         function generateTimeFr(time) {
             var minutesList = ["heures<br>pile", "heures<br><b>cinq</b>", "heures<br><b>dix</b>", "heures<br>et <b>quart</b>", "heures<br><b>vingt</b>", "heures<br><b>vingt-cinq</b>", "heures<br>et <b>demie</b>", "heures<br>moins<br><b>vingt-cinq</b>", "heures<br>moins<br><b>vingt</b>", "heures<br>moins le<br><b>quart</b>", "heures<br>moins<br><b>dix</b>", "heures<br>moins<br><b>cinq</b>", "pile"]
             var hoursList = ["<b>douze</b>", "<b>une</b>", "<b>deux</b>", "<b>trois</b>", "<b>quatre</b>", "<b>cinq</b>", "<b>six</b>", "<b>sept</b>", "<b>huit</b>", "<b>neuf</b>", "<b>dix</b>", "<b>onze</b>"]
-            var minutesFirst = [false, false, false, false, false, false, false, false, false, false, true, true, false]
+            var minutesFirst = [false, false, false, false, false, false, false, false, false, false, false, false, false]
             var nextHour = [false, false, false, false, false, false, false, true, true, true, true, true, true]
 
             var minutes = Math.round(time.getMinutes()/5)
