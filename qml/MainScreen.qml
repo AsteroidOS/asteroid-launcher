@@ -33,6 +33,7 @@ import Nemo.Time 1.0
 import Nemo.Configuration 1.0
 import org.nemomobile.lipstick 0.1
 import org.asteroid.controls 1.0
+import org.asteroid.utils 1.0
 import org.asteroid.launcher 1.0
 import "desktop.js" as Desktop
 
@@ -73,6 +74,12 @@ Item {
         }
     }
 
+    ConfigurationValue {
+        id: useBip
+        key: "/org/asteroidos/settings/use-burn-in-protection"
+        defaultValue: DeviceInfo.needsBurnInProtection
+    }
+
     Item {
         id: burnInProtectionManager
 
@@ -90,7 +97,7 @@ Item {
         property int heightOffset
 
         // Enable/disable burn in protection.
-        enabled: true
+        enabled: DeviceInfo.needsBurnInProtection && useBip.value
 
         onHeightOffsetChanged: {
             topOffset = heightOffset/2
