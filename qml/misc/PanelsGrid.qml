@@ -181,18 +181,20 @@ GestureFilterArea {
     onSwipeReleased: {
         if(!tracing) {
             if(horizontal) {
-                if(velocity>0 && toRightAllowed)
+                var loc = contentX+currentHorizontalPos*panelWidth
+                if((loc > width/2) || velocity > 10 && toRightAllowed)
                     currentHorizontalPos--
-                else if(velocity< 0 && toLeftAllowed)
+                else if((loc < -width/2) || velocity < -10 && toLeftAllowed)
                     currentHorizontalPos++
 
                 contentAnim.property = "x"
                 contentAnim.to = -panelWidth*currentHorizontalPos
                 contentAnim.start()
             } else {
-                if(velocity>0 && toBottomAllowed)
+                var loc = contentY+currentVerticalPos*panelHeight
+                if((loc > height/2 && velocity > 0) || velocity > 10 && toBottomAllowed)
                     currentVerticalPos--
-                else if(velocity< 0 && toTopAllowed)
+                else if((loc < -height/2 && velocity < 0) || velocity < -10 && toTopAllowed)
                     currentVerticalPos++
 
                 contentAnim.property = "y"
