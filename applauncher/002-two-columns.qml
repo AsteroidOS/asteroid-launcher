@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2021 Darrel Griët <dgriet@gmail.com>
+ *               2021 Timo Könnecke <github.com/eLtMosen>
  *               2015 Florent Revest <revestflo@gmail.com>
  *               2014 Aleksi Suomalainen <suomalainen.aleksi@gmail.com>
  *               2012 Timur Kristóf <venemo@fedoraproject.org>
@@ -41,11 +42,11 @@ GridView {
     snapMode: GridView.SnapToRow
     anchors.fill: parent
     clip: true
-    cellHeight: appsView.height/2
-    cellWidth: appsView.width/2
+    cellHeight: appsView.height / 2
+    cellWidth: appsView.width / 2
 
-    preferredHighlightBegin: width /2 - currentItem.width /2
-    preferredHighlightEnd: width /2 + currentItem.width /2
+    preferredHighlightBegin: width / 2 - currentItem.width / 2
+    preferredHighlightEnd: width / 2 + currentItem.width / 2
     highlightRangeMode: ListView.StrictlyEnforceRange
     contentY: -(width / 2 - (width / 4))
 
@@ -62,10 +63,10 @@ GridView {
         target: grid
         function onCurrentVerticalPosChanged() {
             // Move app view to beginning when the watchface is visible.
-            if (grid.currentVerticalPos == 0) {
+            if (grid.currentVerticalPos === 0) {
                 appsView.highlightMoveDuration = 0
                 appsView.currentIndex = 0
-            } else if (grid.currentVerticalPos == 1) {
+            } else if (grid.currentVerticalPos === 1) {
                 appsView.highlightMoveDuration = 1500
                 forbidTop = false
                 grid.changeAllowedDirections()
@@ -75,30 +76,41 @@ GridView {
 
     onAtYBeginningChanged: {
         // Make sure that the grid doesn't move when the app view is visible.
-        if ((grid.currentHorizontalPos == 0) && (grid.currentVerticalPos == 1)) {
+        if ((grid.currentHorizontalPos === 0) && (grid.currentVerticalPos === 1)) {
             forbidTop = !atYBeginning
             grid.changeAllowedDirections()
         }
     }
 
     model: launcherModel
+    property int index: 0
+    /* index to help assign different spacing
+       to odd and even indexed items so they
+       vertically center in two columns. */
+    onChildrenChanged: index++
 
     delegate: MouseArea {
         id: launcherItem
         width: appsView.width / 2
-        height: appsView.width / 2
+        height: width
         enabled: !appsView.dragging
 
         onClicked: model.object.launchApplication()
 
         Item {
             id: circleWrapper
-            anchors.fill: parent
+            width: parent.width * 0.76
+            height: width
+            anchors {
+                verticalCenter: parent.verticalCenter
+                horizontalCenter: parent.horizontalCenter
+                horizontalCenterOffset: index % 2 ? -parent.width * 0.045 : parent.width * 0.045
+            }
             Rectangle {
                 id: circle
                 anchors.centerIn: parent
-                width: parent.width*0.8
-                height: parent.height*0.8
+                width: parent.width
+                height: parent.height
                 radius: width/2
                 color: launcherItem.pressed | fakePressed ? "#cccccc" : "#f4f4f4"
             }
@@ -108,7 +120,7 @@ GridView {
             horizontalOffset: 0
             verticalOffset: 0
             radius: 8.0
-            samples: 17
+            samples: 12
             color: "#80000000"
             source: circleWrapper
             cached: true
@@ -116,11 +128,11 @@ GridView {
 
         Icon {
             id: icon
-            anchors.centerIn: parent
-            width: parent.width * 0.6
+            anchors.centerIn: circleWrapper
+            width: parent.width * 0.55
             height: width
-            color: "#666666"
-            name: model.object.iconId == "" ? "ios-help" : model.object.iconId
+            color: launcherItem.pressed | fakePressed ? "#444444" : "#666666"
+            name: model.object.iconId === "" ? "ios-help" : model.object.iconId
         }
 
         Label {
@@ -128,12 +140,22 @@ GridView {
             anchors.top: icon.bottom
             width: parent.width
             horizontalAlignment: Text.AlignHCenter
-            anchors.topMargin: Dims.h(5)
-            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.topMargin: parent.height * 0.116
+            anchors.horizontalCenter: circleWrapper.horizontalCenter
             color: "#ffffff"
             font.pixelSize: ((appsView.width > appsView.height ? appsView.height : appsView.width) / Dims.l(100)) * Dims.l(5)
-            font.weight: Font.Medium
+            font.styleName: "SemiCondensed Bold"
+            font.letterSpacing: parent.width * 0.002
             text: model.object.title.toUpperCase() + localeManager.changesObserver
+            layer.enabled: true
+            layer.effect: DropShadow {
+                transparentBorder: true
+                horizontalOffset: 0
+                verticalOffset: 0
+                radius: 3.0
+                samples: 3
+                color: "#80000000"
+            }
         }
     }
 
