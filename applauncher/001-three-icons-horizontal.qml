@@ -42,8 +42,8 @@ ListView {
     anchors.fill: parent
     clip: true
 
-    preferredHighlightBegin: width /2 - currentItem.width /2
-    preferredHighlightEnd: width /2 + currentItem.width /2
+    preferredHighlightBegin: width / 2 - currentItem.width / 2
+    preferredHighlightEnd: width / 2 + currentItem.width / 2
     highlightRangeMode: ListView.StrictlyEnforceRange
     contentY: -(width / 2 - (width / 4))
 
@@ -59,7 +59,7 @@ ListView {
     Connections {
         target: grid
         function onCurrentVerticalPosChanged() {
-            if (grid.currentVerticalPos == 1) {
+            if (grid.currentVerticalPos === 1) {
                 grid.changeAllowedDirections()
             }
         }
@@ -70,7 +70,7 @@ ListView {
     delegate: MouseArea {
         id: launcherItem
         width: appsListView.width / 2
-        height: appsListView.width / 2
+        height: width
         enabled: !appsListView.dragging
 
         onClicked: model.object.launchApplication()
@@ -81,8 +81,8 @@ ListView {
             Rectangle {
                 id: circle
                 anchors.centerIn: parent
-                width: parent.width*0.8
-                height: parent.height*0.8
+                width: parent.width * 0.8
+                height: width
                 radius: width/2
                 color: launcherItem.pressed | fakePressed ? "#cccccc" : "#f4f4f4"
             }
@@ -92,7 +92,7 @@ ListView {
             horizontalOffset: 0
             verticalOffset: 0
             radius: 8.0
-            samples: 17
+            samples: 12
             color: "#80000000"
             source: circleWrapper
             cached: true
@@ -103,8 +103,8 @@ ListView {
             anchors.centerIn: parent
             width: parent.width * 0.6
             height: width
-            color: "#666666"
-            name: model.object.iconId == "" ? "ios-help" : model.object.iconId
+            color: launcherItem.pressed | fakePressed ? "#444444" : "#666666"
+            name: model.object.iconId === "" ? "ios-help" : model.object.iconId
         }
 
         Label {
@@ -112,12 +112,22 @@ ListView {
             anchors.top: icon.bottom
             width: parent.width
             horizontalAlignment: Text.AlignHCenter
-            anchors.topMargin: Dims.h(6)
+            anchors.topMargin: parent.height * 0.12
             anchors.horizontalCenter: parent.horizontalCenter
             color: "#ffffff"
             font.pixelSize: ((appsListView.width > appsListView.height ? appsListView.height : appsListView.width) / Dims.l(100)) * Dims.l(5)
-            font.weight: Font.Medium
+            font.styleName: "SemiCondensed Bold"
+            font.letterSpacing: parent.width * 0.002
             text: model.object.title.toUpperCase() + localeManager.changesObserver
+            layer.enabled: true
+            layer.effect: DropShadow {
+                transparentBorder: true
+                horizontalOffset: 0
+                verticalOffset: 0
+                radius: 3.0
+                samples: 3
+                color: "#80000000"
+            }
         }
     }
 
@@ -134,7 +144,7 @@ ListView {
         forbidBottom = false
         forbidLeft = false
         forbidRight = false
-        if (grid.currentVerticalPos == 1) {
+        if (grid.currentVerticalPos === 1) {
             grid.changeAllowedDirections()
         }
     }

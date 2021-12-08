@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2015 Florent Revest <revestflo@gmail.com>
+ * Copyright (C) 2021 Timo Könnecke <github.com/eLtMosen>
+ *               2015 Florent Revest <revestflo@gmail.com>
  *               2014 Aleksi Suomalainen <suomalainen.aleksi@gmail.com>
  *               2012 Timur Kristóf <venemo@fedoraproject.org>
  *               2011 Tom Swindell <t.swindell@rubyx.co.uk>
@@ -53,7 +54,7 @@ ListView {
     Connections {
         target: grid
         function onCurrentVerticalPosChanged() {
-            if (grid.currentVerticalPos == 1) {
+            if (grid.currentVerticalPos === 1) {
                 grid.changeAllowedDirections()
             }
         }
@@ -64,7 +65,7 @@ ListView {
     delegate: MouseArea {
         id: launcherItem
         width: appsListView.width
-        height: appsListView.width
+        height: width
         enabled: !appsListView.dragging
 
         onClicked: model.object.launchApplication()
@@ -75,8 +76,8 @@ ListView {
             Rectangle {
                 id: circle
                 anchors.centerIn: parent
-                width: parent.width*0.7
-                height: parent.height*0.7
+                width: parent.width * 0.7
+                height: width
                 radius: width/2
                 color: launcherItem.pressed | fakePressed ? "#cccccc" : "#f4f4f4"
             }
@@ -86,7 +87,7 @@ ListView {
             horizontalOffset: 0
             verticalOffset: 0
             radius: 8.0
-            samples: 17
+            samples: 12
             color: "#80000000"
             source: circleWrapper
             cached: true
@@ -95,11 +96,11 @@ ListView {
         Icon {
             id: icon
             anchors.centerIn: parent
-            anchors.verticalCenterOffset: -Dims.h(3)
+            anchors.verticalCenterOffset: -parent.height * 0.03
             width: parent.width * 0.31
             height: width
-            color: "#666666"
-            name: model.object.iconId == "" ? "ios-help" : model.object.iconId
+            color: launcherItem.pressed | fakePressed ? "#444444" : "#666666"
+            name: model.object.iconId === "" ? "ios-help" : model.object.iconId
         }
 
         Label {
@@ -107,9 +108,9 @@ ListView {
             anchors.top: icon.bottom
             width: parent.width * 0.5
             horizontalAlignment: Text.AlignHCenter
-            anchors.topMargin: Dims.h(4)
+            anchors.topMargin: parent.height * 0.04
             anchors.horizontalCenter: parent.horizontalCenter
-            color: "#666666"
+            color: launcherItem.pressed | fakePressed ? "#444444" : "#666666"
             font.pixelSize: ((appsListView.width > appsListView.height ? appsListView.height : appsListView.width) / Dims.l(100)) * Dims.l(5)
             font.weight: Font.Medium
             text: model.object.title.toUpperCase() + localeManager.changesObserver
@@ -129,7 +130,7 @@ ListView {
         forbidBottom = false
         forbidLeft = false
         forbidRight = false
-        if (grid.currentVerticalPos == 1) {
+        if (grid.currentVerticalPos === 1) {
             grid.changeAllowedDirections()
         }
     }
@@ -139,7 +140,7 @@ ListView {
         var upperStop = lowerStop+1
         var ratio = (contentX%appsListView.width)/appsListView.width
 
-        if(upperStop + 1 > launcherModel.itemCount || ratio == 0) {
+        if(upperStop + 1 > launcherModel.itemCount || ratio === 0) {
             launcherCenterColor = alb.centerColor(launcherModel.get(lowerStop).filePath);
             launcherOuterColor = alb.outerColor(launcherModel.get(lowerStop).filePath);
             return;
