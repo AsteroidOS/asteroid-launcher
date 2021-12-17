@@ -55,7 +55,7 @@ int main(int argc, char **argv)
     LauncherLocaleManager *launcherLocaleManager = new LauncherLocaleManager();
     QObject::connect(app.localeManager(), SIGNAL(localeChanged()), launcherLocaleManager, SLOT(onLocaleChanged()));
 
-    QGuiApplication::setFont(QFont("Open Sans"));
+    QGuiApplication::setFont(QFont("Noto Sans"));
     app.setCompositorPath("qrc:/qml/compositor.qml");
     Qt::ScreenOrientation nativeOrientation = app.primaryScreen()->nativeOrientation();
     QByteArray v = qgetenv("LAUNCHER_NATIVEORIENTATION");
