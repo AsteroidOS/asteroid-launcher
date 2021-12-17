@@ -38,7 +38,7 @@ Item {
         z: 0
         width: parent.width
         height: parent.height
-        source: "../watchfaces-img/funky" + wallClock.time.toLocaleString(Qt.locale(), "hh am").slice(0, 2) + ".svg"
+        source: "../watchfaces-img/funky-town-words-" + wallClock.time.toLocaleString(Qt.locale(), "hh am").slice(0, 2) + ".svg"
         sourceSize.width: parent.width
         sourceSize.height: parent.height
         anchors {
@@ -52,7 +52,7 @@ Item {
         visible: use12H.value
         width: parent.width
         height: parent.height
-        source: "../watchfaces-img/funky" + wallClock.time.toLocaleString(Qt.locale("en_EN"), "ap").toLowerCase().slice(0, 2) + ".svg"
+        source: "../watchfaces-img/funky-town-words-" + wallClock.time.toLocaleString(Qt.locale("en_EN"), "ap").toLowerCase().slice(0, 2) + ".svg"
         sourceSize.width: parent.width
         sourceSize.height: parent.height
         anchors {
