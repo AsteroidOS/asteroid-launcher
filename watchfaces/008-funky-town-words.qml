@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 - Timo Könnecke <el-t-mo@arcor.de>
+ * Copyright (C) 2021 - Timo Könnecke <el-t-mo@arcor.de>
  *               2016 - Sylvia van Os <iamsylvie@openmailbox.org>
  *               2015 - Florent Revest <revestflo@gmail.com>
  *               2014 - Aleksi Suomalainen <suomalainen.aleksi@gmail.com>
@@ -62,19 +62,23 @@ Item {
     }
 
     Text {
-        z: 1
         id: minuteDisplay
-        font.pixelSize: parent.height*0.24
+
+        property bool animToggle: true
+        onTextChanged: if (!displayAmbient) { animToggle ? animToggle = false : animToggle = true }
+
+        z: 1
+        font.pixelSize: parent.height * 0.22
         font.family: "Source Sans Pro"
         font.styleName: "Light"
         color: "white"
         anchors {
             bottom: parent.bottom
-            bottomMargin: parent.height*0.155
+            bottomMargin: parent.height * 0.15
             horizontalCenter: parent.horizontalCenter
-            horizontalCenterOffset: parent.width*0.210
+            horizontalCenterOffset: parent.width*0.2
         }
-        Behavior on text {
+        Behavior on animToggle {
             SequentialAnimation {
                 NumberAnimation { target: minuteDisplay; property: "opacity"; to: 0 }
                 PropertyAction {}
@@ -85,9 +89,9 @@ Item {
     }
 
     Component.onCompleted: {
-        burnInProtectionManager.leftOffset = Qt.binding(function() { return width*0.4})
-        burnInProtectionManager.rightOffset = Qt.binding(function() { return width*0.05})
-        burnInProtectionManager.topOffset = Qt.binding(function() { return height*0.4})
-        burnInProtectionManager.bottomOffset = Qt.binding(function() { return height*0.05})
+        burnInProtectionManager.leftOffset = Qt.binding(function() { return width * 0.4})
+        burnInProtectionManager.rightOffset = Qt.binding(function() { return width * 0.05})
+        burnInProtectionManager.topOffset = Qt.binding(function() { return height * 0.4})
+        burnInProtectionManager.bottomOffset = Qt.binding(function() { return height * 0.05})
     }
 }
