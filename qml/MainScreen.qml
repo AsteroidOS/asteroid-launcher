@@ -52,6 +52,7 @@ Item {
 
     property var launcherCenterColor: defaultCenterColor
     property var launcherOuterColor: defaultOuterColor
+    property var launcherColorOverride: false
 
     property var displayAmbient: Lipstick.compositor.displayAmbient
 
@@ -269,12 +270,12 @@ Item {
                 wallpaper.anchors.verticalCenterOffset = height*normalizedVerOffset*(-0.05)
             }
 
-            if(normalizedVerOffset == 1) {
+            if(normalizedVerOffset == 1 && !launcherColorOverride) {
                 bgCenterColor = Qt.binding(function() { return launcherCenterColor })
                 bgOuterColor = Qt.binding(function() { return launcherOuterColor })
             }
 
-            else if(normalizedVerOffset > 0) {
+            else if(normalizedVerOffset > 0 && !launcherColorOverride) {
                 bgCenterColor = Qt.rgba(
                             launcherCenterColor.r * normalizedVerOffset + defaultCenterColor.r * (1-normalizedVerOffset),
                             launcherCenterColor.g * normalizedVerOffset + defaultCenterColor.g * (1-normalizedVerOffset),
