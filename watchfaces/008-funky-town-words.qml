@@ -64,9 +64,6 @@ Item {
     Text {
         id: minuteDisplay
 
-        property bool animToggle: true
-        onTextChanged: if (!displayAmbient) { animToggle ? animToggle = false : animToggle = true }
-
         z: 1
         font.pixelSize: parent.height * 0.22
         font.family: "Source Sans Pro"
@@ -78,7 +75,9 @@ Item {
             horizontalCenter: parent.horizontalCenter
             horizontalCenterOffset: parent.width*0.2
         }
-        Behavior on animToggle {
+        Behavior on text {
+            enabled: !displayAmbient
+
             SequentialAnimation {
                 NumberAnimation { target: minuteDisplay; property: "opacity"; to: 0 }
                 PropertyAction {}
