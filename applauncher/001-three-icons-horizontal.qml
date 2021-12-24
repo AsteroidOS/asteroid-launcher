@@ -144,6 +144,7 @@ ListView {
         forbidBottom = false
         forbidLeft = false
         forbidRight = false
+        launcherColorOverride = false
         if (grid.currentVerticalPos === 1) {
             grid.changeAllowedDirections()
         }
