@@ -238,6 +238,18 @@ Item {
         }
     }
 
+    onLauncherColorOverrideChanged: {
+        if (launcherColorOverride) {
+            bgCenterColor = Qt.binding(function() { return defaultCenterColor })
+            bgOuterColor = Qt.binding(function() { return defaultOuterColor })
+            wallpaperDarkener.opacity = Math.abs(grid.normalizedVerOffset)*0.4
+        } else {
+            bgCenterColor = Qt.binding(function() { return launcherCenterColor })
+            bgOuterColor = Qt.binding(function() { return launcherOuterColor })
+            wallpaperDarkener.opacity = 0
+        }
+    }
+
     PanelsGrid {
         id: grid 
         anchors.fill: parent

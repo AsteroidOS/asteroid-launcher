@@ -171,6 +171,7 @@ GridView {
         forbidBottom = false
         forbidLeft = false
         forbidRight = false
+        launcherColorOverride = false
     }
 
     onContentYChanged: {
