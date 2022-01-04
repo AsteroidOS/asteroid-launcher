@@ -146,16 +146,8 @@ ListView {
                 anchors.centerIn: circleWrapper
                 width: circleWrapper.width * 0.70
                 height: width
-                color: launcherItem.pressed | fakePressed ? "#ffffffff" : "#eeffffff"
+                opacity: launcherItem.pressed | fakePressed ? 1.0 : 0.9
                 name: model.object.iconId === "" ? "ios-help" : model.object.iconId
-                Behavior on color {
-                    PropertyAnimation {
-                                    target: icon
-                                    property: "color"
-                                    duration: 70
-
-                                }
-                }
             }
             Label {
                 id: iconText
