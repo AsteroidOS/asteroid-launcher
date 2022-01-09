@@ -340,7 +340,7 @@ Item {
     ConfigurationValue {
         id: wallpaperSource
         key: "/desktop/asteroid/background-filename"
-        defaultValue: "file:///usr/share/asteroid-launcher/wallpapers/000-flatmesh.qml"
+        defaultValue: "file:///usr/share/asteroid-launcher/wallpapers/full/000-flatmesh.qml"
 
         function updateWallpaper() {
             var endsWithQml = /qml$/;
