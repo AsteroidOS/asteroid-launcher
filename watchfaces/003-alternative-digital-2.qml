@@ -52,7 +52,7 @@ Item {
         anchors.fill: parent
         antialiasing: true
         smooth: true
-        renderStrategy: Canvas.Threaded
+        renderStrategy: Canvas.Cooperative
 
         property var hour: 0
 
@@ -72,7 +72,7 @@ Item {
         anchors.fill: parent
         antialiasing: true
         smooth: true
-        renderStrategy: Canvas.Threaded
+        renderStrategy: Canvas.Cooperative
 
         property var minute: 0
 
@@ -92,7 +92,7 @@ Item {
         anchors.fill: parent
         antialiasing: true
         smooth: true
-        renderStrategy: Canvas.Threaded
+        renderStrategy: Canvas.Cooperative
 
         property var date: 0
 
@@ -114,7 +114,7 @@ Item {
         anchors.fill: parent
         antialiasing: true
         smooth: true
-        renderStrategy: Canvas.Threaded
+        renderStrategy: Canvas.Cooperative
 
         property var month: 0
 
@@ -136,7 +136,7 @@ Item {
         anchors.fill: parent
         antialiasing: true
         smooth: true
-        renderStrategy: Canvas.Threaded
+        renderStrategy: Canvas.Cooperative
         visible: use12H.value
 
         property var am: false
@@ -159,7 +159,7 @@ Item {
         anchors.fill: parent
         antialiasing: true
         smooth: true
-        renderStrategy: Canvas.Threaded
+        renderStrategy: Canvas.Cooperative
         visible: !use12H.value && !displayAmbient
 
         property var second: 0

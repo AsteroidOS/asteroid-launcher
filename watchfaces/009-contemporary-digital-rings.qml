@@ -57,7 +57,7 @@ Item {
         property var second: 0
         anchors.fill: parent
         smooth: true
-        renderStrategy: Canvas.Threaded
+        renderStrategy: Canvas.Cooperative
         visible: !displayAmbient
         onPaint: {
             var ctx = getContext("2d")
@@ -77,7 +77,7 @@ Item {
         property var minute: 0
         anchors.fill: parent
         smooth: true
-        renderStrategy: Canvas.Threaded
+        renderStrategy: Canvas.Cooperative
         visible: !displayAmbient
         onPaint: {
             var ctx = getContext("2d")
@@ -96,7 +96,7 @@ Item {
         property var hour: 0
         anchors.fill: parent
         smooth: true
-        renderStrategy: Canvas.Threaded
+        renderStrategy: Canvas.Cooperative
         visible: !displayAmbient
         onPaint: {
             var ctx = getContext("2d")
