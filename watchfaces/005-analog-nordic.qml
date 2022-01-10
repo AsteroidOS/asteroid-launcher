@@ -33,7 +33,7 @@ Item {
         property var hour: 0
         anchors.fill: parent
         smooth: true
-        renderStrategy: Canvas.Threaded
+        renderStrategy: Canvas.Cooperative
         onPaint: {
             var ctx = getContext("2d")
             ctx.reset()
@@ -100,7 +100,7 @@ Item {
         property var minute: 0
         anchors.fill: parent
         smooth: true
-        renderStrategy: Canvas.Threaded
+        renderStrategy: Canvas.Cooperative
         onPaint: {
             var ctx = getContext("2d")
             ctx.reset()
@@ -162,7 +162,7 @@ Item {
         property var second: 0
         anchors.fill: parent
         smooth: true
-        renderStrategy: Canvas.Threaded
+        renderStrategy: Canvas.Cooperative
         visible: !displayAmbient
         onPaint: {
             var ctx = getContext("2d")
@@ -197,7 +197,7 @@ Item {
         id: nailDot
         anchors.fill: parent
         smooth: true
-        renderStrategy: Canvas.Threaded
+        renderStrategy: Canvas.Cooperative
         onPaint: {
             var ctx = getContext("2d")
             ctx.reset()
@@ -215,7 +215,7 @@ Item {
         id: hourStrokes
         anchors.fill: parent
         smooth: true
-        renderStrategy: Canvas.Threaded
+        renderStrategy: Canvas.Cooperative
         onPaint: {
             var ctx = getContext("2d")
 
@@ -243,7 +243,7 @@ Item {
         id: minuteStrokes
         anchors.fill: parent
         smooth: true
-        renderStrategy: Canvas.Threaded
+        renderStrategy: Canvas.Cooperative
         onPaint: {
             var ctx = getContext("2d")
             ctx.lineWidth = parent.width*0.014
@@ -272,7 +272,7 @@ Item {
         anchors.fill: parent
         antialiasing: true
         smooth: true
-        renderStrategy: Canvas.Threaded
+        renderStrategy: Canvas.Cooperative
         property var voffset: -parent.height*0.025
         property var hoffset: parent.height*0.0
         onPaint: {

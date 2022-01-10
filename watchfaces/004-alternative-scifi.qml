@@ -50,7 +50,7 @@ Item {
     Canvas {
         id: dowCanvas
         anchors.fill: parent
-        renderStrategy: Canvas.Threaded
+        renderStrategy: Canvas.Cooperative
 
         onPaint: {
             var ctx = getContext("2d")
@@ -79,7 +79,7 @@ Item {
     Canvas {
         id: hourCanvas
         anchors.fill: parent
-        renderStrategy: Canvas.Threaded
+        renderStrategy: Canvas.Cooperative
 
         property var hour: 0
 
@@ -109,7 +109,7 @@ Item {
     Canvas {
         id: minuteCanvas
         anchors.fill: parent
-        renderStrategy: Canvas.Threaded
+        renderStrategy: Canvas.Cooperative
 
         property var minute: 0
 
@@ -140,7 +140,7 @@ Item {
     Canvas {
         id: amPmCanvas
         anchors.fill: parent
-        renderStrategy: Canvas.Threaded
+        renderStrategy: Canvas.Cooperative
         property var am: false
 
         onPaint: {
@@ -170,7 +170,7 @@ Item {
     Canvas {
         id: dateCanvas
         anchors.fill: parent
-        renderStrategy: Canvas.Threaded
+        renderStrategy: Canvas.Cooperative
 
         onPaint: {
             var ctx = getContext("2d")
