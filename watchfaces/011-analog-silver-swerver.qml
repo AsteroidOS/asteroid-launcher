@@ -24,7 +24,7 @@
 
 import QtQuick 2.15
 import QtGraphicalEffects 1.15
-import org.freedesktop.contextkit 1.0
+import Nemo.Mce 1.0
 import org.asteroid.controls 1.0
 import org.asteroid.utils 1.0
 
@@ -40,12 +40,8 @@ Item {
 
     anchors.fill: parent
 
-    ContextProperty {
-            id: batteryChargePercentage
-
-            key: "Battery.ChargePercentage"
-            value: "100"
-            Component.onCompleted: batteryChargePercentage.subscribe()
+    MceBatteryLevel {
+        id: batteryChargePercentage
     }
 
     Image {
@@ -371,7 +367,7 @@ Item {
         Item {
             id: batteryBox
 
-            property int value: batteryChargePercentage.value
+            property int value: batteryChargePercentage.percent
 
             onValueChanged: batteryArc.requestPaint()
 
