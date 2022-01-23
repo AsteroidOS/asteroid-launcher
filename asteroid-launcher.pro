@@ -54,4 +54,4 @@ watchfaces-img.files =  watchfaces-img/*
 watchfaces-preview.path = /usr/share/asteroid-launcher/watchfaces-preview
 watchfaces-preview.files =  watchfaces-preview/*
 
-INSTALLS = target applauncher watchfaces watchfaces-img
+INSTALLS = target applauncher watchfaces watchfaces-img watchfaces-preview
