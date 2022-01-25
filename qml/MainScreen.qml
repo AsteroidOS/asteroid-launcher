@@ -41,6 +41,7 @@ Item {
     id: desktop
     width: Dims.w(100)
     height: Dims.h(100)
+    z: splash.visible ? 10 : 0
 
     AppLauncherBackground { id: alb }
 
@@ -63,6 +64,11 @@ Item {
         LipstickSettings.lockScreen(true)
         if(firstRun.isFirstRun())
             firstRunComponent.createObject(desktop)
+    }
+
+    Splash {
+        id: splash
+        z: 9
     }
 
     Component {

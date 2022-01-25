@@ -1,11 +1,13 @@
 <RCC>
     <qresource prefix="/">
         <file>images/shutdown-logo.png</file>
+        <file>images/bootlogo.svg</file>
     </qresource>
     <qresource prefix="/qml/">
         <file alias="MainScreen.qml">qml/MainScreen.qml</file>
         <file alias="Today.qml">qml/today/Today.qml</file>
         <file alias="compositor.qml">qml/compositor/compositor.qml</file>
+        <file alias="Splash.qml">qml/misc/Splash.qml</file>
         <file alias="PanelsGrid.qml">qml/misc/PanelsGrid.qml</file>
         <file alias="NotificationActions.qml">qml/notifications/NotificationActions.qml</file>
         <file alias="NotificationButton.qml">qml/notifications/NotificationButton.qml</file>

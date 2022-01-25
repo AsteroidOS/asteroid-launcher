@@ -222,6 +222,7 @@ Item {
             window.userData = w
 
             if (isHomeWindow) {
+                parent.z = Qt.binding(function() { return w.window.rootItem.z })
                 comp.homeWindow = w
                 setCurrentWindow(homeWindow)
             } else if (!isNotificationWindow && !isAgentWindow && !isDialogWindow) {
