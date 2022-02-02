@@ -151,8 +151,8 @@ ListView {
     }
 
     onContentXChanged: {
-        var lowerStop = Math.floor(contentX/appsListView.width)
-        var upperStop = lowerStop+1
+        var lowerStop = Math.floor((contentX * 2)/appsListView.width)
+        var upperStop = lowerStop + 1
         var ratio = (contentX%appsListView.width)/appsListView.width
 
         if(upperStop + 1 > launcherModel.itemCount || ratio == 0) {
