@@ -151,21 +151,10 @@ ListView {
     }
 
     onContentXChanged: {
-        var lowerStop = Math.floor((contentX * 2)/appsListView.width)
+        var w = (appsListView.width / 2)
+        var lowerStop = Math.floor((contentX + w/2) / w)
         var upperStop = lowerStop + 1
-        var ratio = (contentX%appsListView.width)/appsListView.width
-
-        if(upperStop + 1 > launcherModel.itemCount || ratio == 0) {
-            launcherCenterColor = alb.centerColor(launcherModel.get(lowerStop).filePath);
-            launcherOuterColor = alb.outerColor(launcherModel.get(lowerStop).filePath);
-            return;
-        }
-
-        if(lowerStop < 0) {
-            launcherCenterColor = alb.centerColor(launcherModel.get(0).filePath);
-            launcherOuterColor = alb.outerColor(launcherModel.get(0).filePath);
-            return;
-        }
+        var ratio = ((contentX + w/2)%w)/w
 
         var upperCenterColor = alb.centerColor(launcherModel.get(upperStop).filePath);
         var lowerCenterColor = alb.centerColor(launcherModel.get(lowerStop).filePath);
