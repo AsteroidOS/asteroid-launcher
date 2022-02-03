@@ -39,7 +39,7 @@
         <location filename="../qml/notifications/NotificationActions.qml" line="115"/>
         <location filename="../qml/notifications/NotificationActions.qml" line="157"/>
         <source>Snooze</source>
-        <translation>ปิดเสียงเตือนชั่วคราว</translation>
+        <translation>งีบหลับ</translation>
     </message>
     <message id="id-dismiss-all">
         <location filename="../qml/notifications/NotificationActions.qml" line="123"/>
