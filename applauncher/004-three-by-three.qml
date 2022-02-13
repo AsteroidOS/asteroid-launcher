@@ -119,13 +119,11 @@ Item {
                 running: false
                 repeat: false
                 onTriggered: {
-                    console.log("show label" + !dragStopper)
                      if (!dragStopper) {
                          parent.timedPressAndHold()
                      }
                      else {
                          root.dragStop = false
-                         console.log("after IF" + !dragStopper)
                      }
                 }
             }
@@ -232,6 +230,7 @@ Item {
         }
 
         onContentYChanged: {
+
             var lowerStop = Math.floor(contentY/appsView.height)
             var upperStop = lowerStop+1
             var ratio = (contentY%appsView.height)/appsView.height
@@ -287,6 +286,17 @@ Item {
         onPressAndHold: mouse.accepted = false
     }
 
+    Rectangle {
+        id: titleShutter
+
+        opacity: 0
+        visible: !root.clickToggle
+        anchors.centerIn: hoverTitle
+        width: root.width
+        height: root.height * .22
+        color: alb.centerColor(launcherModel.get(currentPressedIndex).filePath)
+    }
+
     Text {
         id: hoverTitle
 
@@ -294,7 +304,6 @@ Item {
         property real hoverTextOffset: root.clickY > Dims.h(48) ? -Dims.h(62) : Dims.h(62)
         property bool rootPressToggle: root.pressToggle
 
-        z: 1
         width: parent.width
         color: "#ffffff"
         opacity: 0
@@ -325,7 +334,6 @@ Item {
                 PauseAnimation { duration: 800 }
 
                 ParallelAnimation {
-
                     NumberAnimation { target: hoverTitle; property: "opacity"; to: 0; duration: 200; easing.type: Easing.InSine}
                     NumberAnimation { target: titleShutter; property: "opacity"; to: 0; duration: 200; easing.type: Easing.InSine}
                     NumberAnimation { target: hoverTitle; property: "anchors.verticalCenterOffset"; to: hoverTitle.hoverTextOffset; duration: 200; easing.type: Easing.InSine}
@@ -342,17 +350,5 @@ Item {
             samples: 5
             color: "#88000000"
         }
-    }
-
-    Rectangle {
-        id: titleShutter
-
-        z: 0
-        opacity: 0
-        visible: !root.clickToggle
-        anchors.centerIn: hoverTitle
-        width: root.width
-        height: root.height * .22
-        color: alb.centerColor(launcherModel.get(currentPressedIndex).filePath)
     }
 }
