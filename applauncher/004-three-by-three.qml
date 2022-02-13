@@ -216,9 +216,7 @@ Item {
         }
 
         Component.onCompleted: {
-            launcherCenterColor = alb.centerColor(launcherModel.get(0).filePath);
-            launcherOuterColor = alb.outerColor(launcherModel.get(0).filePath);
-
+            launcherColorOverride = true
             toLeftAllowed = false
             toRightAllowed = false
             toBottomAllowed =  Qt.binding(function() { return !atYBeginning })
@@ -230,41 +228,9 @@ Item {
         }
 
         onContentYChanged: {
-
-            var lowerStop = Math.floor(contentY/appsView.height)
+            var lowerStop = Math.floor(contentY/(appsView.height/6))
             var upperStop = lowerStop+1
-            var ratio = (contentY%appsView.height)/appsView.height
-
-            if(upperStop + 1 > launcherModel.itemCount || ratio == 0) {
-                launcherCenterColor = alb.centerColor(launcherModel.get(lowerStop).filePath);
-                launcherOuterColor = alb.outerColor(launcherModel.get(lowerStop).filePath);
-                return;
-            }
-
-            if(lowerStop < 0) {
-                launcherCenterColor = alb.centerColor(launcherModel.get(0).filePath);
-                launcherOuterColor = alb.outerColor(launcherModel.get(0).filePath);
-                return;
-            }
-
-            var upperCenterColor = alb.centerColor(launcherModel.get(upperStop).filePath);
-            var lowerCenterColor = alb.centerColor(launcherModel.get(lowerStop).filePath);
-
-            launcherCenterColor = Qt.rgba(
-                        upperCenterColor.r * ratio + lowerCenterColor.r * (1-ratio),
-                        upperCenterColor.g * ratio + lowerCenterColor.g * (1-ratio),
-                        upperCenterColor.b * ratio + lowerCenterColor.b * (1-ratio)
-                    );
-
-            var upperOuterColor = alb.outerColor(launcherModel.get(upperStop).filePath);
-            var lowerOuterColor = alb.outerColor(launcherModel.get(lowerStop).filePath);
-
-            launcherOuterColor = Qt.rgba(
-                        upperOuterColor.r * ratio + lowerOuterColor.r * (1-ratio),
-                        upperOuterColor.g * ratio + lowerOuterColor.g * (1-ratio),
-                        upperOuterColor.b * ratio + lowerOuterColor.b * (1-ratio)
-                    );
-
+            var ratio = (contentY%appsView.height)/(appsView.height/6)
             currentPos = Math.round(lowerStop+ratio)
         }
     }
