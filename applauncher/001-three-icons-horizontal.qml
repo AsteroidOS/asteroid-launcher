@@ -156,6 +156,18 @@ ListView {
         var upperStop = lowerStop + 1
         var ratio = ((contentX + w/2)%w)/w
 
+        if(upperStop + 1 > launcherModel.itemCount || ratio == 0) {
+            launcherCenterColor = alb.centerColor(launcherModel.get(lowerStop).filePath);
+            launcherOuterColor = alb.outerColor(launcherModel.get(lowerStop).filePath);
+            return;
+        }
+
+        if(lowerStop < 0) {
+            launcherCenterColor = alb.centerColor(launcherModel.get(0).filePath);
+            launcherOuterColor = alb.outerColor(launcherModel.get(0).filePath);
+            return;
+        }
+
         var upperCenterColor = alb.centerColor(launcherModel.get(upperStop).filePath);
         var lowerCenterColor = alb.centerColor(launcherModel.get(lowerStop).filePath);
 
