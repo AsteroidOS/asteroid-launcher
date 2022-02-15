@@ -58,7 +58,7 @@ Item {
         cellHeight: appsView.height / 3.15
         cellWidth: appsView.width / 3
         preferredHighlightBegin: width / 3 - currentItem.width / 3
-        preferredHighlightEnd: width / 4 + currentItem.width / 3
+        preferredHighlightEnd: width / 3 + currentItem.width / 3
         highlightRangeMode: ListView.StrictlyEnforceRange
         contentY: -(width / 3 - (width / 6))
 
