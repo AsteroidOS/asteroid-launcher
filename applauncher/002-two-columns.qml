@@ -175,9 +175,10 @@ GridView {
     }
 
     onContentYChanged: {
-        var lowerStop = Math.floor(contentY/appsView.height)
-        var upperStop = lowerStop+1
-        var ratio = (contentY%appsView.height)/appsView.height
+        var h = (appsView.height / 2)
+        var lowerStop = Math.floor((contentY + h / 2) / h)
+        var upperStop = lowerStop + 1
+        var ratio = ((contentY + h / 2) % h) / h
 
         if(upperStop + 1 > launcherModel.itemCount || ratio == 0) {
             launcherCenterColor = alb.centerColor(launcherModel.get(lowerStop).filePath);
