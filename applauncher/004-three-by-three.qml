@@ -51,16 +51,18 @@ Item {
 
         flow: GridView.FlowLeftToRight
         snapMode: GridView.SnapToRow
-        anchors.fill: parent
-        anchors.leftMargin: parent.width * .026
-        anchors.rightMargin: parent.width * .026
+        anchors {
+            fill: parent
+            leftMargin: parent.width * .026
+            rightMargin: parent.width * .026
+        }
         clip: true
         cellHeight: appsView.height / 3.15
         cellWidth: appsView.width / 3
-        preferredHighlightBegin: width / 3 - currentItem.width / 3
-        preferredHighlightEnd: width / 3 + currentItem.width / 3
+        preferredHighlightBegin: height / 3.15 - currentItem.height / 3.15
+        preferredHighlightEnd: height / 3.15 + currentItem.height / 3.15
         highlightRangeMode: ListView.StrictlyEnforceRange
-        contentY: -(width / 3 - (width / 6))
+        contentY: -(height / 3.15 - (height / 6.3))
 
         property int currentPos: 0
 
@@ -82,6 +84,7 @@ Item {
                 if (grid.currentVerticalPos === 0) {
                     appsView.highlightMoveDuration = 0
                     appsView.currentIndex = 0
+                    dragStop = true
                 } else if (grid.currentVerticalPos === 1) {
                     appsView.highlightMoveDuration = 1500
                     forbidTop = false
@@ -111,15 +114,13 @@ Item {
             signal timedPressAndHold()
 
             Timer {
-                id:  pressAndHoldTimer
-
-                property bool dragStopper: dragStop
+                id: pressAndHoldTimer
 
                 interval: parent.pressAndHoldDuration
                 running: false
                 repeat: false
                 onTriggered: {
-                     if (!dragStopper) {
+                     if (!root.dragStop) {
                          parent.timedPressAndHold()
                      }
                      else {
@@ -136,10 +137,6 @@ Item {
             onPressed: {
                 pressAndHoldTimer.start();
                 root.dragStop = false
-            }
-
-            onPressedChanged: {
-                appTitle = model.object.title
             }
 
             onReleased: {
@@ -167,7 +164,6 @@ Item {
                 height: width
                 anchors {
                     centerIn: parent
-                    verticalCenterOffset: -parent.height * .08
                 }
 
                 Rectangle {
@@ -201,7 +197,7 @@ Item {
                 width: circleWrapper.width * .70
                 height: width
                 anchors.centerIn: circleWrapper
-                color: !pressAndHoldTimer.running && launcherItem.pressed | fakePressed ? "#ffffff" : "#555555"
+                color: !pressAndHoldTimer.running && launcherItem.pressed | fakePressed ? "#fff" : "#555"
                 name: model.object.iconId === "" ? "ios-help" : model.object.iconId
                 Behavior on color {
                     PropertyAnimation { target: icon; property: "color"; duration: 70 }
@@ -219,13 +215,6 @@ Item {
             forbidBottom = false
             forbidLeft = false
             forbidRight = false
-        }
-
-        onContentYChanged: {
-            var lowerStop = Math.floor(contentY/(appsView.height/6))
-            var upperStop = lowerStop+1
-            var ratio = (contentY%appsView.height)/(appsView.height/6)
-            currentPos = Math.round(lowerStop+ratio)
         }
     }
 
@@ -263,12 +252,12 @@ Item {
     Text {
         id: hoverTitle
 
-        //Offset hoverText and shutter out of view in L291, either top or bottom depending on vertical click position
+        //Offset hoverText and shutter out of view in L290, either top or bottom depending on vertical click position
         property real hoverTextOffset: root.clickY > Dims.h(48) ? -Dims.h(62) : Dims.h(62)
         property bool rootPressToggle: root.pressToggle
 
         width: parent.width
-        color: "#ffffff"
+        color: "#fff"
         opacity: 0
         visible: !root.clickToggle
         horizontalAlignment: Text.AlignHCenter
@@ -291,10 +280,12 @@ Item {
                 NumberAnimation { target: hoverTitle; property: "opacity"; to: 1; duration: 0}
                 NumberAnimation { target: titleShutter; property: "opacity"; to: .85; duration: 0}
 
+                PropertyAction { }
+
                 //Slide in hoverTitle and shutter to either negative or positve offset from center depending on vertical click position
                 NumberAnimation { target: hoverTitle; property: "anchors.verticalCenterOffset"; to: -hoverTitle.hoverTextOffset + (hoverTitle.hoverTextOffset * 1.58); duration: 100; easing.type: Easing.InSine}
 
-                //Keep end position for 1s
+                //Keep hoverTitle in visible position for 1s
                 PauseAnimation { duration: 1000 }
 
                 //Slide hoverTitle and shutter out of view again
