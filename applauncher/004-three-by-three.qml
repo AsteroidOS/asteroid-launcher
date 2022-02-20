@@ -252,7 +252,7 @@ Item {
     Text {
         id: hoverTitle
 
-        //Offset hoverText and shutter out of view in L290, either top or bottom depending on vertical click position
+        // Offset hoverText and shutter out of view, either to top or bottom depending on vertical click position
         property real hoverTextOffset: root.clickY > Dims.h(48) ? -Dims.h(62) : Dims.h(62)
         property bool rootPressToggle: root.pressToggle
 
@@ -275,20 +275,20 @@ Item {
             SequentialAnimation {
                 id: fadeText
 
-                //Reset position of all animated items for the case an animation has been interrupted
+                // Reset position of all animated items for the case an animation has been interrupted
                 NumberAnimation { target: hoverTitle; property: "anchors.verticalCenterOffset"; to: hoverTitle.hoverTextOffset; duration: 0}
                 NumberAnimation { target: hoverTitle; property: "opacity"; to: 1; duration: 0}
                 NumberAnimation { target: titleShutter; property: "opacity"; to: .85; duration: 0}
 
                 PropertyAction { }
 
-                //Slide in hoverTitle and shutter to either negative or positve offset from center depending on vertical click position
+                // Slide in hoverTitle and shutter to either negative or positve offset from center depending on vertical click position
                 NumberAnimation { target: hoverTitle; property: "anchors.verticalCenterOffset"; to: -hoverTitle.hoverTextOffset + (hoverTitle.hoverTextOffset * 1.58); duration: 100; easing.type: Easing.InSine}
 
-                //Keep hoverTitle in visible position for 1s
+                // Keep hoverTitle in visible position for 1s
                 PauseAnimation { duration: 1000 }
 
-                //Slide hoverTitle and shutter out of view again
+                // Slide hoverTitle and shutter out of view again
                 ParallelAnimation {
                     NumberAnimation { target: hoverTitle; property: "opacity"; to: 0; duration: 200; easing.type: Easing.InSine}
                     NumberAnimation { target: titleShutter; property: "opacity"; to: 0; duration: 200; easing.type: Easing.InSine}
