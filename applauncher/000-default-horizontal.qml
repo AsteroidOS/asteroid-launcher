@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Timo Könnecke <github.com/eLtMosen>
+ * Copyright (C) 2022 Timo Könnecke <github.com/eLtMosen>
  *               2015 Florent Revest <revestflo@gmail.com>
  *               2014 Aleksi Suomalainen <suomalainen.aleksi@gmail.com>
  *               2012 Timur Kristóf <venemo@fedoraproject.org>
@@ -37,6 +37,7 @@ import org.asteroid.controls 1.0
 
 ListView {
     id: appsListView
+
     orientation: ListView.Horizontal
     snapMode: ListView.SnapToItem
     anchors.fill: parent
@@ -64,56 +65,74 @@ ListView {
 
     delegate: MouseArea {
         id: launcherItem
+
         width: appsListView.width
         height: width
         enabled: !appsListView.dragging
 
         onClicked: model.object.launchApplication()
 
-        Item {
-            id: circleWrapper
-            anchors.fill: parent
-            Rectangle {
-                id: circle
-                anchors.centerIn: parent
-                width: parent.width * 0.7
-                height: width
-                radius: width/2
-                color: launcherItem.pressed | fakePressed ? "#cccccc" : "#f4f4f4"
-            }
-        }
         DropShadow {
             anchors.fill: circleWrapper
             horizontalOffset: 0
             verticalOffset: 0
             radius: 8.0
-            samples: 12
-            color: "#80000000"
+            samples: 17
+            color: "#66000000"
             source: circleWrapper
             cached: true
         }
 
+        Item {
+            id: circleWrapper
+
+            anchors.fill: parent
+
+            Rectangle {
+                id: circle
+
+                anchors.centerIn: parent
+                width: parent.width * .65
+                height: width
+                radius: width/2
+                color: launcherItem.pressed | fakePressed ? "#dddddd" : "#f8f8f8"
+                opacity: launcherItem.pressed | fakePressed ? .6 : 1
+
+                Behavior on opacity { NumberAnimation { duration: 100 } }
+            }
+        }
+
         Icon {
             id: icon
-            anchors.centerIn: parent
-            anchors.verticalCenterOffset: -parent.height * 0.03
-            width: parent.width * 0.31
-            height: width
-            color: launcherItem.pressed | fakePressed ? "#444444" : "#666666"
+
             name: model.object.iconId === "" ? "ios-help" : model.object.iconId
+            anchors {
+                centerIn: parent
+                verticalCenterOffset: -parent.height * 0.03
+            }
+            width: parent.width * .30
+            height: width
+            color: launcherItem.pressed | fakePressed ? "#333" : "#666"
         }
 
         Label {
             id: iconText
-            anchors.top: icon.bottom
+
+            text: model.object.title.toUpperCase() + localeManager.changesObserver
+            anchors {
+                top: icon.bottom
+                topMargin: parent.height * 0.024
+                horizontalCenter: parent.horizontalCenter
+            }
             width: parent.width * 0.5
             horizontalAlignment: Text.AlignHCenter
-            anchors.topMargin: parent.height * 0.04
-            anchors.horizontalCenter: parent.horizontalCenter
-            color: launcherItem.pressed | fakePressed ? "#444444" : "#666666"
-            font.pixelSize: ((appsListView.width > appsListView.height ? appsListView.height : appsListView.width) / Dims.l(100)) * Dims.l(5)
-            font.weight: Font.Medium
-            text: model.object.title.toUpperCase() + localeManager.changesObserver
+            color: launcherItem.pressed | fakePressed ? "#333" : "#666"
+            font {
+                pixelSize: ((appsListView.width > appsListView.height ?
+                                 appsListView.height :
+                                 appsListView.width) / Dims.l(100)) * Dims.l(5)
+                styleName: "SemiBold"
+            }
         }
     }
 
