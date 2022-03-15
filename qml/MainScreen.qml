@@ -367,6 +367,8 @@ Item {
         id: wallpaper
         width: Dims.w(110)
         height:  Dims.h(110)
+        visible: wallpaperDarkener.opacity != 1.0
+        enabled: visible
         z: -100
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
