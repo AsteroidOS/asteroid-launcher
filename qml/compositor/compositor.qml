@@ -51,6 +51,7 @@ Item {
     }
 
     Item {
+        property bool ready: false
         id: appLayer
         z: 2
 
@@ -89,10 +90,11 @@ Item {
 
         onGestureStarted: {
             swipeAnimation.stop()
-            if (gesture == "down")
-                Desktop.onAboutToClose()
-            else if(gesture == "right")
-                Desktop.onAboutToMinimize()
+            if (gesture == "down") {
+                Desktop.desktop.aboutToClose = true
+            } else if(gesture == "right") {
+                Desktop.desktop.aboutToMinimize = true
+            }
         }
 
         onGestureFinished: {
@@ -107,6 +109,8 @@ Item {
             } else if (comp.homeActive) {
                 cancelAnimation.start()
             }
+            Desktop.desktop.aboutToClose = false
+            Desktop.desktop.aboutToMinimize = false
         }
 
         NumberAnimation {
@@ -223,12 +227,14 @@ Item {
 
             if (isHomeWindow) {
                 parent.z = Qt.binding(function() { return w.window.rootItem.z })
+                Desktop.desktop.aboutToOpen = Qt.binding(function() {return !homeActive && !appLayer.ready })
                 comp.homeWindow = w
                 setCurrentWindow(homeWindow)
             } else if (!isNotificationWindow && !isAgentWindow && !isDialogWindow) {
                 if (topmostApplicationWindow != null) {
                     Lipstick.compositor.closeClientForWindowId(topmostApplicationWindow.window.windowId)
                 }
+                parent.ready = false
                 w.smoothBorders = true
                 w.x = width
                 w.moveInAnim.start()

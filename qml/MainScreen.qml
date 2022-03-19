@@ -43,6 +43,9 @@ Item {
     height: Dims.h(100)
     z: splash.visible ? 10 : 0
 
+    visible: Lipstick.compositor.homeActive || aboutToOpen || aboutToClose || aboutToMinimize
+    enabled: visible
+
     AppLauncherBackground { id: alb }
 
     property var defaultCenterColor: alb.centerColor("/usr/share/asteroid-launcher/default-colors.desktop")
@@ -59,7 +62,15 @@ Item {
 
     property var compositor: Lipstick.compositor
 
+    property bool aboutToOpen: false
+    property bool aboutToClose: false
+    property bool aboutToMinimize: false
+
+    onAboutToCloseChanged: grid.moveTo(0, 0)
+    onAboutToMinimizeChanged: grid.moveTo(0, 1)
+
     Component.onCompleted: {
+        Desktop.desktop = desktop
         Desktop.panelsGrid = grid
         LipstickSettings.lockScreen(true)
         if(firstRun.isFirstRun())
@@ -334,7 +345,7 @@ Item {
         id: lockscreenDelay
         interval: 150
         repeat: false
-        onTriggered: Desktop.onAboutToClose()
+        onTriggered: grid.moveTo(0, 0)
     }
 
     Connections {
