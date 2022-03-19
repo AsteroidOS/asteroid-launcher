@@ -29,7 +29,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.9
+import QtQuick 2.15
 import org.asteroid.controls 1.0
 import org.asteroid.utils 1.0
 
@@ -43,7 +43,14 @@ Item {
     width: window !== null ? Dims.w(100) : 0
     height: window !== null ? Dims.h(100) : 0
     NumberAnimation on x { id: moveInAnimation; running: false ; to: 0; duration: 100 }
-    NumberAnimation on opacity { id: fadeInAnimation; running: false; from: 0; to: 1; duration: 100 }
+    NumberAnimation on opacity {
+        id: fadeInAnimation
+        running: false
+        from: 0
+        to: 1
+        duration: 100
+        onFinished: parent.ready = true
+    }
     function animateIn() { fadeInAnimation.start(); }
 
     Component.onCompleted: window.parent = wrapper
