@@ -31,7 +31,9 @@
 import QtQuick 2.9
 import Nemo.Time 1.0
 import Nemo.Configuration 1.0
+import Nemo.Mce 1.0
 import org.nemomobile.lipstick 0.1
+import org.nemomobile.systemsettings 1.0
 import org.asteroid.controls 1.0
 import org.asteroid.utils 1.0
 import org.asteroid.launcher 1.0
@@ -156,6 +158,10 @@ Item {
         updateFrequency: WallClock.Second
     }
 
+    MceCableState {
+        id: mceCableState
+    }
+
     ConfigurationValue {
         id: use12H
         key: "/org/asteroidos/settings/use-12h-format"
@@ -171,6 +177,10 @@ Item {
 
     LauncherModel {
         id: launcherModel
+    }
+
+    DisplaySettings { 
+        id: displaySettings
     }
 
     Connections {
@@ -217,6 +227,68 @@ Item {
         defaultValue: "file:///usr/share/asteroid-launcher/applauncher/000-default-horizontal.qml"
     }
 
+    ConfigurationValue {
+        id: watchfaceNightstandSource
+        key: "/desktop/asteroid/nightstand/watchface"
+        defaultValue: "file:///usr/share/asteroid-launcher/watchfaces/005-analog-nordic.qml"
+    }
+
+    ConfigurationValue {
+        id: nightstandBrightness
+        key: "/desktop/asteroid/nightstand/brightness"
+        defaultValue: 30
+    }
+
+    ConfigurationValue {
+        id: nightstandDelay
+        key: "/desktop/asteroid/nightstand/delay"
+        defaultValue: 5
+    }
+
+    ConfigurationValue {
+        id: nightstandEnabled
+        key: "/desktop/asteroid/nightstand/enabled"
+        defaultValue: false
+    }
+
+    Item {
+        id: nightstandMode
+        readonly property bool active: ready || nightstandDelayTimer.running
+        readonly property bool ready: nightstandEnabled.value && mceCableState.connected
+        property int oldBrightness: 100
+        onReadyChanged: {
+            if (ready) {
+                if (nightstandDelayTimer.running) {
+                    // timer was holding off, so cancel timer
+                    nightstandDelayTimer.stop()
+                } else {
+                    // enter nightstand mode
+                    oldBrightness = displaySettings.brightness
+                    displaySettings.brightness = nightstandBrightness.value
+                }
+            } else {
+                if (nightstandEnabled.value) {
+                    // start off-charger timer
+                    nightstandDelayTimer.restart()
+                } else {
+                    // mode disabled, so 
+                    // exit nightstand mode immediately
+                    nightstandDelayTimer.stop()
+                    displaySettings.brightness = oldBrightness
+                }
+            }
+        }
+        Timer {
+            id: nightstandDelayTimer
+            interval: nightstandDelay.value * 1000
+            repeat: false
+            onTriggered: {
+                // timer expired, so restore brightness
+                displaySettings.brightness = nightstandMode.oldBrightness
+            }
+        }
+    }
+
     Connections {
         target: localeManager
         function onChangesObserverChanged() {
@@ -231,8 +303,13 @@ Item {
 
     Component { id: topPanel;    QuickSettings      { } }
     Component { id: leftPanel;   NotificationsPanel { panelsGrid: grid } }
-    Component { id: centerPanel; Loader             { source: watchFaceSource.value } }
     Component { id: rightPanel;  Today              { } }
+    Component { 
+        id: centerPanel; 
+        Loader { 
+            source: { return nightstandMode.active ? watchfaceNightstandSource.value : watchFaceSource.value }
+        }
+    }
     Component {
         id: bottomPanel
         Loader {
