@@ -36,7 +36,7 @@ Item {
     id: btAgent
 
     width: initialSize.width
-    height: initialSize.height
+    height: width
 
     Item {
         id: circleWrapper
