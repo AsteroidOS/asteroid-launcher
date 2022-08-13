@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2018 - Timo Könnecke <el-t-mo@arcor.de>
+ * Copyright (C) 2022 - Timo Könnecke <el-t-mo@arcor.de>
+ *               2022 - Ed Beroset <github.com/beroset>
  *               2017 - Florent Revest <revestflo@gmail.com>
  * All rights reserved.
  *
@@ -28,7 +29,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.1
+import QtQuick 2.15
+import QtQuick.Shapes 1.15
+import QtGraphicalEffects 1.15
+import org.asteroid.controls 1.0
+import org.asteroid.utils 1.0
+import Nemo.Mce 1.0
 
 Item {
     function twoDigits(x) {
@@ -118,6 +124,102 @@ Item {
             ctx.font = "25 " + height/13 + "px Raleway"
             ctx.fillText(wallClock.time.toLocaleString(Qt.locale(), "d MMM"), width*0.719, height*0.595);
         }
+    }
+
+    Item {
+        id: nightstandMode
+
+        readonly property bool active: mceCableState.connected //ready || (nightstandEnabled.value && holdoff)
+        //readonly property bool ready: nightstandEnabled.value && mceCableState.connected
+        property int batteryPercentChanged: batteryChargePercentage.percent
+
+        onBatteryPercentChangedChanged: {
+            batteryPercent.requestPaint()
+        }
+
+        anchors.fill: parent
+        visible: nightstandMode.active
+        layer.enabled: true
+        layer.samples: 4
+
+        Shape {
+            id: chargeArc
+
+            property real angle: batteryChargePercentage.percent * 360 / 100
+            // radius of arc is scalefactor * height or width
+            property real scalefactor: 0.41
+            property var chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
+            readonly property var colorArray: [ "red", "yellow", Qt.rgba(0.318, 1, 0.051, 0.9)]
+
+            anchors.fill: parent
+            smooth: true
+            antialiasing: true
+
+            ShapePath {
+                fillColor: "transparent"
+                strokeColor: chargeArc.colorArray[chargeArc.chargecolor]
+                strokeWidth: parent.height * 0.04
+                capStyle: ShapePath.FlatCap
+                joinStyle: ShapePath.MiterJoin
+                startX: width / 2
+                startY: height * ( 0.5 - chargeArc.scalefactor)
+
+                PathAngleArc {
+                    centerX: parent.width / 2
+                    centerY: parent.height / 2
+                    radiusX: chargeArc.scalefactor * parent.width
+                    radiusY: chargeArc.scalefactor * parent.height
+                    startAngle: -90
+                    sweepAngle: chargeArc.angle
+                    moveToStart: false
+                }
+            }
+        }
+
+        Icon {
+            id: batteryIcon
+            name: "ios-battery-charging"
+            anchors {
+                centerIn: parent
+                verticalCenterOffset: -parent.height * 0.25
+            }
+            width: parent.width * 0.13
+            height: parent.height * 0.13
+        }
+
+        ColorOverlay {
+            anchors.fill: batteryIcon
+            source: batteryIcon
+            color: chargeArc.colorArray[chargeArc.chargecolor]
+        }
+
+        Canvas {
+            id: batteryPercent
+            anchors.fill: parent
+            antialiasing: true
+            smooth: true
+            renderStrategy: Canvas.Cooperative
+
+            onPaint: {
+                var ctx = getContext("2d")
+                prepareContext(ctx)
+                ctx.fillStyle = chargeArc.colorArray[chargeArc.chargecolor]
+                ctx.font = "45 " + height * .08 + "px Roboto"
+                ctx.fillText(batteryChargePercentage.percent + "%", width*0.5, height*0.75);
+            }
+        }
+    }
+
+    MceBatteryLevel {
+        id: batteryChargePercentage
+    }
+
+    MceBatteryState {
+        id: batteryChargeState
+    }
+
+    MceCableState {
+        id: mceCableState
     }
 
     Connections {
