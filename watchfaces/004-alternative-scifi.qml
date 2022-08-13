@@ -28,7 +28,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.1
+import QtQuick 2.15
+import QtQuick.Shapes 1.15
+import QtGraphicalEffects 1.15
+import org.asteroid.controls 1.0
+import org.asteroid.utils 1.0
+import Nemo.Mce 1.0
 
 Item {
     id: rootitem
@@ -220,6 +225,98 @@ Item {
                 amPmCanvas.requestPaint()
             }
         }
+    }
+
+    Item {
+        id: nightstandMode
+
+        readonly property bool active: mceCableState.connected //ready || (nightstandEnabled.value && holdoff)
+        //readonly property bool ready: nightstandEnabled.value && mceCableState.connected
+        property int batteryPercentChanged: batteryChargePercentage.percent
+
+        anchors.fill: parent
+        visible: nightstandMode.active
+        layer.enabled: true
+        layer.samples: 4
+
+        Shape {
+            id: chargeArc
+
+            property real angle: batteryChargePercentage.percent * 360 / 100
+            // radius of arc is scalefactor * height or width
+            property real arcStrokeWidth: 0.03
+            property real scalefactor: 0.5 - (arcStrokeWidth / 2)
+            property var chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
+            readonly property var colorArray: [ "red", "yellow", Qt.rgba(0.318, 1, 0.051, 0.9)]
+
+            anchors.fill: parent
+            smooth: true
+            antialiasing: true
+
+            ShapePath {
+                fillColor: "transparent"
+                strokeColor: chargeArc.colorArray[chargeArc.chargecolor]
+                strokeWidth: parent.height * chargeArc.arcStrokeWidth
+                capStyle: ShapePath.FlatCap
+                joinStyle: ShapePath.MiterJoin
+                startX: width / 2
+                startY: height * ( 0.5 - chargeArc.scalefactor)
+
+                PathAngleArc {
+                    centerX: parent.width / 2
+                    centerY: parent.height / 2
+                    radiusX: chargeArc.scalefactor * parent.width
+                    radiusY: chargeArc.scalefactor * parent.height
+                    startAngle: -90
+                    sweepAngle: chargeArc.angle
+                    moveToStart: false
+                }
+            }
+        }
+
+        Icon {
+            id: batteryIcon
+
+            name: "ios-battery-charging"
+            anchors {
+                centerIn: parent
+                verticalCenterOffset: -parent.width * 0.32
+            }
+            visible: nightstandMode.active
+            width: parent.width * 0.15
+            height: parent.height * 0.15
+        }
+
+        Text {
+            id: batteryPercent
+
+            anchors {
+                centerIn: parent
+                verticalCenterOffset: parent.width * 0.32
+            }
+
+            font {
+                pixelSize: parent.width / 15
+                family: "Xolonium"
+                styleName: "Bold"
+            }
+            visible: nightstandMode.active
+            color: "#ffffffff"
+            style: Text.Outline; styleColor: "#80000000"
+            text: batteryChargePercentage.percent + "%"
+        }
+    }
+
+    MceBatteryLevel {
+        id: batteryChargePercentage
+    }
+
+    MceBatteryState {
+        id: batteryChargeState
+    }
+
+    MceCableState {
+        id: mceCableState
     }
 
     Component.onCompleted: {
