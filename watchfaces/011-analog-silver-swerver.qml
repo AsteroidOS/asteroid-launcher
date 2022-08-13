@@ -23,6 +23,7 @@
  */
 
 import QtQuick 2.15
+import QtQuick.Shapes 1.15
 import QtGraphicalEffects 1.15
 import Nemo.Mce 1.0
 import org.asteroid.controls 1.0
@@ -44,49 +45,87 @@ Item {
         id: batteryChargePercentage
     }
 
-    Image {
-        id: backPlate
-
-        z: 0
-        anchors.fill: parent
-        visible: !displayAmbient
-        source: imgPath + "background.svg"
-
-        layer.enabled: true
-        layer.effect: DropShadow {
-            transparentBorder: true
-            horizontalOffset: 0
-            verticalOffset: 0
-            radius: 16.0
-            samples: 33
-            color: Qt.rgba(0, 0, 0, .8)
-        }
-    }
-
-    Image {
-        id: hourMarks
-
-        z: 1
-        anchors.fill: parent
-        source: imgPath + "hourmarks.svg"
-
-        layer.enabled: true
-        layer.effect: DropShadow {
-            transparentBorder: true
-            horizontalOffset: 0
-            verticalOffset: 0
-            radius: 8.0
-            samples: 17
-            color: Qt.rgba(0, 0, 0, 1)
-        }
-    }
-
     Item {
         id: faceBox
 
         anchors.fill: parent
 
-        Repeater {
+        Item {
+            id: nightstandMode
+
+            readonly property bool active: mceCableState.connected //ready || (nightstandEnabled.value && holdoff)
+            //readonly property bool ready: nightstandEnabled.value && mceCableState.connected
+            property int batteryPercentChanged: batteryChargePercentage.percent
+
+            anchors.fill: parent
+            visible: nightstandMode.active
+            layer.enabled: true
+            layer.samples: 4
+
+            Shape {
+                id: chargeArc
+
+                property real angle: batteryChargePercentage.percent * 360 / 100
+                // radius of arc is scalefactor * height or width
+                property real arcStrokeWidth: 0.03
+                property real scalefactor: 0.3 - (arcStrokeWidth / 2)
+                property var chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
+                readonly property var colorArray: [ "red", "yellow", Qt.rgba(0.318, 1, 0.051, 0.9)]
+
+                anchors.fill: parent
+                smooth: true
+                antialiasing: true
+
+                ShapePath {
+                    fillColor: "transparent"
+                    strokeColor: chargeArc.colorArray[chargeArc.chargecolor]
+                    strokeWidth: parent.height * chargeArc.arcStrokeWidth
+                    capStyle: ShapePath.RoundCap
+                    joinStyle: ShapePath.MiterJoin
+                    startX: width / 2
+                    startY: height * ( 0.5 - chargeArc.scalefactor)
+
+                    PathAngleArc {
+                        centerX: parent.width / 2
+                        centerY: parent.height / 2
+                        radiusX: chargeArc.scalefactor * parent.width
+                        radiusY: chargeArc.scalefactor * parent.height
+                        startAngle: -90
+                        sweepAngle: chargeArc.angle
+                        moveToStart: false
+                    }
+                }
+            }
+
+            Text {
+                id: batteryDockPercent
+
+                anchors {
+                    centerIn: parent
+                    verticalCenterOffset: parent.width * 0.15
+                }
+
+                font {
+                    pixelSize: parent.width * .15
+                    family: "Noto Sans"
+                    styleName: "Condensed Light"
+                }
+                visible: nightstandMode.active
+                color: chargeArc.colorArray[chargeArc.chargecolor]
+                style: Text.Outline; styleColor: "#80000000"
+                text: batteryChargePercentage.percent
+            }
+        }
+
+        MceBatteryState {
+            id: batteryChargeState
+        }
+
+        MceCableState {
+            id: mceCableState
+        }
+
+        /*Repeater {
             model: 60
 
             Rectangle {
@@ -99,8 +138,8 @@ Item {
                 z: 1
                 visible: index % 5
                 antialiasing : true
-                width: parent.width * .005
-                height: parent.height * .04
+                width: parent.width * .00625
+                height: parent.height * .05
                 x: centerX + Math.cos(rotM * 2 * Math.PI) * parent.width * .45
                 y: centerY + Math.sin(rotM * 2 * Math.PI) * parent.width * .45
                 color: lowColor
@@ -111,7 +150,7 @@ Item {
                     angle: (index) * 6
                 }
             }
-        }
+        }*/
 
         Repeater {
             model: 12
@@ -124,12 +163,12 @@ Item {
                 property real centerY: parent.height / 2 - height / 2
 
                 z: 1
-                x: index % 6 ? centerX+Math.cos(rotM * 2 * Math.PI) * parent.width * .348 :
-                               centerX+Math.cos(rotM * 2 * Math.PI) * parent.width * .326
-                y: index % 6 ? centerY+Math.sin(rotM * 2 * Math.PI) * parent.width * .348 :
-                               centerY+Math.sin(rotM * 2 * Math.PI) * parent.width * .326
+                x: index % 6 ? centerX+Math.cos(rotM * 2 * Math.PI) * parent.width * .435 :
+                               centerX+Math.cos(rotM * 2 * Math.PI) * parent.width * .4075
+                y: index % 6 ? centerY+Math.sin(rotM * 2 * Math.PI) * parent.width * .435 :
+                               centerY+Math.sin(rotM * 2 * Math.PI) * parent.width * .4075
                 font {
-                    pixelSize: index % 3 ? parent.height * .06 : parent.height * .12
+                    pixelSize: index % 3 ? parent.height * .075 : parent.height * .15
                     family: "Noto Sans"
                     styleName: index % 3 ? "SemiCondensed SemiBold" : "SemiCondensed Medium"
                 }
@@ -154,12 +193,13 @@ Item {
 
             property var day: wallClock.time.toLocaleString(Qt.locale(), "dd")
 
-            width: parent.width * .24
-            height: parent.height * .24
+            width: parent.width * .3
+            height: parent.height * .3
+            visible: !nightstandMode.active
             anchors {
                 centerIn: parent
-                verticalCenterOffset: -parent.width * .044
-                horizontalCenterOffset: -parent.width * .17
+                verticalCenterOffset: -parent.width * .055
+                horizontalCenterOffset: -parent.width * .2125
             }
 
             onDayChanged: dayArc.requestPaint()
@@ -264,12 +304,13 @@ Item {
 
             onMonthChanged: monthArc.requestPaint()
 
-            width: parent.width * .24
-            height: parent.height * .24
+            width: parent.width * .3
+            height: parent.height * .3
+            visible: !nightstandMode.active
             anchors {
                 centerIn: parent
-                verticalCenterOffset: -parent.width * .044
-                horizontalCenterOffset: parent.width * .17
+                verticalCenterOffset: -parent.width * .055
+                horizontalCenterOffset: parent.width * .2125
             }
 
             Canvas {
@@ -373,10 +414,11 @@ Item {
 
             anchors {
                 centerIn: parent
-                verticalCenterOffset: parent.width * .15
+                verticalCenterOffset: parent.width * .1875
             }
-            width: parent.width * .22
-            height: parent.height * .22
+            width: parent.width * .275
+            height: parent.height * .275
+            visible: !nightstandMode.active
 
             Canvas {
                 id: batteryArc
