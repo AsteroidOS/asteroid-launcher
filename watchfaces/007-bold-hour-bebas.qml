@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 - Timo Könnecke <el-t-mo@arcor.de>
+ * Copyright (C) 2022 - Timo Könnecke <el-t-mo@arcor.de>
  *               2016 - Sylvia van Os <iamsylvie@openmailbox.org>
  *               2015 - Florent Revest <revestflo@gmail.com>
  *               2012 - Vasiliy Sorokin <sorokin.vasiliy@gmail.com>
@@ -51,7 +51,7 @@ Item {
             smooth: true
             antialiasing: true
             renderStrategy: Canvas.Cooperative
-            visible: !displayAmbient
+            visible: !displayAmbient && !nightstandMode.active
             onPaint: {
                 var ctx = getContext("2d")
                 var rot = (wallClock.time.getMinutes() -15 )*6
