@@ -37,8 +37,9 @@ Item {
     Item {
         id: scaleContent
 
-        anchors.fill: parent
-        scale: nightstandMode.active ? 0.8 : 1
+        anchors.centerIn: parent
+        width: parent.width * (nightstandMode.active ? .8 : 1)
+        height: parent.width * (nightstandMode.active ? .8 : 1)
         smooth: true
         antialiasing: true
 
