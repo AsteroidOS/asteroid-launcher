@@ -38,8 +38,8 @@ Item {
         id: scaleContent
 
         anchors.centerIn: parent
-        width: parent.width * (nightstandMode.active ? .8 : 1)
-        height: parent.width * (nightstandMode.active ? .8 : 1)
+        width: parent.width * (dockMode.active ? .8 : 1)
+        height: parent.width * (dockMode.active ? .8 : 1)
         smooth: true
         antialiasing: true
 
@@ -51,7 +51,7 @@ Item {
             smooth: true
             antialiasing: true
             renderStrategy: Canvas.Cooperative
-            visible: !displayAmbient && !nightstandMode.active
+            visible: !displayAmbient && !dockMode.active
             onPaint: {
                 var ctx = getContext("2d")
                 var rot = (wallClock.time.getMinutes() -15 )*6
@@ -139,14 +139,14 @@ Item {
     }
 
     Item {
-        id: nightstandMode
+        id: dockMode
 
         readonly property bool active: mceCableState.connected //ready || (nightstandEnabled.value && holdoff)
         //readonly property bool ready: nightstandEnabled.value && mceCableState.connected
         property int batteryPercentChanged: batteryChargePercentage.percent
 
         anchors.fill: parent
-        visible: nightstandMode.active
+        visible: dockMode.active
         layer.enabled: true
         layer.samples: 4
         smooth: true
@@ -199,7 +199,7 @@ Item {
                 pixelSize: parent.width * .13
                 family: "Fyodor"
             }
-            visible: nightstandMode.active
+            visible: dockMode.active
             color: chargeArc.colorArray[chargeArc.chargecolor]
             style: Text.Outline; styleColor: "#80000000"
             text: batteryChargePercentage.percent
