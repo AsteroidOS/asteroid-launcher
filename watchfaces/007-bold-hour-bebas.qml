@@ -29,7 +29,6 @@ import org.asteroid.utils 1.0
 import Nemo.Mce 1.0
 
 Item {
-
     id: rootitem
 
     anchors.fill: parent
@@ -39,9 +38,9 @@ Item {
 
         anchors.centerIn: parent
         width: parent.width * (dockMode.active ? .8 : 1)
-        height: parent.width * (dockMode.active ? .8 : 1)
-        smooth: true
-        antialiasing: true
+        height: width
+        //smooth: true
+        //antialiasing: true
 
         Canvas {
             id: minuteArc
@@ -50,8 +49,8 @@ Item {
             property real centerY: parent.height / 2
 
             anchors.fill: parent
-            smooth: true
-            antialiasing: true
+            //smooth: true
+            //antialiasing: true
             renderStrategy: Canvas.Cooperative
             visible: !displayAmbient && !dockMode.active
             onPaint: {
@@ -90,8 +89,8 @@ Item {
             }
             color: Qt.rgba(1, 1, 1, .9)
             opacity: .9
-            smooth: true
-            antialiasing: true
+            //smooth: true
+            //antialiasing: true
             style: Text.Outline;
             styleColor: Qt.rgba(0, 0, 0, .2)
             horizontalAlignment: Text.AlignHCenter
@@ -112,8 +111,8 @@ Item {
             property real minuteY: centerY+Math.sin(rotM * 2 * Math.PI) * height / 2.75
 
             anchors.fill: parent
-            smooth: true
-            antialiasing: true
+            //smooth: true
+            //antialiasing: true
             renderStrategy: Canvas.Cooperative
             onPaint: {
                 var ctx = getContext("2d")
@@ -144,8 +143,8 @@ Item {
             }
             color: "white"
             opacity: 1.00
-            smooth: true
-            antialiasing: true
+            //smooth: true
+            //antialiasing: true
             x: centerX + Math.cos(rotM * 2 * Math.PI) * parent.width * .364
             y: centerY+Math.sin(rotM * 2 * Math.PI) * parent.width * .364
             text: wallClock.time.toLocaleString(Qt.locale(), "mm")
@@ -159,9 +158,9 @@ Item {
         //readonly property bool ready: nightstandEnabled.value && mceCableState.connected
         property int batteryPercentChanged: batteryChargePercentage.percent
 
-        layer.enabled: true
-        layer.samples: 4
         anchors.fill: parent
+        //layer.enabled: true
+        //layer.samples: 4
         visible: dockMode.active
         //smooth: true
         //antialiasing: true
@@ -173,7 +172,7 @@ Item {
             // radius of arc is scalefactor * height or width
             property real arcStrokeWidth: .04
             property real scalefactor: .5 - (arcStrokeWidth / 2)
-            property var chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
+            property real chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
             readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
             anchors.fill: parent
@@ -237,6 +236,7 @@ Item {
         function onTimeChanged() {
             var hour = wallClock.time.getHours()
             var minute = wallClock.time.getMinutes()
+
             if(minuteCircle.minute !== minute) {
                 minuteCircle.minute = minute
                 minuteCircle.requestPaint()
@@ -248,6 +248,7 @@ Item {
     Component.onCompleted: {
         var hour = wallClock.time.getHours()
         var minute = wallClock.time.getMinutes()
+
         minuteCircle.minute = minute
         minuteCircle.requestPaint()
         minuteArc.requestPaint()
