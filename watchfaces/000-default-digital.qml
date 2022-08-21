@@ -37,6 +37,10 @@ import org.asteroid.utils 1.0
 import Nemo.Mce 1.0
 
 Item {
+    id: rootitem
+
+    anchors.fill: parent
+
     function twoDigits(x) {
         if (x<10) return "0"+x;
         else      return x;
@@ -50,7 +54,7 @@ Item {
         ctx.shadowColor = "black"
         ctx.shadowOffsetX = 0
         ctx.shadowOffsetY = 0
-        ctx.shadowBlur = parent.height*0.0125
+        ctx.shadowBlur = parent.height*.0125
     }
 
     Canvas {
@@ -60,14 +64,14 @@ Item {
         smooth: true
         renderStrategy: Canvas.Cooperative
 
-        property var hour: 0
+        property int hour: 0
 
         onPaint: {
             var ctx = getContext("2d")
             prepareContext(ctx)
 
-            ctx.font = "57 " + height*0.36 + "px Roboto"
-            ctx.fillText(twoDigits(hour), width*0.378, height*0.537);
+            ctx.font = "57 " + height*.36 + "px Roboto"
+            ctx.fillText(twoDigits(hour), width*.378, height*.537);
         }
     }
 
@@ -78,14 +82,14 @@ Item {
         smooth: true
         renderStrategy: Canvas.Cooperative
 
-        property var minute: 0
+        property int minute: 0
 
         onPaint: {
             var ctx = getContext("2d")
             prepareContext(ctx)
 
-            ctx.font = "30 " + height * 0.18 + "px Roboto"
-            ctx.fillText(twoDigits(minute), width*0.717, height*0.473);
+            ctx.font = "30 " + height * .18 + "px Roboto"
+            ctx.fillText(twoDigits(minute), width*.717, height*.473);
         }
     }
 
@@ -97,15 +101,14 @@ Item {
         renderStrategy: Canvas.Cooperative
         visible: use12H.value
 
-        property var am: false
+        property bool am: false
 
         onPaint: {
             var ctx = getContext("2d")
             prepareContext(ctx)
-            var ctx = getContext("2d")
 
             ctx.font = "25 " + height/15 + "px Raleway"
-            ctx.fillText(wallClock.time.toLocaleString(Qt.locale("en_EN"), "AP"), width*0.894, height*0.371);
+            ctx.fillText(wallClock.time.toLocaleString(Qt.locale("en_EN"), "AP"), width*.894, height*.371);
         }
     }
 
@@ -116,53 +119,55 @@ Item {
         smooth: true
         renderStrategy: Canvas.Cooperative
 
-        property var date: 0
+        property int date: 0
 
         onPaint: {
             var ctx = getContext("2d")
             prepareContext(ctx)
             ctx.font = "25 " + height/13 + "px Raleway"
-            ctx.fillText(wallClock.time.toLocaleString(Qt.locale(), "d MMM"), width*0.719, height*0.595);
+            ctx.fillText(wallClock.time.toLocaleString(Qt.locale(), "d MMM"), width*.719, height*.595);
         }
     }
 
     Item {
-        id: nightstandMode
+        id: dockMode
 
         readonly property bool active: mceCableState.connected //ready || (nightstandEnabled.value && holdoff)
         //readonly property bool ready: nightstandEnabled.value && mceCableState.connected
         property int batteryPercentChanged: batteryChargePercentage.percent
 
+        anchors.fill: parent
+
+        layer.enabled: true
+        layer.samples: 4
+        layer.smooth: true
+        layer.textureSize: Qt.size(dockMode.width * 2, dockMode.height * 2)
+        visible: dockMode.active
+
         onBatteryPercentChangedChanged: {
             batteryPercent.requestPaint()
         }
-
-        anchors.fill: parent
-        visible: nightstandMode.active
-        layer.enabled: true
-        layer.samples: 4
 
         Shape {
             id: chargeArc
 
             property real angle: batteryChargePercentage.percent * 360 / 100
             // radius of arc is scalefactor * height or width
-            property real scalefactor: 0.41
-            property var chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
-            readonly property var colorArray: [ "red", "yellow", Qt.rgba(0.318, 1, 0.051, 0.9)]
+            property real scalefactor: .41
+            property real chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
+            readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
             anchors.fill: parent
-            smooth: true
-            antialiasing: true
+            vendorExtensionsEnabled: true
 
             ShapePath {
                 fillColor: "transparent"
                 strokeColor: chargeArc.colorArray[chargeArc.chargecolor]
-                strokeWidth: parent.height * 0.04
+                strokeWidth: parent.height * .04
                 capStyle: ShapePath.FlatCap
                 joinStyle: ShapePath.MiterJoin
                 startX: width / 2
-                startY: height * ( 0.5 - chargeArc.scalefactor)
+                startY: height * (.5 - chargeArc.scalefactor)
 
                 PathAngleArc {
                     centerX: parent.width / 2
@@ -178,13 +183,14 @@ Item {
 
         Icon {
             id: batteryIcon
+
             name: "ios-battery-charging"
             anchors {
                 centerIn: parent
-                verticalCenterOffset: -parent.height * 0.25
+                verticalCenterOffset: -parent.height * .25
             }
-            width: parent.width * 0.13
-            height: parent.height * 0.13
+            width: parent.width * .13
+            height: parent.height * .13
         }
 
         ColorOverlay {
@@ -195,6 +201,7 @@ Item {
 
         Canvas {
             id: batteryPercent
+
             anchors.fill: parent
             antialiasing: true
             smooth: true
@@ -205,7 +212,7 @@ Item {
                 prepareContext(ctx)
                 ctx.fillStyle = chargeArc.colorArray[chargeArc.chargecolor]
                 ctx.font = "45 " + height * .08 + "px Roboto"
-                ctx.fillText(batteryChargePercentage.percent + "%", width*0.5, height*0.75);
+                ctx.fillText(batteryChargePercentage.percent + "%", width*.5, height*.75);
             }
         }
     }
@@ -221,7 +228,6 @@ Item {
     MceCableState {
         id: mceCableState
     }
-
     Connections {
         target: wallClock
         function onTimeChanged() {
@@ -231,15 +237,15 @@ Item {
             var am = hour < 12
             if(use12H.value) {
                 hour = hour % 12
-                if (hour == 0) hour = 12;
+                if (hour === 0) hour = 12;
             }
-            if(hourCanvas.hour != hour) {
+            if(hourCanvas.hour !== hour) {
                 hourCanvas.hour = hour
                 hourCanvas.requestPaint()
-            } if(minuteCanvas.minute != minute) {
+            } if(minuteCanvas.minute !== minute) {
                 minuteCanvas.minute = minute
                 minuteCanvas.requestPaint()
-            } if(dateCanvas.date != date) {
+            } if(dateCanvas.date !== date) {
                 dateCanvas.date = date
                 dateCanvas.requestPaint()
             } if(amPmCanvas.am != am) {
@@ -256,7 +262,7 @@ Item {
         var am = hour < 12
         if(use12H.value) {
             hour = hour % 12
-            if (hour == 0) hour = 12
+            if (hour === 0) hour = 12
         }
         hourCanvas.hour = hour
         hourCanvas.requestPaint()
@@ -267,7 +273,7 @@ Item {
         amPmCanvas.am = am
         amPmCanvas.requestPaint()
 
-        burnInProtectionManager.widthOffset = Qt.binding(function() { return width*0.32})
-        burnInProtectionManager.heightOffset = Qt.binding(function() { return height*0.7})
+        burnInProtectionManager.widthOffset = Qt.binding(function() { return width*.32})
+        burnInProtectionManager.heightOffset = Qt.binding(function() { return height*.7})
     }
 }
