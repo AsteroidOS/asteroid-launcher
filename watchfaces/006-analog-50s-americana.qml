@@ -111,7 +111,7 @@ Item {
 
             anchors {
                 centerIn: parent
-                verticalCenterOffset: -parent.width * .18
+                verticalCenterOffset: -parent.width * .17
             }
 
             font {
@@ -135,6 +135,105 @@ Item {
 
     MceCableState {
         id: mceCableState
+    }
+
+    Canvas {
+        id: numberStrokes
+
+        property real voffset: -parent.height * .022
+        property real hoffset: -parent.height * .007
+
+        anchors.fill: parent
+        antialiasing: true
+        smooth: true
+        renderStrategy: Canvas.Cooperative
+
+        onPaint: {
+            var ctx = getContext("2d")
+            ctx.reset()
+            ctx.lineWidth = parent.height * .0031
+            ctx.fillStyle = displayAmbient ? Qt.rgba(1, 1, 1, .7) : Qt.rgba(.1, .1, .1, 1)
+            ctx.strokeStyle = displayAmbient ? Qt.rgba(1, 1, 1, .3) : Qt.rgba(1, 1, 1, .4)
+            ctx.textAlign = "center"
+            ctx.textBaseline = 'middle'
+            ctx.translate(parent.width / 2, parent.height / 2)
+            for (var i = 1; i < 13; i++) {
+                ctx.beginPath()
+                ctx.font = height * .14 + "px Fyodor"
+                ctx.fillText(i,
+                             Math.cos((i - 3) / 12 * 2 * Math.PI) * height * .375 - hoffset,
+                             (Math.sin((i - 3) / 12 * 2 * Math.PI) * height * .375) - voffset)
+                ctx.strokeText(i,
+                             Math.cos((i - 3) / 12 * 2 * Math.PI) * height * .375 - hoffset,
+                             (Math.sin((i - 3) / 12 * 2 * Math.PI) * height * .375) - voffset)
+                ctx.closePath()
+            }
+        }
+    }
+
+    Canvas {
+        id: hourStrokes
+
+        anchors.fill: parent
+        smooth: true
+        renderStrategy: Canvas.Cooperative
+        onPaint: {
+            var ctx = getContext("2d")
+
+            ctx.lineWidth = parent.width * .015
+            ctx.strokeStyle = Qt.rgba(.1, .1, .1, .9)
+            ctx.translate(parent.width / 2, parent.height / 2)
+            for (var i = 0; i < 12; i++) {
+                ctx.beginPath()
+                ctx.moveTo(0, height * .44)
+                ctx.lineTo(0, height * .47)
+                ctx.stroke()
+                ctx.rotate(Math.PI / 6)
+            }
+        }
+    }
+
+    Canvas {
+        id: minuteStrokes
+
+        anchors.fill: parent
+        smooth: true
+        renderStrategy: Canvas.Cooperative
+        onPaint: {
+            var ctx = getContext("2d")
+            ctx.lineWidth = parent.width * .007
+            ctx.strokeStyle = Qt.rgba(.1, .1, .1, .9)
+            ctx.translate(parent.width / 2, parent.height / 2)
+            for (var i = 0; i < 60; i++) {
+                // do not paint a minute stroke when there is an hour stroke
+                if ((i % 5) != 0) {
+                    ctx.beginPath()
+                    ctx.moveTo(0, height * .45)
+                    ctx.lineTo(0, height * .47)
+                    ctx.stroke()
+                }
+                ctx.rotate(Math.PI / 30)
+            }
+        }
+    }
+
+    Text {
+        id: monthDisplay
+
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            horizontalCenterOffset: parent.width*.015
+            verticalCenter: parent.verticalCenter
+            verticalCenterOffset: parent.height*.195
+        }
+        font {
+            pixelSize: parent.height * .08
+            family: "Fyodor"
+        }
+        renderType: Text.NativeRendering
+        color: displayAmbient ? Qt.rgba(1, 1, 1, .7) : "black"
+        horizontalAlignment: Text.AlignHCenter
+        text: Qt.formatDate(wallClock.time, "MMM dd")
     }
 
     Canvas {
@@ -254,105 +353,6 @@ Item {
             ctx.stroke()
             ctx.closePath()
         }
-    }
-
-    Canvas {
-        id: numberStrokes
-
-        property real voffset: -parent.height * .022
-        property real hoffset: -parent.height * .007
-
-        anchors.fill: parent
-        antialiasing: true
-        smooth: true
-        renderStrategy: Canvas.Cooperative
-
-        onPaint: {
-            var ctx = getContext("2d")
-            ctx.reset()
-            ctx.lineWidth = parent.height * .0031
-            ctx.fillStyle = displayAmbient ? Qt.rgba(1, 1, 1, .7) : Qt.rgba(.1, .1, .1, 1)
-            ctx.strokeStyle = displayAmbient ? Qt.rgba(1, 1, 1, .3) : Qt.rgba(1, 1, 1, .4)
-            ctx.textAlign = "center"
-            ctx.textBaseline = 'middle'
-            ctx.translate(parent.width / 2, parent.height / 2)
-            for (var i = 1; i < 13; i++) {
-                ctx.beginPath()
-                ctx.font = height * .14 + "px Fyodor"
-                ctx.fillText(i,
-                             Math.cos((i - 3) / 12 * 2 * Math.PI) * height * .375 - hoffset,
-                             (Math.sin((i - 3) / 12 * 2 * Math.PI) * height * .375) - voffset)
-                ctx.strokeText(i,
-                             Math.cos((i - 3) / 12 * 2 * Math.PI) * height * .375 - hoffset,
-                             (Math.sin((i - 3) / 12 * 2 * Math.PI) * height * .375) - voffset)
-                ctx.closePath()
-            }
-        }
-    }
-
-    Canvas {
-        id: hourStrokes
-
-        anchors.fill: parent
-        smooth: true
-        renderStrategy: Canvas.Cooperative
-        onPaint: {
-            var ctx = getContext("2d")
-
-            ctx.lineWidth = parent.width * .015
-            ctx.strokeStyle = Qt.rgba(.1, .1, .1, .9)
-            ctx.translate(parent.width / 2, parent.height / 2)
-            for (var i = 0; i < 12; i++) {
-                ctx.beginPath()
-                ctx.moveTo(0, height * .44)
-                ctx.lineTo(0, height * .47)
-                ctx.stroke()
-                ctx.rotate(Math.PI / 6)
-            }
-        }
-    }
-
-    Canvas {
-        id: minuteStrokes
-
-        anchors.fill: parent
-        smooth: true
-        renderStrategy: Canvas.Cooperative
-        onPaint: {
-            var ctx = getContext("2d")
-            ctx.lineWidth = parent.width * .007
-            ctx.strokeStyle = Qt.rgba(.1, .1, .1, .9)
-            ctx.translate(parent.width / 2, parent.height / 2)
-            for (var i = 0; i < 60; i++) {
-                // do not paint a minute stroke when there is an hour stroke
-                if ((i % 5) != 0) {
-                    ctx.beginPath()
-                    ctx.moveTo(0, height * .45)
-                    ctx.lineTo(0, height * .47)
-                    ctx.stroke()
-                }
-                ctx.rotate(Math.PI / 30)
-            }
-        }
-    }
-
-    Text {
-        id: monthDisplay
-
-        anchors {
-            horizontalCenter: parent.horizontalCenter
-            horizontalCenterOffset: parent.width*.015
-            verticalCenter: parent.verticalCenter
-            verticalCenterOffset: parent.height*.195
-        }
-        font {
-            pixelSize: parent.height * .08
-            family: "Fyodor"
-        }
-        renderType: Text.NativeRendering
-        color: displayAmbient ? Qt.rgba(1, 1, 1, .7) : "black"
-        horizontalAlignment: Text.AlignHCenter
-        text: Qt.formatDate(wallClock.time, "MMM dd")
     }
 
     Connections {
