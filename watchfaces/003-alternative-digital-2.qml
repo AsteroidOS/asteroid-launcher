@@ -1,5 +1,7 @@
 /*
- * Copyright (C) 2018 - Timo Könnecke <el-t-mo@arcor.de>
+ * Copyright (C) 2022 - Timo Könnecke <github.com/eLtMosen>
+ *               2022 - Darrel Griët <dgriet@gmail.com>
+ *               2022 - Ed Beroset <github.com/beroset>
  *               2016 - Florent Revest <revestflo@gmail.com>
  * All rights reserved.
  *
@@ -46,10 +48,10 @@ Item {
         ctx.fillStyle = "white"
         ctx.textAlign = "center"
         ctx.textBaseline = 'middle';
-        ctx.shadowColor = Qt.rgba(0, 0, 0, 0.80)
-        ctx.shadowOffsetX = parent.height * 0.00625
-        ctx.shadowOffsetY = parent.height * 0.00625
-        ctx.shadowBlur = parent.height * 0.0156
+        ctx.shadowColor = Qt.rgba(0, 0, 0, .80)
+        ctx.shadowOffsetX = parent.height * .00625
+        ctx.shadowOffsetY = parent.height * .00625
+        ctx.shadowBlur = parent.height * .0156
     }
 
     Canvas {
@@ -59,187 +61,160 @@ Item {
         smooth: true
         renderStrategy: Canvas.Cooperative
 
-        property var hour: 0
+        property int hour: 0
 
         onPaint: {
             var ctx = getContext("2d")
             prepareContext(ctx)
 
-            ctx.font = "60 " + parent.height*0.39 + "px Roboto"
+            ctx.font = "60 " + parent.height*.39 + "px Roboto"
             ctx.fillText(twoDigits(hour),
-                         parent.width * 0.5,
-                         parent.height * 0.34);
+                         parent.width * .5,
+                         parent.height * .34);
         }
     }
 
     Canvas {
         id: minuteCanvas
+
         anchors.fill: parent
         antialiasing: true
         smooth: true
         renderStrategy: Canvas.Cooperative
 
-        property var minute: 0
+        property int minute: 0
 
         onPaint: {
             var ctx = getContext("2d")
             prepareContext(ctx)
 
-            ctx.font = "26 " + parent.height*0.38 + "px Roboto"
+            ctx.font = "26 " + parent.height*.38 + "px Roboto"
             ctx.fillText(twoDigits(minute),
-                         parent.width * 0.5,
-                         parent.height * 0.74);
+                         parent.width * .5,
+                         parent.height * .74);
         }
     }
 
     Canvas {
         id: dateCanvas
+
         anchors.fill: parent
         antialiasing: true
         smooth: true
         renderStrategy: Canvas.Cooperative
-        visible: !nightstandMode.active
+        visible: !dockMode.active
 
-
-        property var date: 0
+        property int date: 0
 
         onPaint: {
             var ctx = getContext("2d")
             prepareContext(ctx)
-            ctx.shadowBlur = parent.height * 0.00625 //2 px on 320x320
+            ctx.shadowBlur = parent.height * .00625 //2 px on 320x320
             ctx.textAlign = "left"
             ctx.textBaseline = "left"
-            ctx.font = "60 " + parent.height * 0.09 + "px Raleway"
+            ctx.font = "60 " + parent.height * .09 + "px Raleway"
             ctx.fillText(wallClock.time.toLocaleString(Qt.locale(), "dd"),
                          parent.width / 10 * 1.75,
-                         parent.height * 0.505);
+                         parent.height * .505);
         }
     }
 
     Canvas {
         id: monthCanvas
+
         anchors.fill: parent
         antialiasing: true
         smooth: true
         renderStrategy: Canvas.Cooperative
-        visible: !nightstandMode.active
+        visible: !dockMode.active
 
-        property var month: 0
+        property int month: 0
 
         onPaint: {
             var ctx = getContext("2d")
             prepareContext(ctx)
-            ctx.shadowBlur = parent.height * 0.00625 //2 px on 320x320
+            ctx.shadowBlur = parent.height * .00625 //2 px on 320x320
             ctx.textAlign = "center"
-            ctx.font = "40 " +parent.height * 0.07 + "px Raleway"
+            ctx.font = "40 " +parent.height * .07 + "px Raleway"
             ctx.fillText(wallClock.time.toLocaleString(Qt.locale(), "MMMM").toUpperCase(),
-                         parent.width/2,
-                         parent.height * 0.509);
+                         parent.width / 2,
+                         parent.height * .509);
         }
     }
 
-
     Canvas {
         id: amPmCanvas
+
         anchors.fill: parent
         antialiasing: true
         smooth: true
         renderStrategy: Canvas.Cooperative
-        visible: use12H.value && !nightstandMode.active
+        visible: use12H.value && !dockMode.active
 
-        property var am: false
+        property bool am: false
 
         onPaint: {
             var ctx = getContext("2d")
             prepareContext(ctx)
-            ctx.shadowBlur = parent.height * 0.00625
+            ctx.shadowBlur = parent.height * .00625
             ctx.textAlign = "right"
             ctx.textBaseline = "right"
-            ctx.font = "72 " +parent.height*0.072 + "px Raleway"
+            ctx.font = "72 " +parent.height * .072 + "px Raleway"
             ctx.fillText(wallClock.time.toLocaleString(Qt.locale("en_EN"), "AP").slice(0, 2),
-                         parent.width/10 * 8.3,
-                         parent.height * 0.509);
+                         parent.width / 10 * 8.3,
+                         parent.height * .509);
         }
     }
 
     Canvas {
         id: secondCanvas
+
         anchors.fill: parent
         antialiasing: true
         smooth: true
         renderStrategy: Canvas.Cooperative
-        visible: !use12H.value && !displayAmbient && !nightstandMode.active
+        visible: !use12H.value && !displayAmbient && !dockMode.active
 
-        property var second: 0
+        property int second: 0
 
         onPaint: {
             var ctx = getContext("2d")
             prepareContext(ctx)
-            ctx.shadowBlur = parent.height * 0.00625
+            ctx.shadowBlur = parent.height * .00625
             ctx.textAlign = "right"
             ctx.textBaseline = "right"
-            ctx.font = "60 " +parent.height*0.08 + "px Roboto"
+            ctx.font = "60 " +parent.height * .08 + "px Roboto"
             ctx.fillText(twoDigits(second),
-                         parent.width/10 * 8.1,
-                         parent.height * 0.506);
-        }
-    }
-
-    Connections {
-        target: wallClock
-        function onTimeChanged() {
-            var hour = wallClock.time.getHours()
-            var minute = wallClock.time.getMinutes()
-            var second = wallClock.time.getSeconds()
-            var date = wallClock.time.getDate()
-            var am = hour < 12
-            if(use12H.value) {
-                hour = hour % 12
-                if (hour == 0) hour = 12;
-            }
-            if(hourCanvas.hour != hour) {
-                hourCanvas.hour = hour
-                hourCanvas.requestPaint()
-            } if(minuteCanvas.minute != minute) {
-                minuteCanvas.minute = minute
-                minuteCanvas.requestPaint()
-            } if(secondCanvas.second != second) {
-                secondCanvas.second = second
-                secondCanvas.requestPaint()
-            } if(dateCanvas.date != date) {
-                dateCanvas.date = date
-                dateCanvas.requestPaint()
-            } if(monthCanvas.month != date) {
-                monthCanvas.month = date
-                monthCanvas.requestPaint()
-            } if(amPmCanvas.am != am) {
-                amPmCanvas.am = am
-                amPmCanvas.requestPaint()
-            }
+                         parent.width / 10 * 8.1,
+                         parent.height * .506);
         }
     }
 
     Item {
-        id: nightstandMode
+        id: dockMode
 
         readonly property bool active: mceCableState.connected //ready || (nightstandEnabled.value && holdoff)
         //readonly property bool ready: nightstandEnabled.value && mceCableState.connected
         property int batteryPercentChanged: batteryChargePercentage.percent
 
         anchors.fill: parent
-        visible: nightstandMode.active
-        layer.enabled: true
-        layer.samples: 4
+        visible: dockMode.active
+        layer {
+            enabled: true
+            samples: 4
+            smooth: true
+            textureSize: Qt.size(dockMode.width * 2, dockMode.height * 2)
+        }
 
         Shape {
             id: chargeArc
 
             property real angle: batteryChargePercentage.percent * 360 / 100
             // radius of arc is scalefactor * height or width
-            property real arcStrokeWidth: 0.03
-            property real scalefactor: 0.5 - (arcStrokeWidth / 2)
+            property real arcStrokeWidth: .03
+            property real scalefactor: .5 - (arcStrokeWidth / 2)
             property var chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
-            readonly property var colorArray: [ "red", "yellow", Qt.rgba(0.318, 1, 0.051, 0.9)]
+            readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
             anchors.fill: parent
             smooth: true
@@ -252,7 +227,7 @@ Item {
                 capStyle: ShapePath.FlatCap
                 joinStyle: ShapePath.MiterJoin
                 startX: width / 2
-                startY: height * ( 0.5 - chargeArc.scalefactor)
+                startY: height * ( .5 - chargeArc.scalefactor)
 
                 PathAngleArc {
                     centerX: parent.width / 2
@@ -272,11 +247,11 @@ Item {
             name: "ios-battery-charging"
             anchors {
                 centerIn: parent
-                horizontalCenterOffset: -parent.width * 0.27
+                horizontalCenterOffset: -parent.width * .27
             }
-            visible: nightstandMode.active
-            width: parent.width * 0.15
-            height: parent.height * 0.15
+            visible: dockMode.active
+            width: parent.width * .15
+            height: parent.height * .15
         }
 
         Text {
@@ -284,7 +259,7 @@ Item {
 
             anchors {
                 centerIn: parent
-                horizontalCenterOffset: parent.width * 0.285
+                horizontalCenterOffset: parent.width * .285
             }
 
             font {
@@ -292,7 +267,7 @@ Item {
                 family: "Roboto"
                 styleName: "Bold"
             }
-            visible: nightstandMode.active
+            visible: dockMode.active
             color: "#ffffffff"
             style: Text.Outline; styleColor: "#80000000"
             text: batteryChargePercentage.percent + "%"
@@ -319,7 +294,7 @@ Item {
         var am = hour < 12
         if(use12H.value) {
             hour = hour % 12
-            if (hour == 0) hour = 12
+            if (hour === 0) hour = 12
         }
         hourCanvas.hour = hour
         hourCanvas.requestPaint()
@@ -334,8 +309,42 @@ Item {
         amPmCanvas.am = am
         amPmCanvas.requestPaint()
 
-        burnInProtectionManager.widthOffset = Qt.binding(function() { return width*0.2})
-        burnInProtectionManager.heightOffset = Qt.binding(function() { return height*0.2})
+        burnInProtectionManager.widthOffset = Qt.binding(function() { return width*.2})
+        burnInProtectionManager.heightOffset = Qt.binding(function() { return height*.2})
+    }
+
+    Connections {
+        target: wallClock
+        function onTimeChanged() {
+            var hour = wallClock.time.getHours()
+            var minute = wallClock.time.getMinutes()
+            var second = wallClock.time.getSeconds()
+            var date = wallClock.time.getDate()
+            var am = hour < 12
+            if(use12H.value) {
+                hour = hour % 12
+                if (hour === 0) hour = 12;
+            }
+            if(hourCanvas.hour !== hour) {
+                hourCanvas.hour = hour
+                hourCanvas.requestPaint()
+            } if(minuteCanvas.minute !== minute) {
+                minuteCanvas.minute = minute
+                minuteCanvas.requestPaint()
+            } if(secondCanvas.second !== second) {
+                secondCanvas.second = second
+                secondCanvas.requestPaint()
+            } if(dateCanvas.date !== date) {
+                dateCanvas.date = date
+                dateCanvas.requestPaint()
+            } if(monthCanvas.month !== date) {
+                monthCanvas.month = date
+                monthCanvas.requestPaint()
+            } if(amPmCanvas.am != am) {
+                amPmCanvas.am = am
+                amPmCanvas.requestPaint()
+            }
+        }
     }
 
     Connections {
