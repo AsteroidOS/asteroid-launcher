@@ -1,8 +1,7 @@
 /*
- * Copyright (C) 2022 - Timo Könnecke <el-t-mo@arcor.de>
+ * Copyright (C) 2022 - Timo Könnecke <github.com/eLtMosen>
+ *               2022 - Darrel Griët <dgriet@gmail.com>
  *               2022 - Ed Beroset <github.com/beroset>
- *               2021 - Oliver Geneser <olivergeneser@gmail.com>
- *               2018 - Timo Könnecke <el-t-mo@arcor.de>
  *               2016 - Sylvia van Os <iamsylvie@openmailbox.org>
  *               2015 - Florent Revest <revestflo@gmail.com>
  *               2014 - Aleksi Suomalainen <suomalainen.aleksi@gmail.com>
@@ -54,7 +53,7 @@ Item {
         ctx.shadowColor = "black"
         ctx.shadowOffsetX = 0
         ctx.shadowOffsetY = 0
-        ctx.shadowBlur = parent.height*0.0125
+        ctx.shadowBlur = parent.height * .0125
     }
 
     Text {
@@ -64,7 +63,7 @@ Item {
             var minutesFirst = [false, true, true, true, false, false, false, false, false, true, true, true, false]
             var nextHour = [false, false, false, false, false, false, false, false, false, true, true, true, true]
 
-            var minutes = Math.round(time.getMinutes()/5)
+            var minutes = Math.round(time.getMinutes() / 5)
             var hours = (time.getHours() + (nextHour[minutes] ? 1 : 0)) % 12
 
             var start = "<p style=\"text-align:center\">"
@@ -87,7 +86,7 @@ Item {
             var hoursListmenos = ["<b>doce</b><br>menos", "<b>una</b><br>menos", "<b>dos</b><br>menos", "<b>tres</b><br>menos", "<b>cuatro</b><br>menos", "<b>cinco</b><br>menos", "<b>seis</b><br>menos", "<b>siete</b><br>menos", "<b>ocho</b><br>menos", "<b>nueve</b><br>menos", "<b>diez</b><br>menos", "<b>once</b><br>menos"]
             var nextHour = [false, false, false, false, false, false, false, true, true, true, true, true, true]
             var enPunto = [true, false, false, false, false, false, false, false, false, false, false, false, true]
-            var minutes = Math.round(time.getMinutes()/5)
+            var minutes = Math.round(time.getMinutes() / 5)
             var hours = (time.getHours() + (nextHour[minutes] ? 1 : 0)) % 12
 
             var start = "<p style=\"text-align:center\">"
@@ -108,7 +107,7 @@ Item {
 
         function generateTimeDe(time) {
             var nextHour   = [false, false, false, false, false, true, true, true, true, true, true, true, true]
-            var minutes = Math.round(time.getMinutes()/5)
+            var minutes = Math.round(time.getMinutes() / 5)
             var hours = (time.getHours() + (nextHour[minutes] ? 1 : 0)) % 12
 
             var minutesList = ["UHR", "<b>fünf</b><br>nach", "<b>zehn</b><br>nach", "<b>viertel</b><br>nach", "<b>zwanzig</b><br>nach", "<b>fünf</b><br> vor halb", "<b>halb</b>", "<b>fünf</b><br> nach halb", "<b>zwanzig</b><br>vor", "<b>viertel</b><br>vor", "<b>zehn</b><br>vor", "<b>fünf</b><br>vor", "UHR"]
@@ -145,7 +144,7 @@ Item {
             var minutesFirst = [false, false, false, false, false, false, false, false, false, false, false, false, false]
             var nextHour = [false, false, false, false, false, false, false, true, true, true, true, true, true]
 
-            var minutes = Math.round(time.getMinutes()/5)
+            var minutes = Math.round(time.getMinutes() / 5)
             var hours = (time.getHours() + (nextHour[minutes] ? 1 : 0)) % 12
 
             var start = "<p style=\"text-align:center\">"
@@ -167,7 +166,7 @@ Item {
             var minutesFirst = [false, true, true, true, true, false, true, false, false, true, true, true, false]
             var nextHour = [false, false, false, false, false, false, true, false, false, true, true, true, false]
 
-            var minutes = Math.round(time.getMinutes()/5)
+            var minutes = Math.round(time.getMinutes() / 5)
             var hours = (time.getHours() + (nextHour[minutes] ? 1 : 0)) % 12
 
             var start = "<p style=\"text-align:center\">"
@@ -185,21 +184,22 @@ Item {
 
         id: timeDisplay
 
-        textFormat: Text.RichText
-        font.pixelSize: Qt.locale().name.substring(0,2) === "fr" ? parent.height * 0.135 : Qt.locale().name.substring(0,2) === "es" ? parent.height * 0.145 : parent.height * 0.15
-        font.weight: Font.Light
-        lineHeight: 0.85
-        color: "white"
-        style: Text.Outline; styleColor: "#80000000"
-        horizontalAlignment: Text.AlignHCenter
-
         anchors {
             verticalCenter: parent.verticalCenter
-            verticalCenterOffset: -parent.height*0.019
+            verticalCenterOffset: -parent.height * .019
             left: parent.left
             right: parent.right
         }
-
+        horizontalAlignment: Text.AlignHCenter
+        textFormat: Text.RichText
+        lineHeight: .85
+        color: "white"
+        style: Text.Outline
+        styleColor: "#80000000"
+        font {
+            pixelSize: Qt.locale().name.substring(0,2) === "fr" ? parent.height * .135 : Qt.locale().name.substring(0,2) === "es" ? parent.height * .145 : parent.height * .15
+            weight: Font.Light
+        }
         text: Qt.locale().name.substring(0,2) === "de" ?
                   generateTimeDe(wallClock.time) :
                   Qt.locale().name.substring(0,2) === "es" ?
@@ -214,18 +214,17 @@ Item {
     Text {
         id: dateDisplay
 
-        font.pixelSize: parent.height*0.07
-        color: "white"
-        style: Text.Outline; styleColor: "#80000000"
-        opacity: 0.9
-        horizontalAlignment: Text.AlignHCenter
-
         anchors {
-            topMargin: parent.width * 0.025
+            topMargin: parent.width * .025
             top: timeDisplay.bottom
             left: parent.left
             right: parent.right
         }
+        horizontalAlignment: Text.AlignHCenter
+        color: "white"
+        style: Text.Outline; styleColor: "#80000000"
+        opacity: .9
+        font.pixelSize: parent.height * .07
         text: wallClock.time.toLocaleString(Qt.locale(), "<b>ddd</b> d MMM")
     }
 
@@ -233,7 +232,7 @@ Item {
         id: batteryInfo
 
         anchors {
-            bottomMargin: parent.width * 0.08
+            bottomMargin: parent.width * .08
             bottom: timeDisplay.top
             left: parent.left
             right: parent.right
@@ -245,12 +244,12 @@ Item {
             name: "ios-battery-charging"
             anchors {
                 right: parent.horizontalCenter
-                rightMargin: rootitem.height * 0.004
-                topMargin: rootitem.height * 0.005
+                rightMargin: rootitem.height * .004
+                topMargin: rootitem.height * .005
             }
             visible: dockMode.active
-            width: rootitem.width * 0.1
-            height: rootitem.height * 0.1
+            width: rootitem.width * .1
+            height: rootitem.height * .1
         }
 
         Text {
@@ -258,9 +257,8 @@ Item {
 
             anchors {
                 left: parent.horizontalCenter
-                leftMargin: rootitem.height * 0.004
+                leftMargin: rootitem.height * .004
             }
-
             font {
                 pixelSize: rootitem.width * .07
                 family: "Roboto"
@@ -295,10 +293,10 @@ Item {
 
             property real angle: batteryChargePercentage.percent * 360 / 100
             // radius of arc is scalefactor * height or width
-            property real arcStrokeWidth: 0.03
-            property real scalefactor: 0.5 - (arcStrokeWidth / 2)
+            property real arcStrokeWidth: .03
+            property real scalefactor: .5 - (arcStrokeWidth / 2)
             property var chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
-            readonly property var colorArray: [ "red", "yellow", Qt.rgba(0.318, 1, 0.051, 0.9)]
+            readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
             anchors.fill: parent
             smooth: true
@@ -311,7 +309,7 @@ Item {
                 capStyle: ShapePath.FlatCap
                 joinStyle: ShapePath.MiterJoin
                 startX: width / 2
-                startY: height * ( 0.5 - chargeArc.scalefactor)
+                startY: height * ( .5 - chargeArc.scalefactor)
 
                 PathAngleArc {
                     centerX: parent.width / 2
@@ -347,9 +345,9 @@ Item {
     }
 
     Component.onCompleted: {
-        burnInProtectionManager.leftOffset = Qt.binding(function() { return width*0.05})
-        burnInProtectionManager.rightOffset = Qt.binding(function() { return width*0.05})
-        burnInProtectionManager.topOffset = Qt.binding(function() { return height*0.4})
-        burnInProtectionManager.bottomOffset = Qt.binding(function() { return height*0.05})
+        burnInProtectionManager.leftOffset = Qt.binding(function() { return width * .05})
+        burnInProtectionManager.rightOffset = Qt.binding(function() { return width * .05})
+        burnInProtectionManager.topOffset = Qt.binding(function() { return height * .4})
+        burnInProtectionManager.bottomOffset = Qt.binding(function() { return height * .05})
     }
 }
