@@ -248,7 +248,7 @@ Item {
                 rightMargin: rootitem.height * 0.004
                 topMargin: rootitem.height * 0.005
             }
-            visible: nightstandMode.active
+            visible: dockMode.active
             width: rootitem.width * 0.1
             height: rootitem.height * 0.1
         }
@@ -266,7 +266,7 @@ Item {
                 family: "Roboto"
                 styleName: "Regular"
             }
-            visible: nightstandMode.active
+            visible: dockMode.active
             color: "#ffffffff"
             style: Text.Outline; styleColor: "#80000000"
             text: batteryChargePercentage.percent + "%"
@@ -274,16 +274,21 @@ Item {
     }
 
     Item {
-        id: nightstandMode
+        id: dockMode
 
         readonly property bool active: mceCableState.connected //ready || (nightstandEnabled.value && holdoff)
         //readonly property bool ready: nightstandEnabled.value && mceCableState.connected
         property int batteryPercentChanged: batteryChargePercentage.percent
 
         anchors.fill: parent
-        visible: nightstandMode.active
-        layer.enabled: true
-        layer.samples: 4
+        layer {
+            enabled: true
+            samples: 4
+            smooth: true
+            textureSize: Qt.size(dockMode.width * 2, dockMode.height * 2)
+        }
+        visible: dockMode.active
+
 
         Shape {
             id: chargeArc
