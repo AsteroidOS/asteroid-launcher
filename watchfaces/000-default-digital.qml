@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2022 - Timo Könnecke <el-t-mo@arcor.de>
+ * Copyright (C) 2022 - Timo Könnecke <github.com/eLtMosen>
+ *               2022 - Darrel Griët <dgriet@gmail.com>
  *               2022 - Ed Beroset <github.com/beroset>
  *               2017 - Florent Revest <revestflo@gmail.com>
  * All rights reserved.
@@ -42,7 +43,7 @@ Item {
     anchors.fill: parent
 
     function twoDigits(x) {
-        if (x<10) return "0"+x;
+        if (x<10) return "0" + x;
         else      return x;
     }
 
@@ -54,7 +55,7 @@ Item {
         ctx.shadowColor = "black"
         ctx.shadowOffsetX = 0
         ctx.shadowOffsetY = 0
-        ctx.shadowBlur = parent.height*.0125
+        ctx.shadowBlur = parent.height * .0125
     }
 
     Canvas {
@@ -70,8 +71,8 @@ Item {
             var ctx = getContext("2d")
             prepareContext(ctx)
 
-            ctx.font = "57 " + height*.36 + "px Roboto"
-            ctx.fillText(twoDigits(hour), width*.378, height*.537);
+            ctx.font = "57 " + height * .36 + "px Roboto"
+            ctx.fillText(twoDigits(hour), width * .378, height * .537);
         }
     }
 
@@ -89,7 +90,7 @@ Item {
             prepareContext(ctx)
 
             ctx.font = "30 " + height * .18 + "px Roboto"
-            ctx.fillText(twoDigits(minute), width*.717, height*.473);
+            ctx.fillText(twoDigits(minute), width * .717, height * .473);
         }
     }
 
@@ -107,8 +108,8 @@ Item {
             var ctx = getContext("2d")
             prepareContext(ctx)
 
-            ctx.font = "25 " + height/15 + "px Raleway"
-            ctx.fillText(wallClock.time.toLocaleString(Qt.locale("en_EN"), "AP"), width*.894, height*.371);
+            ctx.font = "25 " + height / 15 + "px Raleway"
+            ctx.fillText(wallClock.time.toLocaleString(Qt.locale("en_EN"), "AP"), width * .894, height * .371);
         }
     }
 
@@ -124,8 +125,8 @@ Item {
         onPaint: {
             var ctx = getContext("2d")
             prepareContext(ctx)
-            ctx.font = "25 " + height/13 + "px Raleway"
-            ctx.fillText(wallClock.time.toLocaleString(Qt.locale(), "d MMM"), width*.719, height*.595);
+            ctx.font = "25 " + height / 13 + "px Raleway"
+            ctx.fillText(wallClock.time.toLocaleString(Qt.locale(), "d MMM"), width * .719, height * .595);
         }
     }
 
@@ -212,7 +213,7 @@ Item {
                 prepareContext(ctx)
                 ctx.fillStyle = chargeArc.colorArray[chargeArc.chargecolor]
                 ctx.font = "45 " + height * .08 + "px Roboto"
-                ctx.fillText(batteryChargePercentage.percent + "%", width*.5, height*.75);
+                ctx.fillText(batteryChargePercentage.percent + "%", width * .5, height * .75);
             }
         }
     }
@@ -228,6 +229,7 @@ Item {
     MceCableState {
         id: mceCableState
     }
+
     Connections {
         target: wallClock
         function onTimeChanged() {
@@ -273,7 +275,7 @@ Item {
         amPmCanvas.am = am
         amPmCanvas.requestPaint()
 
-        burnInProtectionManager.widthOffset = Qt.binding(function() { return width*.32})
-        burnInProtectionManager.heightOffset = Qt.binding(function() { return height*.7})
+        burnInProtectionManager.widthOffset = Qt.binding(function() { return width * .32})
+        burnInProtectionManager.heightOffset = Qt.binding(function() { return height * .7})
     }
 }
