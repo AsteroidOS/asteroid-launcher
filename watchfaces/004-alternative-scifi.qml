@@ -1,5 +1,7 @@
 /*
- * Copyright (C) 2018 - Timo Könnecke <el-t-mo@arcor.de>
+ * Copyright (C) 2022 - Timo Könnecke <github.com/eLtMosen>
+ *               2022 - Darrel Griët <dgriet@gmail.com>
+ *               2022 - Ed Beroset <github.com/beroset>
  *               2016 - Florent Revest <revestflo@gmail.com>
  * All rights reserved.
  *
@@ -46,47 +48,49 @@ Item {
     function prepareContext(ctx) {
         ctx.reset()
         ctx.fillStyle = "white"
-        ctx.shadowColor = Qt.rgba(0, 0, 0, 0.80)
-        ctx.shadowOffsetX = parent.height*0.00625
-        ctx.shadowOffsetY = parent.height*0.00625
-        ctx.shadowBlur = parent.height*0.0156
+        ctx.shadowColor = Qt.rgba(0, 0, 0, .80)
+        ctx.shadowOffsetX = parent.height * .00625
+        ctx.shadowOffsetY = parent.height * .00625
+        ctx.shadowBlur = parent.height * .0156
     }
 
     Canvas {
         id: dowCanvas
+
         anchors.fill: parent
         renderStrategy: Canvas.Cooperative
 
         onPaint: {
             var ctx = getContext("2d")
             prepareContext(ctx)
-            ctx.shadowBlur = parent.height*0.00625
+            ctx.shadowBlur = parent.height * .00625
             ctx.textAlign = "center"
             ctx.textBaseline = "middle"
 
             var bold = "0 "
             var px = "px "
 
-            var centerX = width*0.373
-            var centerY = height/2*0.57
-            var verticalOffset = height*0.05
+            var centerX = width * .373
+            var centerY = height / 2 * .57
+            var verticalOffset = height * .05
 
             var text;
             text = wallClock.time.toLocaleString(Qt.locale(), "dddd").toUpperCase()
 
-            var fontSize = height*0.051
+            var fontSize = height * .051
             var fontFamily = "Xolonium"
             ctx.font = bold + fontSize + px + fontFamily;
-            ctx.fillText(text, centerX, centerY+verticalOffset);
+            ctx.fillText(text, centerX, centerY + verticalOffset);
         }
     }
 
     Canvas {
         id: hourCanvas
+
+        property int hour: 0
+
         anchors.fill: parent
         renderStrategy: Canvas.Cooperative
-
-        property var hour: 0
 
         onPaint: {
             var ctx = getContext("2d")
@@ -97,26 +101,27 @@ Item {
             var bold = "60 "
             var px = "px "
 
-            var centerX = width/2*1.25
-            var centerY = height/2
-            var verticalOffset = height*0.12
+            var centerX = width / 2 * 1.25
+            var centerY = height / 2
+            var verticalOffset = height * .12
 
             var text;
             text = twoDigits(hour)
 
-            var fontSize = height*0.36
+            var fontSize = height * .36
             var fontFamily = "Xolonium"
             ctx.font = bold + fontSize + px + fontFamily;
-            ctx.fillText(text, centerX, centerY+verticalOffset);
+            ctx.fillText(text, centerX, centerY + verticalOffset);
         }
     }
 
     Canvas {
         id: minuteCanvas
+
+        property int minute: 0
+
         anchors.fill: parent
         renderStrategy: Canvas.Cooperative
-
-        property var minute: 0
 
         onPaint: {
             var ctx = getContext("2d")
@@ -128,126 +133,107 @@ Item {
             var thin = "0 "
             var px = "px "
 
-            var centerX = width/2*1.268
-            var centerY = height/2
-            var verticalOffset = height*0.112
+            var centerX = width / 2 * 1.268
+            var centerY = height / 2
+            var verticalOffset = height * .112
 
             var text;
             text = wallClock.time.toLocaleString(Qt.locale(), "mm")
 
-            var fontSize = height*0.17
+            var fontSize = height * .17
             var fontFamily = "Xolonium"
             ctx.font = thin + fontSize + px + fontFamily;
-            ctx.fillText(text, centerX, centerY+verticalOffset);
+            ctx.fillText(text, centerX, centerY + verticalOffset);
         }
     }
 
     Canvas {
         id: amPmCanvas
+
+        property bool am: false
+
         anchors.fill: parent
         renderStrategy: Canvas.Cooperative
-        property var am: false
 
         onPaint: {
             var ctx = getContext("2d")
             prepareContext(ctx)
-            ctx.shadowBlur = parent.height*0.00625 //2 px on 320x320
+            ctx.shadowBlur = parent.height*.00625 //2 px on 320x320
             ctx.textAlign = "left"
             ctx.textBaseline = "left"
 
             var bold = "64 "
             var px = "px "
 
-            var centerX = width/2*1.29
-            var centerY = height/2*0.83
-            var verticalOffset = height*0.05
+            var centerX = width / 2 * 1.29
+            var centerY = height / 2 * .83
+            var verticalOffset = height * .05
 
             var text;
             text = wallClock.time.toLocaleString(Qt.locale("en_EN"), "ap").toUpperCase()
 
-            var fontSize = height*0.057
+            var fontSize = height * .057
             var fontFamily = "Xolonium"
             ctx.font = bold + fontSize + px + fontFamily;
-            if(use12H.value) ctx.fillText(text, centerX, centerY+verticalOffset);
+            if(use12H.value) ctx.fillText(text, centerX, centerY + verticalOffset);
         }
     }
 
     Canvas {
         id: dateCanvas
+
         anchors.fill: parent
         renderStrategy: Canvas.Cooperative
 
         onPaint: {
             var ctx = getContext("2d")
             prepareContext(ctx)
-            ctx.shadowBlur = parent.height*0.00625
+            ctx.shadowBlur = parent.height*.00625
             ctx.textAlign = "center"
             ctx.textBaseline = "middle"
 
             var thin = "0 "
             var px = "px "
 
-            var centerX = width*0.626
-            var centerY = height/2*1.27
-            var verticalOffset = height*0.05
+            var centerX = width * .626
+            var centerY = height / 2 * 1.27
+            var verticalOffset = height * .05
 
             var text;
             text = wallClock.time.toLocaleString(Qt.locale(), "dd MMMM").toUpperCase()
 
-            var fontSize = height*0.051
+            var fontSize = height*.051
             var fontFamily = "Xolonium"
             ctx.font = thin + fontSize + px + fontFamily;
-            ctx.fillText(text, centerX, centerY+verticalOffset);
-        }
-    }
-
-    Connections {
-        target: wallClock
-        function onTimeChanged() {
-            var hour = wallClock.time.getHours()
-            var minute = wallClock.time.getMinutes()
-            var date = wallClock.time.getDate()
-            var am = hour < 12
-            if(use12H.value) {
-                hour = hour % 12
-                if (hour == 0) hour = 12;
-            }
-            if(hourCanvas.hour != hour) {
-                hourCanvas.hour = hour
-                hourCanvas.requestPaint()
-            } if(minuteCanvas.minute != minute) {
-                minuteCanvas.minute = minute
-                minuteCanvas.requestPaint()
-                dateCanvas.requestPaint()
-                dowCanvas.requestPaint()
-            } if(amPmCanvas.am != am) {
-                amPmCanvas.am = am
-                amPmCanvas.requestPaint()
-            }
+            ctx.fillText(text, centerX, centerY + verticalOffset);
         }
     }
 
     Item {
-        id: nightstandMode
+        id: dockMode
 
         readonly property bool active: mceCableState.connected //ready || (nightstandEnabled.value && holdoff)
         //readonly property bool ready: nightstandEnabled.value && mceCableState.connected
         property int batteryPercentChanged: batteryChargePercentage.percent
 
         anchors.fill: parent
-        visible: nightstandMode.active
-        layer.enabled: true
-        layer.samples: 4
+        visible: dockMode.active
+        layer {
+            enabled: true
+            samples: 4
+            smooth: true
+            textureSize: Qt.size(dockMode.width * 2, dockMode.height * 2)
+        }
 
         Shape {
             id: chargeArc
 
             property real angle: batteryChargePercentage.percent * 360 / 100
             // radius of arc is scalefactor * height or width
-            property real arcStrokeWidth: 0.03
-            property real scalefactor: 0.5 - (arcStrokeWidth / 2)
+            property real arcStrokeWidth: .03
+            property real scalefactor: .5 - (arcStrokeWidth / 2)
             property var chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
-            readonly property var colorArray: [ "red", "yellow", Qt.rgba(0.318, 1, 0.051, 0.9)]
+            readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
             anchors.fill: parent
             smooth: true
@@ -260,7 +246,7 @@ Item {
                 capStyle: ShapePath.FlatCap
                 joinStyle: ShapePath.MiterJoin
                 startX: width / 2
-                startY: height * ( 0.5 - chargeArc.scalefactor)
+                startY: height * ( .5 - chargeArc.scalefactor)
 
                 PathAngleArc {
                     centerX: parent.width / 2
@@ -274,36 +260,23 @@ Item {
             }
         }
 
-        Icon {
-            id: batteryIcon
-
-            name: "ios-battery-charging"
-            anchors {
-                centerIn: parent
-                verticalCenterOffset: -parent.width * 0.32
-            }
-            visible: nightstandMode.active
-            width: parent.width * 0.15
-            height: parent.height * 0.15
-        }
-
         Text {
             id: batteryPercent
 
             anchors {
                 centerIn: parent
-                verticalCenterOffset: parent.width * 0.32
+                verticalCenterOffset: -parent.width * .32
             }
 
             font {
-                pixelSize: parent.width / 15
+                pixelSize: parent.width / 10
                 family: "Xolonium"
                 styleName: "Bold"
             }
-            visible: nightstandMode.active
-            color: "#ffffffff"
+            visible: dockMode.active
+            color: chargeArc.colorArray[chargeArc.chargecolor]
             style: Text.Outline; styleColor: "#80000000"
-            text: batteryChargePercentage.percent + "%"
+            text: batteryChargePercentage.percent
         }
     }
 
@@ -325,7 +298,7 @@ Item {
         var am = hour < 12
         if(use12H.value) {
             hour = hour % 12
-            if (hour == 0) hour = 12
+            if (hour === 0) hour = 12
         }
         hourCanvas.hour = hour
         hourCanvas.requestPaint()
@@ -336,8 +309,34 @@ Item {
         amPmCanvas.am = am
         amPmCanvas.requestPaint()
 
-        burnInProtectionManager.widthOffset = Qt.binding(function() { return width*0.2})
-        burnInProtectionManager.heightOffset = Qt.binding(function() { return height*0.2})
+        burnInProtectionManager.widthOffset = Qt.binding(function() { return width * .2})
+        burnInProtectionManager.heightOffset = Qt.binding(function() { return height * .2})
+    }
+
+    Connections {
+        target: wallClock
+        function onTimeChanged() {
+            var hour = wallClock.time.getHours()
+            var minute = wallClock.time.getMinutes()
+            var date = wallClock.time.getDate()
+            var am = hour < 12
+            if(use12H.value) {
+                hour = hour % 12
+                if (hour === 0) hour = 12;
+            }
+            if(hourCanvas.hour !== hour) {
+                hourCanvas.hour = hour
+                hourCanvas.requestPaint()
+            } if(minuteCanvas.minute !== minute) {
+                minuteCanvas.minute = minute
+                minuteCanvas.requestPaint()
+                dateCanvas.requestPaint()
+                dowCanvas.requestPaint()
+            } if(amPmCanvas.am != am) {
+                amPmCanvas.am = am
+                amPmCanvas.requestPaint()
+            }
+        }
     }
 
     Connections {
