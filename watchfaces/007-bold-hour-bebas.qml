@@ -1,5 +1,7 @@
 /*
- * Copyright (C) 2022 - Timo Könnecke <el-t-mo@arcor.de>
+ * Copyright (C) 2022 - Timo Könnecke <github.com/eLtMosen>
+ *               2022 - Darrel Griët <dgriet@gmail.com>
+ *               2022 - Ed Beroset <github.com/beroset>
  *               2016 - Sylvia van Os <iamsylvie@openmailbox.org>
  *               2015 - Florent Revest <revestflo@gmail.com>
  *               2012 - Vasiliy Sorokin <sorokin.vasiliy@gmail.com>
@@ -39,8 +41,6 @@ Item {
         anchors.centerIn: parent
         width: parent.width * (dockMode.active ? .8 : 1)
         height: width
-        //smooth: true
-        //antialiasing: true
 
         Canvas {
             id: minuteArc
@@ -49,8 +49,6 @@ Item {
             property real centerY: parent.height / 2
 
             anchors.fill: parent
-            //smooth: true
-            //antialiasing: true
             renderStrategy: Canvas.Cooperative
             visible: !displayAmbient && !dockMode.active
             onPaint: {
@@ -89,8 +87,6 @@ Item {
             }
             color: Qt.rgba(1, 1, 1, .9)
             opacity: .9
-            //smooth: true
-            //antialiasing: true
             style: Text.Outline;
             styleColor: Qt.rgba(0, 0, 0, .2)
             horizontalAlignment: Text.AlignHCenter
@@ -111,13 +107,11 @@ Item {
             property real minuteY: centerY+Math.sin(rotM * 2 * Math.PI) * height / 2.75
 
             anchors.fill: parent
-            //smooth: true
-            //antialiasing: true
             renderStrategy: Canvas.Cooperative
             onPaint: {
                 var ctx = getContext("2d")
-                var rot1 = (0 -15 ) * 6 * .017453
-                var rot2 = (60 -15 ) * 6 * .017453
+                var rot1 = (0 -15 ) * 6 * .01745
+                var rot2 = (60 -15 ) * 6 * .01745
                 ctx.reset()
                 ctx.lineWidth = 3
                 ctx.fillStyle = Qt.rgba(.184, .184, .184, .95)
@@ -159,11 +153,13 @@ Item {
         property int batteryPercentChanged: batteryChargePercentage.percent
 
         anchors.fill: parent
-        //layer.enabled: true
-        //layer.samples: 4
         visible: dockMode.active
-        //smooth: true
-        //antialiasing: true
+        layer {
+            enabled: true
+            samples: 4
+            smooth: true
+            textureSize: Qt.size(dockMode.width * 2, dockMode.height * 2)
+        }
 
         Shape {
             id: chargeArc
@@ -199,24 +195,6 @@ Item {
                 }
             }
         }
-
-        /*Text {
-            id: batteryPercent
-
-            anchors {
-                centerIn: parent
-                verticalCenterOffset: -parent.width * .18
-            }
-
-            font {
-                pixelSize: parent.width * .13
-                family: "Fyodor"
-            }
-            visible: dockMode.active
-            color: chargeArc.colorArray[chargeArc.chargecolor]
-            style: Text.Outline; styleColor: "#80000000"
-            text: batteryChargePercentage.percent
-        }*/
     }
 
     MceBatteryLevel {
