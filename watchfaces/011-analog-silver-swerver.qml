@@ -1,5 +1,7 @@
 /*
- * Copyright (C) 2021 - Timo Könnecke <github.com/eLtMosen>
+ * Copyright (C) 2022 - Timo Könnecke <github.com/eLtMosen>
+ *               2022 - Darrel Griët <dgriet@gmail.com>
+ *               2022 - Ed Beroset <github.com/beroset>
  *               2016 - Sylvia van Os <iamsylvie@openmailbox.org>
  *               2015 - Florent Revest <revestflo@gmail.com>
  *               2012 - Vasiliy Sorokin <sorokin.vasiliy@gmail.com>
@@ -51,16 +53,20 @@ Item {
         anchors.fill: parent
 
         Item {
-            id: nightstandMode
+            id: dockMode
 
             readonly property bool active: mceCableState.connected //ready || (nightstandEnabled.value && holdoff)
             //readonly property bool ready: nightstandEnabled.value && mceCableState.connected
             property int batteryPercentChanged: batteryChargePercentage.percent
 
             anchors.fill: parent
-            visible: nightstandMode.active
-            layer.enabled: true
-            layer.samples: 4
+            visible: dockMode.active
+            layer {
+                enabled: true
+                samples: 4
+                smooth: true
+                textureSize: Qt.size(dockMode.width * 2, dockMode.height * 2)
+            }
 
             Shape {
                 id: chargeArc
@@ -73,8 +79,6 @@ Item {
                 readonly property var colorArray: [ "red", "yellow", Qt.rgba(0.318, 1, 0.051, 0.9)]
 
                 anchors.fill: parent
-                smooth: true
-                antialiasing: true
 
                 ShapePath {
                     fillColor: "transparent"
@@ -104,13 +108,12 @@ Item {
                     centerIn: parent
                     verticalCenterOffset: parent.width * 0.15
                 }
-
                 font {
                     pixelSize: parent.width * .15
                     family: "Noto Sans"
                     styleName: "Condensed Light"
                 }
-                visible: nightstandMode.active
+                visible: dockMode.active
                 color: chargeArc.colorArray[chargeArc.chargecolor]
                 style: Text.Outline; styleColor: "#80000000"
                 text: batteryChargePercentage.percent
@@ -125,33 +128,6 @@ Item {
             id: mceCableState
         }
 
-        /*Repeater {
-            model: 60
-
-            Rectangle {
-                id: minuteStrokes
-
-                property real rotM: ((index) - 15) / 60
-                property real centerX: parent.width / 2 - width / 2
-                property real centerY: parent.height / 2 - height / 2
-
-                z: 1
-                visible: index % 5
-                antialiasing : true
-                width: parent.width * .00625
-                height: parent.height * .05
-                x: centerX + Math.cos(rotM * 2 * Math.PI) * parent.width * .45
-                y: centerY + Math.sin(rotM * 2 * Math.PI) * parent.width * .45
-                color: lowColor
-
-                transform: Rotation {
-                    origin.x: width / 2
-                    origin.y: height / 2
-                    angle: (index) * 6
-                }
-            }
-        }*/
-
         Repeater {
             model: 12
 
@@ -162,7 +138,6 @@ Item {
                 property real centerX: parent.width / 2 - width / 2
                 property real centerY: parent.height / 2 - height / 2
 
-                z: 1
                 x: index % 6 ? centerX+Math.cos(rotM * 2 * Math.PI) * parent.width * .435 :
                                centerX+Math.cos(rotM * 2 * Math.PI) * parent.width * .4075
                 y: index % 6 ? centerY+Math.sin(rotM * 2 * Math.PI) * parent.width * .435 :
@@ -193,21 +168,21 @@ Item {
 
             property var day: wallClock.time.toLocaleString(Qt.locale(), "dd")
 
-            width: parent.width * .3
-            height: parent.height * .3
-            visible: !nightstandMode.active
             anchors {
                 centerIn: parent
                 verticalCenterOffset: -parent.width * .055
                 horizontalCenterOffset: -parent.width * .2125
             }
+            width: parent.width * .3
+            height: width
+            visible: !dockMode.active
+
 
             onDayChanged: dayArc.requestPaint()
 
             Canvas {
                 id: dayArc
 
-                z: 1
                 opacity: !displayAmbient ? 1 : .3
                 anchors.fill: parent
                 smooth: true
@@ -254,7 +229,6 @@ Item {
                     property real centerY: parent.height / 2 - height / 2
                     property bool currentDayHighlight: new Date(2017, 1, index).toLocaleString(Qt.locale(), "ddd") === wallClock.time.toLocaleString(Qt.locale(), "ddd")
 
-                    z: 2
                     x: centerX + Math.cos(rotM * 2 * Math.PI) * parent.width * .35
                     y: centerY + Math.sin(rotM * 2 * Math.PI) * parent.width * .35
                     antialiasing: true
@@ -282,7 +256,6 @@ Item {
             Text {
                 id: dayDisplay
 
-                z: 2
                 color: highColor
                 anchors {
                     centerIn: parent
@@ -304,19 +277,18 @@ Item {
 
             onMonthChanged: monthArc.requestPaint()
 
-            width: parent.width * .3
-            height: parent.height * .3
-            visible: !nightstandMode.active
             anchors {
                 centerIn: parent
                 verticalCenterOffset: -parent.width * .055
                 horizontalCenterOffset: parent.width * .2125
             }
+            width: parent.width * .3
+            height: width
+            visible: !dockMode.active
 
             Canvas {
                 id: monthArc
 
-                z: 1
                 anchors.fill: parent
                 opacity: !displayAmbient ? 1 : .3
                 smooth: true
@@ -362,7 +334,6 @@ Item {
                     property real centerY: parent.height / 2 - height / 2
                     property bool currentMonthHighlight: Number(wallClock.time.toLocaleString(Qt.locale(), "MM")) === index ||
                                                          Number(wallClock.time.toLocaleString(Qt.locale(), "MM")) === index + 12
-                    z: 2
                     x: centerX + Math.cos(rotM * 2 * Math.PI) * parent.width * .35
                     y: centerY + Math.sin(rotM * 2 * Math.PI) * parent.width * .35
                     antialiasing: true
@@ -392,7 +363,6 @@ Item {
             Text {
                 id: monthDisplay
 
-                z: 2
                 anchors.centerIn: parent
                 renderType: Text.NativeRendering
                 font {
@@ -417,13 +387,12 @@ Item {
                 verticalCenterOffset: parent.width * .1875
             }
             width: parent.width * .275
-            height: parent.height * .275
-            visible: !nightstandMode.active
+            height: width
+            visible: !dockMode.active
 
             Canvas {
                 id: batteryArc
 
-                z: 1
                 anchors.fill: parent
                 opacity: !displayAmbient ? 1 : .3
                 smooth: true
@@ -463,7 +432,6 @@ Item {
             Text {
                 id: batteryDisplay
 
-                z: 2
                 anchors.centerIn: parent
                 renderType: Text.NativeRendering
                 font {
@@ -477,7 +445,6 @@ Item {
                 Text {
                      id: batteryPercent
 
-                     z: 9
                      anchors {
                          centerIn: batteryDisplay
                          verticalCenterOffset: parent.height * .34
@@ -514,13 +481,11 @@ Item {
     Item {
         id: handBox
 
-        z: 3
         anchors.fill: parent
 
         Image {
             id: hourSVG
 
-            z: 3
             source:imgPath + "hour.svg"
             anchors.fill: parent
 
@@ -544,7 +509,6 @@ Item {
         Image {
             id: minuteSVG
 
-            z: 4
             source: imgPath + "minute.svg"
             anchors.fill: parent
 
@@ -568,7 +532,6 @@ Item {
         Image {
             id: secondSVG
 
-            z: 5
             visible: !displayAmbient
             source: imgPath + "second.svg"
             anchors.fill: parent
