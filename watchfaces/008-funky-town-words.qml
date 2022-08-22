@@ -1,5 +1,7 @@
 /*
- * Copyright (C) 2021 - Timo Könnecke <el-t-mo@arcor.de>
+ * Copyright (C) 2022 - Timo Könnecke <github.com/eLtMosen>
+ *               2022 - Darrel Griët <dgriet@gmail.com>
+ *               2022 - Ed Beroset <github.com/beroset>
  *               2016 - Sylvia van Os <iamsylvie@openmailbox.org>
  *               2015 - Florent Revest <revestflo@gmail.com>
  *               2014 - Aleksi Suomalainen <suomalainen.aleksi@gmail.com>
@@ -39,47 +41,53 @@ import Nemo.Mce 1.0
 
 Item {
 
+    property string imgPath: "../watchfaces-img/funky-town-words-"
+
     Image {
-        z: 0
-        width: parent.width
-        height: parent.height
-        source: "../watchfaces-img/funky-town-words-" + wallClock.time.toLocaleString(Qt.locale(), "hh am").slice(0, 2) + ".svg"
-        sourceSize.width: parent.width
-        sourceSize.height: parent.height
         anchors {
             horizontalCenter: parent.horizontalCenter
             verticalCenter: parent.verticalCenter
         }
+        source: imgPath +
+                wallClock.time.toLocaleString(Qt.locale(), "hh am").slice(0, 2) +
+                (dockMode.active || displayAmbient ? "-bw.svg" : ".svg")
+        sourceSize.width: parent.width
+        sourceSize.height: parent.height
+        width: parent.width
+        height: parent.height
     }
 
     Image {
-        z: 0
-        visible: use12H.value
-        width: parent.width
-        height: parent.height
-        source: "../watchfaces-img/funky-town-words-" + wallClock.time.toLocaleString(Qt.locale("en_EN"), "ap").toLowerCase().slice(0, 2) + ".svg"
-        sourceSize.width: parent.width
-        sourceSize.height: parent.height
         anchors {
             horizontalCenter: parent.horizontalCenter
             verticalCenter: parent.verticalCenter
         }
+        source: imgPath +
+                wallClock.time.toLocaleString(Qt.locale("en_EN"), "ap").toLowerCase().slice(0, 2) + ".svg"
+        visible: use12H.value
+        sourceSize.width: parent.width
+        sourceSize.height: parent.height
+        width: parent.width
+        height: parent.height
     }
 
     Text {
         id: minuteDisplay
 
-        z: 1
-        font.pixelSize: parent.height * 0.22
-        font.family: "Source Sans Pro"
-        font.styleName: "Light"
-        color: "white"
         anchors {
             bottom: parent.bottom
-            bottomMargin: parent.height * 0.15
+            bottomMargin: parent.height * .15
             horizontalCenter: parent.horizontalCenter
-            horizontalCenterOffset: parent.width*0.2
+            horizontalCenterOffset: parent.width*.2
         }
+        font {
+            pixelSize: parent.height * .22
+            family: "Source Sans Pro"
+            styleName: "Light"
+        }
+        color: dockMode.active || displayAmbient ? "#000" : "#fff"
+        text: wallClock.time.toLocaleString(Qt.locale(), "mm")
+
         Behavior on text {
             enabled: !displayAmbient
 
@@ -89,31 +97,33 @@ Item {
                 NumberAnimation { target: minuteDisplay; property: "opacity"; to: 1 }
             }
         }
-        text: wallClock.time.toLocaleString(Qt.locale(), "mm")
     }
 
-
     Item {
-        id: nightstandMode
+        id: dockMode
 
         readonly property bool active: mceCableState.connected //ready || (nightstandEnabled.value && holdoff)
         //readonly property bool ready: nightstandEnabled.value && mceCableState.connected
         property int batteryPercentChanged: batteryChargePercentage.percent
 
         anchors.fill: parent
-        visible: nightstandMode.active
-        layer.enabled: true
-        layer.samples: 4
+        visible: dockMode.active
+        layer {
+            enabled: true
+            samples: 4
+            smooth: true
+            textureSize: Qt.size(dockMode.width * 2, dockMode.height * 2)
+        }
 
         Shape {
             id: chargeArc
 
             property real angle: batteryChargePercentage.percent * 360 / 100
             // radius of arc is scalefactor * height or width
-            property real arcStrokeWidth: 0.05
-            property real scalefactor: 0.5 - (arcStrokeWidth / 2)
+            property real arcStrokeWidth: .05
+            property real scalefactor: .5 - (arcStrokeWidth / 2)
             property var chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
-            readonly property var colorArray: [ "red", "yellow", Qt.rgba(0.318, 1, 0.051, 0.9)]
+            readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
             anchors.fill: parent
             smooth: true
@@ -126,7 +136,7 @@ Item {
                 capStyle: ShapePath.RoundCap
                 joinStyle: ShapePath.MiterJoin
                 startX: width / 2
-                startY: height * ( 0.5 - chargeArc.scalefactor)
+                startY: height * ( .5 - chargeArc.scalefactor)
 
                 PathAngleArc {
                     centerX: parent.width / 2
@@ -145,7 +155,7 @@ Item {
 
             anchors {
                 centerIn: parent
-                verticalCenterOffset: -parent.width * 0.28
+                verticalCenterOffset: -parent.width * .28
             }
 
             font {
@@ -153,7 +163,7 @@ Item {
                 family: "Source Sans Pro"
                 styleName: "Light"
             }
-            visible: nightstandMode.active
+            visible: dockMode.active
             color: chargeArc.colorArray[chargeArc.chargecolor]
             text: batteryChargePercentage.percent
         }
@@ -172,9 +182,9 @@ Item {
     }
 
     Component.onCompleted: {
-        burnInProtectionManager.leftOffset = Qt.binding(function() { return width * 0.4})
-        burnInProtectionManager.rightOffset = Qt.binding(function() { return width * 0.05})
-        burnInProtectionManager.topOffset = Qt.binding(function() { return height * 0.4})
-        burnInProtectionManager.bottomOffset = Qt.binding(function() { return height * 0.05})
+        burnInProtectionManager.leftOffset = Qt.binding(function() { return width * .4})
+        burnInProtectionManager.rightOffset = Qt.binding(function() { return width * .05})
+        burnInProtectionManager.topOffset = Qt.binding(function() { return height * .4})
+        burnInProtectionManager.bottomOffset = Qt.binding(function() { return height * .05})
     }
 }
