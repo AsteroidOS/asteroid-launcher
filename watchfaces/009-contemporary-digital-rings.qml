@@ -1,5 +1,7 @@
 /*
- * Copyright (C) 2018 - Timo Könnecke <el-t-mo@arcor.de>
+ * Copyright (C) 2022 - Timo Könnecke <github.com/eLtMosen>
+ *               2022 - Darrel Griët <dgriet@gmail.com>
+ *               2022 - Ed Beroset <github.com/beroset>
  *               2017 - Mario Kicherer <dev@kicherer.org>
  *               2016 - Sylvia van Os <iamsylvie@openmailbox.org>
  *               2015 - Florent Revest <revestflo@gmail.com>
@@ -35,82 +37,86 @@ import org.asteroid.utils 1.0
 import Nemo.Mce 1.0
 
 Item {
-    property var radian: 0.01745
+    property real radian: .01745
 
     function prepareContext(ctx) {
         ctx.reset()
-        ctx.shadowColor = (0, 0, 0, 0.25)
+        ctx.shadowColor = (0, 0, 0, .25)
         ctx.shadowOffsetX = 0
         ctx.shadowOffsetY = 0
-        ctx.shadowBlur = parent.height*0.00625
+        ctx.shadowBlur = parent.height * .00625
         ctx.lineCap="round"
-
     }
 
     Rectangle {
-        z: 0
-        x: parent.width/2-width/2
-        y: parent.height/2-width/2
-        color: Qt.rgba(0, 0, 0, 0.2)
-        width: parent.width/1.3
-        height: parent.height/1.3
-        radius: width*0.5
+        x: parent.width / 2-width / 2
+        y: parent.height / 2-width / 2
+        color: Qt.rgba(0, 0, 0, .2)
+        width: parent.width / 1.3
+        height: parent.height / 1.3
+        radius: width * .5
     }
 
     Canvas {
         id: secondCanvas
-        property var second: 0
+
+        property int second: 0
+
         anchors.fill: parent
         smooth: true
         renderStrategy: Canvas.Cooperative
-        visible: !displayAmbient && !nightstandMode.active
+        visible: !displayAmbient && !dockMode.active
         onPaint: {
             var ctx = getContext("2d")
-            var rot = (wallClock.time.getSeconds() - 15)*6
-            var rot_half = (wallClock.time.getSeconds() - 22)*6
+            var rot = (wallClock.time.getSeconds() - 15) * 6
+            var rot_half = (wallClock.time.getSeconds() - 22) * 6
             prepareContext(ctx)
             ctx.beginPath()
-            ctx.arc(parent.width/2, parent.height/2, width / 2.2, -89.5 * radian, rot* radian, false);
-            ctx.lineWidth = parent.width * 0.009375
-            ctx.strokeStyle = Qt.rgba(0.871, 0.165, 0.102, 0.95)
+            ctx.arc(parent.width / 2, parent.height / 2, width / 2.2, -89.5 * radian, rot* radian, false);
+            ctx.lineWidth = parent.width * .009375
+            ctx.strokeStyle = Qt.rgba(.871, .165, .102, .95)
             ctx.stroke()
         }
     }
 
     Canvas {
         id: minuteCanvas
-        property var minute: 0
+
+        property int minute: 0
+
         anchors.fill: parent
         smooth: true
         renderStrategy: Canvas.Cooperative
-        visible: !displayAmbient && !nightstandMode.active
+        visible: !displayAmbient && !dockMode.active
         onPaint: {
             var ctx = getContext("2d")
-            var rot = (minute -15 )*6
+            var rot = (minute -15 ) * 6
             prepareContext(ctx)
             ctx.beginPath()
-            ctx.arc(parent.width/2, parent.height/2, width / 2.33, -88.8* radian, rot* radian, false);
-            ctx.lineWidth = parent.width * 0.01875
-            ctx.strokeStyle = Qt.rgba(1, 0.549, 0.149, 0.95)
+            ctx.arc(parent.width / 2, parent.height / 2, width / 2.33, -88.8 * radian, rot * radian, false);
+            ctx.lineWidth = parent.width * .01875
+            ctx.strokeStyle = Qt.rgba(1, .549, .149, .95)
             ctx.stroke()
         }
     }
 
     Canvas {
         id: hourCanvas
-        property var hour: 0
+
+        property int hour: 0
+
         anchors.fill: parent
         smooth: true
         renderStrategy: Canvas.Cooperative
-        visible: !displayAmbient && !nightstandMode.active
+        visible: !displayAmbient && !dockMode.active
         onPaint: {
             var ctx = getContext("2d")
-            var rot = 0.5 * (60 * (hour-3) + wallClock.time.getMinutes())
+            var rot = .5 * (60 * (hour - 3) + wallClock.time.getMinutes())
             prepareContext(ctx)
             ctx.beginPath()
-            ctx.arc(parent.width/2, parent.height/2, width / 2.6,  273.5* radian, rot* radian, false);
-            ctx.lineWidth = parent.width * 0.05
-            ctx.strokeStyle = Qt.rgba(0.945, 0.769, 0.059, 0.95)
+            ctx.arc(parent.width / 2, parent.height / 2, width / 2.6,  273.5 * radian, rot * radian, false);
+            ctx.lineWidth = parent.width * .05
+            ctx.strokeStyle = Qt.rgba(.945, .769, .059, .95)
             ctx.stroke()
             ctx.beginPath()
         }
@@ -118,19 +124,22 @@ Item {
 
     Text {
         id: hourDisplay
-        font.pixelSize: parent.height * 0.375
-        font.family: "Titillium"
-        font.styleName:'Bold'
-        font.letterSpacing: -3
-        color: Qt.rgba(1, 1, 1, 1)
-        style: Text.Outline
-        styleColor: Qt.rgba(0, 0, 0, 0.5)
+
         anchors {
             right: parent.horizontalCenter
-            rightMargin: -parent.height * 0.0938
+            rightMargin: -parent.height * .0938
             verticalCenter: parent.verticalCenter
-            verticalCenterOffset: parent.height * 0.0281
+            verticalCenterOffset: parent.height * .0281
         }
+        font {
+            pixelSize: parent.height * .375
+            family: "Titillium"
+            styleName: 'Bold'
+            letterSpacing: -3
+        }
+        color: Qt.rgba(1, 1, 1, 1)
+        style: Text.Outline
+        styleColor: Qt.rgba(0, 0, 0, .5)
         text: if (use12H.value) {
                   wallClock.time.toLocaleString(Qt.locale(), "hh ap").slice(0, 2) }
               else
@@ -139,117 +148,137 @@ Item {
 
     Text {
         id: minuteDisplay
-        property var rotM: (wallClock.time.getMinutes() - 12.1)/60
-        font.pixelSize: parent.height * 0.1375
-        font.styleName:'Semibold'
-        font.letterSpacing: -1
-        color: Qt.rgba(1, 1, 1, 1)
-        style: Text.Outline
-        styleColor: Qt.rgba(0, 0, 0, 0.5)
+
+        property real rotM: (wallClock.time.getMinutes() - 12.1) / 60
+
         anchors {
             top: hourDisplay.top;
-            topMargin: -parent.height*0.015625
-            leftMargin: parent.width*0.025
+            topMargin: -parent.height * .015625
+            leftMargin: parent.width * .025
             left: hourDisplay.right;
         }
+        font {
+            pixelSize: parent.height * .1375
+            styleName: 'Semibold'
+            letterSpacing: -1
+        }
+        color: Qt.rgba(1, 1, 1, 1)
+        style: Text.Outline
+        styleColor: Qt.rgba(0, 0, 0, .5)
         text: wallClock.time.toLocaleString(Qt.locale(), "mm")
     }
 
     Text {
         id: secondDisplay
-        font.pixelSize: parent.height * 0.1375
-        font.family: "Titillium"
-        font.styleName:'Thin'
-        font.letterSpacing: -1
-        color: Qt.rgba(1, 1, 1, 1)
-        style: Text.Outline
-        styleColor: Qt.rgba(0, 0, 0, 0.5)
-        horizontalAlignment: Text.AlignHCenter
+
         anchors {
             bottom: hourDisplay.bottom;
-            bottomMargin: parent.height*0.059375
-            leftMargin: parent.width*0.025
+            bottomMargin: parent.height * .059375
+            leftMargin: parent.width * .025
             left: hourDisplay.right;
         }
+        font {
+            pixelSize: parent.height * .1375
+            family: "Titillium"
+            styleName: 'Thin'
+            letterSpacing: -1
+        }
+        color: Qt.rgba(1, 1, 1, 1)
+        style: Text.Outline
+        styleColor: Qt.rgba(0, 0, 0, .5)
+        horizontalAlignment: Text.AlignHCenter
         text: wallClock.time.toLocaleString(Qt.locale(), "ss")
         visible: !displayAmbient
     }
 
     Text {
         id: dowDisplay
-        font.pixelSize: parent.height*0.084375
-        font.family: "Titillium"
-        font.styleName:'Thin'
-        color: Qt.rgba(1, 1, 1, 1)
-        style: Text.Outline
-        styleColor: Qt.rgba(0, 0, 0, 0.5)
-        horizontalAlignment: Text.AlignHCenter
+
         anchors {
             bottom: hourDisplay.top
             left: parent.left
             right: parent.right
         }
+        font {
+            pixelSize: parent.height * .084375
+            family: "Titillium"
+            styleName: 'Thin'
+        }
+        color: Qt.rgba(1, 1, 1, 1)
+        style: Text.Outline
+        styleColor: Qt.rgba(0, 0, 0, .5)
+        horizontalAlignment: Text.AlignHCenter
         text: wallClock.time.toLocaleString(Qt.locale(), "dddd")
     }
 
     Text {
         id: dateDisplay
-        font.pixelSize: parent.height*0.084375
-        font.family: "Titillium"
-        font.styleName:'Thin'
-        color: Qt.rgba(1, 1, 1, 1)
-        style: Text.Outline
-        styleColor: Qt.rgba(0, 0, 0, 0.5)
-        horizontalAlignment: Text.AlignHCenter
+
         anchors {
-            topMargin: -parent.height*0.05
+            topMargin: -parent.height * .05
             top: hourDisplay.bottom
             left: parent.left
             right: parent.right
         }
+        font {
+            pixelSize: parent.height*.084375
+            family: "Titillium"
+            styleName:'Thin'
+        }
+        color: Qt.rgba(1, 1, 1, 1)
+        style: Text.Outline
+        styleColor: Qt.rgba(0, 0, 0, .5)
+        horizontalAlignment: Text.AlignHCenter
         text: wallClock.time.toLocaleString(Qt.locale(), "<b>dd</b> MMMM")
     }
 
     Text {
         id: pmDisplay
-        visible: use12H.value
-        font.pixelSize: parent.height*0.05
-        font.family: "Titillium"
-        font.styleName:'Semibold'
-        color: Qt.rgba(1, 1, 1, 1)
-        style: Text.Outline
-        styleColor: Qt.rgba(0, 0, 0, 0.5)
-        horizontalAlignment: Text.AlignHCenter
+
         anchors {
-            bottomMargin: +parent.height*0.018
+            bottomMargin: +parent.height * .018
             bottom: dowDisplay.top
             left: parent.left
             right: parent.right
         }
+        font {
+            pixelSize: parent.height * .05
+            family: "Titillium"
+            styleName: 'Semibold'
+        }
+        color: Qt.rgba(1, 1, 1, 1)
+        style: Text.Outline
+        styleColor: Qt.rgba(0, 0, 0, .5)
+        horizontalAlignment: Text.AlignHCenter
+        visible: use12H.value
         text: wallClock.time.toLocaleString(Qt.locale(), "<b>ap</b>")
     }
 
     Item {
-        id: nightstandMode
+        id: dockMode
 
         readonly property bool active: mceCableState.connected //ready || (nightstandEnabled.value && holdoff)
         //readonly property bool ready: nightstandEnabled.value && mceCableState.connected
         property int batteryPercentChanged: batteryChargePercentage.percent
 
         anchors.fill: parent
-        visible: nightstandMode.active
-        layer.enabled: true
-        layer.samples: 4
+        visible: dockMode.active
+        layer {
+            enabled: true
+            samples: 4
+            smooth: true
+            textureSize: Qt.size(dockMode.width * 2, dockMode.height * 2)
+        }
 
         Shape {
             id: chargeArc
 
             property real angle: batteryChargePercentage.percent * 360 / 100
             // radius of arc is scalefactor * height or width
-            property real arcStrokeWidth: 0.04
-            property real scalefactor: 0.45 - (arcStrokeWidth / 2)
+            property real arcStrokeWidth: .04
+            property real scalefactor: .45 - (arcStrokeWidth / 2)
             property var chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
-            readonly property var colorArray: [ "red", "yellow", Qt.rgba(0.318, 1, 0.051, 0.9)]
+            readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
             anchors.fill: parent
             smooth: true
@@ -262,7 +291,7 @@ Item {
                 capStyle: ShapePath.RoundCap
                 joinStyle: ShapePath.MiterJoin
                 startX: width / 2
-                startY: height * ( 0.5 - chargeArc.scalefactor)
+                startY: height * ( .5 - chargeArc.scalefactor)
 
                 PathAngleArc {
                     centerX: parent.width / 2
@@ -282,11 +311,11 @@ Item {
             name: "ios-battery-charging"
             anchors {
                 centerIn: parent
-                verticalCenterOffset: -parent.width * 0.316
+                verticalCenterOffset: -parent.width * .316
             }
-            visible: nightstandMode.active
-            width: parent.width * 0.15
-            height: parent.height * 0.15
+            visible: dockMode.active
+            width: parent.width * .14
+            height: parent.height * .14
         }
 
         ColorOverlay {
@@ -300,7 +329,7 @@ Item {
 
             anchors {
                 centerIn: parent
-                verticalCenterOffset: parent.width * 0.324
+                verticalCenterOffset: parent.width * .324
             }
 
             font {
@@ -308,7 +337,7 @@ Item {
                 family: "Titillium"
                 styleName: "ExtraCondensed"
             }
-            visible: nightstandMode.active
+            visible: dockMode.active
             color: chargeArc.colorArray[chargeArc.chargecolor]
             style: Text.Outline; styleColor: "#80000000"
             text: batteryChargePercentage.percent + "%"
@@ -358,7 +387,7 @@ Item {
         hourCanvas.hour = hour
         hourCanvas.requestPaint()
 
-        burnInProtectionManager.widthOffset = Qt.binding(function() { return width*0.3})
-        burnInProtectionManager.heightOffset = Qt.binding(function() { return height*0.3})
+        burnInProtectionManager.widthOffset = Qt.binding(function() { return width*.3})
+        burnInProtectionManager.heightOffset = Qt.binding(function() { return height*.3})
     }
 }
