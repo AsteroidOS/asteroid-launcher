@@ -527,6 +527,11 @@ Item {
         IconButton {
             id: nextButton
             iconName: "ios-arrow-dropright"
+            anchors { 
+                bottom: parent.bottom
+                horizontalCenter: parent.horizontalCenter
+                bottomMargin: Dims.iconButtonMargin
+            }
             onClicked: {
                 nextButton.enabled = false;
                 switch(tuto.state) {

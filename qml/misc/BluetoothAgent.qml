@@ -117,7 +117,6 @@ Item {
         id: cancelButton
         iconColor: "#666666"
         iconName: "ios-close-circle-outline"
-        edge: undefinedEdge
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.horizontalCenterOffset: -Dims.w(12)
         anchors.bottom: parent.bottom
@@ -129,7 +128,6 @@ Item {
         id: confirmButton
         iconColor: "#666666"
         iconName: "ios-checkmark-circle-outline"
-        edge: undefinedEdge
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.horizontalCenterOffset: Dims.w(12)
         anchors.bottom: parent.bottom

@@ -161,6 +161,11 @@ FlatMesh {
 
                 IconButton {
                     iconName: "ios-arrow-dropright"
+                    anchors { 
+                        bottom: parent.bottom
+                        horizontalCenter: parent.horizontalCenter
+                        bottomMargin: Dims.iconButtonMargin
+                    }
                 }
 
                 WallClock { id: wallClock }
