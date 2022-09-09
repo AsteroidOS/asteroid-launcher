@@ -174,6 +174,11 @@ FlatMesh {
     IconButton {
         id: nextButton
         iconName: "ios-arrow-dropright"
+        anchors { 
+            bottom: parent.bottom
+            horizontalCenter: parent.horizontalCenter
+            bottomMargin: Dims.iconButtonMargin
+        }
         onClicked: {
             switch(config.state) {
                 case "LANGUAGE":
