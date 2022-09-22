@@ -186,6 +186,7 @@ Item {
                 opacity: !displayAmbient ? 1 : .3
                 anchors.fill: parent
                 smooth: true
+                renderStrategy: Canvas.Cooperative
                 onPaint: {
                     var ctx = getContext("2d")
                     ctx.reset()
@@ -292,6 +293,7 @@ Item {
                 anchors.fill: parent
                 opacity: !displayAmbient ? 1 : .3
                 smooth: true
+                renderStrategy: Canvas.Cooperative
                 onPaint: {
                     var ctx = getContext("2d")
                     ctx.reset()
@@ -396,6 +398,7 @@ Item {
                 anchors.fill: parent
                 opacity: !displayAmbient ? 1 : .3
                 smooth: true
+                renderStrategy: Canvas.Cooperative
                 onPaint: {
                     var ctx = getContext("2d")
                     ctx.reset()
