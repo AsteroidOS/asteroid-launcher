@@ -40,7 +40,10 @@ import Nemo.Mce 1.0
 Item {
     id: rootitem
 
-    anchors.fill: parent
+    width: parent.width * (dockMode.active ? .9 : 1)
+    height: width
+
+    anchors.centerIn: parent
 
     function twoDigits(x) {
         if (x<10) return "0" + x;
@@ -160,7 +163,7 @@ Item {
 
             property real angle: batteryChargePercentage.percent * 360 / 100
             // radius of arc is scalefactor * height or width
-            property real scalefactor: .41
+            property real scalefactor: .44
             property real chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
             readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
@@ -170,17 +173,17 @@ Item {
             ShapePath {
                 fillColor: "transparent"
                 strokeColor: chargeArc.colorArray[chargeArc.chargecolor]
-                strokeWidth: parent.height * .04
+                strokeWidth: chargeArc.height * .04
                 capStyle: ShapePath.FlatCap
                 joinStyle: ShapePath.MiterJoin
-                startX: width / 2
-                startY: height * (.5 - chargeArc.scalefactor)
+                startX: chargeArc.width / 2
+                startY: chargeArc.height * (.5 - chargeArc.scalefactor)
 
                 PathAngleArc {
-                    centerX: parent.width / 2
-                    centerY: parent.height / 2
-                    radiusX: chargeArc.scalefactor * parent.width
-                    radiusY: chargeArc.scalefactor * parent.height
+                    centerX: chargeArc.width / 2
+                    centerY: chargeArc.height / 2
+                    radiusX: chargeArc.scalefactor * chargeArc.width
+                    radiusY: chargeArc.scalefactor * chargeArc.height
                     startAngle: -90
                     sweepAngle: chargeArc.angle
                     moveToStart: false
@@ -194,7 +197,7 @@ Item {
             name: "ios-battery-charging"
             anchors {
                 centerIn: parent
-                verticalCenterOffset: -parent.height * .25
+                verticalCenterOffset: -parent.height * .27
             }
             width: parent.width * .13
             height: parent.height * .13
@@ -219,7 +222,7 @@ Item {
                 prepareContext(ctx)
                 ctx.fillStyle = chargeArc.colorArray[chargeArc.chargecolor]
                 ctx.font = "45 " + height * .08 + "px Roboto"
-                ctx.fillText(batteryChargePercentage.percent + "%", width * .5, height * .75);
+                ctx.fillText(batteryChargePercentage.percent + "%", width * .5, height * .77);
             }
         }
     }
@@ -281,7 +284,7 @@ Item {
         amPmCanvas.am = am
         amPmCanvas.requestPaint()
 
-        burnInProtectionManager.widthOffset = Qt.binding(function() { return width * .32})
-        burnInProtectionManager.heightOffset = Qt.binding(function() { return height * .7})
+        burnInProtectionManager.widthOffset = Qt.binding(function() { return width * (dockMode.active ? .16 : .32)})
+        burnInProtectionManager.heightOffset = Qt.binding(function() { return height * (dockMode.active ? .16 : .7)})
     }
 }
