@@ -113,7 +113,6 @@ Item {
                 centerIn: parent
                 verticalCenterOffset: -parent.width * .17
             }
-
             font {
                 pixelSize: parent.width * .14
                 family: "Fyodor"
