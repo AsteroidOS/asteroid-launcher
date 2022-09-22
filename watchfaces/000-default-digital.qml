@@ -60,12 +60,13 @@ Item {
 
     Canvas {
         id: hourCanvas
+
+        property int hour: 0
+
         anchors.fill: parent
         antialiasing: true
         smooth: true
         renderStrategy: Canvas.Cooperative
-
-        property int hour: 0
 
         onPaint: {
             var ctx = getContext("2d")
@@ -78,12 +79,13 @@ Item {
 
     Canvas {
         id: minuteCanvas
+
+        property int minute: 0
+
         anchors.fill: parent
         antialiasing: true
         smooth: true
         renderStrategy: Canvas.Cooperative
-
-        property int minute: 0
 
         onPaint: {
             var ctx = getContext("2d")
@@ -96,13 +98,14 @@ Item {
 
     Canvas {
         id: amPmCanvas
+
+        property bool am: false
+
         anchors.fill: parent
         antialiasing: true
         smooth: true
         renderStrategy: Canvas.Cooperative
         visible: use12H.value
-
-        property bool am: false
 
         onPaint: {
             var ctx = getContext("2d")
@@ -115,12 +118,13 @@ Item {
 
     Canvas {
         id: dateCanvas
+
+        property int date: 0
+
         anchors.fill: parent
         antialiasing: true
         smooth: true
         renderStrategy: Canvas.Cooperative
-
-        property int date: 0
 
         onPaint: {
             var ctx = getContext("2d")
@@ -139,10 +143,12 @@ Item {
 
         anchors.fill: parent
 
-        layer.enabled: true
-        layer.samples: 4
-        layer.smooth: true
-        layer.textureSize: Qt.size(dockMode.width * 2, dockMode.height * 2)
+        layer {
+            enabled: true
+            samples: 4
+            smooth: true
+            textureSize: Qt.size(dockMode.width * 2, dockMode.height * 2)
+        }
         visible: dockMode.active
 
         onBatteryPercentChangedChanged: {
