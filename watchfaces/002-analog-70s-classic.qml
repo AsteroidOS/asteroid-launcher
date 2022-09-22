@@ -32,20 +32,107 @@ import org.asteroid.utils 1.0
 import Nemo.Mce 1.0
 
 Item {
-
     id: rootitem
 
     anchors.fill: parent
 
-    property var radian: .01745
+    property real radian: .01745
+
+    Canvas {
+        id: hourStrokes
+
+        anchors.fill: parent
+        smooth: true
+        renderStrategy: Canvas.Cooperative
+        visible: !dockMode.active
+        onPaint: {
+            var ctx = getContext("2d")
+
+            ctx.lineWidth = parent.width * .025
+            ctx.strokeStyle = Qt.rgba(1, 1, 1, .9)
+            ctx.shadowColor = Qt.rgba(0, 0, 0, .8)
+            ctx.shadowOffsetX = 0
+            ctx.shadowOffsetY = 0
+            ctx.shadowBlur = 2
+            ctx.translate(parent.width / 2, parent.height / 2)
+            for (var i = 0; i < 12; i++) {
+                if ((i % 3) == 0) {
+                    ctx.beginPath()
+                    ctx.moveTo(0, height * .36)
+                    ctx.lineTo(0, height * .46)
+                    ctx.stroke()
+                }
+                ctx.rotate(Math.PI / 6)
+            }
+        }
+    }
+
+    Canvas {
+        id: min5Strokes
+
+        anchors.fill: parent
+        smooth: true
+        renderStrategy: Canvas.Cooperative
+        visible: !dockMode.active
+        onPaint: {
+            var ctx = getContext("2d")
+
+            ctx.lineWidth = parent.width * .016
+            ctx.strokeStyle = Qt.rgba(1, 1, 1, .9)
+            ctx.shadowColor = Qt.rgba(0, 0, 0, .8)
+            ctx.shadowOffsetX = 0
+            ctx.shadowOffsetY = 0
+            ctx.shadowBlur = 2
+            ctx.translate(parent.width / 2, parent.height / 2)
+            for (var i = 0; i < 12; i++) {
+                if ((i % 3) != 0) {
+
+                    ctx.beginPath()
+                    ctx.moveTo(0, height * .41)
+                    ctx.lineTo(0, height * .46)
+                    ctx.stroke()
+                }
+                ctx.rotate(Math.PI / 6)
+            }
+        }
+    }
+
+    Canvas {
+        id: minuteStrokes
+
+        anchors.fill: parent
+        smooth: true
+        renderStrategy: Canvas.Cooperative
+        visible: !dockMode.active
+        onPaint: {
+            var ctx = getContext("2d")
+            ctx.lineWidth = parent.width * .008
+            ctx.strokeStyle = Qt.rgba(1, 1, 1, .7)
+            ctx.shadowColor = Qt.rgba(0, 0, 0, .8)
+            ctx.shadowOffsetX = 0
+            ctx.shadowOffsetY = 0
+            ctx.shadowBlur = 1
+            ctx.translate(parent.width / 2, parent.height / 2)
+            for (var i = 0; i < 60; i++) {
+                // do not paint a minute stroke when there is an hour stroke
+                if ((i % 5) != 0) {
+                    ctx.beginPath()
+                    ctx.moveTo(0, height * .41)
+                    ctx.lineTo(0, height * .46)
+                    ctx.stroke()
+                }
+                ctx.rotate(Math.PI/30)
+            }
+        }
+    }
 
     Text {
         id: dayDisplay
 
-        property var offset: height*.5
+        property real offset: height * .5
 
         visible: !dockMode.active
-        font.pixelSize: parent.height/24
+        font.pixelSize: parent.height / 24
         color: Qt.rgba(1, 1, 1, .7)
         font.family: "League Spartan"
         horizontalAlignment: Text.AlignHCenter
@@ -61,14 +148,16 @@ Item {
     Text {
         id: digitalDisplay
 
-        property var offset: height*.6
+        property real offset: height * .6
 
         visible: !dockMode.active
-        font.pixelSize: parent.height/14
         color: Qt.rgba(1, 1, 1, .7)
-        font.family: "League Spartan"
         horizontalAlignment: Text.AlignHCenter
         style: Text.Outline; styleColor: Qt.rgba(0, 0, 0, .4)
+        font {
+            pixelSize: parent.height / 14
+            family: "League Spartan"
+        }
         anchors {
             horizontalCenter: parent.horizontalCenter
             top: dayDisplay.bottom
@@ -82,12 +171,14 @@ Item {
 
     Text {
         id: dateDisplay
-        z: 0
-        font.pixelSize: parent.height/10
+
         color: Qt.rgba(1, 1, 1, .7)
-        font.family: "League Spartan"
         horizontalAlignment: Text.AlignHCenter
         style: Text.Outline; styleColor: Qt.rgba(0, 0, 0, .4)
+        font {
+            pixelSize: parent.height / 10
+            family: "League Spartan"
+        }
         anchors {
             horizontalCenter: parent.horizontalCenter
             verticalCenter: parent.verticalCenter
@@ -98,12 +189,14 @@ Item {
 
     Text {
         id: monthDisplay
-        z: 0
-        font.pixelSize: parent.height/20
+
         color: Qt.rgba(1, 1, 1, .7)
-        font.family: "League Spartan"
         horizontalAlignment: Text.AlignHCenter
         style: Text.Outline; styleColor: Qt.rgba(0, 0, 0, .4)
+        font {
+            pixelSize: parent.height / 20
+            family: "League Spartan"
+        }
         anchors {
             horizontalCenter: parent.horizontalCenter
             top: dateDisplay.bottom
@@ -118,7 +211,6 @@ Item {
             centerIn: parent
             verticalCenterOffset: -parent.width * .21
         }
-
         font {
             pixelSize: parent.width / 10
             family: "League Spartan"
@@ -130,10 +222,11 @@ Item {
     }
 
     Canvas {
-        z: 0
         id: hourHand
-        property var hour: 0
-        property var rotH: (hour-3 + wallClock.time.getMinutes()/60) / 12
+
+        property int hour: 0
+        property real rotH: (hour - 3 + wallClock.time.getMinutes() / 60) / 12
+
         anchors.fill: parent
         smooth: true
         renderStrategy: Canvas.Cooperative
@@ -146,12 +239,12 @@ Item {
             ctx.shadowOffsetX = 2
             ctx.shadowOffsetY = 2
             ctx.shadowBlur = 3
-            ctx.lineWidth = parent.width*.034
+            ctx.lineWidth = parent.width * .034
             ctx.strokeStyle = Qt.rgba(1, 1, 1, 1)
-            ctx.moveTo(parent.width/2,
-                       parent.height/2)
-            ctx.lineTo(parent.width/2+Math.cos(rotH * 2 * Math.PI)*width*.227,
-                       parent.height/2+Math.sin(rotH * 2 * Math.PI)*width*.227)
+            ctx.moveTo(parent.width / 2,
+                       parent.height / 2)
+            ctx.lineTo(parent.width / 2 + Math.cos(rotH * 2 * Math.PI) * width * .227,
+                       parent.height / 2 + Math.sin(rotH * 2 * Math.PI) * width * .227)
             ctx.stroke()
             ctx.closePath()
             ctx.beginPath()
@@ -161,20 +254,21 @@ Item {
             ctx.shadowBlur = 0
             ctx.lineWidth = parent.width*.015
             ctx.strokeStyle = Qt.rgba(0, 0, 0, 1)
-            ctx.moveTo(parent.width/2+Math.cos(rotH * 2 * Math.PI)*width*.10,
-                       parent.height/2+Math.sin(rotH * 2 * Math.PI)*width*.10)
-            ctx.lineTo(parent.width/2+Math.cos(rotH * 2 * Math.PI)*width*.224,
-                       parent.height/2+Math.sin(rotH * 2 * Math.PI)*width*.224)
+            ctx.moveTo(parent.width / 2 + Math.cos(rotH * 2 * Math.PI) * width * .10,
+                       parent.height / 2 + Math.sin(rotH * 2 * Math.PI) * width * .10)
+            ctx.lineTo(parent.width / 2 + Math.cos(rotH * 2 * Math.PI) * width * .224,
+                       parent.height / 2 + Math.sin(rotH * 2 * Math.PI) * width * .224)
             ctx.stroke()
             ctx.closePath()
         }
     }
 
     Canvas {
-        z: 1
         id: minuteHand
-        property var minute: 0
-        property var rotM: (minute - 15)/60
+
+        property int minute: 0
+        property real rotM: (minute - 15) / 60
+
         anchors.fill: parent
         smooth: true
         renderStrategy: Canvas.Cooperative
@@ -187,18 +281,18 @@ Item {
             ctx.shadowOffsetX = 1
             ctx.shadowOffsetY = 1
             ctx.shadowBlur = 3
-            ctx.lineWidth = parent.width*.034
+            ctx.lineWidth = parent.width * .034
             ctx.strokeStyle = Qt.rgba(1, 1, 1, 1)
             //circle in center
-            ctx.arc(parent.width/2, parent.height/2, parent.height*.014, 0, 2*Math.PI, false)
-            ctx.moveTo(parent.width/2,
-                       parent.height/2)
+            ctx.arc(parent.width / 2, parent.height / 2, parent.height * .014, 0, 2 * Math.PI, false)
+            ctx.moveTo(parent.width / 2,
+                       parent.height / 2)
             //outer line
-            ctx.lineTo(parent.width/2+Math.cos(rotM * 2 * Math.PI)*width*.327,
-                    parent.height/2+Math.sin(rotM * 2 * Math.PI)*width*.327)
+            ctx.lineTo(parent.width / 2 + Math.cos(rotM * 2 * Math.PI) * width * .327,
+                    parent.height / 2 + Math.sin(rotM * 2 * Math.PI) * width * .327)
             ctx.stroke()
             ctx.closePath()
-            ctx.lineWidth = parent.width*.015
+            ctx.lineWidth = parent.width * .015
             ctx.strokeStyle = Qt.rgba(0, 0, 0, 1)
             ctx.beginPath()
             ctx.shadowColor = Qt.rgba(0, 0, 0, 0)
@@ -206,19 +300,20 @@ Item {
             ctx.shadowOffsetY = 0
             ctx.shadowBlur = 0
             //inner line
-            ctx.moveTo(parent.width/2+Math.cos(rotM * 2 * Math.PI)*width*.17,
-                       parent.height/2+Math.sin(rotM * 2 * Math.PI)*width*.17)
-            ctx.lineTo(parent.width/2+Math.cos(rotM * 2 * Math.PI)*width*.324,
-                    parent.height/2+Math.sin(rotM * 2 * Math.PI)*width*.324)
+            ctx.moveTo(parent.width / 2 + Math.cos(rotM * 2 * Math.PI) * width * .17,
+                       parent.height / 2 + Math.sin(rotM * 2 * Math.PI) * width * .17)
+            ctx.lineTo(parent.width / 2 + Math.cos(rotM * 2 * Math.PI) * width * .324,
+                    parent.height / 2 + Math.sin(rotM * 2 * Math.PI) * width * .324)
             ctx.stroke()
             ctx.closePath()
         }
     }
 
     Canvas {
-        z: 2
         id: secondHand
-        property var second: 0
+
+        property int second: 0
+
         anchors.fill: parent
         smooth: true
         renderStrategy: Canvas.Cooperative
@@ -234,25 +329,25 @@ Item {
             ctx.lineWidth = parent.height*.008
             ctx.beginPath()
             ctx.moveTo(parent.width/2, parent.height/2)
-            ctx.lineTo(parent.width/2+Math.cos((second - 45)/60 * 2 * Math.PI)*width*.1,
-                    parent.height/2+Math.sin((second - 45)/60 * 2 * Math.PI)*width*.1)
+            ctx.lineTo(parent.width / 2 + Math.cos((second - 45) / 60 * 2 * Math.PI) * width * .1,
+                    parent.height / 2 + Math.sin((second - 45) / 60 * 2 * Math.PI) * width * .1)
             ctx.stroke()
             ctx.closePath()
             ctx.beginPath()
             ctx.fillStyle = "red"
-            ctx.arc(parent.width/2, parent.height/2, parent.height*.012, 0, 2*Math.PI, false)
+            ctx.arc(parent.width / 2, parent.height / 2, parent.height * .012, 0, 2 * Math.PI, false)
             ctx.fill()
-            ctx.moveTo(parent.width/2, parent.height/2)
-            ctx.lineTo(parent.width/2+Math.cos((second - 15)/60 * 2 * Math.PI)*width*.32,
-                    parent.height/2+Math.sin((second - 15)/60 * 2 * Math.PI)*width*.32)
+            ctx.moveTo(parent.width / 2, parent.height / 2)
+            ctx.lineTo(parent.width / 2 + Math.cos((second - 15) / 60 * 2 * Math.PI) * width * .32,
+                    parent.height / 2 + Math.sin((second - 15) / 60 * 2 * Math.PI) * width * .32)
             ctx.stroke()
             ctx.closePath()
         }
     }
 
     Canvas {
-        z: 11
         id: nailDot
+
         anchors.fill: parent
         smooth: true
         renderStrategy: Canvas.Cooperative
@@ -265,98 +360,9 @@ Item {
             ctx.shadowOffsetY = 1
             ctx.shadowBlur = 1
             ctx.fillStyle = Qt.rgba(1, 1, 1, 1)
-            ctx.arc(parent.width/2, parent.height/2, parent.height*.006, 0, 2*Math.PI, false)
+            ctx.arc(parent.width / 2, parent.height / 2, parent.height * .006, 0, 2 * Math.PI, false)
             ctx.fill()
             ctx.closePath()
-        }
-    }
-
-    Canvas {
-        z: 3
-        id: hourStrokes
-        anchors.fill: parent
-        smooth: true
-        renderStrategy: Canvas.Cooperative
-        visible: !dockMode.active
-        onPaint: {
-            var ctx = getContext("2d")
-
-            ctx.lineWidth = parent.width*.025
-            ctx.strokeStyle = Qt.rgba(1, 1, 1, .9)
-            ctx.shadowColor = Qt.rgba(0, 0, 0, .8)
-            ctx.shadowOffsetX = 0
-            ctx.shadowOffsetY = 0
-            ctx.shadowBlur = 2
-            ctx.translate(parent.width/2, parent.height/2)
-            for (var i=0; i < 12; i++) {
-                if ((i%3) == 0) {
-
-                    ctx.beginPath()
-                    ctx.moveTo(0, height*.36)
-                    ctx.lineTo(0, height*.46)
-                    ctx.stroke()
-                }
-                ctx.rotate(Math.PI/6)
-            }
-        }
-    }
-
-    Canvas {
-        z: 3
-        id: min5Strokes
-        anchors.fill: parent
-        smooth: true
-        renderStrategy: Canvas.Cooperative
-        visible: !dockMode.active
-        onPaint: {
-            var ctx = getContext("2d")
-
-            ctx.lineWidth = parent.width*.016
-            ctx.strokeStyle = Qt.rgba(1, 1, 1, .9)
-            ctx.shadowColor = Qt.rgba(0, 0, 0, .8)
-            ctx.shadowOffsetX = 0
-            ctx.shadowOffsetY = 0
-            ctx.shadowBlur = 2
-            ctx.translate(parent.width/2, parent.height/2)
-            for (var i=0; i < 12; i++) {
-                if ((i%3) != 0) {
-
-                    ctx.beginPath()
-                    ctx.moveTo(0, height*.41)
-                    ctx.lineTo(0, height*.46)
-                    ctx.stroke()
-                }
-                ctx.rotate(Math.PI/6)
-            }
-        }
-    }
-
-    Canvas {
-        z: 3
-        id: minuteStrokes
-        anchors.fill: parent
-        smooth: true
-        renderStrategy: Canvas.Cooperative
-        visible: !dockMode.active
-        onPaint: {
-            var ctx = getContext("2d")
-            ctx.lineWidth = parent.width*.008
-            ctx.strokeStyle = Qt.rgba(1, 1, 1, .7)
-            ctx.shadowColor = Qt.rgba(0, 0, 0, .8)
-            ctx.shadowOffsetX = 0
-            ctx.shadowOffsetY = 0
-            ctx.shadowBlur = 1
-            ctx.translate(parent.width/2, parent.height/2)
-            for (var i=0; i < 60; i++) {
-                // do not paint a minute stroke when there is an hour stroke
-                if ((i%5) != 0) {
-                    ctx.beginPath()
-                    ctx.moveTo(0, height*.41)
-                    ctx.lineTo(0, height*.46)
-                    ctx.stroke()
-                }
-                ctx.rotate(Math.PI/30)
-            }
         }
     }
 
