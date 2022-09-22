@@ -40,7 +40,6 @@ import org.asteroid.utils 1.0
 import Nemo.Mce 1.0
 
 Item {
-
     id: rootitem
 
     anchors.fill: parent
@@ -197,7 +196,11 @@ Item {
         style: Text.Outline
         styleColor: "#80000000"
         font {
-            pixelSize: Qt.locale().name.substring(0,2) === "fr" ? parent.height * .135 : Qt.locale().name.substring(0,2) === "es" ? parent.height * .145 : parent.height * .15
+            pixelSize: Qt.locale().name.substring(0,2) === "fr" ?
+                           parent.height * .135 :
+                           Qt.locale().name.substring(0,2) === "es" ?
+                               parent.height * .145 :
+                               parent.height * .15
             weight: Font.Light
         }
         text: Qt.locale().name.substring(0,2) === "de" ?
@@ -286,7 +289,6 @@ Item {
             textureSize: Qt.size(dockMode.width * 2, dockMode.height * 2)
         }
         visible: dockMode.active
-
 
         Shape {
             id: chargeArc
