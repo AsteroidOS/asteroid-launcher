@@ -40,6 +40,11 @@ import Nemo.Mce 1.0
 Item {
     id: rootitem
 
+    anchors.centerIn: parent
+
+    width: parent.width * (dockMode.active ? .8 : 1)
+    height: width
+
     function twoDigits(x) {
         if (x<10) return "0"+x;
         else      return x;
@@ -230,8 +235,8 @@ Item {
 
             property real angle: batteryChargePercentage.percent * 360 / 100
             // radius of arc is scalefactor * height or width
-            property real arcStrokeWidth: .03
-            property real scalefactor: .5 - (arcStrokeWidth / 2)
+            property real arcStrokeWidth: .026
+            property real scalefactor: .49 - (arcStrokeWidth / 2)
             property var chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
             readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
@@ -245,14 +250,14 @@ Item {
                 strokeWidth: parent.height * chargeArc.arcStrokeWidth
                 capStyle: ShapePath.FlatCap
                 joinStyle: ShapePath.MiterJoin
-                startX: width / 2
-                startY: height * ( .5 - chargeArc.scalefactor)
+                startX: chargeArc.width / 2
+                startY: chargeArc.height * ( .5 - chargeArc.scalefactor)
 
                 PathAngleArc {
-                    centerX: parent.width / 2
-                    centerY: parent.height / 2
-                    radiusX: chargeArc.scalefactor * parent.width
-                    radiusY: chargeArc.scalefactor * parent.height
+                    centerX: chargeArc.width / 2
+                    centerY: chargeArc.height / 2
+                    radiusX: chargeArc.scalefactor * chargeArc.width
+                    radiusY: chargeArc.scalefactor * chargeArc.height
                     startAngle: -90
                     sweepAngle: chargeArc.angle
                     moveToStart: false
@@ -265,10 +270,10 @@ Item {
 
             anchors {
                 centerIn: parent
-                verticalCenterOffset: -parent.width * .32
+                verticalCenterOffset: -parent.width * .3
             }
             font {
-                pixelSize: parent.width / 10
+                pixelSize: parent.width / 11
                 family: "Xolonium"
                 styleName: "Bold"
             }
@@ -307,9 +312,8 @@ Item {
         dowCanvas.requestPaint()
         amPmCanvas.am = am
         amPmCanvas.requestPaint()
-
-        burnInProtectionManager.widthOffset = Qt.binding(function() { return width * .2})
-        burnInProtectionManager.heightOffset = Qt.binding(function() { return height * .2})
+        burnInProtectionManager.widthOffset = Qt.binding(function() { return width * (dockMode.active ? .12 : .2)})
+        burnInProtectionManager.heightOffset = Qt.binding(function() { return height * (dockMode.active ? .12 : .2)})
     }
 
     Connections {
