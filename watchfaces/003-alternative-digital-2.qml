@@ -88,7 +88,7 @@ Item {
             var ctx = getContext("2d")
             prepareContext(ctx)
 
-            ctx.font = "26 " + parent.height*.38 + "px Roboto"
+            ctx.font = "26 " + parent.height * .38 + "px Roboto"
             ctx.fillText(twoDigits(minute),
                          parent.width * .5,
                          parent.height * .74);
@@ -261,7 +261,6 @@ Item {
                 centerIn: parent
                 horizontalCenterOffset: parent.width * .285
             }
-
             font {
                 pixelSize: parent.width / 13
                 family: "Roboto"
