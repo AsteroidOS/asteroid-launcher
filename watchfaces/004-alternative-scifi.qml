@@ -202,7 +202,7 @@ Item {
             var text;
             text = wallClock.time.toLocaleString(Qt.locale(), "dd MMMM").toUpperCase()
 
-            var fontSize = height*.051
+            var fontSize = height * .051
             var fontFamily = "Xolonium"
             ctx.font = thin + fontSize + px + fontFamily;
             ctx.fillText(text, centerX, centerY + verticalOffset);
@@ -267,7 +267,6 @@ Item {
                 centerIn: parent
                 verticalCenterOffset: -parent.width * .32
             }
-
             font {
                 pixelSize: parent.width / 10
                 family: "Xolonium"
