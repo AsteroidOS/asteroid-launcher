@@ -32,7 +32,6 @@ import org.asteroid.utils 1.0
 import Nemo.Mce 1.0
 
 Item {
-
     id: rootitem
 
     property real radian: .01745
@@ -201,7 +200,6 @@ Item {
                 centerIn: parent
                 verticalCenterOffset: parent.width * .155
             }
-
             font {
                 pixelSize: parent.width * .12
                 family: "Noto Sans"
@@ -420,12 +418,12 @@ Item {
             var hour = wallClock.time.getHours()
             var minute = wallClock.time.getMinutes()
             var second = wallClock.time.getSeconds()
-            if(secondHand.second != second) {
+            if(secondHand.second !== second) {
                 secondHand.second = second
                 secondHand.requestPaint()
-            }if(hourHand.hour != hour) {
+            }if(hourHand.hour !== hour) {
                 hourHand.hour = hour
-            }if(minuteHand.minute != minute) {
+            }if(minuteHand.minute !== minute) {
                 minuteHand.minute = minute
                 minuteHand.requestPaint()
                 hourHand.requestPaint()
