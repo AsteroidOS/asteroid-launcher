@@ -68,6 +68,13 @@ Item {
     property bool aboutToClose: false
     property bool aboutToMinimize: false
 
+    /*
+     * The nightstand property is for use by watchfaces to signal them to, for example,
+     * enable a visual display of battery charge level, as with a ring around the perimeter
+     * of the watch that wouldn't normally be displayed.
+     */
+    property alias nightstand: nightstandMode.active
+
     onAboutToCloseChanged: grid.moveTo(0, 0)
     onAboutToMinimizeChanged: grid.moveTo(0, 1)
 
