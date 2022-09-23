@@ -36,92 +36,10 @@ Item {
 
     property real radian: .01745
 
-    Canvas {
-        id: hourStrokes
+    anchors.centerIn: parent
 
-        anchors.fill: parent
-        smooth: true
-        renderStrategy: Canvas.Cooperative
-        onPaint: {
-            var ctx = getContext("2d")
-
-            ctx.lineWidth = parent.width*.0093
-            ctx.strokeStyle = Qt.rgba(1, 1, 1, 1)
-            ctx.shadowColor = Qt.rgba(0, 0, 0, .7)
-            ctx.shadowOffsetX = 0
-            ctx.shadowOffsetY = 0
-            ctx.shadowBlur = 2
-            ctx.translate(parent.width / 2, parent.height / 2)
-            for (var i = 0; i < 12; i++) {
-                if ( i % 3 != 0) {
-                    ctx.beginPath()
-                    ctx.moveTo(0, height * .3)
-                    ctx.lineTo(0, height * .42)
-                    ctx.stroke()
-                }
-                ctx.rotate(Math.PI / 6)
-            }
-        }
-    }
-
-    Canvas {
-        id: minuteStrokes
-
-        anchors.fill: parent
-        smooth: true
-        renderStrategy: Canvas.Cooperative
-        onPaint: {
-            var ctx = getContext("2d")
-            ctx.lineWidth = parent.width * .014
-            ctx.lineCap = "round"
-            ctx.strokeStyle = Qt.rgba(1, 1, 1, 1)
-            ctx.shadowColor = Qt.rgba(0, 0, 0, .7)
-            ctx.shadowOffsetX = 0
-            ctx.shadowOffsetY = 0
-            ctx.shadowBlur = 2
-            ctx.translate(parent.width / 2, parent.height / 2)
-            for (var i = 0; i < 60; i++) {
-                ctx.beginPath()
-                ctx.moveTo(0, height * .46)
-                ctx.lineTo(0, height * .461)
-                ctx.stroke()
-                ctx.rotate(Math.PI / 30)
-            }
-        }
-    }
-
-    Canvas {
-        id: numberStrokes
-
-        property real voffset: -parent.height * .025
-        property real hoffset: parent.height * 0
-
-        anchors.fill: parent
-        antialiasing: true
-        smooth: true
-        renderStrategy: Canvas.Cooperative
-
-        onPaint: {
-            var ctx = getContext("2d")
-            ctx.fillStyle = Qt.rgba(1, 1, 1, .9)
-            ctx.lineWidth = parent.height * .0124
-            ctx.font = "0 " + height * .18 + "px FatCow"
-            ctx.textAlign = "center"
-            ctx.textBaseline = 'middle';
-            ctx.strokeStyle = Qt.rgba(0, 0, 0, .3)
-            ctx.translate(parent.width / 2, parent.height / 2)
-            for (var i = 0; i < 12; i = i + 3) {
-                ctx.beginPath()
-                ctx.strokeText(i != 0 ? i: 12,
-                                        Math.cos((i - 3) / 12 * 2 * Math.PI) * height * .346 - hoffset,
-                                        Math.sin((i - 3) / 12 * 2 * Math.PI) * height * .346 - voffset)
-                ctx.fillText(i != 0 ? i: 12,
-                                      Math.cos((i - 3) / 12 * 2 * Math.PI) * height * .34 - hoffset,
-                                      Math.sin((i - 3) / 12 * 2 * Math.PI) * height * .34 - voffset)
-                ctx.closePath()
-            }
-        }
-    }
+    width: parent.width * (dockMode.active ? .9 : 1)
+    height: width
 
     Item {
         id: dockMode
@@ -159,14 +77,14 @@ Item {
                 strokeWidth: parent.height * chargeArc.arcStrokeWidth
                 capStyle: ShapePath.RoundCap
                 joinStyle: ShapePath.MiterJoin
-                startX: width / 2
-                startY: height * ( .5 - chargeArc.scalefactor)
+                startX: chargeArc.width / 2
+                startY: chargeArc.height * ( .5 - chargeArc.scalefactor)
 
                 PathAngleArc {
-                    centerX: parent.width / 2
-                    centerY: parent.height / 2
-                    radiusX: chargeArc.scalefactor * parent.width
-                    radiusY: chargeArc.scalefactor * parent.height
+                    centerX: chargeArc.width / 2
+                    centerY: chargeArc.height / 2
+                    radiusX: chargeArc.scalefactor * chargeArc.width
+                    radiusY: chargeArc.scalefactor * chargeArc.height
                     startAngle: -90
                     sweepAngle: chargeArc.angle
                     moveToStart: false
@@ -222,6 +140,93 @@ Item {
 
     MceCableState {
         id: mceCableState
+    }
+
+    Canvas {
+        id: hourStrokes
+
+        anchors.fill: parent
+        smooth: true
+        renderStrategy: Canvas.Cooperative
+        onPaint: {
+            var ctx = getContext("2d")
+
+            ctx.lineWidth = parent.width*.0093
+            ctx.strokeStyle = Qt.rgba(1, 1, 1, 1)
+            ctx.shadowColor = Qt.rgba(0, 0, 0, .7)
+            ctx.shadowOffsetX = 0
+            ctx.shadowOffsetY = 0
+            ctx.shadowBlur = 2
+            ctx.translate(parent.width / 2, parent.height / 2)
+            for (var i = 0; i < 12; i++) {
+                if ( i % 3 != 0) {
+                    ctx.beginPath()
+                    ctx.moveTo(0, parent.height * .3)
+                    ctx.lineTo(0, parent.height * .42)
+                    ctx.stroke()
+                }
+                ctx.rotate(Math.PI / 6)
+            }
+        }
+    }
+
+    Canvas {
+        id: minuteStrokes
+
+        anchors.fill: parent
+        smooth: true
+        renderStrategy: Canvas.Cooperative
+        onPaint: {
+            var ctx = getContext("2d")
+            ctx.lineWidth = parent.width * .014
+            ctx.lineCap = "round"
+            ctx.strokeStyle = Qt.rgba(1, 1, 1, 1)
+            ctx.shadowColor = Qt.rgba(0, 0, 0, .7)
+            ctx.shadowOffsetX = 0
+            ctx.shadowOffsetY = 0
+            ctx.shadowBlur = 2
+            ctx.translate(parent.width / 2, parent.height / 2)
+            for (var i = 0; i < 60; i++) {
+                ctx.beginPath()
+                ctx.moveTo(0, parent.height * .46)
+                ctx.lineTo(0, parent.height * .461)
+                ctx.stroke()
+                ctx.rotate(Math.PI / 30)
+            }
+        }
+    }
+
+    Canvas {
+        id: numberStrokes
+
+        property real voffset: -parent.height * .025
+        property real hoffset: parent.height * 0
+
+        anchors.fill: parent
+        antialiasing: true
+        smooth: true
+        renderStrategy: Canvas.Cooperative
+
+        onPaint: {
+            var ctx = getContext("2d")
+            ctx.fillStyle = Qt.rgba(1, 1, 1, .9)
+            ctx.lineWidth = parent.height * .0124
+            ctx.font = "0 " + parent.height * .18 + "px FatCow"
+            ctx.textAlign = "center"
+            ctx.textBaseline = 'middle';
+            ctx.strokeStyle = Qt.rgba(0, 0, 0, .3)
+            ctx.translate(parent.width / 2, parent.height / 2)
+            for (var i = 0; i < 12; i = i + 3) {
+                ctx.beginPath()
+                ctx.strokeText(i != 0 ? i: 12,
+                                        Math.cos((i - 3) / 12 * 2 * Math.PI) * parent.height * .346 - hoffset,
+                                        Math.sin((i - 3) / 12 * 2 * Math.PI) * parent.height * .346 - voffset)
+                ctx.fillText(i != 0 ? i: 12,
+                                      Math.cos((i - 3) / 12 * 2 * Math.PI) * parent.height * .34 - hoffset,
+                                      Math.sin((i - 3) / 12 * 2 * Math.PI) * parent.height * .34 - voffset)
+                ctx.closePath()
+            }
+        }
     }
 
     Canvas {
@@ -363,7 +368,7 @@ Item {
         anchors.fill: parent
         smooth: true
         renderStrategy: Canvas.Cooperative
-        visible: !displayAmbient
+        visible: !displayAmbient && !dockMode.active
 
         onPaint: {
             var ctx = getContext("2d")
@@ -441,5 +446,7 @@ Item {
         minuteHand.requestPaint()
         hourHand.hour = hour
         hourHand.requestPaint()
+        burnInProtectionManager.widthOffset = Qt.binding(function() { return width * (dockMode.active ? .11 : .06)})
+        burnInProtectionManager.heightOffset = Qt.binding(function() { return height * (dockMode.active ? .11 : .06)})
     }
 }
