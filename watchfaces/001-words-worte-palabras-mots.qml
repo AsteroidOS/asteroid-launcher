@@ -44,7 +44,7 @@ Item {
 
     anchors.centerIn: parent
 
-    width: parent.width * (dockMode.active ? .88 : 1)
+    width: parent.width * (nightstandMode.active ? .88 : 1)
     height: width
 
     function prepareContext(ctx) {
@@ -253,7 +253,7 @@ Item {
                 rightMargin: rootitem.height * .004
                 topMargin: rootitem.height * .005
             }
-            visible: dockMode.active
+            visible: nightstandMode.active
             width: rootitem.width * .1
             height: rootitem.height * .1
         }
@@ -270,7 +270,7 @@ Item {
                 family: "Roboto"
                 styleName: "Regular"
             }
-            visible: dockMode.active
+            visible: nightstandMode.active
             color: "#ffffffff"
             style: Text.Outline; styleColor: "#80000000"
             text: batteryChargePercentage.percent + "%"
@@ -278,10 +278,9 @@ Item {
     }
 
     Item {
-        id: dockMode
+        id: nightstandMode
 
-        readonly property bool active: mceCableState.connected //ready || (nightstandEnabled.value && holdoff)
-        //readonly property bool ready: nightstandEnabled.value && mceCableState.connected
+        readonly property bool active: nightstand
         property int batteryPercentChanged: batteryChargePercentage.percent
 
         anchors.fill: parent
@@ -289,41 +288,50 @@ Item {
             enabled: true
             samples: 4
             smooth: true
-            textureSize: Qt.size(dockMode.width * 2, dockMode.height * 2)
+            textureSize: Qt.size(nightstandMode.width * 2, nightstandMode.height * 2)
         }
-        visible: dockMode.active
+        visible: nightstandMode.active
 
-        Shape {
-            id: chargeArc
+        Repeater {
+            id: segmentedArc
 
-            property real angle: batteryChargePercentage.percent * 360 / 100
-            // radius of arc is scalefactor * height or width
-            property real arcStrokeWidth: .028
-            property real scalefactor: .49 - (arcStrokeWidth / 2)
-            property var chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
+            property real inputValue: batteryChargePercentage.percent / 100
+            property int segmentAmount: 10
+            property int start: 0
+            property int gap: 6
+            property int endFromStart: 360
+            property bool clockwise: true
+            property real arcStrokeWidth: .024
+            property real scalefactor: .496 - (arcStrokeWidth / 2)
+            property real chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
             readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
-            anchors.fill: parent
-            smooth: true
-            antialiasing: true
+            model: segmentAmount
 
-            ShapePath {
-                fillColor: "transparent"
-                strokeColor: chargeArc.colorArray[chargeArc.chargecolor]
-                strokeWidth: parent.height * chargeArc.arcStrokeWidth
-                capStyle: ShapePath.FlatCap
-                joinStyle: ShapePath.MiterJoin
-                startX: chargeArc.width / 2
-                startY: chargeArc.height * ( .5 - chargeArc.scalefactor)
+            Shape {
+                id: segment
 
-                PathAngleArc {
-                    centerX: chargeArc.width / 2
-                    centerY: chargeArc.height / 2
-                    radiusX: chargeArc.scalefactor * chargeArc.width
-                    radiusY: chargeArc.scalefactor * chargeArc.height
-                    startAngle: -90
-                    sweepAngle: chargeArc.angle
-                    moveToStart: false
+                visible: index === 0 ? true : (index/segmentedArc.segmentAmount) < segmentedArc.inputValue
+
+                ShapePath {
+                    fillColor: "transparent"
+                    strokeColor: segmentedArc.colorArray[segmentedArc.chargecolor]
+                    strokeWidth: parent.height * segmentedArc.arcStrokeWidth
+                    capStyle: ShapePath.FlatCap
+                    joinStyle: ShapePath.MiterJoin
+                    startX: parent.width / 2
+                    startY: parent.height * ( .5 - segmentedArc.scalefactor)
+
+                    PathAngleArc {
+                        centerX: parent.width / 2
+                        centerY: parent.height / 2
+                        radiusX: segmentedArc.scalefactor * parent.width
+                        radiusY: segmentedArc.scalefactor * parent.height
+                        startAngle: -90 + index * (sweepAngle + (segmentedArc.clockwise ? +segmentedArc.gap : -segmentedArc.gap)) + segmentedArc.start
+                        sweepAngle: segmentedArc.clockwise ? (segmentedArc.endFromStart / segmentedArc.segmentAmount) - segmentedArc.gap :
+                                                             -(segmentedArc.endFromStart / segmentedArc.segmentAmount) + segmentedArc.gap
+                        moveToStart: true
+                    }
                 }
             }
         }
@@ -331,14 +339,6 @@ Item {
 
     MceBatteryLevel {
         id: batteryChargePercentage
-    }
-
-    MceBatteryState {
-        id: batteryChargeState
-    }
-
-    MceCableState {
-        id: mceCableState
     }
 
     Connections {
@@ -350,7 +350,7 @@ Item {
     }
 
     Component.onCompleted: {
-        burnInProtectionManager.widthOffset = Qt.binding(function() { return width * (dockMode.active ? .12 : .2)})
-        burnInProtectionManager.heightOffset = Qt.binding(function() { return height * (dockMode.active ? .12 : .2)})
+        burnInProtectionManager.widthOffset = Qt.binding(function() { return width * (nightstandMode.active ? .12 : .2)})
+        burnInProtectionManager.heightOffset = Qt.binding(function() { return height * (nightstandMode.active ? .12 : .2)})
     }
 }
