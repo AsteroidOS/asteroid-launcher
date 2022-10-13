@@ -40,7 +40,7 @@ import Nemo.Mce 1.0
 Item {
     id: rootitem
 
-    width: parent.width * (dockMode.active ? .9 : 1)
+    width: parent.width * (nightstandMode.active ? .9 : 1)
     height: width
 
     anchors.centerIn: parent
@@ -138,10 +138,9 @@ Item {
     }
 
     Item {
-        id: dockMode
+        id: nightstandMode
 
-        readonly property bool active: mceCableState.connected //ready || (nightstandEnabled.value && holdoff)
-        //readonly property bool ready: nightstandEnabled.value && mceCableState.connected
+        readonly property bool active: nightstand
         property int batteryPercentChanged: batteryChargePercentage.percent
 
         anchors.fill: parent
@@ -150,63 +149,56 @@ Item {
             enabled: true
             samples: 4
             smooth: true
-            textureSize: Qt.size(dockMode.width * 2, dockMode.height * 2)
+            textureSize: Qt.size(nightstandMode.width * 2, nightstandMode.height * 2)
         }
-        visible: dockMode.active
+        visible: nightstandMode.active
 
         onBatteryPercentChangedChanged: {
             batteryPercent.requestPaint()
         }
 
-        Shape {
-            id: chargeArc
+        Repeater {
+            id: segmentedArc
 
-            property real angle: batteryChargePercentage.percent * 360 / 100
-            // radius of arc is scalefactor * height or width
-            property real scalefactor: .44
+            property real inputValue: batteryChargePercentage.percent / 100
+            property int segmentAmount: 50
+            property int start: 0
+            property int gap: 6
+            property int endFromStart: 360 - gap
+            property bool clockwise: true
+            property real arcStrokeWidth: .05
+            property real scalefactor: .456 - (arcStrokeWidth / 2)
             property real chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
             readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
-            anchors.fill: parent
-            vendorExtensionsEnabled: true
+            model: segmentAmount
 
-            ShapePath {
-                fillColor: "transparent"
-                strokeColor: chargeArc.colorArray[chargeArc.chargecolor]
-                strokeWidth: chargeArc.height * .04
-                capStyle: ShapePath.FlatCap
-                joinStyle: ShapePath.MiterJoin
-                startX: chargeArc.width / 2
-                startY: chargeArc.height * (.5 - chargeArc.scalefactor)
+            Shape {
+                id: segment
 
-                PathAngleArc {
-                    centerX: chargeArc.width / 2
-                    centerY: chargeArc.height / 2
-                    radiusX: chargeArc.scalefactor * chargeArc.width
-                    radiusY: chargeArc.scalefactor * chargeArc.height
-                    startAngle: -90
-                    sweepAngle: chargeArc.angle
-                    moveToStart: false
+                visible: index === 0 ? true : (index/segmentedArc.segmentAmount) < segmentedArc.inputValue
+
+                ShapePath {
+                    fillColor: "transparent"
+                    strokeColor: segmentedArc.colorArray[segmentedArc.chargecolor]
+                    strokeWidth: parent.height * segmentedArc.arcStrokeWidth
+                    capStyle: ShapePath.FlatCap
+                    joinStyle: ShapePath.MiterJoin
+                    startX: parent.width / 2
+                    startY: parent.height * ( .5 - segmentedArc.scalefactor)
+
+                    PathAngleArc {
+                        centerX: parent.width / 2
+                        centerY: parent.height / 2
+                        radiusX: segmentedArc.scalefactor * parent.width
+                        radiusY: segmentedArc.scalefactor * parent.height
+                        startAngle: -90 + index * (sweepAngle + (segmentedArc.clockwise ? +segmentedArc.gap : -segmentedArc.gap)) + segmentedArc.start
+                        sweepAngle: segmentedArc.clockwise ? (segmentedArc.endFromStart / segmentedArc.segmentAmount) - segmentedArc.gap :
+                                                             -(segmentedArc.endFromStart / segmentedArc.segmentAmount) + segmentedArc.gap
+                        moveToStart: true
+                    }
                 }
             }
-        }
-
-        Icon {
-            id: batteryIcon
-
-            name: "ios-battery-charging"
-            anchors {
-                centerIn: parent
-                verticalCenterOffset: -parent.height * .27
-            }
-            width: parent.width * .13
-            height: parent.height * .13
-        }
-
-        ColorOverlay {
-            anchors.fill: batteryIcon
-            source: batteryIcon
-            color: chargeArc.colorArray[chargeArc.chargecolor]
         }
 
         Canvas {
@@ -220,7 +212,7 @@ Item {
             onPaint: {
                 var ctx = getContext("2d")
                 prepareContext(ctx)
-                ctx.fillStyle = chargeArc.colorArray[chargeArc.chargecolor]
+                ctx.fillStyle = segmentedArc.colorArray[segmentedArc.chargecolor]
                 ctx.font = "45 " + height * .08 + "px Roboto"
                 ctx.fillText(batteryChargePercentage.percent + "%", width * .5, height * .77);
             }
@@ -229,14 +221,6 @@ Item {
 
     MceBatteryLevel {
         id: batteryChargePercentage
-    }
-
-    MceBatteryState {
-        id: batteryChargeState
-    }
-
-    MceCableState {
-        id: mceCableState
     }
 
     Connections {
@@ -284,7 +268,7 @@ Item {
         amPmCanvas.am = am
         amPmCanvas.requestPaint()
 
-        burnInProtectionManager.widthOffset = Qt.binding(function() { return width * (dockMode.active ? .16 : .32)})
-        burnInProtectionManager.heightOffset = Qt.binding(function() { return height * (dockMode.active ? .16 : .7)})
+        burnInProtectionManager.widthOffset = Qt.binding(function() { return width * (nightstandMode.active ? .16 : .32)})
+        burnInProtectionManager.heightOffset = Qt.binding(function() { return height * (nightstandMode.active ? .16 : .7)})
     }
 }
