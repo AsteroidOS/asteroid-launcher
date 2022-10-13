@@ -55,8 +55,7 @@ Item {
         Item {
             id: dockMode
 
-            readonly property bool active: mceCableState.connected //ready || (nightstandEnabled.value && holdoff)
-            //readonly property bool ready: nightstandEnabled.value && mceCableState.connected
+            readonly property bool active: nightstand
             property int batteryPercentChanged: batteryChargePercentage.percent
 
             anchors.fill: parent
