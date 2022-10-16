@@ -38,12 +38,9 @@ import org.asteroid.utils 1.0
 import Nemo.Mce 1.0
 
 Item {
-    id: rootitem
+    id: root
 
     anchors.fill: parent
-
-    width: parent.width * (nightstandMode.active ? .8 : 1)
-    height: width
 
     function twoDigits(x) {
         if (x<10) return "0"+x;
@@ -59,158 +56,167 @@ Item {
         ctx.shadowBlur = parent.height * .0156
     }
 
-    Canvas {
-        id: dowCanvas
+    Item {
+        id: watchfaceRoot
 
-        anchors.fill: parent
-        renderStrategy: Canvas.Cooperative
+        anchors.centerIn: parent
 
-        onPaint: {
-            var ctx = getContext("2d")
-            prepareContext(ctx)
-            ctx.shadowBlur = parent.height * .00625
-            ctx.textAlign = "center"
-            ctx.textBaseline = "middle"
+        width: parent.width * (nightstandMode.active ? .8 : 1)
+        height: width
 
-            var bold = "0 "
-            var px = "px "
+        Canvas {
+            id: dowCanvas
 
-            var centerX = width * .373
-            var centerY = height / 2 * .57
-            var verticalOffset = height * .05
+            anchors.fill: parent
+            renderStrategy: Canvas.Cooperative
 
-            var text;
-            text = wallClock.time.toLocaleString(Qt.locale(), "dddd").toUpperCase()
+            onPaint: {
+                var ctx = getContext("2d")
+                prepareContext(ctx)
+                ctx.shadowBlur = parent.height * .00625
+                ctx.textAlign = "center"
+                ctx.textBaseline = "middle"
 
-            var fontSize = height * .051
-            var fontFamily = "Xolonium"
-            ctx.font = bold + fontSize + px + fontFamily;
-            ctx.fillText(text, centerX, centerY + verticalOffset);
+                var bold = "0 "
+                var px = "px "
+
+                var centerX = width * .373
+                var centerY = height / 2 * .57
+                var verticalOffset = height * .05
+
+                var text;
+                text = wallClock.time.toLocaleString(Qt.locale(), "dddd").toUpperCase()
+
+                var fontSize = height * .051
+                var fontFamily = "Xolonium"
+                ctx.font = bold + fontSize + px + fontFamily;
+                ctx.fillText(text, centerX, centerY + verticalOffset);
+            }
         }
-    }
 
-    Canvas {
-        id: hourCanvas
+        Canvas {
+            id: hourCanvas
 
-        property int hour: 0
+            property int hour: 0
 
-        anchors.fill: parent
-        renderStrategy: Canvas.Cooperative
+            anchors.fill: parent
+            renderStrategy: Canvas.Cooperative
 
-        onPaint: {
-            var ctx = getContext("2d")
-            prepareContext(ctx)
-            ctx.textAlign = "right"
-            ctx.textBaseline = "right"
+            onPaint: {
+                var ctx = getContext("2d")
+                prepareContext(ctx)
+                ctx.textAlign = "right"
+                ctx.textBaseline = "right"
 
-            var bold = "60 "
-            var px = "px "
+                var bold = "60 "
+                var px = "px "
 
-            var centerX = width / 2 * 1.25
-            var centerY = height / 2
-            var verticalOffset = height * .12
+                var centerX = width / 2 * 1.25
+                var centerY = height / 2
+                var verticalOffset = height * .12
 
-            var text;
-            text = twoDigits(hour)
+                var text;
+                text = twoDigits(hour)
 
-            var fontSize = height * .36
-            var fontFamily = "Xolonium"
-            ctx.font = bold + fontSize + px + fontFamily;
-            ctx.fillText(text, centerX, centerY + verticalOffset);
+                var fontSize = height * .36
+                var fontFamily = "Xolonium"
+                ctx.font = bold + fontSize + px + fontFamily;
+                ctx.fillText(text, centerX, centerY + verticalOffset);
+            }
         }
-    }
 
-    Canvas {
-        id: minuteCanvas
+        Canvas {
+            id: minuteCanvas
 
-        property int minute: 0
+            property int minute: 0
 
-        anchors.fill: parent
-        renderStrategy: Canvas.Cooperative
+            anchors.fill: parent
+            renderStrategy: Canvas.Cooperative
 
-        onPaint: {
-            var ctx = getContext("2d")
-            prepareContext(ctx)
-            ctx.shadowBlur = 3
-            ctx.textAlign = "left"
-            ctx.textBaseline = "left"
+            onPaint: {
+                var ctx = getContext("2d")
+                prepareContext(ctx)
+                ctx.shadowBlur = 3
+                ctx.textAlign = "left"
+                ctx.textBaseline = "left"
 
-            var thin = "0 "
-            var px = "px "
+                var thin = "0 "
+                var px = "px "
 
-            var centerX = width / 2 * 1.268
-            var centerY = height / 2
-            var verticalOffset = height * .112
+                var centerX = width / 2 * 1.268
+                var centerY = height / 2
+                var verticalOffset = height * .112
 
-            var text;
-            text = wallClock.time.toLocaleString(Qt.locale(), "mm")
+                var text;
+                text = wallClock.time.toLocaleString(Qt.locale(), "mm")
 
-            var fontSize = height * .17
-            var fontFamily = "Xolonium"
-            ctx.font = thin + fontSize + px + fontFamily;
-            ctx.fillText(text, centerX, centerY + verticalOffset);
+                var fontSize = height * .17
+                var fontFamily = "Xolonium"
+                ctx.font = thin + fontSize + px + fontFamily;
+                ctx.fillText(text, centerX, centerY + verticalOffset);
+            }
         }
-    }
 
-    Canvas {
-        id: amPmCanvas
+        Canvas {
+            id: amPmCanvas
 
-        property bool am: false
+            property bool am: false
 
-        anchors.fill: parent
-        renderStrategy: Canvas.Cooperative
+            anchors.fill: parent
+            renderStrategy: Canvas.Cooperative
 
-        onPaint: {
-            var ctx = getContext("2d")
-            prepareContext(ctx)
-            ctx.shadowBlur = parent.height*.00625 //2 px on 320x320
-            ctx.textAlign = "left"
-            ctx.textBaseline = "left"
+            onPaint: {
+                var ctx = getContext("2d")
+                prepareContext(ctx)
+                ctx.shadowBlur = parent.height*.00625 //2 px on 320x320
+                ctx.textAlign = "left"
+                ctx.textBaseline = "left"
 
-            var bold = "64 "
-            var px = "px "
+                var bold = "64 "
+                var px = "px "
 
-            var centerX = width / 2 * 1.29
-            var centerY = height / 2 * .83
-            var verticalOffset = height * .05
+                var centerX = width / 2 * 1.29
+                var centerY = height / 2 * .83
+                var verticalOffset = height * .05
 
-            var text;
-            text = wallClock.time.toLocaleString(Qt.locale("en_EN"), "ap").toUpperCase()
+                var text;
+                text = wallClock.time.toLocaleString(Qt.locale("en_EN"), "ap").toUpperCase()
 
-            var fontSize = height * .057
-            var fontFamily = "Xolonium"
-            ctx.font = bold + fontSize + px + fontFamily;
-            if(use12H.value) ctx.fillText(text, centerX, centerY + verticalOffset);
+                var fontSize = height * .057
+                var fontFamily = "Xolonium"
+                ctx.font = bold + fontSize + px + fontFamily;
+                if(use12H.value) ctx.fillText(text, centerX, centerY + verticalOffset);
+            }
         }
-    }
 
-    Canvas {
-        id: dateCanvas
+        Canvas {
+            id: dateCanvas
 
-        anchors.fill: parent
-        renderStrategy: Canvas.Cooperative
+            anchors.fill: parent
+            renderStrategy: Canvas.Cooperative
 
-        onPaint: {
-            var ctx = getContext("2d")
-            prepareContext(ctx)
-            ctx.shadowBlur = parent.height*.00625
-            ctx.textAlign = "center"
-            ctx.textBaseline = "middle"
+            onPaint: {
+                var ctx = getContext("2d")
+                prepareContext(ctx)
+                ctx.shadowBlur = parent.height*.00625
+                ctx.textAlign = "center"
+                ctx.textBaseline = "middle"
 
-            var thin = "0 "
-            var px = "px "
+                var thin = "0 "
+                var px = "px "
 
-            var centerX = width * .626
-            var centerY = height / 2 * 1.27
-            var verticalOffset = height * .05
+                var centerX = width * .626
+                var centerY = height / 2 * 1.27
+                var verticalOffset = height * .05
 
-            var text;
-            text = wallClock.time.toLocaleString(Qt.locale(), "dd MMMM").toUpperCase()
+                var text;
+                text = wallClock.time.toLocaleString(Qt.locale(), "dd MMMM").toUpperCase()
 
-            var fontSize = height * .051
-            var fontFamily = "Xolonium"
-            ctx.font = thin + fontSize + px + fontFamily;
-            ctx.fillText(text, centerX, centerY + verticalOffset);
+                var fontSize = height * .051
+                var fontFamily = "Xolonium"
+                ctx.font = thin + fontSize + px + fontFamily;
+                ctx.fillText(text, centerX, centerY + verticalOffset);
+            }
         }
     }
 
@@ -234,8 +240,8 @@ Item {
 
             property real angle: batteryChargePercentage.percent * 360 / 100
             // radius of arc is scalefactor * height or width
-            property real arcStrokeWidth: .026
-            property real scalefactor: .49 - (arcStrokeWidth / 2)
+            property real arcStrokeWidth: .024
+            property real scalefactor: .42 - (arcStrokeWidth / 2)
             property var chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
             readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
@@ -272,27 +278,19 @@ Item {
                 verticalCenterOffset: -parent.width * .3
             }
             font {
-                pixelSize: parent.width / 11
+                pixelSize: parent.width / 20
                 family: "Xolonium"
                 styleName: "Bold"
             }
             visible: nightstandMode.active
             color: chargeArc.colorArray[chargeArc.chargecolor]
             style: Text.Outline; styleColor: "#80000000"
-            text: batteryChargePercentage.percent
+            text: batteryChargePercentage.percent + "%"
         }
     }
 
     MceBatteryLevel {
         id: batteryChargePercentage
-    }
-
-    MceBatteryState {
-        id: batteryChargeState
-    }
-
-    MceCableState {
-        id: mceCableState
     }
 
     Component.onCompleted: {
