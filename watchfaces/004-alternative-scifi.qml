@@ -40,9 +40,9 @@ import Nemo.Mce 1.0
 Item {
     id: rootitem
 
-    anchors.centerIn: parent
+    anchors.fill: parent
 
-    width: parent.width * (dockMode.active ? .8 : 1)
+    width: parent.width * (nightstandMode.active ? .8 : 1)
     height: width
 
     function twoDigits(x) {
@@ -215,19 +215,18 @@ Item {
     }
 
     Item {
-        id: dockMode
+        id: nightstandMode
 
-        readonly property bool active: mceCableState.connected //ready || (nightstandEnabled.value && holdoff)
-        //readonly property bool ready: nightstandEnabled.value && mceCableState.connected
+        readonly property bool active: nightstand
         property int batteryPercentChanged: batteryChargePercentage.percent
 
         anchors.fill: parent
-        visible: dockMode.active
+        visible: nightstandMode.active
         layer {
             enabled: true
             samples: 4
             smooth: true
-            textureSize: Qt.size(dockMode.width * 2, dockMode.height * 2)
+            textureSize: Qt.size(nightstandMode.width * 2, nightstandMode.height * 2)
         }
 
         Shape {
@@ -277,7 +276,7 @@ Item {
                 family: "Xolonium"
                 styleName: "Bold"
             }
-            visible: dockMode.active
+            visible: nightstandMode.active
             color: chargeArc.colorArray[chargeArc.chargecolor]
             style: Text.Outline; styleColor: "#80000000"
             text: batteryChargePercentage.percent
@@ -312,8 +311,8 @@ Item {
         dowCanvas.requestPaint()
         amPmCanvas.am = am
         amPmCanvas.requestPaint()
-        burnInProtectionManager.widthOffset = Qt.binding(function() { return width * (dockMode.active ? .12 : .2)})
-        burnInProtectionManager.heightOffset = Qt.binding(function() { return height * (dockMode.active ? .12 : .2)})
+        burnInProtectionManager.widthOffset = Qt.binding(function() { return width * (nightstandMode.active ? .12 : .2)})
+        burnInProtectionManager.heightOffset = Qt.binding(function() { return height * (nightstandMode.active ? .12 : .2)})
     }
 
     Connections {
