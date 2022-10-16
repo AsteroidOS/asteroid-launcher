@@ -38,13 +38,9 @@ import org.asteroid.utils 1.0
 import Nemo.Mce 1.0
 
 Item {
-    id: rootitem
+    id: root
 
-    anchors.centerIn: parent
-
-    width: parent.width * (nightstandMode.active ? .8 : 1)
-    height: width
-    clip: true
+    anchors.fill: parent
 
     function twoDigits(x) {
         if (x < 10) return "0" + x;
@@ -62,146 +58,155 @@ Item {
         ctx.shadowBlur = parent.height * .0156
     }
 
-    Canvas {
-        id: hourCanvas
-        anchors.fill: parent
-        antialiasing: true
-        smooth: true
-        renderStrategy: Canvas.Cooperative
+    Item {
+        id: watchfaceRoot
 
-        property int hour: 0
+        anchors.centerIn: parent
 
-        onPaint: {
-            var ctx = getContext("2d")
-            prepareContext(ctx)
+        width: parent.width * (nightstandMode.active ? .8 : 1)
+        height: width
 
-            ctx.font = "60 " + parent.height*.39 + "px Roboto"
-            ctx.fillText(twoDigits(hour),
-                         parent.width * .5,
-                         parent.height * .34);
+        Canvas {
+            id: hourCanvas
+            anchors.fill: parent
+            antialiasing: true
+            smooth: true
+            renderStrategy: Canvas.Cooperative
+
+            property int hour: 0
+
+            onPaint: {
+                var ctx = getContext("2d")
+                prepareContext(ctx)
+
+                ctx.font = "60 " + parent.height*.39 + "px Roboto"
+                ctx.fillText(twoDigits(hour),
+                             parent.width * .5,
+                             parent.height * .34);
+            }
         }
-    }
 
-    Canvas {
-        id: minuteCanvas
+        Canvas {
+            id: minuteCanvas
 
-        anchors.fill: parent
-        antialiasing: true
-        smooth: true
-        renderStrategy: Canvas.Cooperative
+            anchors.fill: parent
+            antialiasing: true
+            smooth: true
+            renderStrategy: Canvas.Cooperative
 
-        property int minute: 0
+            property int minute: 0
 
-        onPaint: {
-            var ctx = getContext("2d")
-            prepareContext(ctx)
+            onPaint: {
+                var ctx = getContext("2d")
+                prepareContext(ctx)
 
-            ctx.font = "26 " + parent.height * .38 + "px Roboto"
-            ctx.fillText(twoDigits(minute),
-                         parent.width * .5,
-                         parent.height * .74);
+                ctx.font = "26 " + parent.height * .38 + "px Roboto"
+                ctx.fillText(twoDigits(minute),
+                             parent.width * .5,
+                             parent.height * .74);
+            }
         }
-    }
 
-    Canvas {
-        id: dateCanvas
+        Canvas {
+            id: dateCanvas
 
-        anchors.fill: parent
-        antialiasing: true
-        smooth: true
-        renderStrategy: Canvas.Cooperative
-        visible: !nightstandMode.active
+            anchors.fill: parent
+            antialiasing: true
+            smooth: true
+            renderStrategy: Canvas.Cooperative
+            visible: !nightstandMode.active
 
-        property int date: 0
+            property int date: 0
 
-        onPaint: {
-            var ctx = getContext("2d")
-            prepareContext(ctx)
-            ctx.shadowBlur = parent.height * .00625 //2 px on 320x320
-            ctx.textAlign = "left"
-            ctx.textBaseline = "left"
-            ctx.font = "60 " + parent.height * .09 + "px Raleway"
-            ctx.fillText(wallClock.time.toLocaleString(Qt.locale(), "dd"),
-                         parent.width / 10 * 1.75,
-                         parent.height * .505);
+            onPaint: {
+                var ctx = getContext("2d")
+                prepareContext(ctx)
+                ctx.shadowBlur = parent.height * .00625 //2 px on 320x320
+                ctx.textAlign = "left"
+                ctx.textBaseline = "left"
+                ctx.font = "60 " + parent.height * .09 + "px Raleway"
+                ctx.fillText(wallClock.time.toLocaleString(Qt.locale(), "dd"),
+                             parent.width / 10 * 1.75,
+                             parent.height * .505);
+            }
         }
-    }
 
-    Canvas {
-        id: monthCanvas
+        Canvas {
+            id: monthCanvas
 
-        anchors.fill: parent
-        antialiasing: true
-        smooth: true
-        renderStrategy: Canvas.Cooperative
-        visible: !nightstandMode.active
+            anchors.fill: parent
+            antialiasing: true
+            smooth: true
+            renderStrategy: Canvas.Cooperative
+            visible: !nightstandMode.active
 
-        property int month: 0
+            property int month: 0
 
-        onPaint: {
-            var ctx = getContext("2d")
-            prepareContext(ctx)
-            ctx.shadowBlur = parent.height * .00625 //2 px on 320x320
-            ctx.textAlign = "center"
-            ctx.font = "40 " +parent.height * .07 + "px Raleway"
-            ctx.fillText(wallClock.time.toLocaleString(Qt.locale(), "MMMM").toUpperCase(),
-                         parent.width / 2,
-                         parent.height * .509);
+            onPaint: {
+                var ctx = getContext("2d")
+                prepareContext(ctx)
+                ctx.shadowBlur = parent.height * .00625 //2 px on 320x320
+                ctx.textAlign = "center"
+                ctx.font = "40 " +parent.height * .07 + "px Raleway"
+                ctx.fillText(wallClock.time.toLocaleString(Qt.locale(), "MMMM").toUpperCase(),
+                             parent.width / 2,
+                             parent.height * .509);
+            }
         }
-    }
 
-    Canvas {
-        id: amPmCanvas
+        Canvas {
+            id: amPmCanvas
 
-        anchors.fill: parent
-        antialiasing: true
-        smooth: true
-        renderStrategy: Canvas.Cooperative
-        visible: use12H.value && !nightstandMode.active
+            anchors.fill: parent
+            antialiasing: true
+            smooth: true
+            renderStrategy: Canvas.Cooperative
+            visible: use12H.value && !nightstandMode.active
 
-        property bool am: false
+            property bool am: false
 
-        onPaint: {
-            var ctx = getContext("2d")
-            prepareContext(ctx)
-            ctx.shadowBlur = parent.height * .00625
-            ctx.textAlign = "right"
-            ctx.textBaseline = "right"
-            ctx.font = "72 " +parent.height * .072 + "px Raleway"
-            ctx.fillText(wallClock.time.toLocaleString(Qt.locale("en_EN"), "AP").slice(0, 2),
-                         parent.width / 10 * 8.3,
-                         parent.height * .509);
+            onPaint: {
+                var ctx = getContext("2d")
+                prepareContext(ctx)
+                ctx.shadowBlur = parent.height * .00625
+                ctx.textAlign = "right"
+                ctx.textBaseline = "right"
+                ctx.font = "72 " +parent.height * .072 + "px Raleway"
+                ctx.fillText(wallClock.time.toLocaleString(Qt.locale("en_EN"), "AP").slice(0, 2),
+                             parent.width / 10 * 8.3,
+                             parent.height * .509);
+            }
         }
-    }
 
-    Canvas {
-        id: secondCanvas
+        Canvas {
+            id: secondCanvas
 
-        anchors.fill: parent
-        antialiasing: true
-        smooth: true
-        renderStrategy: Canvas.Cooperative
-        visible: !use12H.value && !displayAmbient && !nightstandMode.active
+            anchors.fill: parent
+            antialiasing: true
+            smooth: true
+            renderStrategy: Canvas.Cooperative
+            visible: !use12H.value && !displayAmbient && !nightstandMode.active
 
-        property int second: 0
+            property int second: 0
 
-        onPaint: {
-            var ctx = getContext("2d")
-            prepareContext(ctx)
-            ctx.shadowBlur = parent.height * .00625
-            ctx.textAlign = "right"
-            ctx.textBaseline = "right"
-            ctx.font = "60 " +parent.height * .08 + "px Roboto"
-            ctx.fillText(twoDigits(second),
-                         parent.width / 10 * 8.1,
-                         parent.height * .506);
+            onPaint: {
+                var ctx = getContext("2d")
+                prepareContext(ctx)
+                ctx.shadowBlur = parent.height * .00625
+                ctx.textAlign = "right"
+                ctx.textBaseline = "right"
+                ctx.font = "60 " +parent.height * .08 + "px Roboto"
+                ctx.fillText(twoDigits(second),
+                             parent.width / 10 * 8.1,
+                             parent.height * .506);
+            }
         }
     }
 
     Item {
         id: nightstandMode
 
-        readonly property bool active: nightstandMode
+        readonly property bool active: nightstand
         property int batteryPercentChanged: batteryChargePercentage.percent
 
         anchors.fill: parent
@@ -223,7 +228,7 @@ Item {
             property int endFromStart: 360
             property bool clockwise: true
             property real arcStrokeWidth: .05
-            property real scalefactor: .48 - (arcStrokeWidth / 2)
+            property real scalefactor: .46 - (arcStrokeWidth / 2)
             property real chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
             readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
@@ -256,49 +261,10 @@ Item {
                 }
             }
         }
-
-        Icon {
-            id: batteryIcon
-
-            name: "ios-battery-charging"
-            anchors {
-                centerIn: parent
-                horizontalCenterOffset: -parent.width * .3
-            }
-            visible: nightstandMode.active
-            width: parent.width * .14
-            height: parent.height * .14
-        }
-
-        Text {
-            id: batteryPercent
-
-            anchors {
-                centerIn: parent
-                horizontalCenterOffset: parent.width * .29
-            }
-            font {
-                pixelSize: parent.width / 14
-                family: "Roboto"
-                styleName: "Bold"
-            }
-            visible: nightstandMode.active
-            color: "#ffffffff"
-            style: Text.Outline; styleColor: "#80000000"
-            text: batteryChargePercentage.percent + "%"
-        }
     }
 
     MceBatteryLevel {
         id: batteryChargePercentage
-    }
-
-    MceBatteryState {
-        id: batteryChargeState
-    }
-
-    MceCableState {
-        id: mceCableState
     }
 
     Component.onCompleted: {
