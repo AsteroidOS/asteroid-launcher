@@ -38,12 +38,9 @@ import org.asteroid.utils 1.0
 import Nemo.Mce 1.0
 
 Item {
-    id: rootitem
+    id: root
 
-    width: parent.width * (nightstandMode.active ? .9 : 1)
-    height: width
-
-    anchors.centerIn: parent
+    anchors.fill: parent
 
     function twoDigits(x) {
         if (x<10) return "0" + x;
@@ -61,79 +58,87 @@ Item {
         ctx.shadowBlur = parent.height * .0125
     }
 
-    Canvas {
-        id: hourCanvas
+    Item {
+        id: watchfaceRoot
 
-        property int hour: 0
+        anchors.centerIn: parent
+        width: parent.width * (nightstandMode.active ? .86 : 1)
+        height: width
 
-        anchors.fill: parent
-        antialiasing: true
-        smooth: true
-        renderStrategy: Canvas.Cooperative
+        Canvas {
+            id: hourCanvas
 
-        onPaint: {
-            var ctx = getContext("2d")
-            prepareContext(ctx)
+            property int hour: 0
 
-            ctx.font = "57 " + height * .36 + "px Roboto"
-            ctx.fillText(twoDigits(hour), width * .378, height * .537);
+            anchors.fill: parent
+            antialiasing: true
+            smooth: true
+            renderStrategy: Canvas.Cooperative
+
+            onPaint: {
+                var ctx = getContext("2d")
+                prepareContext(ctx)
+
+                ctx.font = "57 " + height * .36 + "px Roboto"
+                ctx.fillText(twoDigits(hour), width * .378, height * .537);
+            }
         }
-    }
 
-    Canvas {
-        id: minuteCanvas
+        Canvas {
+            id: minuteCanvas
 
-        property int minute: 0
+            property int minute: 0
 
-        anchors.fill: parent
-        antialiasing: true
-        smooth: true
-        renderStrategy: Canvas.Cooperative
+            anchors.fill: parent
+            antialiasing: true
+            smooth: true
+            renderStrategy: Canvas.Cooperative
 
-        onPaint: {
-            var ctx = getContext("2d")
-            prepareContext(ctx)
+            onPaint: {
+                var ctx = getContext("2d")
+                prepareContext(ctx)
 
-            ctx.font = "30 " + height * .18 + "px Roboto"
-            ctx.fillText(twoDigits(minute), width * .717, height * .473);
+                ctx.font = "30 " + height * .18 + "px Roboto"
+                ctx.fillText(twoDigits(minute), width * .717, height * .473);
+            }
         }
-    }
 
-    Canvas {
-        id: amPmCanvas
+        Canvas {
+            id: amPmCanvas
 
-        property bool am: false
+            property bool am: false
 
-        anchors.fill: parent
-        antialiasing: true
-        smooth: true
-        renderStrategy: Canvas.Cooperative
-        visible: use12H.value
+            anchors.fill: parent
+            antialiasing: true
+            smooth: true
+            renderStrategy: Canvas.Cooperative
+            visible: use12H.value
 
-        onPaint: {
-            var ctx = getContext("2d")
-            prepareContext(ctx)
+            onPaint: {
+                var ctx = getContext("2d")
+                prepareContext(ctx)
 
-            ctx.font = "25 " + height / 15 + "px Raleway"
-            ctx.fillText(wallClock.time.toLocaleString(Qt.locale("en_EN"), "AP"), width * .894, height * .371);
+                ctx.font = "25 " + height / 15 + "px Raleway"
+                ctx.fillText(wallClock.time.toLocaleString(Qt.locale("en_EN"), "AP"), width * .894, height * .371);
+            }
         }
-    }
 
-    Canvas {
-        id: dateCanvas
+        Canvas {
+            id: dateCanvas
 
-        property int date: 0
+            property int date: 0
 
-        anchors.fill: parent
-        antialiasing: true
-        smooth: true
-        renderStrategy: Canvas.Cooperative
+            anchors.fill: parent
+            antialiasing: true
+            smooth: true
+            renderStrategy: Canvas.Cooperative
 
-        onPaint: {
-            var ctx = getContext("2d")
-            prepareContext(ctx)
-            ctx.font = "25 " + height / 13 + "px Raleway"
-            ctx.fillText(wallClock.time.toLocaleString(Qt.locale(), "d MMM"), width * .719, height * .595);
+            onPaint: {
+                var ctx = getContext("2d")
+                prepareContext(ctx)
+                ctx.font = "25 " + height / 13 + "px Raleway"
+                ctx.fillText(wallClock.time.toLocaleString(Qt.locale(), "d MMM"), width * .719, height * .595);
+            }
         }
     }
 
@@ -164,10 +169,10 @@ Item {
             property int segmentAmount: 50
             property int start: 0
             property int gap: 6
-            property int endFromStart: 360 - gap
+            property int endFromStart: 360
             property bool clockwise: true
-            property real arcStrokeWidth: .05
-            property real scalefactor: .456 - (arcStrokeWidth / 2)
+            property real arcStrokeWidth: .055
+            property real scalefactor: .45 - (arcStrokeWidth / 2)
             property real chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
             readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
@@ -198,23 +203,6 @@ Item {
                         moveToStart: true
                     }
                 }
-            }
-        }
-
-        Canvas {
-            id: batteryPercent
-
-            anchors.fill: parent
-            antialiasing: true
-            smooth: true
-            renderStrategy: Canvas.Cooperative
-
-            onPaint: {
-                var ctx = getContext("2d")
-                prepareContext(ctx)
-                ctx.fillStyle = segmentedArc.colorArray[segmentedArc.chargecolor]
-                ctx.font = "45 " + height * .08 + "px Roboto"
-                ctx.fillText(batteryChargePercentage.percent + "%", width * .5, height * .77);
             }
         }
     }
@@ -268,7 +256,7 @@ Item {
         amPmCanvas.am = am
         amPmCanvas.requestPaint()
 
-        burnInProtectionManager.widthOffset = Qt.binding(function() { return width * (nightstandMode.active ? .16 : .32)})
-        burnInProtectionManager.heightOffset = Qt.binding(function() { return height * (nightstandMode.active ? .16 : .7)})
+        burnInProtectionManager.widthOffset = Qt.binding(function() { return width * (nightstandMode.active ? .1 : .32)})
+        burnInProtectionManager.heightOffset = Qt.binding(function() { return height * (nightstandMode.active ? .1 : .7)})
     }
 }
