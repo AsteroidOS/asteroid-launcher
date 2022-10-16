@@ -34,10 +34,7 @@ import Nemo.Mce 1.0
 Item {
     id: rootitem
 
-    anchors.centerIn: parent
-
-    width: parent.width * (nightstandMode.active ? .9 : 1)
-    height: width
+    anchors.fill: parent
 
     property real radian: .01745
 
@@ -462,7 +459,7 @@ Item {
          minuteHand.requestPaint()
          hourHand.hour = hour
          hourHand.requestPaint()
-         burnInProtectionManager.widthOffset = Qt.binding(function() { return width * (nightstandMode.active ? .14 : .07)})
-         burnInProtectionManager.heightOffset = Qt.binding(function() { return height * (nightstandMode.active ? .14 : .07)})
+         burnInProtectionManager.widthOffset = Qt.binding(function() { return width * (nightstandMode.active ? .12 : .07)})
+         burnInProtectionManager.heightOffset = Qt.binding(function() { return height * (nightstandMode.active ? .12 : .07)})
      }
 }
