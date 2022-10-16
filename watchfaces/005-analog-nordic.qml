@@ -38,23 +38,22 @@ Item {
 
     anchors.centerIn: parent
 
-    width: parent.width * (dockMode.active ? .9 : 1)
+    width: parent.width // * (nightstandMode.active ? .9 : 1)
     height: width
 
     Item {
-        id: dockMode
+        id: nightstandMode
 
-        readonly property bool active: mceCableState.connected //ready || (nightstandEnabled.value && holdoff)
-        //readonly property bool ready: nightstandEnabled.value && mceCableState.connected
+        readonly property bool active: nightstand
         property int batteryPercentChanged: batteryChargePercentage.percent
 
         anchors.fill: parent
-        visible: dockMode.active
+        visible: nightstandMode.active
         layer {
             enabled: true
             samples: 4
             smooth: true
-            textureSize: Qt.size(dockMode.width * 2, dockMode.height * 2)
+            textureSize: Qt.size(nightstandMode.width * 2, nightstandMode.height * 2)
         }
 
         Shape {
@@ -100,7 +99,7 @@ Item {
                 centerIn: parent
                 verticalCenterOffset: -parent.width * .16
             }
-            visible: dockMode.active
+            visible: nightstandMode.active
             width: parent.width * .13
             height: parent.height * .13
         }
@@ -123,7 +122,7 @@ Item {
                 family: "Noto Sans"
                 styleName: "ExtraCondensed"
             }
-            visible: dockMode.active
+            visible: nightstandMode.active
             color: chargeArc.colorArray[chargeArc.chargecolor]
             style: Text.Outline; styleColor: "#80000000"
             text: batteryChargePercentage.percent
@@ -132,14 +131,6 @@ Item {
 
     MceBatteryLevel {
         id: batteryChargePercentage
-    }
-
-    MceBatteryState {
-        id: batteryChargeState
-    }
-
-    MceCableState {
-        id: mceCableState
     }
 
     Canvas {
@@ -368,7 +359,7 @@ Item {
         anchors.fill: parent
         smooth: true
         renderStrategy: Canvas.Cooperative
-        visible: !displayAmbient && !dockMode.active
+        visible: !displayAmbient && !nightstandMode.active
 
         onPaint: {
             var ctx = getContext("2d")
@@ -446,7 +437,7 @@ Item {
         minuteHand.requestPaint()
         hourHand.hour = hour
         hourHand.requestPaint()
-        burnInProtectionManager.widthOffset = Qt.binding(function() { return width * (dockMode.active ? .11 : .06)})
-        burnInProtectionManager.heightOffset = Qt.binding(function() { return height * (dockMode.active ? .11 : .06)})
+        burnInProtectionManager.widthOffset = Qt.binding(function() { return width * (nightstandMode.active ? .11 : .06)})
+        burnInProtectionManager.heightOffset = Qt.binding(function() { return height * (nightstandMode.active ? .11 : .06)})
     }
 }
