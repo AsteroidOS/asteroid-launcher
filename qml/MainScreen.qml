@@ -311,10 +311,26 @@ Item {
     Component { id: topPanel;    QuickSettings      { } }
     Component { id: leftPanel;   NotificationsPanel { panelsGrid: grid } }
     Component { id: rightPanel;  Today              { } }
-    Component { 
-        id: centerPanel; 
-        Loader { 
-            source: { return nightstandMode.active ? watchfaceNightstandSource.value : watchFaceSource.value }
+    Component {
+        id: centerPanel;
+        Item {
+            property bool nightstandWatchfaceActive: nightstandMode.active && watchfaceNightstandSource.value != watchFaceSource.value
+            Loader {
+                id: nightstandWatchfaceLoader
+                opacity: nightstandWatchfaceActive ? 1.0 : 0.0
+                visible: opacity
+                anchors.fill: parent
+                source: watchfaceNightstandSource.value
+                Behavior on opacity { NumberAnimation { duration: 200; easing.type: Easing.InCirc } }
+            }
+            Loader {
+                id: watchfaceLoader
+                opacity: !nightstandWatchfaceActive ? 1.0 : 0.0
+                visible: opacity
+                Behavior on opacity { NumberAnimation { duration: 200; easing.type: Easing.InCirc} }
+                anchors.fill: parent
+                source: watchFaceSource.value
+            }
         }
     }
     Component {
