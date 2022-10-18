@@ -71,7 +71,7 @@ FlatMesh {
         Component.onCompleted: {
             var i = langSettings.currentIndex;
             if(i != -1)
-                langLV.currentIndex = i
+                langLV.positionViewAtIndex(i, ListView.SnapPosition)
         }
     }
 
