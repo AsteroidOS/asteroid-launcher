@@ -50,7 +50,7 @@ Item {
         }
         source: imgPath +
                 wallClock.time.toLocaleString(Qt.locale(), "hh am").slice(0, 2) +
-                (dockMode.active || displayAmbient ? "-bw.svg" : ".svg")
+                (nightstandMode.active || displayAmbient ? "-bw.svg" : ".svg")
         sourceSize.width: parent.width
         sourceSize.height: parent.height
         width: parent.width
@@ -85,7 +85,7 @@ Item {
             family: "Source Sans Pro"
             styleName: "Light"
         }
-        color: dockMode.active || displayAmbient ? "#000" : "#fff"
+        color: nightstandMode.active || displayAmbient ? "#000" : "#fff"
         text: wallClock.time.toLocaleString(Qt.locale(), "mm")
 
         Behavior on text {
@@ -100,19 +100,18 @@ Item {
     }
 
     Item {
-        id: dockMode
+        id: nightstandMode
 
-        readonly property bool active: mceCableState.connected //ready || (nightstandEnabled.value && holdoff)
-        //readonly property bool ready: nightstandEnabled.value && mceCableState.connected
+        readonly property bool active: nightstand
         property int batteryPercentChanged: batteryChargePercentage.percent
 
         anchors.fill: parent
-        visible: dockMode.active
+        visible: nightstandMode.active
         layer {
             enabled: true
             samples: 4
             smooth: true
-            textureSize: Qt.size(dockMode.width * 2, dockMode.height * 2)
+            textureSize: Qt.size(nightstandMode.width * 2, nightstandMode.height * 2)
         }
 
         Shape {
@@ -120,8 +119,8 @@ Item {
 
             property real angle: batteryChargePercentage.percent * 360 / 100
             // radius of arc is scalefactor * height or width
-            property real arcStrokeWidth: .05
-            property real scalefactor: .5 - (arcStrokeWidth / 2)
+            property real arcStrokeWidth: .016
+            property real scalefactor: .45 - (arcStrokeWidth / 2)
             property var chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
             readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
@@ -159,11 +158,11 @@ Item {
             }
 
             font {
-                pixelSize: parent.width * .22
+                pixelSize: parent.width * .13
                 family: "Source Sans Pro"
                 styleName: "Light"
             }
-            visible: dockMode.active
+            visible: nightstandMode.active
             color: chargeArc.colorArray[chargeArc.chargecolor]
             text: batteryChargePercentage.percent
         }
@@ -182,9 +181,9 @@ Item {
     }
 
     Component.onCompleted: {
-        burnInProtectionManager.leftOffset = Qt.binding(function() { return width * .4})
+        burnInProtectionManager.leftOffset = Qt.binding(function() { return width * nightstandMode.active ? .05 : .4})
         burnInProtectionManager.rightOffset = Qt.binding(function() { return width * .05})
-        burnInProtectionManager.topOffset = Qt.binding(function() { return height * .4})
+        burnInProtectionManager.topOffset = Qt.binding(function() { return height * nightstandMode.active ? .05 : .4})
         burnInProtectionManager.bottomOffset = Qt.binding(function() { return height * .05})
     }
 }
