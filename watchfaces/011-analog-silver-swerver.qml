@@ -53,18 +53,18 @@ Item {
         anchors.fill: parent
 
         Item {
-            id: dockMode
+            id: nightstandMode
 
             readonly property bool active: nightstand
             property int batteryPercentChanged: batteryChargePercentage.percent
 
             anchors.fill: parent
-            visible: dockMode.active
+            visible: nightstandMode.active
             layer {
                 enabled: true
                 samples: 4
                 smooth: true
-                textureSize: Qt.size(dockMode.width * 2, dockMode.height * 2)
+                textureSize: Qt.size(nightstandMode.width * 2, nightstandMode.height * 2)
             }
 
             Shape {
@@ -112,7 +112,7 @@ Item {
                     family: "Noto Sans"
                     styleName: "Condensed Light"
                 }
-                visible: dockMode.active
+                visible: nightstandMode.active
                 color: chargeArc.colorArray[chargeArc.chargecolor]
                 style: Text.Outline; styleColor: "#80000000"
                 text: batteryChargePercentage.percent
@@ -174,7 +174,7 @@ Item {
             }
             width: parent.width * .3
             height: width
-            visible: !dockMode.active
+            visible: !nightstandMode.active
 
 
             onDayChanged: dayArc.requestPaint()
@@ -284,7 +284,7 @@ Item {
             }
             width: parent.width * .3
             height: width
-            visible: !dockMode.active
+            visible: !nightstandMode.active
 
             Canvas {
                 id: monthArc
@@ -389,7 +389,7 @@ Item {
             }
             width: parent.width * .275
             height: width
-            visible: !dockMode.active
+            visible: !nightstandMode.active
 
             Canvas {
                 id: batteryArc
