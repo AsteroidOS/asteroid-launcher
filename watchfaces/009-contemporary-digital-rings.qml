@@ -65,7 +65,7 @@ Item {
         anchors.fill: parent
         smooth: true
         renderStrategy: Canvas.Cooperative
-        visible: !displayAmbient && !dockMode.active
+        visible: !displayAmbient && !nightstandMode.active
         onPaint: {
             var ctx = getContext("2d")
             var rot = (wallClock.time.getSeconds() - 15) * 6
@@ -87,7 +87,7 @@ Item {
         anchors.fill: parent
         smooth: true
         renderStrategy: Canvas.Cooperative
-        visible: !displayAmbient && !dockMode.active
+        visible: !displayAmbient && !nightstandMode.active
         onPaint: {
             var ctx = getContext("2d")
             var rot = (minute -15 ) * 6
@@ -108,7 +108,7 @@ Item {
         anchors.fill: parent
         smooth: true
         renderStrategy: Canvas.Cooperative
-        visible: !displayAmbient && !dockMode.active
+        visible: !displayAmbient && !nightstandMode.active
         onPaint: {
             var ctx = getContext("2d")
             var rot = .5 * (60 * (hour - 3) + wallClock.time.getMinutes())
@@ -255,19 +255,18 @@ Item {
     }
 
     Item {
-        id: dockMode
+        id: nightstandMode
 
-        readonly property bool active: mceCableState.connected //ready || (nightstandEnabled.value && holdoff)
-        //readonly property bool ready: nightstandEnabled.value && mceCableState.connected
+        readonly property bool active: nightstand
         property int batteryPercentChanged: batteryChargePercentage.percent
 
         anchors.fill: parent
-        visible: dockMode.active
+        visible: nightstandMode.active
         layer {
             enabled: true
             samples: 4
             smooth: true
-            textureSize: Qt.size(dockMode.width * 2, dockMode.height * 2)
+            textureSize: Qt.size(nightstandMode.width * 2, nightstandMode.height * 2)
         }
 
         Shape {
@@ -275,7 +274,7 @@ Item {
 
             property real angle: batteryChargePercentage.percent * 360 / 100
             // radius of arc is scalefactor * height or width
-            property real arcStrokeWidth: .04
+            property real arcStrokeWidth: .03
             property real scalefactor: .45 - (arcStrokeWidth / 2)
             property var chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
             readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
@@ -313,7 +312,7 @@ Item {
                 centerIn: parent
                 verticalCenterOffset: -parent.width * .316
             }
-            visible: dockMode.active
+            visible: nightstandMode.active
             width: parent.width * .14
             height: parent.height * .14
         }
@@ -337,7 +336,7 @@ Item {
                 family: "Titillium"
                 styleName: "ExtraCondensed"
             }
-            visible: dockMode.active
+            visible: nightstandMode.active
             color: chargeArc.colorArray[chargeArc.chargecolor]
             style: Text.Outline; styleColor: "#80000000"
             text: batteryChargePercentage.percent + "%"
@@ -346,14 +345,6 @@ Item {
 
     MceBatteryLevel {
         id: batteryChargePercentage
-    }
-
-    MceBatteryState {
-        id: batteryChargeState
-    }
-
-    MceCableState {
-        id: mceCableState
     }
 
     Connections {
@@ -387,7 +378,7 @@ Item {
         hourCanvas.hour = hour
         hourCanvas.requestPaint()
 
-        burnInProtectionManager.widthOffset = Qt.binding(function() { return width*.3})
-        burnInProtectionManager.heightOffset = Qt.binding(function() { return height*.3})
+        burnInProtectionManager.widthOffset = Qt.binding(function() { return width * nightstandMode.active ? .08 : .3})
+        burnInProtectionManager.heightOffset = Qt.binding(function() { return height * nightstandMode.active ? .08 : .3})
     }
 }
