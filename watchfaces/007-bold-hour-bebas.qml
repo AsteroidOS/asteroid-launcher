@@ -39,7 +39,7 @@ Item {
         id: scaleContent
 
         anchors.centerIn: parent
-        width: parent.width * (dockMode.active ? .8 : 1)
+        width: parent.width * (nightstandMode.active ? .8 : 1)
         height: width
 
         Canvas {
@@ -50,7 +50,7 @@ Item {
 
             anchors.fill: parent
             renderStrategy: Canvas.Cooperative
-            visible: !displayAmbient && !dockMode.active
+            visible: !displayAmbient && !nightstandMode.active
             onPaint: {
                 var ctx = getContext("2d")
                 var rot = (wallClock.time.getMinutes() -15 ) * 6
@@ -146,19 +146,18 @@ Item {
     }
 
     Item {
-        id: dockMode
+        id: nightstandMode
 
-        readonly property bool active: mceCableState.connected //ready || (nightstandEnabled.value && holdoff)
-        //readonly property bool ready: nightstandEnabled.value && mceCableState.connected
+        readonly property bool active: nightstand
         property int batteryPercentChanged: batteryChargePercentage.percent
 
         anchors.fill: parent
-        visible: dockMode.active
+        visible: nightstandMode.active
         layer {
             enabled: true
             samples: 4
             smooth: true
-            textureSize: Qt.size(dockMode.width * 2, dockMode.height * 2)
+            textureSize: Qt.size(nightstandMode.width * 2, nightstandMode.height * 2)
         }
 
         Shape {
