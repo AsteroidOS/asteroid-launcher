@@ -42,7 +42,7 @@ Item {
 
         width: parent.width
         height: width
-        color: displayAmbient ? Qt.rgba(1, 1, 1, .7) : Qt.rgba(0, 0, 0, .8)
+        color: displayAmbient ? Qt.rgba(1, 1, 1, .8) : Qt.rgba(0, 0, 0, .8)
         visible: true
         opacity: .0
         layer.enabled: true
@@ -87,7 +87,7 @@ Item {
                 family: "League Spartan"
             }
             color: Qt.rgba(1, 1, 1, 1)
-            y: parent.height/1.3-height/2+voffset
+            y: parent.height / 1.3 - height / 2 + voffset
             x: parent.width*.25
             text: wallClock.time.toLocaleString(Qt.locale(), "<b>mm</b>").replace(/1/g,"&nbsp;1")
         }
@@ -191,19 +191,19 @@ Item {
     }
 
     Item {
-        id: dockMode
+        id: nightstandMode
 
         readonly property bool active: mceCableState.connected //ready || (nightstandEnabled.value && holdoff)
         //readonly property bool ready: nightstandEnabled.value && mceCableState.connected
         property int batteryPercentChanged: batteryChargePercentage.percent
 
         anchors.fill: parent
-        visible: dockMode.active
+        visible: nightstandMode.active
         layer {
             enabled: true
             samples: 4
             smooth: true
-            textureSize: Qt.size(dockMode.width * 2, dockMode.height * 2)
+            textureSize: Qt.size(nightstandMode.width * 2, nightstandMode.height * 2)
         }
 
         Shape {
@@ -244,13 +244,5 @@ Item {
 
     MceBatteryLevel {
         id: batteryChargePercentage
-    }
-
-    MceBatteryState {
-        id: batteryChargeState
-    }
-
-    MceCableState {
-        id: mceCableState
     }
 }
