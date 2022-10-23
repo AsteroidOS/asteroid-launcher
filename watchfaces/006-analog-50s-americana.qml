@@ -56,19 +56,18 @@ Item {
     }
 
     Item {
-        id: dockMode
+        id: nightstandMode
 
-        readonly property bool active: mceCableState.connected //ready || (nightstandEnabled.value && holdoff)
-        //readonly property bool ready: nightstandEnabled.value && mceCableState.connected
+        readonly property bool active: nightstand
         property int batteryPercentChanged: batteryChargePercentage.percent
 
         anchors.fill: parent
-        visible: dockMode.active
+        visible: nightstandMode.active
         layer {
             enabled: true
             samples: 4
             smooth: true
-            textureSize: Qt.size(dockMode.width * 2, dockMode.height * 2)
+            textureSize: Qt.size(nightstandMode.width * 2, nightstandMode.height * 2)
         }
 
         Shape {
@@ -117,7 +116,7 @@ Item {
                 pixelSize: parent.width * .14
                 family: "Fyodor"
             }
-            visible: dockMode.active
+            visible: nightstandMode.active
             color: chargeArc.colorArray[chargeArc.chargecolor]
             style: Text.Outline; styleColor: "#80000000"
             text: batteryChargePercentage.percent
@@ -126,14 +125,6 @@ Item {
 
     MceBatteryLevel {
         id: batteryChargePercentage
-    }
-
-    MceBatteryState {
-        id: batteryChargeState
-    }
-
-    MceCableState {
-        id: mceCableState
     }
 
     Canvas {
@@ -390,7 +381,7 @@ Item {
         secondHand.requestPaint()
         minuteHand.minute = minute
         minuteHand.requestPaint()
-        hourHand.hour = hour
+        hourHand.hour = hournightstandMode
         hourHand.requestPaint()
      }
 }
