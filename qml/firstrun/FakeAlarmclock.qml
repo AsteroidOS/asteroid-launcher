@@ -36,8 +36,8 @@ import Nemo.Time 1.0
 import Nemo.Configuration 1.0
 
 FlatMesh {
-    centerColor: "#dfb103"
-    outerColor: "#be4e0e"
+    centerColor: "#CC9800"
+    outerColor: "#0C0500"
     animated: false /* For some reason we can not have two animated flatmeshes in the same process ? */
 
     property alias contentX: contentArea.contentX
