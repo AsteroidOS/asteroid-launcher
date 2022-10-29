@@ -40,14 +40,15 @@ Item {
     Rectangle {
         id: layer2mask
 
-        width: parent.width
+        anchors.centerIn: parent
+        width: parent.width * (nightstand ? .86 : 1)
         height: width
         color: displayAmbient ? Qt.rgba(1, 1, 1, .8) : Qt.rgba(0, 0, 0, .8)
         visible: true
         opacity: .0
         layer.enabled: true
         layer.smooth: true
-        radius: DeviceInfo.hasRoundScreen ? width : 0
+        radius: DeviceInfo.hasRoundScreen || nightstand ? width : 0
     }
 
     Rectangle {
@@ -210,8 +211,8 @@ Item {
 
             property real angle: batteryChargePercentage.percent * 360 / 100
             // radius of arc is scalefactor * height or width
-            property real arcStrokeWidth: .03
-            property real scalefactor: .5 - (arcStrokeWidth / 2)
+            property real arcStrokeWidth: .022
+            property real scalefactor: .45 - (arcStrokeWidth / 2)
             property var chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
             readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
