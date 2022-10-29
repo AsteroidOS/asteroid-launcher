@@ -137,8 +137,6 @@ Item {
             }
             color: "white"
             opacity: 1.00
-            //smooth: true
-            //antialiasing: true
             x: centerX + Math.cos(rotM * 2 * Math.PI) * parent.width * .364
             y: centerY+Math.sin(rotM * 2 * Math.PI) * parent.width * .364
             text: wallClock.time.toLocaleString(Qt.locale(), "mm")
@@ -171,8 +169,6 @@ Item {
             readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
             anchors.fill: parent
-            //smooth: true
-            //antialiasing: true
 
             ShapePath {
                 fillColor: "transparent"
@@ -198,14 +194,6 @@ Item {
 
     MceBatteryLevel {
         id: batteryChargePercentage
-    }
-
-    MceBatteryState {
-        id: batteryChargeState
-    }
-
-    MceCableState {
-        id: mceCableState
     }
 
     Connections {
