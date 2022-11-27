@@ -146,7 +146,6 @@ Item {
         id: nightstandMode
 
         readonly property bool active: nightstand
-        property int batteryPercentChanged: batteryChargePercentage.percent
 
         anchors.fill: parent
 
@@ -157,10 +156,6 @@ Item {
             textureSize: Qt.size(nightstandMode.width * 2, nightstandMode.height * 2)
         }
         visible: nightstandMode.active
-
-        onBatteryPercentChangedChanged: {
-            batteryPercent.requestPaint()
-        }
 
         Repeater {
             id: segmentedArc
