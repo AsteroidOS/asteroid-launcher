@@ -165,8 +165,8 @@ Item {
         updateFrequency: WallClock.Second
     }
 
-    MceCableState {
-        id: mceCableState
+    MceChargerType {
+        id: mceChargerType
     }
 
     ConfigurationValue {
@@ -261,7 +261,7 @@ Item {
     Item {
         id: nightstandMode
         readonly property bool active: ready || nightstandDelayTimer.running
-        readonly property bool ready: nightstandEnabled.value && mceCableState.connected
+        readonly property bool ready: nightstandEnabled.value && mceChargerType.type != MceChargerType.None
         property int oldBrightness: 100
         onReadyChanged: {
             if (ready) {
