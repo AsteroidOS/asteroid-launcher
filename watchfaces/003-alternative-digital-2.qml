@@ -116,6 +116,7 @@ Item {
             renderStrategy: Canvas.Cooperative
             visible: !nightstandMode.active
 
+            property int month: 0
             property int date: 0
 
             onPaint: {
@@ -271,6 +272,7 @@ Item {
         var hour = wallClock.time.getHours()
         var minute = wallClock.time.getMinutes()
         var second = wallClock.time.getSeconds()
+        var month = wallClock.time.getMonth()
         var date = wallClock.time.getDate()
         var am = hour < 12
         if(use12H.value) {
@@ -284,8 +286,9 @@ Item {
         secondCanvas.second = second
         secondCanvas.requestPaint()
         dateCanvas.date = date
+        dateCanvas.month = month
         dateCanvas.requestPaint()
-        monthCanvas.month = date
+        monthCanvas.month = month
         monthCanvas.requestPaint()
         amPmCanvas.am = am
         amPmCanvas.requestPaint()
@@ -299,6 +302,7 @@ Item {
             var hour = wallClock.time.getHours()
             var minute = wallClock.time.getMinutes()
             var second = wallClock.time.getSeconds()
+            var month = wallClock.time.getMonth()
             var date = wallClock.time.getDate()
             var am = hour < 12
             if(use12H.value) {
@@ -314,11 +318,12 @@ Item {
             } if(secondCanvas.second !== second) {
                 secondCanvas.second = second
                 secondCanvas.requestPaint()
-            } if(dateCanvas.date !== date) {
+            } if(dateCanvas.date !== date || dateCanvas.month !== month) {
+                dateCanvas.month = month
                 dateCanvas.date = date
                 dateCanvas.requestPaint()
-            } if(monthCanvas.month !== date) {
-                monthCanvas.month = date
+            } if(monthCanvas.month !== month) {
+                monthCanvas.month = month
                 monthCanvas.requestPaint()
             } if(amPmCanvas.am != am) {
                 amPmCanvas.am = am
