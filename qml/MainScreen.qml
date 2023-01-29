@@ -258,6 +258,12 @@ Item {
         defaultValue: false
     }
 
+    ConfigurationValue {
+        id: nightstandUseCustomWatchface
+        key: "/desktop/asteroid/nightstand/use-custom-watchface"
+        defaultValue: false
+    }
+
     Item {
         id: nightstandMode
         readonly property bool active: ready || nightstandDelayTimer.running
@@ -314,7 +320,7 @@ Item {
     Component {
         id: centerPanel;
         Item {
-            property bool nightstandWatchfaceActive: nightstandMode.active && watchfaceNightstandSource.value != watchFaceSource.value
+            property bool nightstandWatchfaceActive: nightstandMode.active && nightstandUseCustomWatchface.value && watchfaceNightstandSource.value != watchFaceSource.value
             Loader {
                 id: nightstandWatchfaceLoader
                 opacity: nightstandWatchfaceActive ? 1.0 : 0.0
