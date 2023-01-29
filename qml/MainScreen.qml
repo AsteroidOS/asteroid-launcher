@@ -367,7 +367,7 @@ Item {
             bgOuterColor = Qt.binding(function() { return defaultOuterColor })
             wallpaperDarkener.opacity = Math.abs(grid.normalizedVerOffset)*0.4
         } else {
-            if (normalizedVerOffset > 0) {
+            if (grid.normalizedVerOffset > 0) {
                 bgCenterColor = Qt.binding(function() { return launcherCenterColor })
                 bgOuterColor = Qt.binding(function() { return launcherOuterColor })
             }
