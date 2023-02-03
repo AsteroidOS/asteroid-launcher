@@ -127,6 +127,7 @@ Item {
             id: dateCanvas
 
             property int date: 0
+            property int month: 0
 
             anchors.fill: parent
             antialiasing: true
@@ -146,7 +147,6 @@ Item {
         id: nightstandMode
 
         readonly property bool active: nightstand
-        property int batteryPercentChanged: batteryChargePercentage.percent
 
         anchors.fill: parent
 
@@ -157,10 +157,6 @@ Item {
             textureSize: Qt.size(nightstandMode.width * 2, nightstandMode.height * 2)
         }
         visible: nightstandMode.active
-
-        onBatteryPercentChangedChanged: {
-            batteryPercent.requestPaint()
-        }
 
         Repeater {
             id: segmentedArc
@@ -216,6 +212,7 @@ Item {
         function onTimeChanged() {
             var hour = wallClock.time.getHours()
             var minute = wallClock.time.getMinutes()
+            var month = wallClock.time.getMonth()
             var date = wallClock.time.getDate()
             var am = hour < 12
             if(use12H.value) {
@@ -228,8 +225,9 @@ Item {
             } if(minuteCanvas.minute !== minute) {
                 minuteCanvas.minute = minute
                 minuteCanvas.requestPaint()
-            } if(dateCanvas.date !== date) {
+            } if(dateCanvas.date !== date || dateCanvas.month !== month) {
                 dateCanvas.date = date
+                dateCanvas.month = month
                 dateCanvas.requestPaint()
             } if(amPmCanvas.am != am) {
                 amPmCanvas.am = am
@@ -241,6 +239,7 @@ Item {
     Component.onCompleted: {
         var hour = wallClock.time.getHours()
         var minute = wallClock.time.getMinutes()
+        var month = wallClock.time.getMonth()
         var date = wallClock.time.getDate()
         var am = hour < 12
         if(use12H.value) {
@@ -251,6 +250,7 @@ Item {
         hourCanvas.requestPaint()
         minuteCanvas.minute = minute
         minuteCanvas.requestPaint()
+        dateCanvas.month = month
         dateCanvas.date = date
         dateCanvas.requestPaint()
         amPmCanvas.am = am
