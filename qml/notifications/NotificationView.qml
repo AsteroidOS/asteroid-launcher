@@ -29,6 +29,7 @@
 
 import QtQuick 2.9
 import org.asteroid.controls 1.0
+import QtMultimedia 5.4
 
 MouseArea {
     id: view
@@ -38,11 +39,17 @@ MouseArea {
     property bool forbidTop: column.y < 0
     property real prevY: 0
 
+    SoundEffect {
+        id: notifSound
+        source: "/usr/share/sounds/notification.wav"
+    }
+
     onNotificationChanged: {
         if(notification !== undefined && notification !== null) {
             appName.text = notification.appName
             summary.text = notification.summary
             body.text = notification.body
+            notifSound.play()
             updateTimestamp()
         }
     }
