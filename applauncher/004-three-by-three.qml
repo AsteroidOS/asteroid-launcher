@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2022 Timo Könnecke <github.com/eLtMosen>
+ * Copyright (C) 2023 Ed Beroset <beroset@ieee.org>
+ *               2022 Timo Könnecke <github.com/eLtMosen>
  *               2021 Darrel Griët <dgriet@gmail.com>
  *               2015 Florent Revest <revestflo@gmail.com>
  *               2014 Aleksi Suomalainen <suomalainen.aleksi@gmail.com>
@@ -35,6 +36,7 @@
 import QtQuick 2.15
 import QtGraphicalEffects 1.12
 import org.asteroid.controls 1.0
+import org.asteroid.utils 1.0 as AsteroidUtils
 
 Item {
     id: root
@@ -45,68 +47,28 @@ Item {
     property bool dragStop: false
     property string appTitle: ""
     property real clickY: 0
+    property int numColumns: 3
 
-    GridView {
-        id: appsView
+    // these are from the calling code
+    /*
+    property bool fakePressed:     false
+    property bool toTopAllowed:    true
+    property bool toBottomAllowed: true
+    property bool toLeftAllowed:   true
+    property bool toRightAllowed:  true
+    property bool forbidTop:       false
+    property bool forbidBottom:    false
+    property bool forbidLeft:      false
+    property bool forbidRight:     false
+    */
 
-        flow: GridView.FlowLeftToRight
-        snapMode: GridView.SnapToRow
-        anchors {
-            fill: parent
-            leftMargin: parent.width * .026
-            rightMargin: parent.width * .026
-        }
-        clip: true
-        cellHeight: appsView.height / 3.15
-        cellWidth: appsView.width / 3
-        preferredHighlightBegin: height / 3.15 - currentItem.height / 3.15
-        preferredHighlightEnd: height / 3.15 + currentItem.height / 3.15
-        highlightRangeMode: ListView.StrictlyEnforceRange
-        contentY: -(height / 3.15 - (height / 6.3))
+    Component {
+        id: gridDelegate
 
-        property int currentPos: 0
-
-        onCurrentPosChanged: {
-            rightIndicator.animate()
-            leftIndicator.animate()
-            topIndicator.animate()
-            bottomIndicator.animate()
-        }
-
-        onDragStarted: {
-            dragStop = true
-        }
-
-        Connections {
-            target: grid
-            function onCurrentVerticalPosChanged() {
-                // Move app view to beginning when the watchface is visible.
-                if (grid.currentVerticalPos === 0) {
-                    appsView.highlightMoveDuration = 0
-                    appsView.currentIndex = 0
-                    dragStop = true
-                } else if (grid.currentVerticalPos === 1) {
-                    appsView.highlightMoveDuration = 1500
-                    forbidTop = false
-                    grid.changeAllowedDirections()
-                }
-            }
-        }
-
-        onAtYBeginningChanged: {
-            // Make sure that the grid doesn't move when the app view is visible.
-            if ((grid.currentHorizontalPos === 0) && (grid.currentVerticalPos === 1)) {
-                forbidTop = !atYBeginning
-                grid.changeAllowedDirections()
-            }
-        }
-
-        model: launcherModel
-
-        delegate: MouseArea {
+        MouseArea {
             id: launcherItem
 
-            width: appsView.width / 3
+            width: appsView.width / numColumns
             height: width
             enabled: !appsView.dragging
 
@@ -153,7 +115,7 @@ Item {
             Connections {
                 target: appLauncher
                 function onFakePressedChanged() {
-                    appTitle = model.object.title                   
+                    appTitle = model.object.title
                 }
             }
 
@@ -204,6 +166,74 @@ Item {
                 }
             }
         }
+    }
+
+    Component {
+        id: spacer
+        Item {
+            height: AsteroidUtils.DeviceInfo.hasRoundScreen ? root.height / numColumns / 2 : 0
+            width: height
+        }
+    }
+
+    GridView {
+        id: appsView
+
+        flow: GridView.FlowLeftToRight
+        snapMode: GridView.SnapToRow
+        anchors {
+            fill: parent
+            leftMargin: parent.width * .026
+            rightMargin: parent.width * .026
+        }
+        clip: true
+        cellHeight: height / numColumns
+        cellWidth: width / numColumns
+        contentY: -height / (2*numColumns)
+
+        header: spacer
+        footer: spacer
+
+        property int currentPos: 0
+
+        onCurrentPosChanged: {
+            rightIndicator.animate()
+            leftIndicator.animate()
+            topIndicator.animate()
+            bottomIndicator.animate()
+        }
+
+        onDragStarted: {
+            dragStop = true
+        }
+
+        Connections {
+            target: grid
+            function onCurrentVerticalPosChanged() {
+                // Move app view to beginning when the watchface is visible.
+                if (grid.currentVerticalPos === 0) {
+                    appsView.highlightMoveDuration = 0
+                    appsView.currentIndex = 0
+                    dragStop = true
+                } else if (grid.currentVerticalPos === 1) {
+                    appsView.highlightMoveDuration = 1500
+                    forbidTop = false
+                    grid.changeAllowedDirections()
+                }
+            }
+        }
+
+        onAtYBeginningChanged: {
+            // Make sure that the grid doesn't move when the app view is visible.
+            if ((grid.currentHorizontalPos === 0) && (grid.currentVerticalPos === 1)) {
+                forbidTop = !atYBeginning
+                grid.changeAllowedDirections()
+            }
+        }
+
+        model: launcherModel
+
+        delegate: gridDelegate
 
         Component.onCompleted: {
             launcherColorOverride = true
