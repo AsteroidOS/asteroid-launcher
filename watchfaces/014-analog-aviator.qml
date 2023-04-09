@@ -179,11 +179,11 @@ Item {
         Text {
             z: 1
             id: hourNumbers
-            font.pixelSize: parent.height*0.16
-            font.family: "Arkhip"
+            font.pixelSize: parent.height*0.21
+            font.family: "Signika"
             property var rotM: ((index * 15 ) - 15)/60
             property var centerX: parent.width/2-width/2
-            property var centerY: parent.height/2-height/2.6
+            property var centerY: parent.height/2-height/2.0
             x: centerX+Math.cos(rotM * 2 * Math.PI)*parent.width*0.35
             y: centerY+Math.sin(rotM * 2 * Math.PI)*parent.width*0.35
             color: "#ccffffff"
