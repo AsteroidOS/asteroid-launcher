@@ -1,7 +1,8 @@
 /*
- * Copyright (C) 2022 - Timo Könnecke <github.com/eLtMosen>
+ * Copyright (C) 2023 - Timo Könnecke <github.com/eLtMosen>
  *               2022 - Darrel Griët <dgriet@gmail.com>
  *               2022 - Ed Beroset <github.com/beroset>
+ *               2021 - Oliver Geneser <olivergeneser@gmail.com>
  *               2016 - Sylvia van Os <iamsylvie@openmailbox.org>
  *               2015 - Florent Revest <revestflo@gmail.com>
  *               2014 - Aleksi Suomalainen <suomalainen.aleksi@gmail.com>
@@ -44,17 +45,6 @@ Item {
 
     anchors.fill: parent
 
-    function prepareContext(ctx) {
-        ctx.reset()
-        ctx.fillStyle = "white"
-        ctx.textAlign = "center"
-        ctx.textBaseline = 'middle';
-        ctx.shadowColor = "black"
-        ctx.shadowOffsetX = 0
-        ctx.shadowOffsetY = 0
-        ctx.shadowBlur = parent.height * .0125
-    }
-
     Item {
         id: watchfaceRoot
 
@@ -65,7 +55,7 @@ Item {
 
         Text {
             function generateTimeEn(time) {
-                var minutesList = ["'o clock", "<b>five</b><br>past", "<b>ten</b><br>past", "<b>quarter</b><br>past", "<b>twenty</b>", "twenty<br>five", "<b>thirty</b>", "thirty<br>five", "<b>forty</b>", "<b>quarter</b><br>to", "<b>ten</b><br>to", "<b>five</b><br>to", "'o clock"]
+                var minutesList = ["'o clock", "five<br>past", "ten<br>past", "quarter<br>past", "twenty", "twenty<br>five", "thirty", "thirty<br>five", "forty", "quarter<br>to", "ten to", "five to", "'o clock"]
                 var hoursList = ["<b>twelve</b>", "<b>one</b>", "<b>two</b>", "<b>three</b>", "<b>four</b>", "<b>five</b>", "<b>six</b>", "<b>seven</b>", "<b>eight</b>", "<b>nine</b>", "<b>ten</b>", "<b>eleven</b>"]
                 var minutesFirst = [false, true, true, true, false, false, false, false, false, true, true, true, false]
                 var nextHour = [false, false, false, false, false, false, false, false, false, true, true, true, true]
@@ -73,21 +63,19 @@ Item {
                 var minutes = Math.round(time.getMinutes() / 5)
                 var hours = (time.getHours() + (nextHour[minutes] ? 1 : 0)) % 12
 
-                var start = "<p style=\"text-align:center\">"
                 var newline = "<br>"
-                var end = "</p>"
 
                 if (minutesFirst[minutes]) {
-                    var generatedString = minutesList[minutes].toUpperCase() + newline + hoursList[hours].toUpperCase()
+                    var generatedString = minutesList[minutes] + newline + hoursList[hours]
                 } else {
-                    var generatedString = hoursList[hours].toUpperCase() + newline + minutesList[minutes].toUpperCase()
+                    var generatedString = hoursList[hours] + newline + minutesList[minutes]
                 }
 
-                return start + generatedString + end
+                return generatedString
             }
 
             function generateTimeEs(time) {
-                var minutesList = ["en punto", "<b>cinco</b>", "<b>diez</b>", "<b>cuarto</b>", "<b>veinte</b>", "veinticinco", "<b>media</b>", "veinticinco", "<b>veinte</b>", "<b>cuarto</b>", "<b>diez</b>", "<b>cinco</b>", "en punto"]
+                var minutesList = ["en punto", "cinco", "diez", "cuarto", "veinte", "veinticinco", "media", "veinticinco", "veinte", "cuarto", "diez", "cinco", "en punto"]
                 var hoursList = ["<b>doce</b>", "<b>una</b>", "<b>dos</b>", "<b>tres</b>", "<b>cuatro</b>", "<b>cinco</b>", "<b>seis</b>", "<b>siete</b>", "<b>ocho</b>", "<b>nueve</b>", "<b>diez</b>", "<b>once</b>"]
                 var hoursListy = ["<b>doce</b> y", "<b>una</b> y", "<b>dos</b> y", "<b>tres</b> y", "<b>cuatro</b> y", "<b>cinco</b> y", "<b>seis</b> y", "<b>siete</b> y", "<b>ocho</b> y", "<b>nueve</b> y", "<b>diez</b> y", "<b>once</b> y"]
                 var hoursListmenos = ["<b>doce</b><br>menos", "<b>una</b><br>menos", "<b>dos</b><br>menos", "<b>tres</b><br>menos", "<b>cuatro</b><br>menos", "<b>cinco</b><br>menos", "<b>seis</b><br>menos", "<b>siete</b><br>menos", "<b>ocho</b><br>menos", "<b>nueve</b><br>menos", "<b>diez</b><br>menos", "<b>once</b><br>menos"]
@@ -96,20 +84,19 @@ Item {
                 var minutes = Math.round(time.getMinutes() / 5)
                 var hours = (time.getHours() + (nextHour[minutes] ? 1 : 0)) % 12
 
-                var start = "<p style=\"text-align:center\">"
                 var newline = "<br>"
-                var end = "</p>"
+
                 if (enPunto[minutes]) {
-                    var generatedString = hoursList[hours].toUpperCase() + newline + minutesList[minutes].toUpperCase()
+                    var generatedString = hoursList[hours] + newline + minutesList[minutes]
                 } else {
                     //also use next hour to decide between y or menos
                     if (nextHour[minutes]) {
-                        var generatedString = hoursListmenos[hours].toUpperCase() + newline + minutesList[minutes].toUpperCase()
+                        var generatedString = hoursListmenos[hours] + newline + minutesList[minutes]
                     } else {
-                        var generatedString = hoursListy[hours].toUpperCase() + newline + minutesList[minutes].toUpperCase()
+                        var generatedString = hoursListy[hours] + newline + minutesList[minutes]
                     }
                 }
-                return start + generatedString + end
+                return generatedString
             }
 
             function generateTimeDe(time) {
@@ -117,36 +104,32 @@ Item {
                 var minutes = Math.round(time.getMinutes() / 5)
                 var hours = (time.getHours() + (nextHour[minutes] ? 1 : 0)) % 12
 
-                var minutesList = ["UHR", "<b>fünf</b><br>nach", "<b>zehn</b><br>nach", "<b>viertel</b><br>nach", "<b>zwanzig</b><br>nach", "<b>fünf</b><br> vor halb", "<b>halb</b>", "<b>fünf</b><br> nach halb", "<b>zwanzig</b><br>vor", "<b>viertel</b><br>vor", "<b>zehn</b><br>vor", "<b>fünf</b><br>vor", "UHR"]
-                var hoursList = ["<b>zwölf</b>", minutesList[minutes] === "UHR" ? "<b>ein</b>" : "<b>eins</b>", "<b>zwei</b>", "<b>drei</b>", "<b>vier</b>", "<b>fünf</b>", "<b>sechs</b>", "<b>sieben</b>", "<b>acht</b>", "<b>neun</b>", "<b>zehn</b>", "<b>elf</b>"]
+                var minutesList = ["uhr", "fünf<br>nach", "zehn<br>nach", "viertel<br>nach", "zwanzig<br>nach", "fünf<br>vor halb", "halb", "fünf<br>nach halb", "zwanzig<br>vor", "viertel<br>vor", "zehn<br>vor", "fünf<br>vor", "uhr"]
+                var hoursList = ["<b>zwölf</b>", minutesList[minutes] === "uhr" ? "<b>ein</b>" : "<b>eins</b>", "<b>zwei</b>", "<b>drei</b>", "<b>vier</b>", "<b>fünf</b>", "<b>sechs</b>", "<b>sieben</b>", "<b>acht</b>", "<b>neun</b>", "<b>zehn</b>", "<b>elf</b>"]
                 var minutesFirst = [false, true, true, true, true, true, true, true, true, true, true, true, false]
                 var hourSuffix = [false, false, false, false ,false, false, false, false, false, false, false, false, false]
 
-
-
-                var start = "<p style=\"text-align:center\">"
                 var newline = "<br>"
-                var end = "</p>"
 
                 if (hourSuffix[minutes]) {
                     if (minutesFirst[minutes]) {
-                        var generatedString = minutesList[minutes].toUpperCase() + newline + hoursList[hours].toUpperCase() +" UHR"
+                        var generatedString = minutesList[minutes] + newline + hoursList[hours] +" uhr"
                     } else {
-                        var generatedString = hoursList[hours].toUpperCase()+ newline + " UHR" + newline + minutesList[minutes].toUpperCase()}
+                        var generatedString = hoursList[hours]+ newline + " uhr" + newline + minutesList[minutes]}
                 } else {
 
                         if (minutesFirst[minutes]) {
-                            var generatedString = minutesList[minutes].toUpperCase() + newline + hoursList[hours].toUpperCase()
+                            var generatedString = minutesList[minutes] + newline + hoursList[hours]
                         } else {
-                            var generatedString = hoursList[hours].toUpperCase() + newline + minutesList[minutes].toUpperCase()
+                            var generatedString = hoursList[hours] + newline + minutesList[minutes]
                         }
 
                 }
-                return start + generatedString + end
+                return generatedString
             }
 
             function generateTimeFr(time) {
-                var minutesList = ["heures<br>pile", "heures<br><b>cinq</b>", "heures<br><b>dix</b>", "heures<br>et <b>quart</b>", "heures<br><b>vingt</b>", "heures<br><b>vingt-cinq</b>", "heures<br>et <b>demie</b>", "heures<br>moins<br><b>vingt-cinq</b>", "heures<br>moins<br><b>vingt</b>", "heures<br>moins le<br><b>quart</b>", "heures<br>moins<br><b>dix</b>", "heures<br>moins<br><b>cinq</b>", "pile"]
+                var minutesList = ["heures<br>pile", "heures<br>cinq", "heures<br>dix", "heures<br>et quart", "heures<br>vingt", "heures<br>vingt-cinq", "heures<br>et demie", "heures<br>moins<br>vingt-cinq", "heures<br>moins<br>vingt", "heures<br>moins le<br>quart", "heures<br>moins<br>dix", "heures<br>moins<br>cinq", "pile"]
                 var hoursList = ["<b>douze</b>", "<b>une</b>", "<b>deux</b>", "<b>trois</b>", "<b>quatre</b>", "<b>cinq</b>", "<b>six</b>", "<b>sept</b>", "<b>huit</b>", "<b>neuf</b>", "<b>dix</b>", "<b>onze</b>"]
                 var minutesFirst = [false, false, false, false, false, false, false, false, false, false, false, false, false]
                 var nextHour = [false, false, false, false, false, false, false, true, true, true, true, true, true]
@@ -154,21 +137,19 @@ Item {
                 var minutes = Math.round(time.getMinutes() / 5)
                 var hours = (time.getHours() + (nextHour[minutes] ? 1 : 0)) % 12
 
-                var start = "<p style=\"text-align:center\">"
                 var newline = "<br>"
-                var end = "</p>"
 
                 if (minutesFirst[minutes]) {
-                    var generatedString = minutesList[minutes].toUpperCase() + newline + hoursList[hours].toUpperCase()
+                    var generatedString = minutesList[minutes] + newline + hoursList[hours]
                 } else {
-                    var generatedString = hoursList[hours].toUpperCase() + newline + minutesList[minutes].toUpperCase()
+                    var generatedString = hoursList[hours] + newline + minutesList[minutes]
                 }
 
-                return start + generatedString + end
+                return generatedString
             }
 
             function generateTimeDa(time) {
-                var minutesList = ["", "<b>fem</b><br>over", "<b>ti</b><br>over", "<b>kvart</b><br>over", "<b>tyve</b><br>over", "femog<br>tyve", "<b>halv</b>", "femog<br>tredive", "<b>fyrre</b>", "<b>kvart</b><br><b>I</b>", "<b>ti</b><br><b>I</b>", "<b>fem</b><br><b>I</b>", ""]
+                var minutesList = ["", "fem<br>over", "ti<br>over", "kvart<br>over", "tyve<br>over", "femog<br>tyve", "halv", "femog<br>tredive", "fyrre", "kvart I", "ti I", "fem I", ""]
                 var hoursList = ["<b>tolv</b>", "<b>et</b>", "<b>to</b>", "<b>tre</b>", "<b>fire</b>", "<b>fem</b>", "<b>seks</b>", "<b>syv</b>", "<b>otte</b>", "<b>ni</b>", "<b>ti</b>", "<b>elleve</b>"]
                 var minutesFirst = [false, true, true, true, true, false, true, false, false, true, true, true, false]
                 var nextHour = [false, false, false, false, false, false, true, false, false, true, true, true, false]
@@ -176,40 +157,36 @@ Item {
                 var minutes = Math.round(time.getMinutes() / 5)
                 var hours = (time.getHours() + (nextHour[minutes] ? 1 : 0)) % 12
 
-                var start = "<p style=\"text-align:center\">"
                 var newline = "<br>"
-                var end = "</p>"
 
                 if (minutesFirst[minutes]) {
-                    var generatedString = minutesList[minutes].toUpperCase() + newline + hoursList[hours].toUpperCase()
+                    var generatedString = minutesList[minutes] + newline + hoursList[hours]
                 } else {
-                    var generatedString = hoursList[hours].toUpperCase() + newline + minutesList[minutes].toUpperCase()
+                    var generatedString = hoursList[hours] + newline + minutesList[minutes]
                 }
 
-                return start + generatedString + end
+                return generatedString
             }
 
             id: timeDisplay
 
             anchors {
                 verticalCenter: parent.verticalCenter
-                verticalCenterOffset: -parent.height * .019
+                verticalCenterOffset: -parent.height * .085
                 left: parent.left
                 right: parent.right
             }
             horizontalAlignment: Text.AlignHCenter
-            textFormat: Text.RichText
-            lineHeight: .85
+            lineHeight: .64
             color: "white"
-            style: Text.Outline
-            styleColor: "#80000000"
             font {
-                pixelSize: Qt.locale().name.substring(0,2) === "fr" ?
-                               parent.height * .135 :
-                               Qt.locale().name.substring(0,2) === "es" ?
-                                   parent.height * .145 :
-                                   parent.height * .15
+                pixelSize: text.includes('veinticinco') || text.includes('moins') || text.includes('demie') || text.includes('vingt-cinq') ?
+                                   parent.height * .185 :
+                               text.includes('nach halb') || text.includes('zwanzig') ?
+                                       parent.height * .22 :
+                                       parent.height * .24
                 weight: Font.Light
+                family: "SourceSansPro"
             }
             text: Qt.locale().name.substring(0,2) === "de" ?
                       generateTimeDe(wallClock.time) :
@@ -220,21 +197,31 @@ Item {
                               Qt.locale().name.substring(0,2) === "da" ?
                                   generateTimeDa(wallClock.time) :
                                   generateTimeEn(wallClock.time)
+
+
+        }
+
+        layer.enabled: true
+        layer.effect: DropShadow {
+            transparentBorder: true
+            horizontalOffset: 4
+            verticalOffset: 4
+            radius: 8.0
+            samples: 17
+            color: "#60000000"
         }
 
         Text {
             id: dateDisplay
 
             anchors {
-                topMargin: parent.width * .025
+                topMargin: parent.width * .09
                 top: timeDisplay.bottom
                 left: parent.left
                 right: parent.right
             }
             horizontalAlignment: Text.AlignHCenter
             color: "white"
-            style: Text.Outline; styleColor: "#80000000"
-            opacity: .9
             font.pixelSize: parent.height * .07
             text: wallClock.time.toLocaleString(Qt.locale(), "<b>ddd</b> d MMM")
         }
@@ -243,7 +230,7 @@ Item {
             id: batteryInfo
 
             anchors {
-                bottomMargin: parent.width * .09
+                bottomMargin: parent.width * .05
                 bottom: timeDisplay.top
                 left: parent.left
                 right: parent.right
@@ -282,8 +269,6 @@ Item {
             }
         }
     }
-
-
 
     Item {
         id: nightstandMode
