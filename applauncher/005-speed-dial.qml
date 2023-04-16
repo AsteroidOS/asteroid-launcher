@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 - Darrel Griët <dgriet@gmail.com>
+ * Copyright (C) 2023 - Darrel Griët <dgriet@gmail.com>
  * Copyright (C) 2022 - Timo Könnecke <github.com/eLtMosen>
  * Copyright (C) 2015 - Florent Revest <revestflo@gmail.com>
  *
@@ -198,7 +198,7 @@ Item {
             anchors.centerIn: parent
             anchors.horizontalCenterOffset: -width/2
             clip: true
-            width: root.width * 0.26
+            width: Math.ceil(root.width * 0.26)
             height: root.width * 0.26
             Rectangle {
                 width: parent.width*2
@@ -220,9 +220,9 @@ Item {
         id: barRight
         anchors.centerIn: parent
         // Avoid overlap by moving to the right a pixel if needed.
-        anchors.horizontalCenterOffset: Math.ceil(width/2)
+        anchors.horizontalCenterOffset: width/2
         clip: true
-        width: root.width * 0.9
+        width: Math.ceil(root.width * 0.9)
         height: barLeft.height
         color: "#66000000"
     }
