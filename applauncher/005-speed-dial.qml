@@ -83,31 +83,29 @@ Item {
             }
             onClicked: model.object.launchApplication()
 
-            Rectangle {
+            Item {
                 id: circleWrapper
-                width: parent.width * .86
-                radius: width / 2
+                width: parent.height * 0.8
                 height: width
                 anchors.centerIn: parent
-                visible: false
-                color: launcherItem.pressed | fakePressed ? "#cccccc" : "#f4f4f4"
-
-                Icon {
-                    id: icon
-
-                    width: circleWrapper.width * .7
-                    height: width
-                    anchors.centerIn: circleWrapper
-                    color: launcherItem.pressed | fakePressed ? "#444444" : "#000000"
-                    name: model.object.iconId === "" ? "ios-help" : model.object.iconId
+                Rectangle {
+                    id: circle
+                    anchors.centerIn: parent
+                    width: parent.width
+                    height: parent.height
+                    radius: width/2
+                    opacity: launcherItem.pressed | fakePressed ? 0.8 : 1.0
+                    color: (root.selectedLauncherItem == model.object) ? alb.centerColor(model.object.filePath) : "#f4f4f4"
+                    Behavior on opacity {
+                        PropertyAnimation { target: circle; duration: 70 }
+                    }
                     Behavior on color {
-                        PropertyAnimation { target: icon; property: "color"; duration: 70 }
+                        PropertyAnimation { target: circle; property: "color"; duration: 70 }
                     }
                 }
             }
 
             DropShadow {
-                id: shadow
                 anchors.fill: circleWrapper
                 horizontalOffset: 0
                 verticalOffset: 0
@@ -118,16 +116,17 @@ Item {
                 cached: true
             }
 
-            InnerShadow {
-                id: innerShadow
-                visible: (root.selectedLauncherItem == model.object)
-                fast: true
-                cached: true
-                anchors.fill: circleWrapper
-                radius: 50.0
-                samples: 16
-                color: alb.centerColor(model.object.filePath)
-                source: circleWrapper
+            Icon {
+                id: icon
+                anchors.centerIn: circleWrapper
+                width: circleWrapper.width * 0.70
+                height: width
+                opacity: launcherItem.pressed | fakePressed ? 1.0 : 0.9
+                name: model.object.iconId === "" ? "ios-help" : model.object.iconId
+                color: (root.selectedLauncherItem == model.object) ? "#ffffff" : "#000000"
+                Behavior on color {
+                    PropertyAnimation { target: icon; property: "color"; duration: 70 }
+                }
             }
         }
 
