@@ -289,8 +289,8 @@ Item {
             }
             font {
                 pixelSize: parent.height * .39
-                family: "Open Sans Condensed"
-                styleName:"Light"
+                family: "Noto Sans"
+                styleName: "Condensed Light"
             }
             color: "#ffffffff"
             text: wallClock.time.toLocaleString(Qt.locale(), "dd").slice(0, 2).toUpperCase()
@@ -395,8 +395,8 @@ Item {
             renderType: Text.NativeRendering
             font {
                 pixelSize: parent.height * .366
-                family: "Open Sans Condensed"
-                styleName:"Light"
+                family: "Noto Sans"
+                styleName: "Condensed Light"
                 letterSpacing: -root.width * .0018
             }
             color: "#ddffffff"
@@ -488,7 +488,7 @@ Item {
             anchors.centerIn: parent
             renderType: Text.NativeRendering
             font {
-                pixelSize: parent.height * .48
+                pixelSize: parent.height * (batteryDisplay.text === "100" ? 0.46 : .48)
                 family: "Outfit"
                 styleName:"Thin"
             }
