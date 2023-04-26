@@ -59,11 +59,11 @@ Item {
         focus: true
         pathItemCount: 8
         path: Path {
-            startX: pv.width/2-pv.borderRadius/2 + pv.borderRadius
-            startY: pv.height/2-pv.borderRadius/2 + pv.borderRadius/2 + 1
+            startX: pv.width/2-pv.borderRadius/2
+            startY: pv.height/2-pv.borderRadius/2 + pv.borderRadius/2 - 1
             PathArc {
-                x: pv.width/2-pv.borderRadius/2 + pv.borderRadius
-                y: pv.height/2-pv.borderRadius/2 + pv.borderRadius/2 - 1
+                x: pv.width/2-pv.borderRadius/2
+                y: pv.height/2-pv.borderRadius/2 + pv.borderRadius/2 + 1
                 radiusX: pv.borderRadius/2
                 radiusY: radiusX
                 useLargeArc: true
@@ -179,12 +179,12 @@ Item {
                     float y = qt_TexCoord0.y - 0.5;
 
                     // Behind the bar, hide all items.
-                    if (abs(y) < 0.125 && x > 0.0) {
+                    if (abs(y) < 0.125 && x < 0.0) {
                         alpha = 0.0;
                     }
 
                     // Soften the transition between the bar and above/below it.
-                    if (abs(y) > 0.125 && x > 0.0) {
+                    if (abs(y) > 0.125 && x < 0.0) {
                         alpha = abs(y) * 5.0;
                     }
 
@@ -195,11 +195,13 @@ Item {
         Item {
             id: barLeft
             anchors.centerIn: parent
-            anchors.horizontalCenterOffset: -width/2
+            anchors.horizontalCenterOffset: width/2
             clip: true
             width: Math.ceil(root.width * 0.26)
             height: root.width * 0.26
             Rectangle {
+                anchors.centerIn: parent
+                anchors.horizontalCenterOffset: -width/4
                 width: parent.width*2
                 height: parent.height
                 radius: height/2
@@ -219,7 +221,7 @@ Item {
         id: barRight
         anchors.centerIn: parent
         // Avoid overlap by moving to the right a pixel if needed.
-        anchors.horizontalCenterOffset: width/2
+        anchors.horizontalCenterOffset: Math.ceil(-width/2)
         clip: true
         width: Math.ceil(root.width * 0.9)
         height: barLeft.height
@@ -228,7 +230,7 @@ Item {
     Label {
         id: currentAppLabel
         anchors.left: parent.left
-        anchors.leftMargin: root.width * 0.3
+        anchors.leftMargin: root.width * 0.05
         anchors.verticalCenter: parent.verticalCenter
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
