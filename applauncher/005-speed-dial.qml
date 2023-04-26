@@ -215,6 +215,24 @@ Item {
                 grid.changeAllowedDirections()
             }
         }
+
+        WheelHandler {
+            property: "offset"
+            rotationScale: (1 / 15) * 0.01
+            onRotationChanged: snapTimer.restart()
+        }
+
+        Timer {
+            id: snapTimer
+            interval: 500
+            running: false
+            repeat: false
+            onTriggered: {
+                // Snap to index instead of staying at offset.
+                pv.currentIndex = pv.currentIndex + 1
+                pv.currentIndex = pv.currentIndex - 1
+            }
+        }
     }
 
     Rectangle {
