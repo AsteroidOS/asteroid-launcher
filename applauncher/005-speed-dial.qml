@@ -30,6 +30,7 @@ Item {
     property var viewScale: (root.width > root.height ? root.height : root.width) / Dims.l(100)
     property alias currentIndex: pv.currentIndex
     property alias count: pv.count
+    clip: true
 
     function getAtOffset(index) {
         // Calculate the item index/offset using the itemIndexOffset constant taking into account overflow.
