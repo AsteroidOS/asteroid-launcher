@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 - Timo Könnecke <github.com/eLtMosen>
+ * Copyright (C) 2023 - Timo Könnecke <github.com/eLtMosen>
  *               2022 - Darrel Griët <dgriet@gmail.com>
  *               2022 - Ed Beroset <github.com/beroset>
  *               2017 - Florent Revest <revestflo@gmail.com>
@@ -38,8 +38,6 @@ import org.asteroid.utils 1.0
 import Nemo.Mce 1.0
 
 Item {
-    id: root
-
     anchors.fill: parent
 
     function twoDigits(x) {
@@ -55,161 +53,195 @@ Item {
         ctx.shadowColor = "black"
         ctx.shadowOffsetX = 0
         ctx.shadowOffsetY = 0
-        ctx.shadowBlur = parent.height * .0125
+        ctx.shadowBlur = root.height * .0125
     }
 
     Item {
-        id: watchfaceRoot
+        id: root
 
         anchors.centerIn: parent
-        width: parent.width * (nightstandMode.active ? .86 : 1)
-        height: width
+        height: parent.width > parent.height ? parent.height : parent.width
+        width: height
 
-        Canvas {
-            id: hourCanvas
+        Item {
+            id: watchfaceRoot
 
-            property int hour: 0
+            anchors.centerIn: parent
+            width: parent.width * (nightstandMode.active ? .86 : 1)
+            height: width
 
-            anchors.fill: parent
-            antialiasing: true
-            smooth: true
-            renderStrategy: Canvas.Cooperative
+            Canvas {
+                id: hourCanvas
 
-            onPaint: {
-                var ctx = getContext("2d")
-                prepareContext(ctx)
+                property int hour: 0
 
-                ctx.font = "57 " + height * .36 + "px Roboto"
-                ctx.fillText(twoDigits(hour), width * .378, height * .537);
+                anchors.fill: parent
+                antialiasing: true
+                smooth: true
+                renderStrategy: Canvas.Cooperative
+
+                onPaint: {
+                    var ctx = getContext("2d")
+                    prepareContext(ctx)
+
+                    ctx.font = "57 " + height * .36 + "px Roboto"
+                    ctx.fillText(twoDigits(hour), width * .378, height * .537);
+                }
+            }
+
+            Canvas {
+                id: minuteCanvas
+
+                property int minute: 0
+
+                anchors.fill: parent
+                antialiasing: true
+                smooth: true
+                renderStrategy: Canvas.Cooperative
+
+                onPaint: {
+                    var ctx = getContext("2d")
+                    prepareContext(ctx)
+
+                    ctx.font = "30 " + height * .18 + "px Roboto"
+                    ctx.fillText(twoDigits(minute), width * .717, height * .473);
+                }
+            }
+
+            Canvas {
+                id: amPmCanvas
+
+                property bool am: false
+
+                anchors.fill: parent
+                antialiasing: true
+                smooth: true
+                renderStrategy: Canvas.Cooperative
+                visible: use12H.value
+
+                onPaint: {
+                    var ctx = getContext("2d")
+                    prepareContext(ctx)
+
+                    ctx.font = "25 " + height / 15 + "px Raleway"
+                    ctx.fillText(wallClock.time.toLocaleString(Qt.locale("en_EN"), "AP"), width * .894, height * .371);
+                }
+            }
+
+            Canvas {
+                id: dateCanvas
+
+                property int date: 0
+                property int month: 0
+
+                anchors.fill: parent
+                antialiasing: true
+                smooth: true
+                renderStrategy: Canvas.Cooperative
+
+                onPaint: {
+                    var ctx = getContext("2d")
+                    prepareContext(ctx)
+                    ctx.font = "25 " + height / 13 + "px Raleway"
+                    ctx.fillText(wallClock.time.toLocaleString(Qt.locale(), "d MMM"), width * .719, height * .595);
+                }
             }
         }
 
-        Canvas {
-            id: minuteCanvas
+        Item {
+            id: nightstandMode
 
-            property int minute: 0
-
-            anchors.fill: parent
-            antialiasing: true
-            smooth: true
-            renderStrategy: Canvas.Cooperative
-
-            onPaint: {
-                var ctx = getContext("2d")
-                prepareContext(ctx)
-
-                ctx.font = "30 " + height * .18 + "px Roboto"
-                ctx.fillText(twoDigits(minute), width * .717, height * .473);
-            }
-        }
-
-        Canvas {
-            id: amPmCanvas
-
-            property bool am: false
+            readonly property bool active: nightstand
 
             anchors.fill: parent
-            antialiasing: true
-            smooth: true
-            renderStrategy: Canvas.Cooperative
-            visible: use12H.value
 
-            onPaint: {
-                var ctx = getContext("2d")
-                prepareContext(ctx)
-
-                ctx.font = "25 " + height / 15 + "px Raleway"
-                ctx.fillText(wallClock.time.toLocaleString(Qt.locale("en_EN"), "AP"), width * .894, height * .371);
+            layer {
+                enabled: true
+                samples: 4
+                smooth: true
+                textureSize: Qt.size(nightstandMode.width * 2, nightstandMode.height * 2)
             }
-        }
+            visible: nightstandMode.active
 
-        Canvas {
-            id: dateCanvas
+            Repeater {
+                id: segmentedArc
 
-            property int date: 0
-            property int month: 0
+                property real inputValue: batteryChargePercentage.percent / 100
+                property int segmentAmount: 50
+                property int start: 0
+                property int gap: 6
+                property int endFromStart: 360
+                property bool clockwise: true
+                property real arcStrokeWidth: .055
+                property real scalefactor: .45 - (arcStrokeWidth / 2)
+                property real chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
+                readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
-            anchors.fill: parent
-            antialiasing: true
-            smooth: true
-            renderStrategy: Canvas.Cooperative
+                model: segmentAmount
 
-            onPaint: {
-                var ctx = getContext("2d")
-                prepareContext(ctx)
-                ctx.font = "25 " + height / 13 + "px Raleway"
-                ctx.fillText(wallClock.time.toLocaleString(Qt.locale(), "d MMM"), width * .719, height * .595);
-            }
-        }
-    }
+                Shape {
+                    id: segment
 
-    Item {
-        id: nightstandMode
+                    visible: index === 0 ? true : (index/segmentedArc.segmentAmount) < segmentedArc.inputValue
 
-        readonly property bool active: nightstand
+                    ShapePath {
+                        fillColor: "transparent"
+                        strokeColor: segmentedArc.colorArray[segmentedArc.chargecolor]
+                        strokeWidth: parent.height * segmentedArc.arcStrokeWidth
+                        capStyle: ShapePath.FlatCap
+                        joinStyle: ShapePath.MiterJoin
+                        startX: parent.width / 2
+                        startY: parent.height * ( .5 - segmentedArc.scalefactor)
 
-        anchors.fill: parent
-
-        layer {
-            enabled: true
-            samples: 4
-            smooth: true
-            textureSize: Qt.size(nightstandMode.width * 2, nightstandMode.height * 2)
-        }
-        visible: nightstandMode.active
-
-        Repeater {
-            id: segmentedArc
-
-            property real inputValue: batteryChargePercentage.percent / 100
-            property int segmentAmount: 50
-            property int start: 0
-            property int gap: 6
-            property int endFromStart: 360
-            property bool clockwise: true
-            property real arcStrokeWidth: .055
-            property real scalefactor: .45 - (arcStrokeWidth / 2)
-            property real chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
-            readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
-
-            model: segmentAmount
-
-            Shape {
-                id: segment
-
-                visible: index === 0 ? true : (index/segmentedArc.segmentAmount) < segmentedArc.inputValue
-
-                ShapePath {
-                    fillColor: "transparent"
-                    strokeColor: segmentedArc.colorArray[segmentedArc.chargecolor]
-                    strokeWidth: parent.height * segmentedArc.arcStrokeWidth
-                    capStyle: ShapePath.FlatCap
-                    joinStyle: ShapePath.MiterJoin
-                    startX: parent.width / 2
-                    startY: parent.height * ( .5 - segmentedArc.scalefactor)
-
-                    PathAngleArc {
-                        centerX: parent.width / 2
-                        centerY: parent.height / 2
-                        radiusX: segmentedArc.scalefactor * parent.width
-                        radiusY: segmentedArc.scalefactor * parent.height
-                        startAngle: -90 + index * (sweepAngle + (segmentedArc.clockwise ? +segmentedArc.gap : -segmentedArc.gap)) + segmentedArc.start
-                        sweepAngle: segmentedArc.clockwise ? (segmentedArc.endFromStart / segmentedArc.segmentAmount) - segmentedArc.gap :
-                                                             -(segmentedArc.endFromStart / segmentedArc.segmentAmount) + segmentedArc.gap
-                        moveToStart: true
+                        PathAngleArc {
+                            centerX: parent.width / 2
+                            centerY: parent.height / 2
+                            radiusX: segmentedArc.scalefactor * parent.width
+                            radiusY: segmentedArc.scalefactor * parent.height
+                            startAngle: -90 + index * (sweepAngle + (segmentedArc.clockwise ? +segmentedArc.gap : -segmentedArc.gap)) + segmentedArc.start
+                            sweepAngle: segmentedArc.clockwise ? (segmentedArc.endFromStart / segmentedArc.segmentAmount) - segmentedArc.gap :
+                                                                 -(segmentedArc.endFromStart / segmentedArc.segmentAmount) + segmentedArc.gap
+                            moveToStart: true
+                        }
                     }
                 }
             }
         }
-    }
 
-    MceBatteryLevel {
-        id: batteryChargePercentage
-    }
+        MceBatteryLevel {
+            id: batteryChargePercentage
+        }
 
-    Connections {
-        target: wallClock
-        function onTimeChanged() {
+        Connections {
+            target: wallClock
+            function onTimeChanged() {
+                var hour = wallClock.time.getHours()
+                var minute = wallClock.time.getMinutes()
+                var month = wallClock.time.getMonth()
+                var date = wallClock.time.getDate()
+                var am = hour < 12
+                if(use12H.value) {
+                    hour = hour % 12
+                    if (hour === 0) hour = 12;
+                }
+                if(hourCanvas.hour !== hour) {
+                    hourCanvas.hour = hour
+                    hourCanvas.requestPaint()
+                } if(minuteCanvas.minute !== minute) {
+                    minuteCanvas.minute = minute
+                    minuteCanvas.requestPaint()
+                } if(dateCanvas.date !== date || dateCanvas.month !== month) {
+                    dateCanvas.date = date
+                    dateCanvas.month = month
+                    dateCanvas.requestPaint()
+                } if(amPmCanvas.am != am) {
+                    amPmCanvas.am = am
+                    amPmCanvas.requestPaint()
+                }
+            }
+        }
+
+        Component.onCompleted: {
             var hour = wallClock.time.getHours()
             var minute = wallClock.time.getMinutes()
             var month = wallClock.time.getMonth()
@@ -217,46 +249,20 @@ Item {
             var am = hour < 12
             if(use12H.value) {
                 hour = hour % 12
-                if (hour === 0) hour = 12;
+                if (hour === 0) hour = 12
             }
-            if(hourCanvas.hour !== hour) {
-                hourCanvas.hour = hour
-                hourCanvas.requestPaint()
-            } if(minuteCanvas.minute !== minute) {
-                minuteCanvas.minute = minute
-                minuteCanvas.requestPaint()
-            } if(dateCanvas.date !== date || dateCanvas.month !== month) {
-                dateCanvas.date = date
-                dateCanvas.month = month
-                dateCanvas.requestPaint()
-            } if(amPmCanvas.am != am) {
-                amPmCanvas.am = am
-                amPmCanvas.requestPaint()
-            }
-        }
-    }
+            hourCanvas.hour = hour
+            hourCanvas.requestPaint()
+            minuteCanvas.minute = minute
+            minuteCanvas.requestPaint()
+            dateCanvas.month = month
+            dateCanvas.date = date
+            dateCanvas.requestPaint()
+            amPmCanvas.am = am
+            amPmCanvas.requestPaint()
 
-    Component.onCompleted: {
-        var hour = wallClock.time.getHours()
-        var minute = wallClock.time.getMinutes()
-        var month = wallClock.time.getMonth()
-        var date = wallClock.time.getDate()
-        var am = hour < 12
-        if(use12H.value) {
-            hour = hour % 12
-            if (hour === 0) hour = 12
+            burnInProtectionManager.widthOffset = Qt.binding(function() { return width * (nightstandMode.active ? .1 : .32)})
+            burnInProtectionManager.heightOffset = Qt.binding(function() { return height * (nightstandMode.active ? .1 : .7)})
         }
-        hourCanvas.hour = hour
-        hourCanvas.requestPaint()
-        minuteCanvas.minute = minute
-        minuteCanvas.requestPaint()
-        dateCanvas.month = month
-        dateCanvas.date = date
-        dateCanvas.requestPaint()
-        amPmCanvas.am = am
-        amPmCanvas.requestPaint()
-
-        burnInProtectionManager.widthOffset = Qt.binding(function() { return width * (nightstandMode.active ? .1 : .32)})
-        burnInProtectionManager.heightOffset = Qt.binding(function() { return height * (nightstandMode.active ? .1 : .7)})
     }
 }
