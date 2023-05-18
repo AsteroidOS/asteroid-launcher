@@ -37,7 +37,7 @@ Item {
         id: batteryChargePercentage
     }
 
-    anchors.centerIn: parent
+    anchors.fill: parent
 
     height: parent.width > parent.height ? parent.height : parent.width
     width: height
