@@ -1,6 +1,6 @@
 /*
-* Copyright (C) 2021 - Darrel Griët <dgriet@gmail.com>
-*               2021 - Timo Könnecke <github.com/eLtMosen>
+* Copyright (C) 2023 - Timo Könnecke <github.com/eLtMosen>
+*               2021 - Darrel Griët <dgriet@gmail.com>
 *               2016 - Sylvia van Os <iamsylvie@openmailbox.org>
 *               2015 - Florent Revest <revestflo@gmail.com>
 *               2012 - Vasiliy Sorokin <sorokin.vasiliy@gmail.com>
@@ -22,207 +22,223 @@
 * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.9
+import QtQuick 2.15
+import QtQuick.Shapes 1.15
 import QtGraphicalEffects 1.15
-import org.asteroid.utils 1.0
 import org.asteroid.controls 1.0
+import org.asteroid.utils 1.0
+import Nemo.Mce 1.0
 
 Item {
+    anchors.fill: parent
+
     property int length: width > height ? height : width
     property string imgPath: "../watchfaces-img/numerals-duo-synth-neon-green-"
 
-    id: root
-
-    Text {
-        z: 0
-        id: dowDisplay
-        visible: !displayAmbient
-        font.pixelSize: root.height * 0.054
-        font.family: "Sunflower"
-        font.styleName: "Light"
-        font.letterSpacing: root.height*0.003
-        color: "white"
-        opacity: 0.95
-        horizontalAlignment: Text.AlignHCenter
-        anchors {
-            bottom: root.verticalCenter
-            bottomMargin: DeviceInfo.hasRoundScreen ? root.height*0.387 : root.height*0.402
-            horizontalCenter: root.horizontalCenter
-        }
-        text: wallClock.time.toLocaleString(Qt.locale(), "dddd").toUpperCase()
-        layer.enabled: true
-        layer.effect: DropShadow {
-            transparentBorder: true
-            horizontalOffset: 0
-            verticalOffset: 3
-            radius: 12.0
-            samples: 16
-            color: "#fe16a2"
-        }
-    }
-
-    Text {
-        z: 0
-        id: dateDisplay
-        visible: !displayAmbient
-        font.pixelSize: root.height * 0.056
-        font.family: "Sunflower"
-        font.styleName: "Light"
-        color: "white"
-        opacity: 0.95
-        horizontalAlignment: Text.AlignHCenter
-        anchors {
-            top: root.verticalCenter
-            topMargin: DeviceInfo.hasRoundScreen ? root.height*0.394 : root.height*0.406
-            horizontalCenter: root.horizontalCenter
-        }
-        text: wallClock.time.toLocaleString(Qt.locale(), "yyyy-MM-dd")
-        layer.enabled: true
-        layer.effect: DropShadow {
-            transparentBorder: true
-            horizontalOffset: 0
-            verticalOffset: -3
-            radius: 12.0
-            samples: 16
-            color: "#fe16a2"
-        }
-    }
-
     Item {
-        x: DeviceInfo.hasRoundScreen ? length * 0.1 : (root.width != length ? root.width/2 - length/2 : !displayAmbient ? length * 0.1 : 0)
-        y: DeviceInfo.hasRoundScreen ? length * 0.1 : (root.height != length ? root.height/2 - length/2 : !displayAmbient ? length * 0.1 : 0)
-        width: DeviceInfo.hasRoundScreen ? length * 0.8 : displayAmbient ? length : length * 0.8
-        height: DeviceInfo.hasRoundScreen ? length * 0.8 : displayAmbient ? length : length * 0.8
-        Behavior on x { NumberAnimation { duration: 50; easing.type: Easing.OutQuad } }
-        Behavior on y { NumberAnimation { duration: 50; easing.type: Easing.OutQuad } }
-        Behavior on width { NumberAnimation { duration: 50; easing.type: Easing.OutQuad } }
-        Behavior on height { NumberAnimation { duration: 50; easing.type: Easing.OutQuad } }
+        id: root
 
-        LinearGradient {
-            id: greenColor
-            anchors.fill: parent
-            smooth: true
-            visible: false
-            start: Qt.point(0, 0)
-            end: Qt.point(300, 300)
-            gradient: Gradient {
-                GradientStop { position: 0.0; color: "#38FF12" }
-                GradientStop { position: 1.0; color: "#00F5FB" }
+        anchors.centerIn: parent
+        height: parent.width > parent.height ? parent.height : parent.width
+        width: height
+
+        Text {
+            id: dowDisplay
+
+            z: 0
+            visible: !displayAmbient
+            font {
+                pixelSize: root.height * 0.054
+                family: "Sunflower"
+                styleName: "Light"
+                letterSpacing: root.height*0.003
             }
-        }
-
-        LinearGradient {
-            id: whiteColor
-            anchors.fill: parent
-            smooth: true
-            visible: false
-            start: Qt.point(0, 0)
-            end: Qt.point(300, 300)
-            gradient: Gradient {
-                GradientStop { position: 0.0; color: "#FFF100" }
-                GradientStop { position: 1.0; color: "#FFFFFF" }
+            color: "white"
+            opacity: 0.95
+            horizontalAlignment: Text.AlignHCenter
+            anchors {
+                bottom: root.verticalCenter
+                bottomMargin: DeviceInfo.hasRoundScreen ? root.height*0.387 : root.height*0.402
+                horizontalCenter: root.horizontalCenter
             }
-        }
-
-       Image {
-           id: topLeft
-           visible: false
-           smooth: true
-           fillMode: Image.PreserveAspectFit
-           x: parseInt(parent.width*0.135)
-           y: parseInt(parent.height*0.045)
-           sourceSize: Qt.size(parent.width/2 - parent.width*0.15, parent.height/2 - parent.height*0.15)
-           source: imgPath + wallClock.time.toLocaleString(Qt.locale(), "HH").slice(0, 1) + ".png"
-       }
-       Image {
-           id: topRight
-           visible: false
-           smooth: true
-           fillMode: Image.PreserveAspectFit
-           x: parseInt(parent.width/2 + parent.width*0.03)
-           y: parseInt(parent.height*0.045)
-           sourceSize: Qt.size(parent.width/2 - parent.width*0.15, parent.height/2 - parent.height*0.15)
-           source: imgPath + wallClock.time.toLocaleString(Qt.locale(), "HH").slice(1, 2) + ".png"
-       }
-       Image {
-           id: bottomLeft
-           visible: false
-           smooth: true
-           fillMode: Image.PreserveAspectFit
-           x: parseInt(parent.width*0.135)
-           y: parseInt(parent.height/2 + parent.height*0.025)
-           sourceSize: Qt.size(parent.width/2 - parent.width*0.15, parent.height/2 - parent.height*0.15)
-           source: imgPath + wallClock.time.toLocaleString(Qt.locale(), "mm").slice(0, 1) + ".png"
-       }
-       Image {
-           id: bottomRight
-           visible: false
-           smooth: true
-           fillMode: Image.PreserveAspectFit
-           x: parseInt(parent.width/2 + parent.width*0.03)
-           y: parseInt(parent.height/2 + parent.height*0.025)
-           sourceSize: Qt.size(parent.width/2 - parent.width*0.15, parent.height/2 - parent.height*0.15)
-           source: imgPath + wallClock.time.toLocaleString(Qt.locale(), "mm").slice(1, 2) + ".png"
-       }
-
-        OpacityMask {
-            invert: true
-            anchors.fill: topLeft
-            source: greenColor
-            maskSource: topLeft
+            text: wallClock.time.toLocaleString(Qt.locale(), "dddd").toUpperCase()
             layer.enabled: true
             layer.effect: DropShadow {
                 transparentBorder: true
-                horizontalOffset: 1
-                verticalOffset: 1
+                horizontalOffset: 0
+                verticalOffset: 3
                 radius: 12.0
-                samples: 20
-                color: "#f800ff"
+                samples: 16
+                color: "#fe16a2"
             }
         }
-        OpacityMask {
-            invert: true
-            anchors.fill: topRight
-            source: greenColor
-            maskSource: topRight
+
+        Text {
+            id: dateDisplay
+
+            z: 0
+            visible: !displayAmbient
+            font {
+                pixelSize: root.height * 0.056
+                family: "Sunflower"
+                styleName: "Light"
+            }
+            color: "white"
+            opacity: 0.95
+            horizontalAlignment: Text.AlignHCenter
+            anchors {
+                top: root.verticalCenter
+                topMargin: DeviceInfo.hasRoundScreen ? root.height*0.394 : root.height*0.406
+                horizontalCenter: root.horizontalCenter
+            }
+            text: wallClock.time.toLocaleString(Qt.locale(), "yyyy-MM-dd")
             layer.enabled: true
             layer.effect: DropShadow {
                 transparentBorder: true
-                horizontalOffset: -1
-                verticalOffset: 1
+                horizontalOffset: 0
+                verticalOffset: -3
                 radius: 12.0
-                samples: 20
-                color: "#f800ff"
+                samples: 16
+                color: "#fe16a2"
             }
         }
-        OpacityMask {
-            invert: true
-            anchors.fill: bottomLeft
-            source: whiteColor
-            maskSource: bottomLeft
-            layer.enabled: true
-            layer.effect: DropShadow {
-                transparentBorder: true
-                horizontalOffset: -1
-                verticalOffset: -1
-                radius: 12.0
-                samples: 20
-                color: "#9600ff"
+
+        Item {
+            x: DeviceInfo.hasRoundScreen ? length * 0.1 : (root.width != length ? root.width/2 - length/2 : !displayAmbient ? length * 0.1 : 0)
+            y: DeviceInfo.hasRoundScreen ? length * 0.1 : (root.height != length ? root.height/2 - length/2 : !displayAmbient ? length * 0.1 : 0)
+            width: DeviceInfo.hasRoundScreen ? length * 0.8 : displayAmbient ? length : length * 0.8
+            height: DeviceInfo.hasRoundScreen ? length * 0.8 : displayAmbient ? length : length * 0.8
+            Behavior on x { NumberAnimation { duration: 150; easing.type: Easing.OutQuad } }
+            Behavior on y { NumberAnimation { duration: 150; easing.type: Easing.OutQuad } }
+            Behavior on width { NumberAnimation { duration: 150; easing.type: Easing.OutQuad } }
+            Behavior on height { NumberAnimation { duration: 150; easing.type: Easing.OutQuad } }
+
+            LinearGradient {
+                id: greenColor
+                anchors.fill: parent
+                smooth: true
+                visible: false
+                start: Qt.point(0, 0)
+                end: Qt.point(300, 300)
+                gradient: Gradient {
+                    GradientStop { position: 0.0; color: "#38FF12" }
+                    GradientStop { position: 1.0; color: "#00F5FB" }
+                }
             }
-        }
-        OpacityMask {
-            invert: true
-            anchors.fill: bottomRight
-            source: whiteColor
-            maskSource: bottomRight
-            layer.enabled: true
-            layer.effect: DropShadow {
-                transparentBorder: true
-                horizontalOffset: 1
-                verticalOffset: -1
-                radius: 12.0
-                samples: 20
-                color: "#9600ff"
+
+            LinearGradient {
+                id: whiteColor
+                anchors.fill: parent
+                smooth: true
+                visible: false
+                start: Qt.point(0, 0)
+                end: Qt.point(300, 300)
+                gradient: Gradient {
+                    GradientStop { position: 0.0; color: "#FFF100" }
+                    GradientStop { position: 1.0; color: "#FFFFFF" }
+                }
+            }
+
+           Image {
+               id: topLeft
+               visible: false
+               smooth: true
+               fillMode: Image.PreserveAspectFit
+               x: parseInt(parent.width*0.135)
+               y: parseInt(parent.height*0.045)
+               sourceSize: Qt.size(parent.width/2 - parent.width*0.15, parent.height/2 - parent.height*0.15)
+               source: imgPath + wallClock.time.toLocaleString(Qt.locale(), "HH").slice(0, 1) + ".png"
+           }
+           Image {
+               id: topRight
+               visible: false
+               smooth: true
+               fillMode: Image.PreserveAspectFit
+               x: parseInt(parent.width/2 + parent.width*0.03)
+               y: parseInt(parent.height*0.045)
+               sourceSize: Qt.size(parent.width/2 - parent.width*0.15, parent.height/2 - parent.height*0.15)
+               source: imgPath + wallClock.time.toLocaleString(Qt.locale(), "HH").slice(1, 2) + ".png"
+           }
+           Image {
+               id: bottomLeft
+               visible: false
+               smooth: true
+               fillMode: Image.PreserveAspectFit
+               x: parseInt(parent.width*0.135)
+               y: parseInt(parent.height/2 + parent.height*0.025)
+               sourceSize: Qt.size(parent.width/2 - parent.width*0.15, parent.height/2 - parent.height*0.15)
+               source: imgPath + wallClock.time.toLocaleString(Qt.locale(), "mm").slice(0, 1) + ".png"
+           }
+           Image {
+               id: bottomRight
+               visible: false
+               smooth: true
+               fillMode: Image.PreserveAspectFit
+               x: parseInt(parent.width/2 + parent.width*0.03)
+               y: parseInt(parent.height/2 + parent.height*0.025)
+               sourceSize: Qt.size(parent.width/2 - parent.width*0.15, parent.height/2 - parent.height*0.15)
+               source: imgPath + wallClock.time.toLocaleString(Qt.locale(), "mm").slice(1, 2) + ".png"
+           }
+
+            OpacityMask {
+                invert: true
+                anchors.fill: topLeft
+                source: greenColor
+                maskSource: topLeft
+                layer.enabled: true
+                layer.effect: DropShadow {
+                    transparentBorder: true
+                    horizontalOffset: 1
+                    verticalOffset: 1
+                    radius: 12.0
+                    samples: 20
+                    color: "#f800ff"
+                }
+            }
+            OpacityMask {
+                invert: true
+                anchors.fill: topRight
+                source: greenColor
+                maskSource: topRight
+                layer.enabled: true
+                layer.effect: DropShadow {
+                    transparentBorder: true
+                    horizontalOffset: -1
+                    verticalOffset: 1
+                    radius: 12.0
+                    samples: 20
+                    color: "#f800ff"
+                }
+            }
+            OpacityMask {
+                invert: true
+                anchors.fill: bottomLeft
+                source: whiteColor
+                maskSource: bottomLeft
+                layer.enabled: true
+                layer.effect: DropShadow {
+                    transparentBorder: true
+                    horizontalOffset: -1
+                    verticalOffset: -1
+                    radius: 12.0
+                    samples: 20
+                    color: "#9600ff"
+                }
+            }
+            OpacityMask {
+                invert: true
+                anchors.fill: bottomRight
+                source: whiteColor
+                maskSource: bottomRight
+                layer.enabled: true
+                layer.effect: DropShadow {
+                    transparentBorder: true
+                    horizontalOffset: 1
+                    verticalOffset: -1
+                    radius: 12.0
+                    samples: 20
+                    color: "#9600ff"
+                }
             }
         }
     }
