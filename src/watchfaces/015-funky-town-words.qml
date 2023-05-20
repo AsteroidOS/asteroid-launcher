@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 - Timo Könnecke <github.com/eLtMosen>
+ * Copyright (C) 2023 - Timo Könnecke <github.com/eLtMosen>
  *               2022 - Darrel Griët <dgriet@gmail.com>
  *               2022 - Ed Beroset <github.com/beroset>
  *               2016 - Sylvia van Os <iamsylvie@openmailbox.org>
@@ -40,150 +40,152 @@ import org.asteroid.utils 1.0
 import Nemo.Mce 1.0
 
 Item {
+    anchors.fill: parent
 
     property string imgPath: "../watchfaces-img/funky-town-words-"
 
-    Image {
-        anchors {
-            horizontalCenter: parent.horizontalCenter
-            verticalCenter: parent.verticalCenter
-        }
-        source: imgPath +
-                wallClock.time.toLocaleString(Qt.locale(), "hh am").slice(0, 2) +
-                (nightstandMode.active || displayAmbient ? "-bw.svg" : ".svg")
-        sourceSize.width: parent.width
-        sourceSize.height: parent.height
-        width: parent.width
-        height: parent.height
-    }
-
-    Image {
-        anchors {
-            horizontalCenter: parent.horizontalCenter
-            verticalCenter: parent.verticalCenter
-        }
-        source: imgPath +
-                wallClock.time.toLocaleString(Qt.locale("en_EN"), "ap").toLowerCase().slice(0, 2) + ".svg"
-        visible: use12H.value
-        sourceSize.width: parent.width
-        sourceSize.height: parent.height
-        width: parent.width
-        height: parent.height
-    }
-
-    Text {
-        id: minuteDisplay
-
-        anchors {
-            bottom: parent.bottom
-            bottomMargin: parent.height * .15
-            horizontalCenter: parent.horizontalCenter
-            horizontalCenterOffset: parent.width*.2
-        }
-        font {
-            pixelSize: parent.height * .22
-            family: "Source Sans Pro"
-            styleName: "Light"
-        }
-        color: nightstandMode.active || displayAmbient ? "#000" : "#fff"
-        text: wallClock.time.toLocaleString(Qt.locale(), "mm")
-
-        Behavior on text {
-            enabled: !displayAmbient
-
-            SequentialAnimation {
-                NumberAnimation { target: minuteDisplay; property: "opacity"; to: 0 }
-                PropertyAction {}
-                NumberAnimation { target: minuteDisplay; property: "opacity"; to: 1 }
-            }
-        }
-    }
-
     Item {
-        id: nightstandMode
+        anchors.centerIn: parent
 
-        readonly property bool active: nightstand
-        property int batteryPercentChanged: batteryChargePercentage.percent
+        height: parent.width > parent.height ? parent.height : parent.width
+        width: height
 
-        anchors.fill: parent
-        visible: nightstandMode.active
-        layer {
-            enabled: true
-            samples: 4
-            smooth: true
-            textureSize: Qt.size(nightstandMode.width * 2, nightstandMode.height * 2)
+        Image {
+            anchors.centerIn: parent
+            source: imgPath +
+                    wallClock.time.toLocaleString(Qt.locale(), "hh am").slice(0, 2) +
+                    (nightstandMode.active || displayAmbient ? "-bw.svg" : ".svg")
+            sourceSize.width: parent.width
+            sourceSize.height: parent.height
+            width: parent.width
+            height: parent.height
         }
 
-        Shape {
-            id: chargeArc
+        Image {
+            anchors.centerIn: parent
+            source: imgPath +
+                    wallClock.time.toLocaleString(Qt.locale("en_EN"), "ap").toLowerCase().slice(0, 2) + ".svg"
+            visible: use12H.value
+            sourceSize.width: parent.width
+            sourceSize.height: parent.height
+            width: parent.width
+            height: parent.height
+        }
 
-            property real angle: batteryChargePercentage.percent * 360 / 100
-            // radius of arc is scalefactor * height or width
-            property real arcStrokeWidth: .016
-            property real scalefactor: .45 - (arcStrokeWidth / 2)
-            property var chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
-            readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
+        Text {
+            id: minuteDisplay
 
-            anchors.fill: parent
-            smooth: true
-            antialiasing: true
+            anchors {
+                bottom: parent.bottom
+                bottomMargin: parent.height * .15
+                horizontalCenter: parent.horizontalCenter
+                horizontalCenterOffset: parent.width*.2
+            }
+            font {
+                pixelSize: parent.height * .22
+                family: "Source Sans Pro"
+                styleName: "Light"
+            }
+            color: nightstandMode.active || displayAmbient ? "#000" : "#fff"
+            text: wallClock.time.toLocaleString(Qt.locale(), "mm")
 
-            ShapePath {
-                fillColor: "transparent"
-                strokeColor: chargeArc.colorArray[chargeArc.chargecolor]
-                strokeWidth: parent.height * chargeArc.arcStrokeWidth
-                capStyle: ShapePath.RoundCap
-                joinStyle: ShapePath.MiterJoin
-                startX: width / 2
-                startY: height * ( .5 - chargeArc.scalefactor)
+            Behavior on text {
+                enabled: !displayAmbient
 
-                PathAngleArc {
-                    centerX: parent.width / 2
-                    centerY: parent.height / 2
-                    radiusX: chargeArc.scalefactor * parent.width
-                    radiusY: chargeArc.scalefactor * parent.height
-                    startAngle: -90
-                    sweepAngle: chargeArc.angle
-                    moveToStart: false
+                SequentialAnimation {
+                    NumberAnimation { target: minuteDisplay; property: "opacity"; to: 0 }
+                    PropertyAction {}
+                    NumberAnimation { target: minuteDisplay; property: "opacity"; to: 1 }
                 }
             }
         }
 
-        Text {
-            id: batteryPercent
+        Item {
+            id: nightstandMode
 
-            anchors {
-                centerIn: parent
-                verticalCenterOffset: -parent.width * .28
-            }
+            readonly property bool active: nightstand
+            property int batteryPercentChanged: batteryChargePercentage.percent
 
-            font {
-                pixelSize: parent.width * .13
-                family: "Source Sans Pro"
-                styleName: "Light"
-            }
+            anchors.fill: parent
             visible: nightstandMode.active
-            color: chargeArc.colorArray[chargeArc.chargecolor]
-            text: batteryChargePercentage.percent
+            layer {
+                enabled: true
+                samples: 4
+                smooth: true
+                textureSize: Qt.size(nightstandMode.width * 2, nightstandMode.height * 2)
+            }
+
+            Shape {
+                id: chargeArc
+
+                property real angle: batteryChargePercentage.percent * 360 / 100
+                // radius of arc is scalefactor * height or width
+                property real arcStrokeWidth: .016
+                property real scalefactor: .45 - (arcStrokeWidth / 2)
+                property real chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
+                readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
+
+                anchors.fill: parent
+                smooth: true
+                antialiasing: true
+
+                ShapePath {
+                    fillColor: "transparent"
+                    strokeColor: chargeArc.colorArray[chargeArc.chargecolor]
+                    strokeWidth: parent.height * chargeArc.arcStrokeWidth
+                    capStyle: ShapePath.RoundCap
+                    joinStyle: ShapePath.MiterJoin
+                    startX: chargeArc.width / 2
+                    startY: chargeArc.height * ( .5 - chargeArc.scalefactor)
+
+                    PathAngleArc {
+                        centerX: chargeArc.width / 2
+                        centerY: chargeArc.height / 2
+                        radiusX: chargeArc.scalefactor * chargeArc.width
+                        radiusY: chargeArc.scalefactor * chargeArc.height
+                        startAngle: -90
+                        sweepAngle: chargeArc.angle
+                        moveToStart: false
+                    }
+                }
+            }
+
+            Text {
+                id: batteryPercent
+
+                anchors {
+                    centerIn: parent
+                    verticalCenterOffset: -parent.width * .28
+                }
+
+                font {
+                    pixelSize: parent.width * .13
+                    family: "Source Sans Pro"
+                    styleName: "Light"
+                }
+                visible: nightstandMode.active
+                color: chargeArc.colorArray[chargeArc.chargecolor]
+                text: batteryChargePercentage.percent
+            }
         }
-    }
 
-    MceBatteryLevel {
-        id: batteryChargePercentage
-    }
+        MceBatteryLevel {
+            id: batteryChargePercentage
+        }
 
-    MceBatteryState {
-        id: batteryChargeState
-    }
+        MceBatteryState {
+            id: batteryChargeState
+        }
 
-    MceCableState {
-        id: mceCableState
-    }
+        MceCableState {
+            id: mceCableState
+        }
 
-    Component.onCompleted: {
-        burnInProtectionManager.leftOffset = Qt.binding(function() { return width * nightstandMode.active ? .05 : .4})
-        burnInProtectionManager.rightOffset = Qt.binding(function() { return width * .05})
-        burnInProtectionManager.topOffset = Qt.binding(function() { return height * nightstandMode.active ? .05 : .4})
-        burnInProtectionManager.bottomOffset = Qt.binding(function() { return height * .05})
+        Component.onCompleted: {
+            burnInProtectionManager.leftOffset = Qt.binding(function() { return width * nightstandMode.active ? .05 : .4})
+            burnInProtectionManager.rightOffset = Qt.binding(function() { return width * .05})
+            burnInProtectionManager.topOffset = Qt.binding(function() { return height * nightstandMode.active ? .05 : .4})
+            burnInProtectionManager.bottomOffset = Qt.binding(function() { return height * .05})
+        }
     }
 }
