@@ -45,7 +45,7 @@ ListView {
     }
 
     property int year: todayClock.time.getFullYear()
-    property int month: todayClock.time.getMonth()+1
+    property int month: todayClock.time.getMonth()
     property int day: todayClock.time.getDate()
 
     ConfigurationValue {
@@ -152,8 +152,8 @@ ListView {
 
     model: AgendaModel {
         id: agendaModel
-        startDate: new Date(year, month, day)
-        endDate: startDate
+        startDate: new Date(year, month, day, 0, 0, 0)
+        endDate: new Date(year, month, day, 23, 59, 59)
     }
 
     delegate: Component {
