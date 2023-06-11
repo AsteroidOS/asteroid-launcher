@@ -50,7 +50,7 @@
         <location filename="../src/qml/notifications/NotificationActions.qml" line="138"/>
         <location filename="../src/qml/notifications/NotificationView.qml" line="161"/>
         <source>Dismiss</source>
-        <translation>إلغاء</translation>
+        <translation>تجاهل</translation>
     </message>
     <message id="id-now">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="58"/>
