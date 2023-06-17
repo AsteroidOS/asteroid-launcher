@@ -83,7 +83,7 @@
     <message id="id-no-notifications">
         <location filename="../src/qml/notifications/NotificationsPanel.qml" line="156"/>
         <source>No notifications</source>
-        <translation>No hay notificaciones</translation>
+        <translation>Sin notificaciones</translation>
     </message>
     <message id="id-today">
         <location filename="../src/qml/today/Today.qml" line="136"/>
