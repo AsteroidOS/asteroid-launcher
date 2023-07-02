@@ -107,6 +107,12 @@ Item {
         defaultValue: AsteroidUtils.DeviceInfo.needsBurnInProtection
     }
 
+    ConfigurationValue {
+        id: alwaysOnDisplay
+        key: "/org/asteroidos/settings/always-on-display"
+        defaultValue: true
+    }
+
     Item {
         id: burnInProtectionManager
 
@@ -255,6 +261,12 @@ Item {
     ConfigurationValue {
         id: nightstandEnabled
         key: "/desktop/asteroid/nightstand/enabled"
+        defaultValue: true
+    }
+
+    ConfigurationValue {
+        id: nightstandAlwaysOnDisplay
+        key: "/desktop/asteroid/nightstand/always-on-display"
         defaultValue: false
     }
 
@@ -278,6 +290,7 @@ Item {
                     // enter nightstand mode
                     oldBrightness = displaySettings.brightness
                     displaySettings.brightness = nightstandBrightness.value
+                    displaySettings.lowPowerModeEnabled = nightstandAlwaysOnDisplay.value
                 }
             } else {
                 if (nightstandEnabled.value) {
@@ -288,6 +301,7 @@ Item {
                     // exit nightstand mode immediately
                     nightstandDelayTimer.stop()
                     displaySettings.brightness = oldBrightness
+                    displaySettings.lowPowerModeEnabled = alwaysOnDisplay.value
                 }
             }
         }
@@ -298,6 +312,7 @@ Item {
             onTriggered: {
                 // timer expired, so restore brightness
                 displaySettings.brightness = nightstandMode.oldBrightness
+                displaySettings.lowPowerModeEnabled = alwaysOnDisplay.value
             }
         }
     }
