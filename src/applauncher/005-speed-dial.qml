@@ -55,6 +55,7 @@ Item {
     PathView {
         id: pv
         property int borderRadius: pv.width*0.71
+        property var prevOffset: 0
         anchors.fill: parent
         model: launcherModel
         focus: true
@@ -131,6 +132,10 @@ Item {
             }
         }
 
+        onMovementStarted: {
+            prevOffset = offset
+        }
+
         onCurrentItemChanged: {
             root.selectedLauncherItem = launcherModel.get(getAtOffset(pv.currentIndex))
             if (root.selectedLauncherItem.object !== undefined) {
@@ -138,6 +143,15 @@ Item {
             }
         }
         onOffsetChanged: {
+            var movedDifference = Math.abs(prevOffset - offset)
+            // Use `1` as the threshold interval while dragging. Avoid jumpy behaviour.
+            if (movedDifference > 1 && movedDifference < launcherModel.itemCount - 1) {
+                offset = prevOffset
+                return
+            }
+
+            prevOffset = offset
+
             var itemOffset = launcherModel.itemCount - offset;
             var index = getAtOffset(itemOffset)
             var lowerStop = Math.floor(index)
