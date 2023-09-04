@@ -63,11 +63,12 @@ Item {
         color: "black"
         visible: false
         Image {
+            property var logoSize: (parent.width > parent.height ? parent.height : parent.width) * 0.55
             id: logoSvg
             anchors.fill: parent
             fillMode: Image.Pad
             source: "qrc:/images/bootlogo.svg"
-            sourceSize: Qt.size(Dims.w(55), Dims.h(55))
+            sourceSize: Qt.size(logoSize, logoSize)
             transform: Scale {
                 id: logoTransform
                 property real scale: 1
