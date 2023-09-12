@@ -82,7 +82,7 @@ void GestureFilterArea::mousePressEvent(QMouseEvent *event) {
         m_velocityY = 0;
         m_tracing = true;
         m_horizontal = false;
-        m_prevPos = event->windowPos();
+        m_prevPos = event->localPos();
         m_counter = 0;
     }
 }
@@ -94,8 +94,8 @@ void GestureFilterArea::mouseMoveEvent(QMouseEvent *event) {
     }
     m_counter++;
 
-    m_velocityX = (m_velocityX*(m_counter-1) + (event->windowPos().x()-m_prevPos.x()))/m_counter;
-    m_velocityY = (m_velocityY*(m_counter-1) + (event->windowPos().y()-m_prevPos.y()))/m_counter;
+    m_velocityX = (m_velocityX*(m_counter-1) + (event->localPos().x()-m_prevPos.x()))/m_counter;
+    m_velocityY = (m_velocityY*(m_counter-1) + (event->localPos().y()-m_prevPos.y()))/m_counter;
     if(m_tracing) {
         if (abs(m_velocityX) > abs(m_velocityY)) {
             if(m_velocityX > m_threshold) {
@@ -137,13 +137,13 @@ void GestureFilterArea::mouseMoveEvent(QMouseEvent *event) {
     } else if(m_pressed) {
         qreal delta;
         if(m_horizontal)
-            delta = event->windowPos().x() - m_prevPos.x();
+            delta = event->localPos().x() - m_prevPos.x();
         else
-            delta = event->windowPos().y() - m_prevPos.y();
+            delta = event->localPos().y() - m_prevPos.y();
 
         emit swipeMoved(m_horizontal, delta);
     }
-    m_prevPos = event->windowPos();
+    m_prevPos = event->localPos();
 }
 
 void GestureFilterArea::mouseReleaseEvent(QMouseEvent *event) {
