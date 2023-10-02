@@ -243,7 +243,7 @@ Item {
     ConfigurationValue {
         id: watchfaceNightstandSource
         key: "/desktop/asteroid/nightstand/watchface"
-        defaultValue: "file:///usr/share/asteroid-launcher/watchfaces/005-analog-nordic.qml"
+        defaultValue: "file:///usr/share/asteroid-launcher/watchfaces/000-default-digital.qml"
     }
 
     ConfigurationValue {
