@@ -53,6 +53,7 @@ Item {
     Item {
         property bool ready: false
         id: appLayer
+        visible: comp.appActive
         z: 2
 
         opacity: (width-2*gestureArea.value)/width
@@ -102,7 +103,9 @@ Item {
                 if (gestureArea.progress >= swipeThreshold) {
                     swipeAnimation.valueTo = inverted ? -max : max
                     swipeAnimation.start()
-                    Lipstick.compositor.closeClientForWindowId(comp.topmostWindow.window.windowId)
+                    var app = comp.topmostWindow
+                    comp.topmostWindow = comp.homeWindow
+                    Lipstick.compositor.closeClientForWindowId(app.window.windowId)
                 } else {
                     cancelAnimation.start()
                 }
