@@ -88,7 +88,7 @@
     <message id="id-today">
         <location filename="../src/qml/today/Today.qml" line="136"/>
         <source>Today</source>
-        <translation type="unfinished"></translation>
+        <translation>Hodie</translation>
     </message>
     <message id="id-no-events-today">
         <location filename="../src/qml/today/Today.qml" line="207"/>
@@ -98,7 +98,7 @@
     <message id="id-date-page">
         <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="201"/>
         <source>Date</source>
-        <translation type="unfinished"></translation>
+        <translation>Data</translation>
     </message>
     <message id="id-add-alarm">
         <location filename="../src/qml/firstrun/FakeAlarmclock.qml" line="85"/>
@@ -113,12 +113,12 @@
     <message id="id-language-page">
         <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="171"/>
         <source>Language</source>
-        <translation type="unfinished"></translation>
+        <translation>Lingua</translation>
     </message>
     <message id="id-time-page">
         <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="190"/>
         <source>Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Hora</translation>
     </message>
     <message id="id-tutorial-welcome-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="60"/>
