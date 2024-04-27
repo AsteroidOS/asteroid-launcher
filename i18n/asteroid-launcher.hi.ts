@@ -64,7 +64,7 @@
         <location filename="../src/qml/notifications/NotificationActions.qml" line="179"/>
         <location filename="../src/qml/notifications/NotificationView.qml" line="68"/>
         <source>m</source>
-        <translation type="unfinished"></translation>
+        <translation>मि</translation>
     </message>
     <message id="id-hour-abbrev">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="68"/>
