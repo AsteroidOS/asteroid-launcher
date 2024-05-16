@@ -62,6 +62,16 @@ Item {
     property bool forbidRight:     false
     */
 
+    Connections {
+        target: grid
+        function onCurrentVerticalPosChanged() {
+            // Move app view to beginning when the watchface is visible.
+            if (grid.currentVerticalPos === 0) {
+                appsView.positionViewAtBeginning()
+            }
+        }
+    }
+
     Component {
         id: gridDelegate
 
