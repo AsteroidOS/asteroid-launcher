@@ -72,13 +72,13 @@
         <location filename="../src/qml/notifications/NotificationActions.qml" line="201"/>
         <location filename="../src/qml/notifications/NotificationView.qml" line="73"/>
         <source>h</source>
-        <translation type="unfinished"></translation>
+        <translation>घ</translation>
     </message>
     <message id="id-day-abbrev">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="72"/>
         <location filename="../src/qml/notifications/NotificationView.qml" line="77"/>
         <source>d</source>
-        <translation type="unfinished">दिन</translation>
+        <translation>दिन</translation>
     </message>
     <message id="id-no-notifications">
         <location filename="../src/qml/notifications/NotificationsPanel.qml" line="156"/>
