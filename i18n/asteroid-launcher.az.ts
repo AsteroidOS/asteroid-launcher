@@ -44,13 +44,13 @@
     <message id="id-dismiss-all">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="123"/>
         <source>Dismiss all</source>
-        <translation>Hamısını rədd et</translation>
+        <translation>Hamısını ləğv et</translation>
     </message>
     <message id="id-dismiss">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="138"/>
         <location filename="../src/qml/notifications/NotificationView.qml" line="161"/>
         <source>Dismiss</source>
-        <translation>Rədd et</translation>
+        <translation>İmtina et</translation>
     </message>
     <message id="id-now">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="58"/>
@@ -148,7 +148,7 @@
     <message id="id-tutorial-notifications-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="95"/>
         <source>can be accessed on the left.</source>
-        <translation>soldan daxil olmaq olar.</translation>
+        <translation>solda daxil olmaq olar.</translation>
     </message>
     <message id="id-tutorial-today-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="122"/>
@@ -183,7 +183,7 @@
     <message id="id-tutorial-startapp-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="269"/>
         <source>Start an app</source>
-        <translation>Tətbiqi başladın</translation>
+        <translation>Tətbiqi başlat</translation>
     </message>
     <message id="id-tutorial-startapp-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="271"/>
@@ -193,7 +193,7 @@
     <message id="id-tutorial-leaveapp-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="334"/>
         <source>Leave an app</source>
-        <translation>Proqramdan çıxın</translation>
+        <translation>Tətbiqdən çıx</translation>
     </message>
     <message id="id-tutorial-leaveapp-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="336"/>
