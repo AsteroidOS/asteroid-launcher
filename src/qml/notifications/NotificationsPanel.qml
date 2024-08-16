@@ -121,7 +121,11 @@ Item {
                 }
             }
 
-            panelsGrid.moveTo(-first, 0)
+            if (first === 0 && notifModel.itemCount > 0) {
+                panelsGrid.moveTo(-1, 0)
+            } else {
+                panelsGrid.moveTo(-first, 0)
+            }
         }
     }
 
