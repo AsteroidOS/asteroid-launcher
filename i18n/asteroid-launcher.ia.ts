@@ -12,7 +12,7 @@
     <message id="id-btagent-confirm">
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="182"/>
         <source>Confirm:</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmar:</translation>
     </message>
     <message id="id-btagent-passkey">
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="194"/>
@@ -28,12 +28,12 @@
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="218"/>
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="230"/>
         <source>PIN Code:</source>
-        <translation type="unfinished"></translation>
+        <translation>Codice PIN:</translation>
     </message>
     <message id="id-btagent-enter-pincode">
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="235"/>
         <source>Enter PIN Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Insere le codice PIN</translation>
     </message>
     <message id="id-snooze">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="115"/>
@@ -56,7 +56,7 @@
         <location filename="../src/qml/notifications/NotificationActions.qml" line="58"/>
         <location filename="../src/qml/notifications/NotificationView.qml" line="63"/>
         <source>Now</source>
-        <translation type="unfinished"></translation>
+        <translation>Ora</translation>
     </message>
     <message id="id-minute-abbrev">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="63"/>
@@ -64,7 +64,7 @@
         <location filename="../src/qml/notifications/NotificationActions.qml" line="179"/>
         <location filename="../src/qml/notifications/NotificationView.qml" line="68"/>
         <source>m</source>
-        <translation type="unfinished"></translation>
+        <translation>m</translation>
     </message>
     <message id="id-hour-abbrev">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="68"/>
@@ -72,18 +72,18 @@
         <location filename="../src/qml/notifications/NotificationActions.qml" line="201"/>
         <location filename="../src/qml/notifications/NotificationView.qml" line="73"/>
         <source>h</source>
-        <translation type="unfinished"></translation>
+        <translation>h</translation>
     </message>
     <message id="id-day-abbrev">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="72"/>
         <location filename="../src/qml/notifications/NotificationView.qml" line="77"/>
         <source>d</source>
-        <translation type="unfinished"></translation>
+        <translation>d</translation>
     </message>
     <message id="id-no-notifications">
         <location filename="../src/qml/notifications/NotificationsPanel.qml" line="156"/>
         <source>No notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Sin notificationes</translation>
     </message>
     <message id="id-today">
         <location filename="../src/qml/today/Today.qml" line="136"/>
