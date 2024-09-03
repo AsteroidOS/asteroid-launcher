@@ -22,7 +22,7 @@
     <message id="id-btagent-enterkey">
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="210"/>
         <source>Enter Key</source>
-        <translation type="unfinished"></translation>
+        <translation>Insere le clave</translation>
     </message>
     <message id="id-btagent-pincode">
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="218"/>
@@ -44,13 +44,13 @@
     <message id="id-dismiss-all">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="123"/>
         <source>Dismiss all</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignorar toto</translation>
     </message>
     <message id="id-dismiss">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="138"/>
         <location filename="../src/qml/notifications/NotificationView.qml" line="161"/>
         <source>Dismiss</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignorar</translation>
     </message>
     <message id="id-now">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="58"/>
@@ -133,7 +133,7 @@
     <message id="id-tutorial-indicators-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="73"/>
         <source>Indicators</source>
-        <translation type="unfinished"></translation>
+        <translation>Indicatores</translation>
     </message>
     <message id="id-tutorial-indicators-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="75"/>
@@ -158,7 +158,7 @@
     <message id="id-tutorial-today-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="124"/>
         <source>are on the right.</source>
-        <translation type="unfinished"></translation>
+        <translation>es al dextre.</translation>
     </message>
     <message id="id-tutorial-quicksettings-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="171"/>
@@ -168,7 +168,7 @@
     <message id="id-tutorial-quicksettings-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="173"/>
         <source>are up here.</source>
-        <translation type="unfinished"></translation>
+        <translation>es hic in alto.</translation>
     </message>
     <message id="id-tutorial-applications-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="220"/>
@@ -178,7 +178,7 @@
     <message id="id-tutorial-applications-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="222"/>
         <source>are down there.</source>
-        <translation type="unfinished"></translation>
+        <translation>es hic in basso.</translation>
     </message>
     <message id="id-tutorial-startapp-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="269"/>
@@ -199,12 +199,12 @@
         <location filename="../src/qml/firstrun/Tutorial.qml" line="336"/>
         <source>following a rightward gesture.</source>
         <oldsource>following a rightward gesture</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>glissante verso le dextra.</translation>
     </message>
     <message id="id-tutorial-enjoy-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="400"/>
         <source>Enjoy!</source>
-        <translation type="unfinished"></translation>
+        <translation>Gaude lo!</translation>
     </message>
 </context>
 </TS>
