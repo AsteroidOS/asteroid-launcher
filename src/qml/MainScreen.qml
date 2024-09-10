@@ -208,7 +208,10 @@ Item {
             if (Lipstick.compositor.ambientEnabled) grid.moveTo(0, 0)
         }
         function onDisplayAmbientChanged() { wallpaperAnimation.duration = 300 }
-        function onDisplayAmbientEntered() { wallpaperDarkener.opacity = 1 }
+        function onDisplayAmbientEntered() {
+            wallpaperDarkener.opacity = 1
+            grid.hideOffscreen();
+        }
         function onDisplayAmbientLeft() {
             wallpaperDarkener.opacity = 0
             if (burnInProtectionManager.enabled) leftIndicator.anchors.verticalCenterOffset = 0

@@ -88,6 +88,15 @@ GestureFilterArea {
         currentVerticalPos = posY
     }
 
+    function hideOffscreen() {
+        var currentPanelName = currentHorizontalPos + "x" + currentVerticalPos
+        for(var name in panels) {
+            if(panels[name] !== undefined) {
+                if (name.localeCompare(currentPanelName) !==0)  panels[name].visible = false
+            }
+        }
+    }
+
     onWidthChanged: {
         for(var name in panels) {
             if(panels[name] !== undefined) {
@@ -148,16 +157,21 @@ GestureFilterArea {
     property alias contentY: content.y
 
     onContentXChanged: {
+        if (displayAmbient) return
+        panelsHideTimeout.restart()
         if (panels[(currentHorizontalPos+1) + "x" + currentVerticalPos] !== undefined) panels[(currentHorizontalPos+1) + "x" + currentVerticalPos].visible = true
         if (panels[(currentHorizontalPos-1) + "x" + currentVerticalPos] !== undefined) panels[(currentHorizontalPos-1) + "x" + currentVerticalPos].visible = true
     }
 
     onContentYChanged: {
+        if (displayAmbient) return
+        panelsHideTimeout.restart()
         if (panels[currentHorizontalPos + "x" + (currentVerticalPos-1)] !== undefined) panels[currentHorizontalPos + "x" + (currentVerticalPos-1)].visible = true
         if (panels[currentHorizontalPos + "x" + (currentVerticalPos+1)] !== undefined) panels[currentHorizontalPos + "x" + (currentVerticalPos+1)].visible = true
     }
 
     onSwipeMoved: {
+        panelsHideTimeout.stop()
         if(horizontal) {
             contentX = content.x + delta
             var currentPanelX = -currentHorizontalPos*panelWidth
@@ -206,17 +220,18 @@ GestureFilterArea {
         animateIndicators()
     }
 
+    Timer {
+        id: panelsHideTimeout
+        interval: 500
+        running: true
+        repeat: false
+        onTriggered: hideOffscreen();
+    }
+
     NumberAnimation {
         id: contentAnim
         target: content
         duration: 100
-        onStopped: {
-            var currentPanelName = currentHorizontalPos + "x" + currentVerticalPos
-            for(var name in panels) {
-                if(panels[name] !== undefined) {
-                    if (name.localeCompare(currentPanelName) !==0)  panels[name].visible = false
-                }
-            }
-        }
+        onStopped: panelsHideTimeout.restart()
     }
 }
