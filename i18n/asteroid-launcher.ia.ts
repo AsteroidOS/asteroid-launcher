@@ -7,7 +7,7 @@
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="158"/>
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="170"/>
         <source>Authorize:</source>
-        <translation type="unfinished"></translation>
+        <translation>Autorisar:</translation>
     </message>
     <message id="id-btagent-confirm">
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="182"/>
@@ -17,7 +17,7 @@
     <message id="id-btagent-passkey">
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="194"/>
         <source>Pass Key:</source>
-        <translation type="unfinished"></translation>
+        <translation>Clave de accesso:</translation>
     </message>
     <message id="id-btagent-enterkey">
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="210"/>
@@ -39,7 +39,7 @@
         <location filename="../src/qml/notifications/NotificationActions.qml" line="115"/>
         <location filename="../src/qml/notifications/NotificationActions.qml" line="157"/>
         <source>Snooze</source>
-        <translation type="unfinished"></translation>
+        <translation>Postponer</translation>
     </message>
     <message id="id-dismiss-all">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="123"/>
@@ -148,7 +148,7 @@
     <message id="id-tutorial-notifications-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="95"/>
         <source>can be accessed on the left.</source>
-        <translation type="unfinished"></translation>
+        <translation>pote esser accedite al sinistra.</translation>
     </message>
     <message id="id-tutorial-today-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="122"/>
