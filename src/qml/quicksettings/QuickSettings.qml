@@ -35,14 +35,18 @@ import org.nemomobile.systemsettings 1.0
 import Nemo.Ngf 1.0
 import org.asteroid.controls 1.0
 import org.asteroid.utils 1.0
+import Connman 0.2
+import QtGraphicalEffects 1.15
+
 
 Item {
     id: rootitem
     width: parent.width
     height: parent.height
 
-    property bool forbidLeft:  true
+    property bool forbidLeft: true
     property bool forbidRight: true
+    property int toggleSize: Dims.l(28)
 
     MceBatteryLevel {
         id: batteryChargePercentage
@@ -52,57 +56,14 @@ Item {
         id: batteryChargeState
     }
 
-    DBusInterface {
-        id: mce_dbus
-
-        service: "com.nokia.mce"
-        path: "/com/nokia/mce/request"
-        iface: "com.nokia.mce.request"
-
-        bus: DBus.SystemBus
+    MceChargerType {
+        id: mceChargerType
     }
 
-    QuickSettingsToggle {
-        id: lockedToggle
-        anchors.top: rootitem.top
-        anchors.horizontalCenter: rootitem.horizontalCenter
-        icon: "ios-unlock"
-        togglable: false
-        toggled: false
-        onUnchecked: mce_dbus.call("req_display_state_lpm", undefined)
-    }
-
+    // Sync brightness toggle with display settings
     DisplaySettings {
         id: displaySettings
         onBrightnessChanged: updateBrightnessToggle()
-    }
-
-    QuickSettingsToggle {
-        id: brightnessToggle
-        anchors.left: rootitem.left
-        anchors.verticalCenter: rootitem.verticalCenter
-        icon: "ios-sunny"
-        onChecked: displaySettings.brightness = 100
-        onUnchecked: displaySettings.brightness = 0
-        Component.onCompleted: updateBrightnessToggle()
-    }
-
-    function updateBrightnessToggle() {
-        brightnessToggle.toggled = displaySettings.brightness > 80
-    }
-
-    BluetoothStatus {
-        id: btStatus
-        onPoweredChanged: bluetoothToggle.toggled = btStatus.powered
-    }
-
-    QuickSettingsToggle {
-        id: bluetoothToggle
-        anchors.centerIn: parent
-        icon: btStatus.connected ? "ios-bluetooth-connected" : "ios-bluetooth"
-        onChecked:   btStatus.powered = true
-        onUnchecked: btStatus.powered = false
-        Component.onCompleted: toggled = btStatus.powered
     }
 
     NonGraphicalFeedback {
@@ -111,9 +72,10 @@ Item {
     }
 
     ProfileControl {
-         id: profileControl
+        id: profileControl
     }
 
+    // Haptic feedback delay timer
     Timer {
         id: delayTimer
         interval: 125
@@ -121,44 +83,255 @@ Item {
         onTriggered: feedback.play()
     }
 
-    QuickSettingsToggle {
-        id: hapticsToggle
-        anchors.right: rootitem.right
-        anchors.verticalCenter: rootitem.verticalCenter
-        icon: "ios-watch-vibrating"
-        onChecked: {
-            profileControl.profile = "general";
-            delayTimer.start();
-        }
-        onUnchecked: profileControl.profile = "silent";
-        Component.onCompleted: toggled = profileControl.profile == "general"
+    BluetoothStatus {
+        id: btStatus
+        onPoweredChanged: bluetoothToggle.toggled = btStatus.powered
+    }
+
+    NetworkTechnology {
+        id: wifiStatus
+        path: "/net/connman/technology/wifi"
+    }
+
+    function updateBrightnessToggle() {
+        brightnessToggle.toggled = displaySettings.brightness > 80
     }
 
     Item {
-        id: battery
+        id: batteryMeter
+        width: rootitem.width
+        anchors.bottom: rootitem.bottom
+        clip: true  // Clip contents to batteryMeter bounds
+
+        // Base height based on battery percentage
+        property real baseHeight: rootitem.height * (batteryChargePercentage.percent / 100)
+        property real waveAmplitude: rootitem.height * 0.05  // Wave wiggle range (5% of screen height)
+        property real waveTime: 0  // Timing for sine wave animation
+
+        // Sine wave animation for top edge wiggle
+        NumberAnimation on waveTime {
+            from: 0
+            to: 2 * Math.PI  // Full sine wave cycle
+            duration: 3000  // Matches waveDown duration
+            loops: Animation.Infinite
+            running: true
+        }
+
+        height: baseHeight + waveAmplitude * Math.sin(waveTime)
+
+        Rectangle {
+            id: chargeLayer
+            width: parent.width
+            height: parent.height
+            color: {
+                if (batteryChargePercentage.percent < 10) return "red"
+                else if (batteryChargePercentage.percent <= 30) return "orange"
+                else return "green"
+            }
+            opacity: 0.33
+            visible: mceChargerType.type != MceChargerType.None  // Charger connected
+
+            Item {
+                id: waveUp
+                width: batteryMeter.width
+                height: rootitem.height / 2  // Half screen height for subtle emission
+                y: chargeLayer.height
+
+                Rectangle {
+                    id: waveUpBase
+                    width: parent.width
+                    height: parent.height
+                    color: "#222222"
+                    visible: false
+                }
+
+                LinearGradient {
+                    anchors.fill: waveUpBase
+                    source: waveUpBase
+                    start: Qt.point(0, 0)
+                    end: Qt.point(0, height)
+                    gradient: Gradient {
+                        GradientStop { position: 0.0; color: "#00FFFFFF" }
+                        GradientStop { position: 0.5; color: "#22FFFFFF" }
+                        GradientStop { position: 1.0; color: "#00FFFFFF" }
+                    }
+                }
+
+                NumberAnimation on y {
+                    from: chargeLayer.height
+                    to: -waveUp.height
+                    duration: 1000
+                    easing.type: Easing.OutSine
+                    loops: Animation.Infinite
+                    running: chargeLayer.visible
+                }
+            }
+        }
+
+        Rectangle {
+            id: dischargeLayer
+            width: parent.width
+            height: parent.height
+            color: {
+                if (batteryChargePercentage.percent < 10) return "red"
+                else if (batteryChargePercentage.percent <= 30) return "orange"
+                else return "green"
+            }
+            opacity: 0.33
+            visible: mceChargerType.type == MceChargerType.None  // No charger connected
+
+            Item {
+                id: waveDown
+                width: batteryMeter.width
+                height: rootitem.height / 2  // Half screen height for subtle emission
+                y: -height
+
+                Rectangle {
+                    id: waveDownBase
+                    width: parent.width
+                    height: parent.height
+                    color: "#222222"
+                    visible: false
+                }
+
+                LinearGradient {
+                    anchors.fill: waveDownBase
+                    source: waveDownBase
+                    start: Qt.point(0, 0)
+                    end: Qt.point(0, height)
+                    gradient: Gradient {
+                        GradientStop { position: 0.0; color: "#00FFFFFF" }
+                        GradientStop { position: 0.5; color: "#22FFFFFF" }
+                        GradientStop { position: 1.0; color: "#00FFFFFF" }
+                    }
+                }
+
+                SequentialAnimation on y {
+                    id: waveDownAnimation
+                    loops: Animation.Infinite
+                    running: dischargeLayer.visible
+                    PauseAnimation {
+                        duration: 1500  // Sync with downward peak of wiggle
+                    }
+                    NumberAnimation {
+                        from: -waveDown.height
+                        to: dischargeLayer.height
+                        duration: 3000
+                        easing.type: Easing.OutCubic
+                    }
+                }
+            }
+        }
+    }
+
+    Item {
+        id: batteryChargeIndicator
+        anchors.horizontalCenter: rootitem.horizontalCenter
+        anchors.top: rootitem.top
+        height: parent.height/4
+        width: batteryIndicator.width
+        opacity: mceChargerType.type == MceChargerType.None ? 0.4 : 0.8
+
+        Label {
+            id: batteryChargeText
+            font {
+                pixelSize: parent.height/5
+                bold: true
+            }
+            text: mceChargerType.type == MceChargerType.None ? "Discharging" : "Charging"
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
+    }
+
+    Item {
+        id: batteryPercent
         anchors.horizontalCenter: rootitem.horizontalCenter
         anchors.bottom: rootitem.bottom
-        height: parent.height/3
-        width: batteryIcon.width + batteryIndicator.width
+        height: parent.height/4
+        width: batteryIndicator.width
+        opacity: mceChargerType.type == MceChargerType.None ? 0.4 : 0.8
 
-        Icon {
-            id: batteryIcon
-            name: {
-                if(batteryChargeState.value == MceBatteryState.Charging) return "ios-battery-charging"
-                else if(batteryChargePercentage.percent > 15)            return "ios-battery-full"
-                else                                                     return "ios-battery-dead"
-            }
-            width:  parent.height/2
-            height: width
-            anchors.left: parent.left
-            anchors.verticalCenter: parent.verticalCenter
-        }
         Label {
-            id: batteryIndicator
-            font.pixelSize: parent.height/4
+            id: batteryPercentText
+            font {
+                pixelSize: parent.height/3
+                styleName: "SemiBold"
+            }
             text: batteryChargePercentage.percent + "%"
-            anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
+    }
+
+    Grid {
+        id: quickSettingsGrid
+        anchors.centerIn: parent
+        rows: 2
+        columns: 3
+        spacing: Dims.l(2)
+
+        QuickSettingsToggle {
+            id: brightnessToggle
+            width: toggleSize
+            height: toggleSize
+            icon: "ios-sunny"
+            onChecked: displaySettings.brightness = 100
+            onUnchecked: displaySettings.brightness = 0
+            Component.onCompleted: updateBrightnessToggle()
+        }
+
+        QuickSettingsToggle {
+            id: soundToggle
+            width: toggleSize
+            height: toggleSize
+            icon: "ios-sound-indicator-high"
+            toggled: true
+        }
+
+        QuickSettingsToggle {
+            id: hapticsToggle
+            width: toggleSize
+            height: toggleSize
+            icon: "ios-watch-vibrating"
+            onChecked: {
+                profileControl.profile = "general"
+                delayTimer.start()
+            }
+            onUnchecked: profileControl.profile = "silent"
+            Component.onCompleted: toggled = profileControl.profile == "general"
+        }
+
+        QuickSettingsToggle {
+            id: wifiToggle
+            width: toggleSize
+            height: toggleSize
+            icon: wifiStatus.connected ? "ios-wifi" : "ios-wifi-outline"
+            toggled: wifiStatus.powered
+            onChecked: wifiStatus.powered = true
+            onUnchecked: wifiStatus.powered = false
+            Component.onCompleted: Qt.callLater(function() { toggled = wifiStatus.powered })
+            Connections {
+                target: wifiStatus
+                function onPoweredChanged() { wifiToggle.toggled = wifiStatus.powered }
+            }
+        }
+
+        QuickSettingsToggle {
+            id: bluetoothToggle
+            width: toggleSize
+            height: toggleSize
+            icon: btStatus.connected ? "ios-bluetooth-connected" : "ios-bluetooth"
+            onChecked: btStatus.powered = true
+            onUnchecked: btStatus.powered = false
+            Component.onCompleted: toggled = btStatus.powered
+        }
+
+        QuickSettingsToggle {
+            id: settingsButton
+            width: toggleSize
+            height: toggleSize
+            icon: "ios-settings"
         }
     }
 }
