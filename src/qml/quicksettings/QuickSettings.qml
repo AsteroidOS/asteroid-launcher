@@ -46,35 +46,33 @@ Item {
     property bool forbidLeft: true
     property bool forbidRight: true
     property int toggleSize: Dims.l(30)  // Increased toggle size
+    property real chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
+    readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
-    MceBatteryLevel {
-        id: batteryChargePercentage
+    MceBatteryLevel { id: batteryChargePercentage }
+
+    MceBatteryState { id: batteryChargeState }
+
+    MceChargerType { id: mceChargerType }
+
+    DBusInterface {
+        id: mce_dbus
+
+        service: "com.nokia.mce"
+        path: "/com/nokia/mce/request"
+        iface: "com.nokia.mce.request"
+
+        bus: DBus.SystemBus
     }
 
-    MceBatteryState {
-        id: batteryChargeState
-    }
-
-    MceChargerType {
-        id: mceChargerType
-    }
-
-    // Sync brightness toggle with display settings
     DisplaySettings {
         id: displaySettings
-        onBrightnessChanged: updateBrightnessToggle()
     }
 
-    NonGraphicalFeedback {
-        id: feedback
-        event: "press"
-    }
+    NonGraphicalFeedback { id: feedback; event: "press" }
 
-    ProfileControl {
-        id: profileControl
-    }
+    ProfileControl { id: profileControl }
 
-    // Haptic feedback delay timer
     Timer {
         id: delayTimer
         interval: 125
@@ -92,201 +90,124 @@ Item {
         path: "/net/connman/technology/wifi"
     }
 
-    function updateBrightnessToggle() {
-        brightnessToggle.toggled = displaySettings.brightness > 80
-    }
-
     Item {
         id: batteryMeter
-        width: rootitem.width
-        anchors.bottom: rootitem.bottom
-        clip: true  // Clip contents to batteryMeter bounds
-
-        // Base height based on battery percentage
-        property real baseHeight: rootitem.height * (batteryChargePercentage.percent / 100)
-        property real waveAmplitude: rootitem.height * 0.05  // Wave wiggle range (5% of screen height)
-        property real waveTime: 0  // Timing for sine wave animation
-
-        // Sine wave animation for top edge wiggle
-        NumberAnimation on waveTime {
-            from: 0
-            to: 2 * Math.PI  // Full sine wave cycle
-            duration: 3000  // Matches waveDown duration
-            loops: Animation.Infinite
-            running: true
-        }
-
-        height: baseHeight + waveAmplitude * Math.sin(waveTime)
+        width: toggleSize * 1.8
+        height: Dims.l(8)
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: quickSettingsView.top
+        anchors.bottomMargin: Dims.l(8)
 
         Rectangle {
-            id: chargeLayer
+            id: batteryOutline
             width: parent.width
             height: parent.height
-            color: {
-                if (batteryChargePercentage.percent < 10) return "red"
-                else if (batteryChargePercentage.percent <= 30) return "orange"
-                else return "green"
-            }
-            opacity: 0.33
-            visible: mceChargerType.type != MceChargerType.None  // Charger connected
-
-            Item {
-                id: waveUp
-                width: batteryMeter.width
-                height: rootitem.height / 2  // Half screen height for subtle emission
-                y: chargeLayer.height
-
-                Rectangle {
-                    id: waveUpBase
-                    width: parent.width
-                    height: parent.height
-                    color: "#222222"
-                    visible: false
-                }
-
-                LinearGradient {
-                    anchors.fill: waveUpBase
-                    source: waveUpBase
-                    start: Qt.point(0, 0)
-                    end: Qt.point(0, height)
-                    gradient: Gradient {
-                        GradientStop { position: 0.0; color: "#00FFFFFF" }
-                        GradientStop { position: 0.5; color: "#22FFFFFF" }
-                        GradientStop { position: 1.0; color: "#00FFFFFF" }
-                    }
-                }
-
-                NumberAnimation on y {
-                    from: chargeLayer.height
-                    to: -waveUp.height
-                    duration: 1000
-                    easing.type: Easing.OutSine
-                    loops: Animation.Infinite
-                    running: chargeLayer.visible
-                }
-            }
+            color: "#FFFFFF"
+            opacity: 0.2
+            radius: height / 2
         }
 
         Rectangle {
-            id: dischargeLayer
-            width: parent.width
+            id: batteryFill
             height: parent.height
-            color: {
-                if (batteryChargePercentage.percent < 10) return "red"
-                else if (batteryChargePercentage.percent <= 30) return "orange"
-                else return "green"
+            width: {
+                var baseWidth = parent.width * (batteryChargePercentage.percent / 100)
+                if (mceChargerType.type != MceChargerType.None) {
+                    var waveAmplitude = parent.width * 0.05
+                    return baseWidth + waveAmplitude * Math.sin(waveTime)
+                }
+                return baseWidth
             }
-            opacity: 0.33
-            visible: mceChargerType.type == MceChargerType.None  // No charger connected
+            color: colorArray[chargecolor]
+            anchors.left: parent.left
+            opacity: mceChargerType.type == MceChargerType.None ? 0.4 : 0.45
 
-            Item {
-                id: waveDown
+            property real waveTime: 0
+
+            // Wave animation that only starts when chargeAnimationsCompleted is true
+            NumberAnimation on waveTime {
+                id: waveAnimation
+                running: mceChargerType.type != MceChargerType.None
+                from: 0
+                to: 2 * Math.PI
+                duration: 1500
+                loops: Animation.Infinite
+            }
+        }
+
+        layer.enabled: true
+        layer.effect: OpacityMask {
+            maskSource: Item {
                 width: batteryMeter.width
-                height: rootitem.height / 2  // Half screen height for subtle emission
-                y: -height
-
-                Rectangle {
-                    id: waveDownBase
-                    width: parent.width
-                    height: parent.height
-                    color: "#222222"
-                    visible: false
-                }
-
-                LinearGradient {
-                    anchors.fill: waveDownBase
-                    source: waveDownBase
-                    start: Qt.point(0, 0)
-                    end: Qt.point(0, height)
-                    gradient: Gradient {
-                        GradientStop { position: 0.0; color: "#00FFFFFF" }
-                        GradientStop { position: 0.5; color: "#22FFFFFF" }
-                        GradientStop { position: 1.0; color: "#00FFFFFF" }
-                    }
-                }
-
-                SequentialAnimation on y {
-                    id: waveDownAnimation
-                    loops: Animation.Infinite
-                    running: dischargeLayer.visible
-                    PauseAnimation {
-                        duration: 1500  // Sync with downward peak of wiggle
-                    }
-                    NumberAnimation {
-                        from: -waveDown.height
-                        to: dischargeLayer.height
-                        duration: 3000
-                        easing.type: Easing.OutCubic
-                    }
-                }
+                height: batteryMeter.height
+                Rectangle { anchors.fill: parent; radius: batteryOutline.radius }
             }
         }
     }
 
-    Item {
-        id: batteryChargeIndicator
-        anchors.horizontalCenter: rootitem.horizontalCenter
-        anchors.top: rootitem.top
-        height: parent.height/4
-        width: batteryIndicator.width
-        opacity: mceChargerType.type == MceChargerType.None ? 0.4 : 0.8
-
-        Label {
-            id: batteryChargeText
-            font {
-                pixelSize: parent.height/5
-                bold: true
-            }
-            text: mceChargerType.type == MceChargerType.None ? "Discharging" : "Charging"
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.horizontalCenter: parent.horizontalCenter
+    Label {
+        opacity: mceChargerType.type == MceChargerType.None ? 0.8 : 0.9
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: batteryMeter.top
+        anchors.bottomMargin: Dims.l(1)
+        id: batteryPercentText
+        font {
+            pixelSize: Dims.l(8)
+            family: "Noto Sans"
+            styleName: "Condensed Medium"
         }
+        text: batteryChargePercentage.percent + "%"
     }
 
-    Item {
-        id: batteryPercent
-        anchors.horizontalCenter: rootitem.horizontalCenter
-        anchors.bottom: rootitem.bottom
-        height: parent.height/4
-        width: batteryIndicator.width
-        opacity: mceChargerType.type == MceChargerType.None ? 0.4 : 0.8
+    Label { anchors.centerIn: parent; text: "hasWlan: " + DeviceInfo.hasWlan }
 
-        Label {
-            id: batteryPercentText
-            font {
-                pixelSize: parent.height/3
-                styleName: "SemiBold"
-            }
-            text: batteryChargePercentage.percent + "%"
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.horizontalCenter: parent.horizontalCenter
+
+    Icon {
+        id: flashIcon
+        width: Dims.l(8)
+        height: Dims.l(8)
+        name: "ios-flash"
+        anchors.centerIn: batteryMeter
+        y: -Dims.l(10)
+        visible: mceChargerType.type != MceChargerType.None
+    }
+
+    PageDot {
+        id: pageDots
+        height: Dims.l(8)
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            top: quickSettingsView.bottom
+            topMargin: Dims.l(8)
         }
+        currentIndex: quickSettingsView.currentIndex
+        dotNumber: quickSettingsView.rowCount
+        opacity: 0.5
     }
 
     ListView {
         id: quickSettingsView
         anchors.centerIn: parent
-        width: toggleSize * 3 + spacing * 2  // Width for 3 toggles + spacing
+        width: toggleSize * 3 + spacing * 2
         height: toggleSize
         orientation: ListView.Horizontal
         snapMode: ListView.SnapOneItem
         clip: true
-        interactive: true  // Enable swiping
+        interactive: true
         boundsBehavior: Flickable.StopAtBounds
-
         spacing: Dims.l(2)
 
-        // All toggles in a flat list with availability flags
         property var allToggles: [
             { component: brightnessToggleComponent, toggleAvailable: true },
-            { component: soundToggleComponent, toggleAvailable: false },
-            { component: hapticsToggleComponent, toggleAvailable: true },
-            { component: wifiToggleComponent, toggleAvailable: true },
             { component: bluetoothToggleComponent, toggleAvailable: true },
+            { component: hapticsToggleComponent, toggleAvailable: true },
+            { component: wifiToggleComponent, toggleAvailable: DeviceInfo.hasWlan }, //DeviceInfo.hasWlan
+            { component: soundToggleComponent, toggleAvailable: true }, //DeviceInfo.hasSound
+            { component: cinemaToggleComponent, toggleAvailable: true },
+            { component: lockButtonComponent, toggleAvailable: true },
             { component: settingsButtonComponent, toggleAvailable: true }
         ]
 
-        // Filter available toggles and chunk into rows of 3
         property var availableToggles: allToggles.filter(toggle => toggle.toggleAvailable)
         property int rowCount: Math.ceil(availableToggles.length / 3)
 
@@ -295,11 +216,10 @@ Item {
             for (var i = 0; i < availableToggles.length; i += 3) {
                 rows.push(availableToggles.slice(i, i + 3))
             }
-            // Repeat rows twice to simulate looping
-            return rows.concat(rows)
+            return rows
         }
 
-        contentWidth: width * rowCount * 2  // Double for looping
+        contentWidth: width * rowCount
 
         delegate: Item {
             id: pageItem
@@ -309,7 +229,6 @@ Item {
             Row {
                 id: toggleRow
                 spacing: quickSettingsView.spacing
-
                 Repeater {
                     model: modelData
                     delegate: Loader {
@@ -318,85 +237,82 @@ Item {
                         sourceComponent: modelData.component
                     }
                 }
-
                 anchors.horizontalCenter: parent.horizontalCenter
             }
         }
 
-        // Start at the first row of the first set
         Component.onCompleted: positionViewAtBeginning()
 
-        // Loop handling: reposition when reaching the end or start
-        onMovementEnded: {
-            if (contentX >= contentWidth / 2) {
-                contentX -= contentWidth / 2
-            } else if (contentX < 0) {
-                contentX += contentWidth / 2
-            }
+        onContentXChanged: {
+            var newIndex = Math.round(contentX / width)
+            if (newIndex >= 0 && newIndex < rowCount) currentIndex = newIndex
         }
+    }
 
-        // Toggle components
-        Component {
-            id: brightnessToggleComponent
-            QuickSettingsToggle {
-                icon: "ios-sunny"
-                onChecked: displaySettings.brightness = 100
-                onUnchecked: displaySettings.brightness = 0
-                Component.onCompleted: updateBrightnessToggle()
-            }
-        }
+    // Toggle components
+    Component {
+        id: brightnessToggleComponent
+        QuickSettingsToggle {
+            id: brightnessToggle
+            icon: "ios-sunny"
+            onChecked: displaySettings.brightness = 100
+            onUnchecked: displaySettings.brightness = 0
+            Component.onCompleted: toggled = displaySettings.brightness > 80
 
-        Component {
-            id: soundToggleComponent
-            QuickSettingsToggle {
-                icon: "ios-sound-indicator-high"
-                toggled: true
-            }
-        }
-
-        Component {
-            id: hapticsToggleComponent
-            QuickSettingsToggle {
-                icon: "ios-watch-vibrating"
-                onChecked: {
-                    profileControl.profile = "general"
-                    delayTimer.start()
+            Connections {
+                target: displaySettings
+                function onBrightnessChanged() {
+                    brightnessToggle.toggled = displaySettings.brightness > 80
                 }
-                onUnchecked: profileControl.profile = "silent"
-                Component.onCompleted: toggled = profileControl.profile == "general"
-            }
-        }
-
-        Component {
-            id: wifiToggleComponent
-            QuickSettingsToggle {
-                icon: wifiStatus.connected ? "ios-wifi" : "ios-wifi-outline"
-                toggled: wifiStatus.powered
-                onChecked: wifiStatus.powered = true
-                onUnchecked: wifiStatus.powered = false
-                Component.onCompleted: Qt.callLater(function() { toggled = wifiStatus.powered })
-                Connections {
-                    target: wifiStatus
-                    function onPoweredChanged() { toggled = wifiStatus.powered }
-                }
-            }
-        }
-
-        Component {
-            id: bluetoothToggleComponent
-            QuickSettingsToggle {
-                icon: btStatus.connected ? "ios-bluetooth-connected" : "ios-bluetooth"
-                onChecked: btStatus.powered = true
-                onUnchecked: btStatus.powered = false
-                Component.onCompleted: toggled = btStatus.powered
-            }
-        }
-
-        Component {
-            id: settingsButtonComponent
-            QuickSettingsToggle {
-                icon: "ios-settings"
             }
         }
     }
+
+    Component {
+        id: hapticsToggleComponent
+        QuickSettingsToggle {
+            icon: "ios-watch-vibrating"
+            onChecked: { profileControl.profile = "general"; delayTimer.start() }
+            onUnchecked: profileControl.profile = "silent"
+            Component.onCompleted: toggled = profileControl.profile == "general"
+        }
+    }
+
+    Component {
+        id: wifiToggleComponent
+        QuickSettingsToggle {
+            icon: wifiStatus.connected ? "ios-wifi" : "ios-wifi-outline"
+            toggled: wifiStatus.powered
+            onChecked: wifiStatus.powered = true
+            onUnchecked: wifiStatus.powered = false
+            Component.onCompleted: Qt.callLater(function() { toggled = wifiStatus.powered })
+            Connections { target: wifiStatus; function onPoweredChanged() { toggled = wifiStatus.powered } }
+        }
+    }
+
+    Component {
+        id: bluetoothToggleComponent
+        QuickSettingsToggle {
+            icon: btStatus.connected ? "ios-bluetooth-connected" : "ios-bluetooth"
+            onChecked: btStatus.powered = true
+            onUnchecked: btStatus.powered = false
+            Component.onCompleted: toggled = btStatus.powered
+        }
+    }
+
+    Component { id: soundToggleComponent; QuickSettingsToggle { icon: "ios-sound-indicator-high"; toggled: true } }
+    Component { id: cinemaToggleComponent; QuickSettingsToggle { icon: "ios-film-outline"; toggled: true } }
+
+    Component { id: lockButtonComponent
+        QuickSettingsToggle {
+            id: lockedToggle
+            icon: "ios-unlock"
+            togglable: false
+            toggled: false
+            onUnchecked: mce_dbus.call("req_display_state_lpm", undefined)
+        }
+    }
+
+    Component { id: settingsButtonComponent; QuickSettingsToggle { icon: "ios-settings" } }
 }
+
