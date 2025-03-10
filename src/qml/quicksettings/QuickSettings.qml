@@ -29,14 +29,14 @@
  */
 
 import QtQuick 2.9
+import QtGraphicalEffects 1.15
+import org.asteroid.controls 1.0
+import org.asteroid.utils 1.0 //import asteroid.utils before nemo.mobile.systemsettings since both have DeviceInfo and we need the asteroid one.
+import org.nemomobile.systemsettings 1.0
 import Nemo.Mce 1.0
 import Nemo.DBus 2.0
-import org.nemomobile.systemsettings 1.0
 import Nemo.Ngf 1.0
-import org.asteroid.controls 1.0
-import org.asteroid.utils 1.0
 import Connman 0.2
-import QtGraphicalEffects 1.15
 
 Item {
     id: rootitem
@@ -158,9 +158,6 @@ Item {
         }
         text: batteryChargePercentage.percent + "%"
     }
-
-    Label { anchors.centerIn: parent; text: "hasWlan: " + DeviceInfo.hasWlan }
-
 
     Icon {
         id: flashIcon
