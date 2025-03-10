@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2015 Florent Revest <revestflo@gmail.com>
+ * Copyright (C) 2025 - Timo Könnecke <github.com/eLtMosen>
+ *               2015 Florent Revest <revestflo@gmail.com>
  *               2014 Aleksi Suomalainen <suomalainen.aleksi@gmail.com>
  * All rights reserved.
  *
