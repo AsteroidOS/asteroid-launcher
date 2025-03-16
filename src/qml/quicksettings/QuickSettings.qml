@@ -31,9 +31,11 @@
 
 import QtQuick 2.9
 import QtGraphicalEffects 1.15
+import QtMultimedia 5.8
 import org.asteroid.controls 1.0
 import org.asteroid.utils 1.0 //import asteroid.utils before nemo.mobile.systemsettings since both have DeviceInfo and we need the asteroid one.
 import org.nemomobile.systemsettings 1.0
+import Nemo.Configuration 1.0
 import Nemo.Mce 1.0
 import Nemo.DBus 2.0
 import Nemo.Ngf 1.0
@@ -55,6 +57,15 @@ Item {
     MceBatteryState { id: batteryChargeState }
 
     MceChargerType { id: mceChargerType }
+
+    //VolumeControl { id: volumeControl }
+
+    ConfigurationValue {
+        id: preMuteLevel
+
+        key: "/desktop/asteroid/pre-mute-level"
+        defaultValue: 0
+    }
 
     DBusInterface {
         id: mce_dbus
@@ -169,8 +180,8 @@ Item {
             { component: brightnessToggleComponent, toggleAvailable: true },
             { component: bluetoothToggleComponent, toggleAvailable: true },
             { component: hapticsToggleComponent, toggleAvailable: true },
-            { component: wifiToggleComponent, toggleAvailable: DeviceInfo.hasWlan }, //DeviceInfo.hasWlan
-            { component: soundToggleComponent, toggleAvailable: DeviceInfo.hasSound }, //DeviceInfo.hasSound
+            { component: wifiToggleComponent, toggleAvailable: DeviceInfo.hasWlan },
+            { component: soundToggleComponent, toggleAvailable: DeviceInfo.hasSpeaker },
             { component: cinemaToggleComponent, toggleAvailable: true }
         ]
 
@@ -358,10 +369,61 @@ Item {
         }
     }
 
-    Component { id: soundToggleComponent; QuickSettingsToggle { icon: "ios-sound-indicator-high"; toggled: true } }
+    //Component { id: soundToggleComponent; QuickSettingsToggle { icon: "ios-sound-indicator-high"; toggled: true } }
+
+
+    Label {
+        anchors.bottom: batteryChargePercentage.top
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottomMargin: Dims.l(1)
+        id: volume
+        font {
+            pixelSize: Dims.l(6)
+            family: "Noto Sans"
+            styleName: "Condensed Medium"
+        }
+        text: volumeControl.volume
+    }
+
+    Component {
+        id: soundToggleComponent
+        QuickSettingsToggle {
+            id: soundToggle
+            icon: preMuteLevel.value > 0 ? "ios-sound-indicator-mute" :
+            volumeControl.volume > "70" ? "ios-sound-indicator-high" :
+            volumeControl.volume > "30" ? "ios-sound-indicator-mid" :
+            volumeControl.volume > "0" ? "ios-sound-indicator-low" : "ios-sound-indicator-off"
+            onChecked: [ volumeControl.volume, preMuteLevel.value ] = [ preMuteLevel.value, volumeControl.volume ]
+            onUnchecked: [ preMuteLevel.value, volumeControl.volume ] = [ volumeControl.volume, preMuteLevel.value ]
+            Component.onCompleted: toggled = !preMuteLevel.value > 0
+
+            Connections {
+                target: preMuteLevel
+                function onValueChanged(){
+                    soundToggle.toggled = !preMuteLevel.value > 0
+                    soundToggle.icon = preMuteLevel.value > 0 ? "ios-sound-indicator-mute" :
+                    volumeControl.volume > "70" ? "ios-sound-indicator-high" :
+                    volumeControl.volume > "30" ? "ios-sound-indicator-mid" :
+                    volumeControl.volume > "0" ? "ios-sound-indicator-low" : "ios-sound-indicator-off"
+                }
+            }
+
+            Connections {
+                target: volumeControl
+                function onVolumeChanged(){
+                    soundToggle.icon = preMuteLevel.value > 0 ? "ios-sound-indicator-mute" :
+                    volumeControl.volume > "70" ? "ios-sound-indicator-high" :
+                    volumeControl.volume > "30" ? "ios-sound-indicator-mid" :
+                    volumeControl.volume > "0" ? "ios-sound-indicator-low" : "ios-sound-indicator-off"
+                }
+            }
+        }
+    }
+
     Component { id: cinemaToggleComponent; QuickSettingsToggle { icon: "ios-film-outline"; toggled: true } }
 
-    Component { id: lockButtonComponent
+    Component {
+        id: lockButtonComponent
         QuickSettingsToggle {
             id: lockedToggle
             icon: "ios-unlock"
@@ -371,6 +433,14 @@ Item {
         }
     }
 
-    Component { id: settingsButtonComponent; QuickSettingsToggle { icon: "ios-settings" } }
+    Component {
+        id: settingsButtonComponent
+        QuickSettingsToggle {
+            icon: "ios-settings"
+            togglable: false
+            toggled: true
+            onChecked: launchAppById("asteroid-settings")
+        }
+    }
 }
 
