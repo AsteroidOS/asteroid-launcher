@@ -46,7 +46,7 @@ Item {
 
     property bool forbidLeft: true
     property bool forbidRight: true
-    property int toggleSize: Dims.l(30)  // Increased toggle size
+    property int toggleSize: Dims.l(28)  // Increased toggle size
     property real chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
     readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
@@ -91,96 +91,66 @@ Item {
         path: "/net/connman/technology/wifi"
     }
 
-    Item {
-        id: batteryMeter
-        width: toggleSize * 1.8
-        height: Dims.l(8)
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottom: quickSettingsView.top
-        anchors.bottomMargin: Dims.l(8)
-
-        Rectangle {
-            id: batteryOutline
-            width: parent.width
-            height: parent.height
-            color: "#FFFFFF"
-            opacity: 0.2
-            radius: height / 2
-        }
-
-        Rectangle {
-            id: batteryFill
-            height: parent.height
-            width: {
-                var baseWidth = parent.width * (batteryChargePercentage.percent / 100)
-                if (mceChargerType.type != MceChargerType.None) {
-                    var waveAmplitude = parent.width * 0.05
-                    return baseWidth + waveAmplitude * Math.sin(waveTime)
-                }
-                return baseWidth
-            }
-            color: colorArray[chargecolor]
-            anchors.left: parent.left
-            opacity: mceChargerType.type == MceChargerType.None ? 0.4 : 0.45
-
-            property real waveTime: 0
-
-            // Wave animation that only starts when chargeAnimationsCompleted is true
-            NumberAnimation on waveTime {
-                id: waveAnimation
-                running: mceChargerType.type != MceChargerType.None
-                from: 0
-                to: 2 * Math.PI
-                duration: 1500
-                loops: Animation.Infinite
-            }
-        }
-
-        layer.enabled: true
-        layer.effect: OpacityMask {
-            maskSource: Item {
-                width: batteryMeter.width
-                height: batteryMeter.height
-                Rectangle { anchors.fill: parent; radius: batteryOutline.radius }
-            }
-        }
-    }
-
-    Label {
-        opacity: mceChargerType.type == MceChargerType.None ? 0.8 : 0.9
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottom: batteryMeter.top
-        anchors.bottomMargin: Dims.l(1)
-        id: batteryPercentText
-        font {
-            pixelSize: Dims.l(8)
-            family: "Noto Sans"
-            styleName: "Condensed Medium"
-        }
-        text: batteryChargePercentage.percent + "%"
-    }
-
-    Icon {
-        id: flashIcon
-        width: Dims.l(8)
-        height: Dims.l(8)
-        name: "ios-flash"
-        anchors.centerIn: batteryMeter
-        y: -Dims.l(10)
-        visible: mceChargerType.type != MceChargerType.None
-    }
-
-    PageDot {
-        id: pageDots
-        height: Dims.l(8)
+    ListView {
+        id: fixedButtonsView
         anchors {
+            bottom: quickSettingsView.top
+            //bottomMargin: -Dims.l(4)
             horizontalCenter: parent.horizontalCenter
-            top: quickSettingsView.bottom
-            topMargin: Dims.l(8)
         }
-        currentIndex: quickSettingsView.currentIndex
-        dotNumber: quickSettingsView.rowCount
-        opacity: 0.5
+        width: toggleSize * 3 + spacing * 2
+        height: toggleSize
+        orientation: ListView.Horizontal
+        snapMode: ListView.SnapOneItem
+        clip: true
+        interactive: true
+        boundsBehavior: Flickable.StopAtBounds
+        spacing: Dims.l(4)
+
+        property var allToggles: [
+            { component: lockButtonComponent, toggleAvailable: true },
+            { component: settingsButtonComponent, toggleAvailable: true }
+        ]
+
+        property var availableToggles: allToggles.filter(toggle => toggle.toggleAvailable)
+        property int rowCount: Math.ceil(availableToggles.length / 3)
+
+        model: {
+            var rows = []
+            for (var i = 0; i < availableToggles.length; i += 3) {
+                rows.push(availableToggles.slice(i, i + 3))
+            }
+            return rows
+        }
+
+        contentWidth: width * rowCount
+
+        delegate: Item {
+            id: pageItem
+            width: quickSettingsView.width
+            height: quickSettingsView.height
+
+            Row {
+                id: toggleRow
+                spacing: Dims.l(8)
+                Repeater {
+                    model: modelData
+                    delegate: Loader {
+                        width: toggleSize - Dims.l(4)
+                        height: width
+                        sourceComponent: modelData.component
+                    }
+                }
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+        }
+
+        Component.onCompleted: positionViewAtBeginning()
+
+        onContentXChanged: {
+            var newIndex = Math.round(contentX / width)
+            if (newIndex >= 0 && newIndex < rowCount) currentIndex = newIndex
+        }
     }
 
     ListView {
@@ -193,17 +163,15 @@ Item {
         clip: true
         interactive: true
         boundsBehavior: Flickable.StopAtBounds
-        spacing: Dims.l(2)
+        spacing: Dims.l(4)
 
         property var allToggles: [
             { component: brightnessToggleComponent, toggleAvailable: true },
             { component: bluetoothToggleComponent, toggleAvailable: true },
             { component: hapticsToggleComponent, toggleAvailable: true },
             { component: wifiToggleComponent, toggleAvailable: DeviceInfo.hasWlan }, //DeviceInfo.hasWlan
-            { component: soundToggleComponent, toggleAvailable: true }, //DeviceInfo.hasSound
-            { component: cinemaToggleComponent, toggleAvailable: true },
-            { component: lockButtonComponent, toggleAvailable: true },
-            { component: settingsButtonComponent, toggleAvailable: true }
+            { component: soundToggleComponent, toggleAvailable: DeviceInfo.hasSound }, //DeviceInfo.hasSound
+            { component: cinemaToggleComponent, toggleAvailable: true }
         ]
 
         property var availableToggles: allToggles.filter(toggle => toggle.toggleAvailable)
@@ -245,6 +213,98 @@ Item {
             var newIndex = Math.round(contentX / width)
             if (newIndex >= 0 && newIndex < rowCount) currentIndex = newIndex
         }
+    }
+
+    Item {
+        id: batteryMeter
+        width: toggleSize * 1.8
+        height: Dims.l(8)
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: quickSettingsView.bottom
+        anchors.topMargin: Dims.l(12)
+
+        Rectangle {
+            id: batteryOutline
+            width: parent.width
+            height: parent.height
+            color: "#FFFFFF"
+            opacity: 0.2
+            radius: height / 2
+        }
+
+        Rectangle {
+            id: batteryFill
+            height: parent.height
+            width: {
+                var baseWidth = parent.width * (batteryChargePercentage.percent / 100)
+                if (mceChargerType.type != MceChargerType.None) {
+                    var waveAmplitude = parent.width * 0.05
+                    return baseWidth + waveAmplitude * Math.sin(waveTime)
+                }
+                return baseWidth
+            }
+            color: "#FFF"
+            anchors.left: parent.left
+            opacity: mceChargerType.type == MceChargerType.None ? 0.4 : 0.45
+
+            property real waveTime: 0
+
+            // Wave animation that only starts when chargeAnimationsCompleted is true
+            NumberAnimation on waveTime {
+                id: waveAnimation
+                running: mceChargerType.type != MceChargerType.None
+                from: 0
+                to: 2 * Math.PI
+                duration: 1500
+                loops: Animation.Infinite
+            }
+        }
+
+        layer.enabled: true
+        layer.effect: OpacityMask {
+            maskSource: Item {
+                width: batteryMeter.width
+                height: batteryMeter.height
+                Rectangle { anchors.fill: parent; radius: batteryOutline.radius }
+            }
+        }
+    }
+
+    Label {
+        opacity: mceChargerType.type == MceChargerType.None ? 0.8 : 0.9
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: batteryMeter.bottom
+        anchors.topMargin: Dims.l(1)
+        id: batteryPercentText
+        font {
+            pixelSize: Dims.l(8)
+            family: "Noto Sans"
+            styleName: "Condensed Medium"
+        }
+        text: batteryChargePercentage.percent + "%"
+    }
+
+    Icon {
+        id: flashIcon
+        width: Dims.l(8)
+        height: Dims.l(8)
+        name: "ios-flash"
+        anchors.centerIn: batteryMeter
+        y: -Dims.l(10)
+        visible: mceChargerType.type != MceChargerType.None
+    }
+
+    PageDot {
+        id: pageDots
+        height: Dims.l(4)
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            top: quickSettingsView.bottom
+            topMargin: Dims.l(4)
+        }
+        currentIndex: quickSettingsView.currentIndex
+        dotNumber: quickSettingsView.rowCount
+        opacity: 0.5
     }
 
     // Toggle components
@@ -306,8 +366,8 @@ Item {
             id: lockedToggle
             icon: "ios-unlock"
             togglable: false
-            toggled: false
-            onUnchecked: mce_dbus.call("req_display_state_lpm", undefined)
+            toggled: true
+            onChecked: mce_dbus.call("req_display_state_lpm", undefined)
         }
     }
 
