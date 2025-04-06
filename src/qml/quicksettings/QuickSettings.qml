@@ -439,8 +439,7 @@ Item {
             icon: "ios-settings"
             togglable: false
             toggled: true
-            onChecked: launchAppById("asteroid-settings")
+            onChecked: appLauncher.launchApp("asteroid-settings")
         }
     }
 }
-

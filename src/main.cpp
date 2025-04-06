@@ -34,6 +34,7 @@
 #include <QQmlEngine>
 #include <QQmlContext>
 #include <QTranslator>
+#include <QProcess>
 
 #include <lipstickqmlpath.h>
 #include <homeapplication.h>
@@ -46,6 +47,30 @@
 #include "gesturefilterarea.h"
 #include "notificationsnoozer.h"
 
+// Add AppLauncher class
+class AppLauncher : public QObject
+{
+    Q_OBJECT
+public:
+    explicit AppLauncher(QObject *parent = nullptr) : QObject(parent) {}
+
+    Q_INVOKABLE bool launchApp(const QString &appName) {
+        return QProcess::startDetached(appName);
+    }
+
+    Q_INVOKABLE bool launchDesktopFile(const QString &desktopFile) {
+        // For desktop files, you'd typically parse them here
+        // But for simplicity, let's just append to a common path
+        QString appName = desktopFile;
+        if (appName.endsWith(".desktop")) {
+            appName.chop(8); // Remove .desktop suffix
+        }
+        return QProcess::startDetached(appName);
+    }
+};
+
+#include "main.moc"  // Required for the Q_OBJECT when defined in main.cpp
+
 int main(int argc, char **argv)
 {
     QmlPath::append(":/qml/");
@@ -54,6 +79,10 @@ int main(int argc, char **argv)
     FirstRun *firstRun = new FirstRun();
     LauncherLocaleManager *launcherLocaleManager = new LauncherLocaleManager();
     QObject::connect(app.localeManager(), SIGNAL(localeChanged()), launcherLocaleManager, SLOT(onLocaleChanged()));
+
+    // Create the app launcher and expose it to QML
+    AppLauncher *appLauncher = new AppLauncher();
+    app.engine()->rootContext()->setContextProperty("appLauncher", appLauncher);
 
     QGuiApplication::setFont(QFont("Noto Sans"));
     app.setCompositorPath("qrc:/qml/compositor.qml");
@@ -95,4 +124,3 @@ int main(int argc, char **argv)
     app.mainWindowInstance()->showFullScreen();
     return app.exec();
 }
-
