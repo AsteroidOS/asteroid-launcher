@@ -183,6 +183,6 @@ FlatMesh {
         }
     }
 
-    layer.enabled: DeviceInfo.hasRoundScreen
+    layer.enabled: DeviceSpecs.hasRoundScreen
     layer.effect: CircleMaskShader { }
 }

@@ -57,7 +57,7 @@ Item {
             opacity: .0
             layer.enabled: true
             layer.smooth: true
-            radius: DeviceInfo.hasRoundScreen || nightstand ? width : 0
+            radius: DeviceSpecs.hasRoundScreen || nightstand ? width : 0
         }
 
         Rectangle {

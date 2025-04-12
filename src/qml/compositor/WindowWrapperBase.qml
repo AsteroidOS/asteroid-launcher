@@ -55,6 +55,6 @@ Item {
 
     Component.onCompleted: window.parent = wrapper
 
-    layer.enabled: smoothBorders && DeviceInfo.hasRoundScreen
+    layer.enabled: smoothBorders && DeviceSpecs.hasRoundScreen
     layer.effect: CircleMaskShader { }
 }

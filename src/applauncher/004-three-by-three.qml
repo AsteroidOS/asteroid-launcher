@@ -36,7 +36,7 @@
 import QtQuick 2.15
 import QtGraphicalEffects 1.12
 import org.asteroid.controls 1.0
-import org.asteroid.utils 1.0 as AsteroidUtils
+import org.asteroid.utils 1.0
 
 Item {
     id: root
@@ -181,7 +181,7 @@ Item {
     Component {
         id: spacer
         Item {
-            height: AsteroidUtils.DeviceInfo.hasRoundScreen ? root.height / numColumns / 2 : 0
+            height: DeviceSpecs.hasRoundScreen ? root.height / numColumns / 2 : 0
             width: height
         }
     }

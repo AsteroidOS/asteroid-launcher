@@ -143,8 +143,8 @@ ListView {
             anchors.right: parent.right
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
-            leftPadding: DeviceInfo.hasRoundScreen ? Dims.w(25) : 0
-            rightPadding: DeviceInfo.hasRoundScreen ? Dims.w(25) : 0
+            leftPadding: DeviceSpecs.hasRoundScreen ? Dims.w(25) : 0
+            rightPadding: DeviceSpecs.hasRoundScreen ? Dims.w(25) : 0
             wrapMode: Text.WordWrap
             maximumLineCount: 1
         }
