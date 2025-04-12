@@ -106,7 +106,7 @@ ListView {
             width: parent.width
             height: parent.height
             anchors.left: parent.left
-            anchors.leftMargin: (DeviceInfo.hasRoundScreen ? bezelOffset : 0) + Dims.w(5)
+            anchors.leftMargin: (DeviceSpecs.hasRoundScreen ? bezelOffset : 0) + Dims.w(5)
 
             Item {
                 id: circleWrapper

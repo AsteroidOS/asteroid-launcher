@@ -262,8 +262,8 @@ Item {
         anchors.fill: parent
         color: "black"
         z: 6
-        visible: DeviceInfo.hasRoundScreen
-        layer.enabled: DeviceInfo.hasRoundScreen
+        visible: DeviceSpecs.hasRoundScreen
+        layer.enabled: DeviceSpecs.hasRoundScreen
         layer.effect: CircleMaskShader {
             smoothness: 0.002
             keepInner: false

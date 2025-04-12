@@ -58,7 +58,7 @@ Item {
             horizontalAlignment: Text.AlignHCenter
             anchors {
                 bottom: root.verticalCenter
-                bottomMargin: DeviceInfo.hasRoundScreen ? root.height*0.387 : root.height*0.402
+                bottomMargin: DeviceSpecs.hasRoundScreen ? root.height*0.387 : root.height*0.402
                 horizontalCenter: root.horizontalCenter
             }
             text: wallClock.time.toLocaleString(Qt.locale(), "dddd").toUpperCase()
@@ -88,7 +88,7 @@ Item {
             horizontalAlignment: Text.AlignHCenter
             anchors {
                 top: root.verticalCenter
-                topMargin: DeviceInfo.hasRoundScreen ? root.height*0.394 : root.height*0.406
+                topMargin: DeviceSpecs.hasRoundScreen ? root.height*0.394 : root.height*0.406
                 horizontalCenter: root.horizontalCenter
             }
             text: wallClock.time.toLocaleString(Qt.locale(), "yyyy-MM-dd")
@@ -104,10 +104,10 @@ Item {
         }
 
         Item {
-            x: DeviceInfo.hasRoundScreen ? length * 0.1 : (root.width != length ? root.width/2 - length/2 : !displayAmbient ? length * 0.1 : 0)
-            y: DeviceInfo.hasRoundScreen ? length * 0.1 : (root.height != length ? root.height/2 - length/2 : !displayAmbient ? length * 0.1 : 0)
-            width: DeviceInfo.hasRoundScreen ? length * 0.8 : displayAmbient ? length : length * 0.8
-            height: DeviceInfo.hasRoundScreen ? length * 0.8 : displayAmbient ? length : length * 0.8
+            x: DeviceSpecs.hasRoundScreen ? length * 0.1 : (root.width != length ? root.width/2 - length/2 : !displayAmbient ? length * 0.1 : 0)
+            y: DeviceSpecs.hasRoundScreen ? length * 0.1 : (root.height != length ? root.height/2 - length/2 : !displayAmbient ? length * 0.1 : 0)
+            width: DeviceSpecs.hasRoundScreen ? length * 0.8 : displayAmbient ? length : length * 0.8
+            height: DeviceSpecs.hasRoundScreen ? length * 0.8 : displayAmbient ? length : length * 0.8
             Behavior on x { NumberAnimation { duration: 150; easing.type: Easing.OutQuad } }
             Behavior on y { NumberAnimation { duration: 150; easing.type: Easing.OutQuad } }
             Behavior on width { NumberAnimation { duration: 150; easing.type: Easing.OutQuad } }
