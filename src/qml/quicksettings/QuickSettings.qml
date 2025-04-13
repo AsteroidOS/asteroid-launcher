@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 - Timo Könnecke <github.com/eLtMosen>
+ * Copyright (C) 2025 Timo Könnecke <github.com/eLtMosen>
  *               2015 Florent Revest <revestflo@gmail.com>
  *               2014 Aleksi Suomalainen <suomalainen.aleksi@gmail.com>
  * All rights reserved.
@@ -49,16 +49,12 @@ Item {
     property bool forbidLeft: true
     property bool forbidRight: true
     property int toggleSize: Dims.l(28)  // Increased toggle size
-    property real chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
-    readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
     MceBatteryLevel { id: batteryChargePercentage }
 
     MceBatteryState { id: batteryChargeState }
 
     MceChargerType { id: mceChargerType }
-
-    //VolumeControl { id: volumeControl }
 
     ConfigurationValue {
         id: preMuteLevel
@@ -85,6 +81,12 @@ Item {
 
     ProfileControl { id: profileControl }
 
+    SoundEffect {
+        id: unmuteSound
+        source: "file:///usr/share/sounds/notification.wav"
+        volume: 0.8
+    }
+
     Timer {
         id: delayTimer
         interval: 125
@@ -103,10 +105,9 @@ Item {
     }
 
     ListView {
-        id: fixedButtonsView
+        id: topButtonsView
         anchors {
             bottom: quickSettingsView.top
-            //bottomMargin: -Dims.l(4)
             horizontalCenter: parent.horizontalCenter
         }
         width: toggleSize * 3 + spacing * 2
@@ -238,7 +239,7 @@ Item {
             id: batteryOutline
             width: parent.width
             height: parent.height
-            color: "#FFFFFF"
+            color: "#FFF"
             opacity: 0.2
             radius: height / 2
         }
@@ -282,11 +283,11 @@ Item {
     }
 
     Label {
+        id: batteryPercentText
         opacity: mceChargerType.type == MceChargerType.None ? 0.8 : 0.9
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: batteryMeter.bottom
         anchors.topMargin: Dims.l(1)
-        id: batteryPercentText
         font {
             pixelSize: Dims.l(8)
             family: "Noto Sans"
@@ -369,52 +370,62 @@ Item {
         }
     }
 
-    //Component { id: soundToggleComponent; QuickSettingsToggle { icon: "ios-sound-indicator-high"; toggled: true } }
-
-
-    Label {
-        anchors.bottom: batteryChargePercentage.top
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottomMargin: Dims.l(1)
-        id: volume
-        font {
-            pixelSize: Dims.l(6)
-            family: "Noto Sans"
-            styleName: "Condensed Medium"
-        }
-        text: volumeControl.volume
-    }
-
     Component {
         id: soundToggleComponent
+
         QuickSettingsToggle {
             id: soundToggle
-            icon: preMuteLevel.value > 0 ? "ios-sound-indicator-mute" :
-            volumeControl.volume > "70" ? "ios-sound-indicator-high" :
-            volumeControl.volume > "30" ? "ios-sound-indicator-mid" :
-            volumeControl.volume > "0" ? "ios-sound-indicator-low" : "ios-sound-indicator-off"
-            onChecked: [ volumeControl.volume, preMuteLevel.value ] = [ preMuteLevel.value, volumeControl.volume ]
-            onUnchecked: [ preMuteLevel.value, volumeControl.volume ] = [ volumeControl.volume, preMuteLevel.value ]
-            Component.onCompleted: toggled = !preMuteLevel.value > 0
 
-            Connections {
-                target: preMuteLevel
-                function onValueChanged(){
-                    soundToggle.toggled = !preMuteLevel.value > 0
-                    soundToggle.icon = preMuteLevel.value > 0 ? "ios-sound-indicator-mute" :
-                    volumeControl.volume > "70" ? "ios-sound-indicator-high" :
-                    volumeControl.volume > "30" ? "ios-sound-indicator-mid" :
-                    volumeControl.volume > "0" ? "ios-sound-indicator-low" : "ios-sound-indicator-off"
-                }
+            function linearVolume() {
+                if (volumeControl.volume <= 0 || volumeControl.maximumVolume <= 0)
+                    return 0;
+                return Math.round((volumeControl.volume / volumeControl.maximumVolume) * 100);
+            }
+
+            function toPulseVolume(linear) {
+                return Math.round((linear / 100) * volumeControl.maximumVolume);
+            }
+
+            icon: preMuteLevel.value > 0 ? "ios-sound-indicator-mute" :
+                volumeControl.volume > toPulseVolume(70) ? "ios-sound-indicator-high" :
+                volumeControl.volume > toPulseVolume(30) ? "ios-sound-indicator-mid" :
+                volumeControl.volume > 0 ? "ios-sound-indicator-low" : "ios-sound-indicator-off"
+
+            onChecked: { // Unmute: Swap to restore volume
+                var tempVolume = linearVolume();
+                volumeControl.volume = toPulseVolume(preMuteLevel.value);
+                preMuteLevel.value = tempVolume;
+                unmuteSound.play();
+            }
+
+            onUnchecked: { // Mute: Swap to save volume
+                var tempVolume = linearVolume();
+                volumeControl.volume = toPulseVolume(preMuteLevel.value);
+                preMuteLevel.value = tempVolume;
+            }
+
+            Component.onCompleted: {
+                toggled = !(preMuteLevel.value > 0); // Unmuted if preMuteLevel is 0
             }
 
             Connections {
                 target: volumeControl
-                function onVolumeChanged(){
+                function onVolumeChanged() {
                     soundToggle.icon = preMuteLevel.value > 0 ? "ios-sound-indicator-mute" :
-                    volumeControl.volume > "70" ? "ios-sound-indicator-high" :
-                    volumeControl.volume > "30" ? "ios-sound-indicator-mid" :
-                    volumeControl.volume > "0" ? "ios-sound-indicator-low" : "ios-sound-indicator-off"
+                        volumeControl.volume > toPulseVolume(70) ? "ios-sound-indicator-high" :
+                        volumeControl.volume > toPulseVolume(30) ? "ios-sound-indicator-mid" :
+                        volumeControl.volume > 0 ? "ios-sound-indicator-low" : "ios-sound-indicator-off";
+                }
+            }
+
+            Connections {
+                target: preMuteLevel
+                function onValueChanged() {
+                    soundToggle.toggled = !(preMuteLevel.value > 0);
+                    soundToggle.icon = preMuteLevel.value > 0 ? "ios-sound-indicator-mute" :
+                        volumeControl.volume > toPulseVolume(70) ? "ios-sound-indicator-high" :
+                        volumeControl.volume > toPulseVolume(30) ? "ios-sound-indicator-mid" :
+                        volumeControl.volume > 0 ? "ios-sound-indicator-low" : "ios-sound-indicator-off";
                 }
             }
         }
