@@ -63,6 +63,60 @@ Item {
         defaultValue: 0
     }
 
+    ConfigurationValue {
+        id: topSlot1
+        key: "/desktop/asteroid/quicksettings/top/slot1"
+        defaultValue: "lockButton"
+    }
+
+    ConfigurationValue {
+        id: topSlot2
+        key: "/desktop/asteroid/quicksettings/top/slot2"
+        defaultValue: "settingsButton"
+    }
+
+    ConfigurationValue {
+        id: topSlot3
+        key: "/desktop/asteroid/quicksettings/top/slot3"
+        defaultValue: ""
+    }
+
+    ConfigurationValue {
+        id: mainSlot1
+        key: "/desktop/asteroid/quicksettings/main/slot1"
+        defaultValue: "brightnessToggle"
+    }
+
+    ConfigurationValue {
+        id: mainSlot2
+        key: "/desktop/asteroid/quicksettings/main/slot2"
+        defaultValue: "bluetoothToggle"
+    }
+
+    ConfigurationValue {
+        id: mainSlot3
+        key: "/desktop/asteroid/quicksettings/main/slot3"
+        defaultValue: "hapticsToggle"
+    }
+
+    ConfigurationValue {
+        id: mainSlot4
+        key: "/desktop/asteroid/quicksettings/main/slot4"
+        defaultValue: "wifiToggle"
+    }
+
+    ConfigurationValue {
+        id: mainSlot5
+        key: "/desktop/asteroid/quicksettings/main/slot5"
+        defaultValue: "soundToggle"
+    }
+
+    ConfigurationValue {
+        id: mainSlot6
+        key: "/desktop/asteroid/quicksettings/main/slot6"
+        defaultValue: "cinemaToggle"
+    }
+
     DBusInterface {
         id: mce_dbus
 
@@ -119,28 +173,49 @@ Item {
         boundsBehavior: Flickable.StopAtBounds
         spacing: Dims.l(4)
 
-        property var allToggles: [
-            { component: lockButtonComponent, toggleAvailable: true },
-            { component: settingsButtonComponent, toggleAvailable: true }
-        ]
+        property var toggleRegistry: ({
+            "lockButton": { component: lockButtonComponent, toggleAvailable: true },
+            "settingsButton": { component: settingsButtonComponent, toggleAvailable: true },
+            "brightnessToggle": { component: brightnessToggleComponent, toggleAvailable: true },
+            "bluetoothToggle": { component: bluetoothToggleComponent, toggleAvailable: true },
+            "hapticsToggle": { component: hapticsToggleComponent, toggleAvailable: true },
+            "wifiToggle": { component: wifiToggleComponent, toggleAvailable: DeviceInfo.hasWlan },
+            "soundToggle": { component: soundToggleComponent, toggleAvailable: DeviceInfo.hasSpeaker },
+            "cinemaToggle": { component: cinemaToggleComponent, toggleAvailable: true }
+        })
 
-        property var availableToggles: allToggles.filter(toggle => toggle.toggleAvailable)
+        property var allToggles: {
+            var slots = [topSlot1.value, topSlot2.value, topSlot3.value];
+            var toggles = [];
+            var usedIds = [];
+            // Add configured toggles
+            for (var i = 0; i < slots.length; i++) {
+                var toggleId = slots[i];
+                if (toggleId && toggleRegistry[toggleId] && toggleRegistry[toggleId].toggleAvailable && usedIds.indexOf(toggleId) === -1) {
+                    toggles.push(toggleRegistry[toggleId]);
+                    usedIds.push(toggleId);
+                }
+            }
+            return toggles;
+        }
+
+        property var availableToggles: allToggles
         property int rowCount: Math.ceil(availableToggles.length / 3)
 
         model: {
-            var rows = []
+            var rows = [];
             for (var i = 0; i < availableToggles.length; i += 3) {
-                rows.push(availableToggles.slice(i, i + 3))
+                rows.push(availableToggles.slice(i, i + 3));
             }
-            return rows
+            return rows;
         }
 
         contentWidth: width * rowCount
 
         delegate: Item {
             id: pageItem
-            width: quickSettingsView.width
-            height: quickSettingsView.height
+            width: topButtonsView.width
+            height: topButtonsView.height
 
             Row {
                 id: toggleRow
@@ -177,24 +252,32 @@ Item {
         boundsBehavior: Flickable.StopAtBounds
         spacing: Dims.l(4)
 
-        property var allToggles: [
-            { component: brightnessToggleComponent, toggleAvailable: true },
-            { component: bluetoothToggleComponent, toggleAvailable: true },
-            { component: hapticsToggleComponent, toggleAvailable: true },
-            { component: wifiToggleComponent, toggleAvailable: DeviceInfo.hasWlan },
-            { component: soundToggleComponent, toggleAvailable: DeviceInfo.hasSpeaker },
-            { component: cinemaToggleComponent, toggleAvailable: true }
-        ]
+        property var toggleRegistry: topButtonsView.toggleRegistry // Reuse shared registry
 
-        property var availableToggles: allToggles.filter(toggle => toggle.toggleAvailable)
+        property var allToggles: {
+            var slots = [mainSlot1.value, mainSlot2.value, mainSlot3.value, mainSlot4.value, mainSlot5.value, mainSlot6.value];
+            var toggles = [];
+            var usedIds = [];
+            // Add configured toggles
+            for (var i = 0; i < slots.length; i++) {
+                var toggleId = slots[i];
+                if (toggleId && toggleRegistry[toggleId] && toggleRegistry[toggleId].toggleAvailable && usedIds.indexOf(toggleId) === -1) {
+                    toggles.push(toggleRegistry[toggleId]);
+                    usedIds.push(toggleId);
+                }
+            }
+            return toggles;
+        }
+
+        property var availableToggles: allToggles
         property int rowCount: Math.ceil(availableToggles.length / 3)
 
         model: {
-            var rows = []
+            var rows = [];
             for (var i = 0; i < availableToggles.length; i += 3) {
-                rows.push(availableToggles.slice(i, i + 3))
+                rows.push(availableToggles.slice(i, i + 3));
             }
-            return rows
+            return rows;
         }
 
         contentWidth: width * rowCount
