@@ -33,7 +33,7 @@ import QtQuick 2.9
 import QtGraphicalEffects 1.15
 import QtMultimedia 5.8
 import org.asteroid.controls 1.0
-import org.asteroid.utils 1.0 //import asteroid.utils before nemo.mobile.systemsettings since both have DeviceInfo and we need the asteroid one.
+import org.asteroid.utils 1.0
 import org.nemomobile.systemsettings 1.0
 import Nemo.Configuration 1.0
 import Nemo.Mce 1.0
@@ -51,88 +51,37 @@ Item {
     property int toggleSize: Dims.l(28)  // Increased toggle size
 
     MceBatteryLevel { id: batteryChargePercentage }
-
     MceBatteryState { id: batteryChargeState }
-
     MceChargerType { id: mceChargerType }
 
     ConfigurationValue {
         id: preMuteLevel
-
         key: "/desktop/asteroid/pre-mute-level"
         defaultValue: 0
     }
 
     ConfigurationValue {
-        id: topSlot1
-        key: "/desktop/asteroid/quicksettings/top/slot1"
-        defaultValue: "lockButton"
+        id: topToggles
+        key: "/desktop/asteroid/quicksettings/top"
+        defaultValue: ["lockButton", "settingsButton", ""]
     }
 
     ConfigurationValue {
-        id: topSlot2
-        key: "/desktop/asteroid/quicksettings/top/slot2"
-        defaultValue: "settingsButton"
-    }
-
-    ConfigurationValue {
-        id: topSlot3
-        key: "/desktop/asteroid/quicksettings/top/slot3"
-        defaultValue: ""
-    }
-
-    ConfigurationValue {
-        id: mainSlot1
-        key: "/desktop/asteroid/quicksettings/main/slot1"
-        defaultValue: "brightnessToggle"
-    }
-
-    ConfigurationValue {
-        id: mainSlot2
-        key: "/desktop/asteroid/quicksettings/main/slot2"
-        defaultValue: "bluetoothToggle"
-    }
-
-    ConfigurationValue {
-        id: mainSlot3
-        key: "/desktop/asteroid/quicksettings/main/slot3"
-        defaultValue: "hapticsToggle"
-    }
-
-    ConfigurationValue {
-        id: mainSlot4
-        key: "/desktop/asteroid/quicksettings/main/slot4"
-        defaultValue: "wifiToggle"
-    }
-
-    ConfigurationValue {
-        id: mainSlot5
-        key: "/desktop/asteroid/quicksettings/main/slot5"
-        defaultValue: "soundToggle"
-    }
-
-    ConfigurationValue {
-        id: mainSlot6
-        key: "/desktop/asteroid/quicksettings/main/slot6"
-        defaultValue: "cinemaToggle"
+        id: mainToggles
+        key: "/desktop/asteroid/quicksettings/main"
+        defaultValue: ["brightnessToggle", "bluetoothToggle", "hapticsToggle", "wifiToggle", "soundToggle", "cinemaToggle"]
     }
 
     DBusInterface {
         id: mce_dbus
-
         service: "com.nokia.mce"
         path: "/com/nokia/mce/request"
         iface: "com.nokia.mce.request"
-
         bus: DBus.SystemBus
     }
 
-    DisplaySettings {
-        id: displaySettings
-    }
-
+    DisplaySettings { id: displaySettings }
     NonGraphicalFeedback { id: feedback; event: "press" }
-
     ProfileControl { id: profileControl }
 
     SoundEffect {
@@ -185,12 +134,11 @@ Item {
         })
 
         property var allToggles: {
-            var slots = [topSlot1.value, topSlot2.value, topSlot3.value];
             var toggles = [];
             var usedIds = [];
-            // Add configured toggles
-            for (var i = 0; i < slots.length; i++) {
-                var toggleId = slots[i];
+            // Add configured toggles from topToggles
+            for (var i = 0; i < topToggles.value.length; i++) {
+                var toggleId = topToggles.value[i];
                 if (toggleId && toggleRegistry[toggleId] && toggleRegistry[toggleId].toggleAvailable && usedIds.indexOf(toggleId) === -1) {
                     toggles.push(toggleRegistry[toggleId]);
                     usedIds.push(toggleId);
@@ -255,12 +203,11 @@ Item {
         property var toggleRegistry: topButtonsView.toggleRegistry // Reuse shared registry
 
         property var allToggles: {
-            var slots = [mainSlot1.value, mainSlot2.value, mainSlot3.value, mainSlot4.value, mainSlot5.value, mainSlot6.value];
             var toggles = [];
             var usedIds = [];
-            // Add configured toggles
-            for (var i = 0; i < slots.length; i++) {
-                var toggleId = slots[i];
+            // Add configured toggles from mainToggles
+            for (var i = 0; i < mainToggles.value.length; i++) {
+                var toggleId = mainToggles.value[i];
                 if (toggleId && toggleRegistry[toggleId] && toggleRegistry[toggleId].toggleAvailable && usedIds.indexOf(toggleId) === -1) {
                     toggles.push(toggleRegistry[toggleId]);
                     usedIds.push(toggleId);
@@ -344,7 +291,6 @@ Item {
 
             property real waveTime: 0
 
-            // Wave animation that only starts when chargeAnimationsCompleted is true
             NumberAnimation on waveTime {
                 id: waveAnimation
                 running: mceChargerType.type != MceChargerType.None
@@ -367,7 +313,7 @@ Item {
 
     Label {
         id: batteryPercentText
-        opacity: mceChargerType.type == MceChargerType.None ? 0.8 : 0.9
+        opacity: mceChargerType.type == MceChargerType.None ? 0.4 : 0.9
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: batteryMeter.bottom
         anchors.topMargin: Dims.l(1)
@@ -455,10 +401,8 @@ Item {
 
     Component {
         id: soundToggleComponent
-
         QuickSettingsToggle {
             id: soundToggle
-
             function linearVolume() {
                 if (volumeControl.volume <= 0 || volumeControl.maximumVolume <= 0)
                     return 0;
@@ -470,34 +414,34 @@ Item {
             }
 
             icon: preMuteLevel.value > 0 ? "ios-sound-indicator-mute" :
-                volumeControl.volume > toPulseVolume(70) ? "ios-sound-indicator-high" :
-                volumeControl.volume > toPulseVolume(30) ? "ios-sound-indicator-mid" :
-                volumeControl.volume > 0 ? "ios-sound-indicator-low" : "ios-sound-indicator-off"
+                  volumeControl.volume > toPulseVolume(70) ? "ios-sound-indicator-high" :
+                  volumeControl.volume > toPulseVolume(30) ? "ios-sound-indicator-mid" :
+                  volumeControl.volume > 0 ? "ios-sound-indicator-low" : "ios-sound-indicator-off"
 
-            onChecked: { // Unmute: Swap to restore volume
+            onChecked: {
                 var tempVolume = linearVolume();
                 volumeControl.volume = toPulseVolume(preMuteLevel.value);
                 preMuteLevel.value = tempVolume;
                 unmuteSound.play();
             }
 
-            onUnchecked: { // Mute: Swap to save volume
+            onUnchecked: {
                 var tempVolume = linearVolume();
                 volumeControl.volume = toPulseVolume(preMuteLevel.value);
                 preMuteLevel.value = tempVolume;
             }
 
             Component.onCompleted: {
-                toggled = !(preMuteLevel.value > 0); // Unmuted if preMuteLevel is 0
+                toggled = !(preMuteLevel.value > 0);
             }
 
             Connections {
                 target: volumeControl
                 function onVolumeChanged() {
                     soundToggle.icon = preMuteLevel.value > 0 ? "ios-sound-indicator-mute" :
-                        volumeControl.volume > toPulseVolume(70) ? "ios-sound-indicator-high" :
-                        volumeControl.volume > toPulseVolume(30) ? "ios-sound-indicator-mid" :
-                        volumeControl.volume > 0 ? "ios-sound-indicator-low" : "ios-sound-indicator-off";
+                                       volumeControl.volume > toPulseVolume(70) ? "ios-sound-indicator-high" :
+                                       volumeControl.volume > toPulseVolume(30) ? "ios-sound-indicator-mid" :
+                                       volumeControl.volume > 0 ? "ios-sound-indicator-low" : "ios-sound-indicator-off";
                 }
             }
 
@@ -506,15 +450,21 @@ Item {
                 function onValueChanged() {
                     soundToggle.toggled = !(preMuteLevel.value > 0);
                     soundToggle.icon = preMuteLevel.value > 0 ? "ios-sound-indicator-mute" :
-                        volumeControl.volume > toPulseVolume(70) ? "ios-sound-indicator-high" :
-                        volumeControl.volume > toPulseVolume(30) ? "ios-sound-indicator-mid" :
-                        volumeControl.volume > 0 ? "ios-sound-indicator-low" : "ios-sound-indicator-off";
+                                       volumeControl.volume > toPulseVolume(70) ? "ios-sound-indicator-high" :
+                                       volumeControl.volume > toPulseVolume(30) ? "ios-sound-indicator-mid" :
+                                       volumeControl.volume > 0 ? "ios-sound-indicator-low" : "ios-sound-indicator-off";
                 }
             }
         }
     }
 
-    Component { id: cinemaToggleComponent; QuickSettingsToggle { icon: "ios-film-outline"; toggled: true } }
+    Component {
+        id: cinemaToggleComponent
+        QuickSettingsToggle {
+            icon: "ios-film-outline"
+            toggled: true
+        }
+    }
 
     Component {
         id: lockButtonComponent
