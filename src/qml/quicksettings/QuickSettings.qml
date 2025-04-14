@@ -63,7 +63,7 @@ Item {
     ConfigurationValue {
         id: topToggles
         key: "/desktop/asteroid/quicksettings/top"
-        defaultValue: ["lockButton", "settingsButton", ""]
+        defaultValue: ["lockButton", "settingsButton"]
     }
 
     ConfigurationValue {
@@ -128,12 +128,12 @@ Item {
             bottom: quickSettingsView.top
             horizontalCenter: parent.horizontalCenter
         }
-        width: toggleSize * 3 + spacing * 2
+        width: toggleSize * 2 + spacing // Two toggles
         height: toggleSize
         orientation: ListView.Horizontal
         snapMode: ListView.SnapOneItem
         clip: true
-        interactive: true
+        interactive: false // No scrolling needed for two items
         boundsBehavior: Flickable.StopAtBounds
         spacing: Dims.l(4)
 
@@ -162,17 +162,11 @@ Item {
         }
 
         property var availableToggles: allToggles
-        property int rowCount: Math.ceil(availableToggles.length / 3)
+        property int rowCount: 1 // Always one row
 
-        model: {
-            var rows = [];
-            for (var i = 0; i < availableToggles.length; i += 3) {
-                rows.push(availableToggles.slice(i, i + 3));
-            }
-            return rows;
-        }
+        model: [availableToggles] // Single row of two or fewer toggles
 
-        contentWidth: width * rowCount
+        contentWidth: width
 
         delegate: Item {
             id: pageItem
@@ -195,11 +189,6 @@ Item {
         }
 
         Component.onCompleted: positionViewAtBeginning()
-
-        onContentXChanged: {
-            var newIndex = Math.round(contentX / width)
-            if (newIndex >= 0 && newIndex < rowCount) currentIndex = newIndex
-        }
     }
 
     ListView {
