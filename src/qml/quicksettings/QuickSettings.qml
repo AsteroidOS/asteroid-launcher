@@ -72,6 +72,21 @@ Item {
         defaultValue: ["brightnessToggle", "bluetoothToggle", "hapticsToggle", "wifiToggle", "soundToggle", "cinemaToggle"]
     }
 
+    ConfigurationValue {
+        id: toggleEnabled
+        key: "/desktop/asteroid/quicksettings/enabled"
+        defaultValue: {
+            "lockButton": true,
+            "settingsButton": true,
+            "brightnessToggle": true,
+            "bluetoothToggle": true,
+            "hapticsToggle": true,
+            "wifiToggle": true,
+            "soundToggle": true,
+            "cinemaToggle": true
+        }
+    }
+
     DBusInterface {
         id: mce_dbus
         service: "com.nokia.mce"
@@ -136,10 +151,9 @@ Item {
         property var allToggles: {
             var toggles = [];
             var usedIds = [];
-            // Add configured toggles from topToggles
             for (var i = 0; i < topToggles.value.length; i++) {
                 var toggleId = topToggles.value[i];
-                if (toggleId && toggleRegistry[toggleId] && toggleRegistry[toggleId].toggleAvailable && usedIds.indexOf(toggleId) === -1) {
+                if (toggleId && toggleRegistry[toggleId] && toggleRegistry[toggleId].toggleAvailable && toggleEnabled.value[toggleId] && usedIds.indexOf(toggleId) === -1) {
                     toggles.push(toggleRegistry[toggleId]);
                     usedIds.push(toggleId);
                 }
@@ -200,15 +214,14 @@ Item {
         boundsBehavior: Flickable.StopAtBounds
         spacing: Dims.l(4)
 
-        property var toggleRegistry: topButtonsView.toggleRegistry // Reuse shared registry
+        property var toggleRegistry: topButtonsView.toggleRegistry
 
         property var allToggles: {
             var toggles = [];
             var usedIds = [];
-            // Add configured toggles from mainToggles
             for (var i = 0; i < mainToggles.value.length; i++) {
                 var toggleId = mainToggles.value[i];
-                if (toggleId && toggleRegistry[toggleId] && toggleRegistry[toggleId].toggleAvailable && usedIds.indexOf(toggleId) === -1) {
+                if (toggleId && toggleRegistry[toggleId] && toggleRegistry[toggleId].toggleAvailable && toggleEnabled.value[toggleId] && usedIds.indexOf(toggleId) === -1) {
                     toggles.push(toggleRegistry[toggleId]);
                     usedIds.push(toggleId);
                 }
@@ -348,7 +361,6 @@ Item {
         opacity: 0.5
     }
 
-    // Toggle components
     Component {
         id: brightnessToggleComponent
         QuickSettingsToggle {
