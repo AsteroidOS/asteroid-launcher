@@ -87,6 +87,12 @@ Item {
         }
     }
 
+    ConfigurationValue {
+        id: batteryBottom
+        key: "/desktop/asteroid/quicksettings/batteryBottom"
+        defaultValue: true
+    }
+
     DBusInterface {
         id: mce_dbus
         service: "com.nokia.mce"
@@ -123,9 +129,8 @@ Item {
     }
 
     ListView {
-        id: topButtonsView
+        id: fixedRow
         anchors {
-            bottom: quickSettingsView.top
             horizontalCenter: parent.horizontalCenter
         }
         width: toggleSize * 2 + spacing // Two toggles
@@ -136,6 +141,37 @@ Item {
         interactive: false // No scrolling needed for two items
         boundsBehavior: Flickable.StopAtBounds
         spacing: Dims.l(4)
+
+        states: [
+            State {
+                name: "topPosition"
+                when: !batteryBottom.value
+                AnchorChanges {
+                    target: fixedRow
+                    anchors.top: slidingRow.bottom
+                    anchors.bottom: undefined
+                }
+                PropertyChanges {
+                    target: fixedRow
+                    anchors.topMargin: Dims.l(4)
+                    anchors.bottomMargin: 0
+                }
+            },
+            State {
+                name: "bottomPosition"
+                when: batteryBottom.value
+                AnchorChanges {
+                    target: fixedRow
+                    anchors.top: undefined
+                    anchors.bottom: slidingRow.top
+                }
+                PropertyChanges {
+                    target: fixedRow
+                    anchors.topMargin: 0
+                    anchors.bottomMargin: Dims.l(0)
+                }
+            }
+        ]
 
         property var toggleRegistry: ({
             "lockButton": { component: lockButtonComponent, toggleAvailable: true },
@@ -170,8 +206,8 @@ Item {
 
         delegate: Item {
             id: pageItem
-            width: topButtonsView.width
-            height: topButtonsView.height
+            width: fixedRow.width
+            height: fixedRow.height
 
             Row {
                 id: toggleRow
@@ -188,11 +224,13 @@ Item {
             }
         }
 
-        Component.onCompleted: positionViewAtBeginning()
+        Component.onCompleted: {
+            positionViewAtBeginning()
+        }
     }
 
     ListView {
-        id: quickSettingsView
+        id: slidingRow
         anchors.centerIn: parent
         width: toggleSize * 3 + spacing * 2
         height: toggleSize
@@ -203,7 +241,7 @@ Item {
         boundsBehavior: Flickable.StopAtBounds
         spacing: Dims.l(4)
 
-        property var toggleRegistry: topButtonsView.toggleRegistry
+        property var toggleRegistry: fixedRow.toggleRegistry
 
         property var allToggles: {
             var toggles = [];
@@ -233,12 +271,12 @@ Item {
 
         delegate: Item {
             id: pageItem
-            width: quickSettingsView.width
-            height: quickSettingsView.height
+            width: slidingRow.width
+            height: slidingRow.height
 
             Row {
                 id: toggleRow
-                spacing: quickSettingsView.spacing
+                spacing: slidingRow.spacing
                 Repeater {
                     model: modelData
                     delegate: Loader {
@@ -263,9 +301,40 @@ Item {
         id: batteryMeter
         width: toggleSize * 1.8
         height: Dims.l(8)
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: quickSettingsView.bottom
-        anchors.topMargin: Dims.l(12)
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+        }
+
+        states: [
+            State {
+                name: "topPosition"
+                when: !batteryBottom.value
+                AnchorChanges {
+                    target: batteryMeter
+                    anchors.top: undefined
+                    anchors.bottom: slidingRow.top
+                }
+                PropertyChanges {
+                    target: batteryMeter
+                    anchors.topMargin: 0
+                    anchors.bottomMargin: Dims.l(12)
+                }
+            },
+            State {
+                name: "bottomPosition"
+                when: batteryBottom.value
+                AnchorChanges {
+                    target: batteryMeter
+                    anchors.top: slidingRow.bottom
+                    anchors.bottom: undefined
+                }
+                PropertyChanges {
+                    target: batteryMeter
+                    anchors.topMargin: Dims.l(12)
+                    anchors.bottomMargin: 0
+                }
+            }
+        ]
 
         Rectangle {
             id: batteryOutline
@@ -311,20 +380,72 @@ Item {
                 Rectangle { anchors.fill: parent; radius: batteryOutline.radius }
             }
         }
+
+        Component.onCompleted: {
+            if (batteryBottom.value) {
+                anchors.top = slidingRow.bottom
+                anchors.topMargin = Dims.l(12)
+            } else {
+                anchors.bottom = slidingRow.top
+                anchors.bottomMargin = Dims.l(12)
+            }
+        }
     }
 
     Label {
         id: batteryPercentText
         opacity: mceChargerType.type == MceChargerType.None ? 0.4 : 0.9
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: batteryMeter.bottom
-        anchors.topMargin: Dims.l(1)
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+        }
+
+        states: [
+            State {
+                name: "topPosition"
+                when: !batteryBottom.value
+                AnchorChanges {
+                    target: batteryPercentText
+                    anchors.top: undefined
+                    anchors.bottom: batteryMeter.top
+                }
+                PropertyChanges {
+                    target: batteryPercentText
+                    anchors.topMargin: 0
+                    anchors.bottomMargin: Dims.l(1)
+                }
+            },
+            State {
+                name: "bottomPosition"
+                when: batteryBottom.value
+                AnchorChanges {
+                    target: batteryPercentText
+                    anchors.top: batteryMeter.bottom
+                    anchors.bottom: undefined
+                }
+                PropertyChanges {
+                    target: batteryPercentText
+                    anchors.topMargin: Dims.l(1)
+                    anchors.bottomMargin: 0
+                }
+            }
+        ]
+
         font {
-            pixelSize: Dims.l(8)
+            pixelSize: Dims.l(9)
             family: "Noto Sans"
             styleName: "Condensed Medium"
         }
         text: batteryChargePercentage.percent + "%"
+
+        Component.onCompleted: {
+            if (batteryBottom.value) {
+                anchors.top = batteryMeter.bottom
+                anchors.topMargin = Dims.l(1)
+            } else {
+                anchors.bottom = batteryMeter.top
+                anchors.bottomMargin = Dims.l(1)
+            }
+        }
     }
 
     Icon {
@@ -342,12 +463,102 @@ Item {
         height: Dims.l(4)
         anchors {
             horizontalCenter: parent.horizontalCenter
-            top: quickSettingsView.bottom
-            topMargin: Dims.l(4)
         }
-        currentIndex: quickSettingsView.currentIndex
-        dotNumber: quickSettingsView.rowCount
+
+        states: [
+            State {
+                name: "topPosition"
+                when: !batteryBottom.value
+                AnchorChanges {
+                    target: pageDots
+                    anchors.top: undefined
+                    anchors.bottom: slidingRow.top
+                }
+                PropertyChanges {
+                    target: pageDots
+                    anchors.topMargin: 0
+                    anchors.bottomMargin: Dims.l(4)
+                }
+            },
+            State {
+                name: "bottomPosition"
+                when: batteryBottom.value
+                AnchorChanges {
+                    target: pageDots
+                    anchors.top: slidingRow.bottom
+                    anchors.bottom: undefined
+                }
+                PropertyChanges {
+                    target: pageDots
+                    anchors.topMargin: Dims.l(4)
+                    anchors.bottomMargin: 0
+                }
+            }
+        ]
+
+        currentIndex: slidingRow.currentIndex
+        dotNumber: slidingRow.rowCount
         opacity: 0.5
+
+        Component.onCompleted: {
+            if (batteryBottom.value) {
+                anchors.top = slidingRow.bottom
+                anchors.topMargin = Dims.l(4)
+            } else {
+                anchors.bottom = slidingRow.top
+                anchors.bottomMargin = Dims.l(4)
+            }
+        }
+    }
+
+    // Initialize components on batteryBottom value change
+    Connections {
+        target: batteryBottom
+        function onValueChanged() {
+            if (batteryBottom.value) {
+                // Bottom configuration
+                fixedRow.anchors.bottom = slidingRow.top
+                fixedRow.anchors.bottomMargin = Dims.l(0)
+                fixedRow.anchors.top = undefined
+                fixedRow.anchors.topMargin = 0
+
+                batteryMeter.anchors.top = slidingRow.bottom
+                batteryMeter.anchors.topMargin = Dims.l(12)
+                batteryMeter.anchors.bottom = undefined
+                batteryMeter.anchors.bottomMargin = 0
+
+                batteryPercentText.anchors.top = batteryMeter.bottom
+                batteryPercentText.anchors.topMargin = Dims.l(1)
+                batteryPercentText.anchors.bottom = undefined
+                batteryPercentText.anchors.bottomMargin = 0
+
+                pageDots.anchors.top = slidingRow.bottom
+                pageDots.anchors.topMargin = Dims.l(4)
+                pageDots.anchors.bottom = undefined
+                pageDots.anchors.bottomMargin = 0
+            } else {
+                // Top configuration
+                fixedRow.anchors.top = slidingRow.bottom
+                fixedRow.anchors.topMargin = Dims.l(4)
+                fixedRow.anchors.bottom = undefined
+                fixedRow.anchors.bottomMargin = 0
+
+                batteryMeter.anchors.bottom = slidingRow.top
+                batteryMeter.anchors.bottomMargin = Dims.l(12)
+                batteryMeter.anchors.top = undefined
+                batteryMeter.anchors.topMargin = 0
+
+                batteryPercentText.anchors.bottom = batteryMeter.top
+                batteryPercentText.anchors.bottomMargin = Dims.l(1)
+                batteryPercentText.anchors.top = undefined
+                batteryPercentText.anchors.topMargin = 0
+
+                pageDots.anchors.bottom = slidingRow.top
+                pageDots.anchors.bottomMargin = Dims.l(4)
+                pageDots.anchors.top = undefined
+                pageDots.anchors.topMargin = 0
+            }
+        }
     }
 
     Component {
