@@ -260,18 +260,25 @@ Item {
         onUpdated: {
             var deltaY = point1.y - startY
             console.log("TopEdge: Moved to y=", point1.y, "deltaY=", deltaY)
-            if (!swipeTriggered && Math.abs(deltaY) > 20 && deltaY > 0) {
+            if (swipeTriggered || (Math.abs(deltaY) > 20 && deltaY > 0)) {
                 console.log("TopEdge: Downward swipe detected, exiting")
                 swipeTriggered = true
-                grid.currentVerticalPos = 0
-                lipstick.call("showWatchface", [])
+
+                var contentY = grid.contentY + deltaY
+                var currentPanelY = -grid.currentVerticalPos*grid.panelHeight
+                contentY = Math.max(contentY, currentPanelY + -grid.panelHeight)
+                grid.contentY = contentY
+
                 root.lastLaunchedIndex = 0
             }
         }
 
         onReleased: {
             console.log("TopEdge: Released")
-            swipeTriggered = false
+            if (swipeTriggered) {
+                swipeTriggered = false
+                grid.moveTo(0, 0)
+            }
         }
     }
 }
