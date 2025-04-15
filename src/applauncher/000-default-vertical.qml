@@ -246,7 +246,7 @@ Item {
         height: parent.height * 0.25
         z: 999
         touchPoints: [ TouchPoint { id: point1 } ]
-        enabled: true
+        enabled: !appsListView.atYBeginning && grid.currentVerticalPos === 1
 
         property real startY: 0
         property bool swipeTriggered: false
