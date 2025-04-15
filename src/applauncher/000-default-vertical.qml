@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2022 Timo Könnecke <github.com/eLtMosen>
+ * Copyright (C) 2025 Timo Könnecke <github.com/eLtMosen>
+ *               2025 Darrel Griët <dgriet@gmail.com>
  *               2015 Florent Revest <revestflo@gmail.com>
  *               2014 Aleksi Suomalainen <suomalainen.aleksi@gmail.com>
  *               2012 Timur Kristóf <venemo@fedoraproject.org>
@@ -21,30 +22,6 @@ Item {
     property int lastLaunchedIndex: 0
 
     anchors.fill: parent
-
-    // Debug MouseArea to trace all touch events
-    MouseArea {
-        id: debugTouchArea
-        anchors.fill: parent
-        z: 1000
-        propagateComposedEvents: true
-        enabled: true
-
-        onPressed: {
-            console.log("DebugTouch: Pressed at y=", mouseY, "screen height=", parent.height)
-            mouse.accepted = false
-        }
-        onPositionChanged: {
-            console.log("DebugTouch: Moved to y=", mouseY, "deltaY=", mouseY - startY)
-            mouse.accepted = false
-        }
-        onReleased: {
-            console.log("DebugTouch: Released")
-            mouse.accepted = false
-        }
-        property real startY: 0
-        onPressedChanged: { if (pressed) startY = mouseY }
-    }
 
     ListView {
         id: appsListView
@@ -76,7 +53,6 @@ Item {
         Connections {
             target: grid
             function onCurrentVerticalPosChanged() {
-                console.log("Grid: currentVerticalPos=", grid.currentVerticalPos, "lastLaunchedIndex=", root.lastLaunchedIndex)
                 if (grid.currentVerticalPos === 0) {
                     appsListView.highlightMoveDuration = 0
                     appsListView.currentIndex = 0
@@ -246,22 +222,20 @@ Item {
         height: parent.height * 0.25
         z: 999
         touchPoints: [ TouchPoint { id: point1 } ]
+        // Disable the top edge swipe when at the beginning of the list
         enabled: !appsListView.atYBeginning && grid.currentVerticalPos === 1
 
         property real startY: 0
         property bool swipeTriggered: false
 
         onPressed: {
-            console.log("TopEdge: Pressed at y=", point1.y)
             startY = point1.y
             swipeTriggered = false
         }
 
         onUpdated: {
             var deltaY = point1.y - startY
-            console.log("TopEdge: Moved to y=", point1.y, "deltaY=", deltaY)
             if (swipeTriggered || (Math.abs(deltaY) > 20 && deltaY > 0)) {
-                console.log("TopEdge: Downward swipe detected, exiting")
                 swipeTriggered = true
 
                 var contentY = grid.contentY + deltaY
@@ -274,7 +248,6 @@ Item {
         }
 
         onReleased: {
-            console.log("TopEdge: Released")
             if (swipeTriggered) {
                 swipeTriggered = false
                 grid.moveTo(0, 0)
