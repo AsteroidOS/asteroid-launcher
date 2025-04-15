@@ -20,6 +20,7 @@ Item {
     property alias currentIndex: appsListView.currentIndex
     property alias count: appsListView.count
     property int lastLaunchedIndex: 0
+    property int persistentLaunchIndex: 0
 
     anchors.fill: parent
 
@@ -56,13 +57,18 @@ Item {
                 if (grid.currentVerticalPos === 0) {
                     appsListView.highlightMoveDuration = 0
                     appsListView.currentIndex = 0
-                    root.lastLaunchedIndex = 0
+                    // Don't reset lastLaunchedIndex here
                 } else if (grid.currentVerticalPos === 1) {
                     appsListView.highlightMoveDuration = 1500
                     forbidTop = !appsListView.atYBeginning
                     grid.changeAllowedDirections()
-                    if (root.lastLaunchedIndex > 0) {
-                        appsListView.positionViewAtIndex(root.lastLaunchedIndex, ListView.Center)
+
+                    // Use either the persistent index or the last launched one
+                    var targetIndex = (root.persistentLaunchIndex > 0) ?
+                                       root.persistentLaunchIndex : root.lastLaunchedIndex;
+
+                    if (targetIndex > 0) {
+                        appsListView.positionViewAtIndex(targetIndex, ListView.Center)
                     } else {
                         appsListView.positionViewAtIndex(0, ListView.Beginning)
                     }
@@ -81,6 +87,7 @@ Item {
 
             onClicked: {
                 root.lastLaunchedIndex = index
+                root.persistentLaunchIndex = index  // Save to the persistent property too
                 model.object.launchApplication()
             }
 
@@ -250,6 +257,7 @@ Item {
         onReleased: {
             if (swipeTriggered) {
                 swipeTriggered = false
+                root.persistentLaunchIndex = 0  // Reset persistent index when explicitly going home
                 grid.moveTo(0, 0)
             }
         }
