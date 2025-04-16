@@ -61,14 +61,14 @@ Item {
     }
 
     ConfigurationValue {
-        id: topToggles
-        key: "/desktop/asteroid/quicksettings/top"
+        id: fixedToggles
+        key: "/desktop/asteroid/quicksettings/fixed"
         defaultValue: ["lockButton", "settingsButton"]
     }
 
     ConfigurationValue {
-        id: mainToggles
-        key: "/desktop/asteroid/quicksettings/main"
+        id: sliderToggles
+        key: "/desktop/asteroid/quicksettings/slider"
         defaultValue: ["brightnessToggle", "bluetoothToggle", "hapticsToggle", "wifiToggle", "soundToggle", "cinemaToggle"]
     }
 
@@ -187,8 +187,8 @@ Item {
         property var allToggles: {
             var toggles = [];
             var usedIds = [];
-            for (var i = 0; i < topToggles.value.length; i++) {
-                var toggleId = topToggles.value[i];
+            for (var i = 0; i < fixedToggles.value.length; i++) {
+                var toggleId = fixedToggles.value[i];
                 if (toggleId && toggleRegistry[toggleId] && toggleRegistry[toggleId].toggleAvailable && toggleEnabled.value[toggleId] && usedIds.indexOf(toggleId) === -1) {
                     toggles.push(toggleRegistry[toggleId]);
                     usedIds.push(toggleId);
@@ -246,8 +246,8 @@ Item {
         property var allToggles: {
             var toggles = [];
             var usedIds = [];
-            for (var i = 0; i < mainToggles.value.length; i++) {
-                var toggleId = mainToggles.value[i];
+            for (var i = 0; i < sliderToggles.value.length; i++) {
+                var toggleId = sliderToggles.value[i];
                 if (toggleId && toggleRegistry[toggleId] && toggleRegistry[toggleId].toggleAvailable && toggleEnabled.value[toggleId] && usedIds.indexOf(toggleId) === -1) {
                     toggles.push(toggleRegistry[toggleId]);
                     usedIds.push(toggleId);
