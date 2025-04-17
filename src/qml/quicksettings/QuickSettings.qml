@@ -88,9 +88,13 @@ Item {
     }
 
     ConfigurationValue {
-        id: batteryBottom
-        key: "/desktop/asteroid/quicksettings/batteryBottom"
-        defaultValue: true
+        id: options
+        key: "/desktop/asteroid/quicksettings/options"
+        defaultValue: {
+            "batteryBottom": true,
+            "batteryAnimation": true,
+            "batteryColored": false
+        }
     }
 
     DBusInterface {
@@ -145,7 +149,7 @@ Item {
         states: [
             State {
                 name: "topPosition"
-                when: !batteryBottom.value
+                when: !options.value.batteryBottom
                 AnchorChanges {
                     target: fixedRow
                     anchors.top: slidingRow.bottom
@@ -159,7 +163,7 @@ Item {
             },
             State {
                 name: "bottomPosition"
-                when: batteryBottom.value
+                when: options.value.batteryBottom
                 AnchorChanges {
                     target: fixedRow
                     anchors.top: undefined
@@ -308,7 +312,7 @@ Item {
         states: [
             State {
                 name: "topPosition"
-                when: !batteryBottom.value
+                when: !options.value.batteryBottom
                 AnchorChanges {
                     target: batteryMeter
                     anchors.top: undefined
@@ -322,7 +326,7 @@ Item {
             },
             State {
                 name: "bottomPosition"
-                when: batteryBottom.value
+                when: options.value.batteryBottom
                 AnchorChanges {
                     target: batteryMeter
                     anchors.top: slidingRow.bottom
@@ -350,15 +354,33 @@ Item {
             height: parent.height
             width: {
                 var baseWidth = parent.width * (batteryChargePercentage.percent / 100)
-                if (mceChargerType.type != MceChargerType.None) {
+                if (mceChargerType.type != MceChargerType.None && options.value.batteryAnimation) {
                     var waveAmplitude = parent.width * 0.05
                     return baseWidth + waveAmplitude * Math.sin(waveTime)
                 }
                 return baseWidth
             }
-            color: "#FFF"
+            color: {
+                if (!options.value.batteryColored) return "#FFF"
+                var percent = batteryChargePercentage.percent
+                if (percent > 50) return "#00FF00" // Green
+                if (percent > 20) {
+                    // Interpolate green (#00FF00) to orange (#FFA500) from 50% to 20%
+                    var t = (50 - percent) / 30 // Normalize to 0 (50%) to 1 (20%)
+                    var r = Math.round((1 - t) * 0 + t * 255) // 0 to 255
+                    var g = Math.round((1 - t) * 255 + t * 165) // 255 to 165
+                    var b = 0 // Always 0
+                    return Qt.rgba(r / 255, g / 255, b / 255, 1)
+                }
+                // Interpolate orange (#FFA500) to red (#FF0000) from 20% to 0%
+                var t = (20 - percent) / 20 // Normalize to 0 (20%) to 1 (0%)
+                var r = 255 // Always 255
+                var g = Math.round((1 - t) * 165 + t * 0) // 165 to 0
+                var b = 0 // Always 0
+                return Qt.rgba(r / 255, g / 255, b / 255, 1)
+            }
             anchors.left: parent.left
-            opacity: mceChargerType.type == MceChargerType.None ? 0.4 : 0.45
+            opacity: 0.4
 
             property real waveTime: 0
 
@@ -369,6 +391,13 @@ Item {
                 to: 2 * Math.PI
                 duration: 1500
                 loops: Animation.Infinite
+            }
+
+            SequentialAnimation on opacity {
+                running: mceChargerType.type == MceChargerType.None && options.value.batteryAnimation && batteryChargePercentage.percent < 30
+                loops: Animation.Infinite
+                NumberAnimation { to: 0.4; duration: 500; easing.type: Easing.InOutQuad }
+                NumberAnimation { to: 0.6; duration: 500; easing.type: Easing.InOutQuad }
             }
         }
 
@@ -382,7 +411,7 @@ Item {
         }
 
         Component.onCompleted: {
-            if (batteryBottom.value) {
+            if (options.value.batteryBottom) {
                 anchors.top = slidingRow.bottom
                 anchors.topMargin = Dims.l(12)
             } else {
@@ -402,7 +431,7 @@ Item {
         states: [
             State {
                 name: "topPosition"
-                when: !batteryBottom.value
+                when: !options.value.batteryBottom
                 AnchorChanges {
                     target: batteryPercentText
                     anchors.top: undefined
@@ -416,7 +445,7 @@ Item {
             },
             State {
                 name: "bottomPosition"
-                when: batteryBottom.value
+                when: options.value.batteryBottom
                 AnchorChanges {
                     target: batteryPercentText
                     anchors.top: batteryMeter.bottom
@@ -438,7 +467,7 @@ Item {
         text: batteryChargePercentage.percent + "%"
 
         Component.onCompleted: {
-            if (batteryBottom.value) {
+            if (options.value.batteryBottom) {
                 anchors.top = batteryMeter.bottom
                 anchors.topMargin = Dims.l(1)
             } else {
@@ -456,6 +485,14 @@ Item {
         anchors.centerIn: batteryMeter
         y: -Dims.l(10)
         visible: mceChargerType.type != MceChargerType.None
+        opacity: 1.0
+
+        SequentialAnimation on opacity {
+            running: mceChargerType.type != MceChargerType.None && options.value.batteryAnimation
+            loops: Animation.Infinite
+            NumberAnimation { to: 0.6; duration: 1000; easing.type: Easing.InOutQuad }
+            NumberAnimation { to: 1.0; duration: 1000; easing.type: Easing.InOutQuad }
+        }
     }
 
     PageDot {
@@ -468,7 +505,7 @@ Item {
         states: [
             State {
                 name: "topPosition"
-                when: !batteryBottom.value
+                when: !options.value.batteryBottom
                 AnchorChanges {
                     target: pageDots
                     anchors.top: undefined
@@ -482,7 +519,7 @@ Item {
             },
             State {
                 name: "bottomPosition"
-                when: batteryBottom.value
+                when: options.value.batteryBottom
                 AnchorChanges {
                     target: pageDots
                     anchors.top: slidingRow.bottom
@@ -501,7 +538,7 @@ Item {
         opacity: 0.5
 
         Component.onCompleted: {
-            if (batteryBottom.value) {
+            if (options.value.batteryBottom) {
                 anchors.top = slidingRow.bottom
                 anchors.topMargin = Dims.l(4)
             } else {
@@ -511,11 +548,11 @@ Item {
         }
     }
 
-    // Initialize components on batteryBottom value change
+    // Initialize components on options value change
     Connections {
-        target: batteryBottom
+        target: options
         function onValueChanged() {
-            if (batteryBottom.value) {
+            if (options.value.batteryBottom) {
                 // Bottom configuration
                 fixedRow.anchors.bottom = slidingRow.top
                 fixedRow.anchors.bottomMargin = Dims.l(0)
