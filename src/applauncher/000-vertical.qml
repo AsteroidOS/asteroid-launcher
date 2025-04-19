@@ -257,7 +257,6 @@ Item {
         onReleased: {
             if (swipeTriggered) {
                 swipeTriggered = false
-                root.persistentLaunchIndex = 0  // Reset persistent index when explicitly going home
                 grid.moveTo(0, 0)
             }
         }
