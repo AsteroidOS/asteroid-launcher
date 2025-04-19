@@ -64,7 +64,11 @@ Item {
                 if (grid.currentVerticalPos === 0) {
                     appsListView.highlightMoveDuration = 0
                     appsListView.currentIndex = 0
-                    // Don't reset lastLaunchedIndex here
+                    // Check if we're leaving the app launcher from top position
+                    if (appsListView.atYBeginning) {
+                        // Set persistent index to 0 when exiting from top position
+                        root.persistentLaunchIndex = 0
+                    }
                 } else if (grid.currentVerticalPos === 1) {
                     appsListView.highlightMoveDuration = 1500
                     forbidTop = !appsListView.atYBeginning
@@ -72,7 +76,7 @@ Item {
 
                     // Use either the persistent index or the last launched one
                     var targetIndex = (root.persistentLaunchIndex > 0) ?
-                                       root.persistentLaunchIndex : root.lastLaunchedIndex;
+                                    root.persistentLaunchIndex : root.lastLaunchedIndex;
 
                     if (targetIndex > 0) {
                         appsListView.positionViewAtIndex(targetIndex, ListView.Center)
