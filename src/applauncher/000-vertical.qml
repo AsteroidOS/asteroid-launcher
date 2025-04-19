@@ -44,6 +44,13 @@ Item {
             bottomIndicator.animate()
         }
 
+        onCurrentIndexChanged: {
+            // Update the persistentLaunchIndex when user scrolls to a new position
+            if (grid.currentVerticalPos === 1) {  // Only when in the launcher view
+                root.persistentLaunchIndex = currentIndex
+            }
+        }
+
         onAtYBeginningChanged: {
             if ((grid.currentHorizontalPos === 0) && (grid.currentVerticalPos === 1)) {
                 forbidTop = !atYBeginning
@@ -257,6 +264,9 @@ Item {
         onReleased: {
             if (swipeTriggered) {
                 swipeTriggered = false
+                // Calculate and store the current visible index before leaving
+                var visibleIndex = Math.round(appsListView.contentY / appsListView.height)
+                root.persistentLaunchIndex = visibleIndex
                 grid.moveTo(0, 0)
             }
         }
