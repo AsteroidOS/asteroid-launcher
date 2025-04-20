@@ -48,7 +48,7 @@ Item {
 
     property bool forbidLeft: true
     property bool forbidRight: true
-    property int toggleSize: Dims.l(28)  // Increased toggle size
+    property int toggleSize: Dims.l(28)
 
     MceBatteryLevel { id: batteryChargePercentage }
     MceBatteryState { id: batteryChargeState }
@@ -354,7 +354,7 @@ Item {
             height: parent.height
             width: {
                 var baseWidth = parent.width * (batteryChargePercentage.percent / 100)
-                if (mceChargerType.type != MceChargerType.None && options.value.batteryAnimation) {
+                if (mceChargerType.type != MceChargerType.None && options.value.batteryAnimation && batteryFill.isVisible) {
                     var waveAmplitude = parent.width * 0.05
                     return baseWidth + waveAmplitude * Math.sin(waveTime)
                 }
@@ -374,13 +374,15 @@ Item {
                 return Qt.rgba(1, 0.65 * (1 - t), 0, 0.5) // Orange to red
             }
             anchors.left: parent.left
-            opacity: 0.5 // We handle opacity directly in the color
+            opacity: 0.5
+            clip: true
 
             property real waveTime: 0
+            property bool isVisible: rootitem.visible && Qt.application.active
 
             NumberAnimation on waveTime {
                 id: waveAnimation
-                running: mceChargerType.type != MceChargerType.None
+                running: mceChargerType.type != MceChargerType.None && batteryFill.isVisible
                 from: 0
                 to: 2 * Math.PI
                 duration: 1500
@@ -388,10 +390,74 @@ Item {
             }
 
             SequentialAnimation on opacity {
-                running: mceChargerType.type == MceChargerType.None && options.value.batteryAnimation && batteryChargePercentage.percent < 30
+                running: mceChargerType.type == MceChargerType.None && options.value.batteryAnimation && batteryChargePercentage.percent < 30 && batteryFill.isVisible
                 loops: Animation.Infinite
                 NumberAnimation { to: 1.0; duration: 500; easing.type: Easing.InOutQuad }
                 NumberAnimation { to: 0.6; duration: 500; easing.type: Easing.InOutQuad }
+            }
+
+            // Particle system
+            Item {
+                id: particleContainer
+                anchors.fill: parent
+                visible: options.value.batteryAnimation
+
+                property int particleCount: 8
+                property real particleLifetime: mceChargerType.type != MceChargerType.None ? 600 : 2000
+                property bool isCharging: mceChargerType.type != MceChargerType.None
+
+                function createParticle() {
+                    var component = Qt.createComponent("QuickSettingsBatteryParticle.qml");
+                    if (component.status === Component.Ready) {
+                        var isCharging = mceChargerType.type != MceChargerType.None;
+                        var particleLifetime = isCharging ? 600 : 2000;
+                        var pathLength = isCharging ? batteryFill.width / 2 : batteryFill.width;
+                        var maxSize = batteryFill.height / 2;
+                        var minSize = batteryFill.height / 6;
+
+                        var startX = isCharging ?
+                            Math.random() * batteryFill.width / 2 :
+                            batteryFill.width - (Math.random() * batteryFill.width / 2);
+
+                        var endX = isCharging ?
+                            startX + pathLength :
+                            startX - pathLength;
+
+                        var startY = Math.random() * batteryFill.height;
+                        var size = minSize + Math.random() * (maxSize - minSize);
+
+                        var particle = component.createObject(particleContainer, {
+                            "x": startX,
+                            "y": startY,
+                            "targetX": endX,
+                            "maxSize": size,
+                            "lifetime": particleLifetime,
+                            "isCharging": isCharging
+                        });
+                    }
+                }
+
+                Timer {
+                    id: particleTimer
+                    interval: batteryFill.width > 0 ?
+                        particleContainer.particleLifetime / particleContainer.particleCount : 1000
+                    running: batteryFill.width > 0 && batteryFill.enableSparkles && batteryFill.isVisible
+                    repeat: true
+                    triggeredOnStart: true
+                    onTriggered: {
+                        if (batteryFill.width > 0 && batteryFill.isVisible) {
+                            particleContainer.createParticle();
+                        }
+                    }
+                }
+            }
+
+            // Monitor visibility changes
+            Connections {
+                target: rootitem
+                function onVisibleChanged() {
+                    batteryFill.isVisible = rootitem.visible && Qt.application.active
+                }
             }
         }
 
