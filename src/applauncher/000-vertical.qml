@@ -13,7 +13,6 @@
 import QtQuick 2.9
 import QtGraphicalEffects 1.12
 import org.asteroid.controls 1.0
-import Nemo.DBus 2.0
 
 Item {
     id: root
@@ -219,14 +218,6 @@ Item {
 
             currentPos = Math.round(lowerStop+ratio)
         }
-    }
-
-    // DBus interface for Lipstick
-    DBusInterface {
-        id: lipstick
-        service: "org.nemomobile.lipstick"
-        path: "/org/nemomobile/lipstick"
-        iface: "org.nemomobile.lipstick"
     }
 
     // Top-down edge swipe with single trigger
