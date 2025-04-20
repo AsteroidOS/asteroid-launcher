@@ -18,6 +18,8 @@ Item {
     id: root
     property alias currentIndex: appsListView.currentIndex
     property alias count: appsListView.count
+    property real deltaY: 0
+    property int targetVerticalPos: 0
 
     anchors.fill: parent
 
@@ -203,7 +205,7 @@ Item {
             left: parent.left
             right: parent.right
         }
-        height: parent.height * 0.25
+        height: parent.height * 0.1
         z: 999
         touchPoints: [ TouchPoint { id: point1 } ]
         // Disable the top edge swipe when at the beginning of the list
@@ -218,8 +220,8 @@ Item {
         }
 
         onUpdated: {
-            var deltaY = point1.y - startY
-            if (swipeTriggered || (Math.abs(deltaY) > 20 && deltaY > 0)) {
+                deltaY = point1.y - startY
+                if (swipeTriggered || (Math.abs(deltaY) > 20 && deltaY > 0)) {
                 swipeTriggered = true
 
                 var contentY = grid.contentY + deltaY
@@ -232,7 +234,15 @@ Item {
         onReleased: {
             if (swipeTriggered) {
                 swipeTriggered = false
-                grid.moveTo(0, 0)
+                var loc = grid.contentY+grid.currentVerticalPos*grid.panelHeight
+                targetVerticalPos = grid.currentVerticalPos
+                if ((loc > grid.height/2 && deltaY > 0) || deltaY > 10) {
+                    targetVerticalPos--
+                }
+                if ((loc < -grid.height/2 && deltaY < 0) || deltaY < -10) {
+                    targetVerticalPos++
+                }
+                grid.moveTo(0, targetVerticalPos)
             }
         }
     }
