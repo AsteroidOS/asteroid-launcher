@@ -196,7 +196,6 @@ Item {
             currentPos = Math.round(lowerStop+ratio)
         }
     }
-
     // Top-down edge swipe with single trigger
     MultiPointTouchArea {
         id: topEdgeSwipeArea
@@ -208,11 +207,12 @@ Item {
         height: parent.height * 0.1
         z: 999
         touchPoints: [ TouchPoint { id: point1 } ]
-        // Disable the top edge swipe when at the beginning of the list
         enabled: !appsListView.atYBeginning && grid.currentVerticalPos === 1
 
         property real startY: 0
         property bool swipeTriggered: false
+        property real deltaY: 0
+        property int targetVerticalPos: 0
 
         onPressed: {
             startY = point1.y
@@ -220,10 +220,9 @@ Item {
         }
 
         onUpdated: {
-                deltaY = point1.y - startY
-                if (swipeTriggered || (Math.abs(deltaY) > 20 && deltaY > 0)) {
+            deltaY = point1.y - startY
+            if (swipeTriggered || (Math.abs(deltaY) > 20 && deltaY > 0)) {
                 swipeTriggered = true
-
                 var contentY = grid.contentY + deltaY
                 var currentPanelY = -grid.currentVerticalPos*grid.panelHeight
                 contentY = Math.max(contentY, currentPanelY + -grid.panelHeight)
@@ -236,14 +235,24 @@ Item {
                 swipeTriggered = false
                 var loc = grid.contentY+grid.currentVerticalPos*grid.panelHeight
                 targetVerticalPos = grid.currentVerticalPos
+
                 if ((loc > grid.height/2 && deltaY > 0) || deltaY > 10) {
                     targetVerticalPos--
                 }
                 if ((loc < -grid.height/2 && deltaY < 0) || deltaY < -10) {
                     targetVerticalPos++
                 }
-                grid.moveTo(0, targetVerticalPos)
+                grid.currentVerticalPos = targetVerticalPos
+                contentAnim.to = -grid.panelHeight*targetVerticalPos
+                contentAnim.start()
             }
+        }
+
+        NumberAnimation {
+            id: contentAnim
+            target: grid
+            property: "contentY"
+            duration: 150
         }
     }
 }
