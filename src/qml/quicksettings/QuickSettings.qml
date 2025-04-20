@@ -363,24 +363,18 @@ Item {
             color: {
                 if (!options.value.batteryColored) return "#FFF"
                 var percent = batteryChargePercentage.percent
-                if (percent > 50) return "#00FF00" // Green
+                if (percent > 50) return Qt.rgba(0, 1, 0, 0.5) // Green
                 if (percent > 20) {
                     // Interpolate green (#00FF00) to orange (#FFA500) from 50% to 20%
                     var t = (50 - percent) / 30 // Normalize to 0 (50%) to 1 (20%)
-                    var r = Math.round((1 - t) * 0 + t * 255) // 0 to 255
-                    var g = Math.round((1 - t) * 255 + t * 165) // 255 to 165
-                    var b = 0 // Always 0
-                    return Qt.rgba(r / 255, g / 255, b / 255, 1)
+                    return Qt.rgba(t, 1 - (t * 0.35), 0, 0.5) // Green to orange
                 }
                 // Interpolate orange (#FFA500) to red (#FF0000) from 20% to 0%
                 var t = (20 - percent) / 20 // Normalize to 0 (20%) to 1 (0%)
-                var r = 255 // Always 255
-                var g = Math.round((1 - t) * 165 + t * 0) // 165 to 0
-                var b = 0 // Always 0
-                return Qt.rgba(r / 255, g / 255, b / 255, 1)
+                return Qt.rgba(1, 0.65 * (1 - t), 0, 0.5) // Orange to red
             }
             anchors.left: parent.left
-            opacity: 0.4
+            opacity: 0.5 // We handle opacity directly in the color
 
             property real waveTime: 0
 
@@ -396,7 +390,7 @@ Item {
             SequentialAnimation on opacity {
                 running: mceChargerType.type == MceChargerType.None && options.value.batteryAnimation && batteryChargePercentage.percent < 30
                 loops: Animation.Infinite
-                NumberAnimation { to: 0.4; duration: 500; easing.type: Easing.InOutQuad }
+                NumberAnimation { to: 1.0; duration: 500; easing.type: Easing.InOutQuad }
                 NumberAnimation { to: 0.6; duration: 500; easing.type: Easing.InOutQuad }
             }
         }
@@ -423,7 +417,7 @@ Item {
 
     Label {
         id: batteryPercentText
-        opacity: mceChargerType.type == MceChargerType.None ? 0.4 : 0.9
+        opacity: mceChargerType.type == MceChargerType.None ? 0.6 : 0.9
         anchors {
             horizontalCenter: parent.horizontalCenter
         }
@@ -485,13 +479,13 @@ Item {
         anchors.centerIn: batteryMeter
         y: -Dims.l(10)
         visible: mceChargerType.type != MceChargerType.None
-        opacity: 1.0
+        opacity: 0.9
 
         SequentialAnimation on opacity {
             running: mceChargerType.type != MceChargerType.None && options.value.batteryAnimation
             loops: Animation.Infinite
             NumberAnimation { to: 0.6; duration: 1000; easing.type: Easing.InOutQuad }
-            NumberAnimation { to: 1.0; duration: 1000; easing.type: Easing.InOutQuad }
+            NumberAnimation { to: 0.9; duration: 1000; easing.type: Easing.InOutQuad }
         }
     }
 
