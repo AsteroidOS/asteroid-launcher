@@ -407,54 +407,53 @@ Item {
                 property real particleLifetime: mceChargerType.type != MceChargerType.None ? 600 : 2000
                 property bool isCharging: mceChargerType.type != MceChargerType.None
 
-                function createParticle() {
-                    var component = Qt.createComponent("QuickSettingsBatteryParticle.qml");
-                    if (component.status === Component.Ready) {
-                        var isCharging = mceChargerType.type != MceChargerType.None;
-                        var particleLifetime = isCharging ? 600 : 1200;
-                        var pathLength = isCharging ? batteryFill.width / 2 : batteryFill.width;
-                        var maxSize = batteryFill.height / 2;
-                        var minSize = batteryFill.height / 6;
+                    function createParticle() {
+                        var component = Qt.createComponent("qrc:///org/asteroid/controls/qml/BatteryParticles.qml");
+                        if (component.status === Component.Ready) {
+                            var isCharging = mceChargerType.type != MceChargerType.None;
+                            var particleLifetime = isCharging ? 600 : 1200;
+                            var pathLength = isCharging ? batteryFill.width / 2 : batteryFill.width;
+                            var maxSize = batteryFill.height / 2;
+                            var minSize = batteryFill.height / 6;
 
-                        var startX = isCharging ?
-                            Math.random() * batteryFill.width / 2 :
-                            batteryFill.width - (Math.random() * batteryFill.width / 2);
+                            var startX = isCharging ?
+                                         Math.random() * batteryFill.width / 2 :
+                                         batteryFill.width - (Math.random() * batteryFill.width / 2);
 
-                        var endX = isCharging ?
-                            startX + pathLength :
-                            startX - pathLength;
+                            var endX = isCharging ?
+                                       startX + pathLength :
+                                       startX - pathLength;
 
-                        var startY = Math.random() * batteryFill.height;
-                        var size = minSize + Math.random() * (maxSize - minSize);
+                            var startY = Math.random() * batteryFill.height;
+                            var size = minSize + Math.random() * (maxSize - minSize);
 
-                        // Use particleDesign from options with fallback to "diamonds"
-                        var designType = options.value.particleDesign || "diamonds";
+                            var designType = options.value.particleDesign || "diamonds";
 
-                        var particle = component.createObject(particleContainer, {
-                            "x": startX,
-                            "y": startY,
-                            "targetX": endX,
-                            "maxSize": size,
-                            "lifetime": particleLifetime,
-                            "isCharging": isCharging,
-                            "design": designType
-                        });
-                    }
-                }
-
-                Timer {
-                    id: particleTimer
-                    interval: batteryFill.width > 0 ?
-                        particleContainer.particleLifetime / particleContainer.particleCount : 1000
-                    running: batteryFill.width > 0 && options.value.batteryAnimation && batteryFill.isVisible
-                    repeat: true
-                    triggeredOnStart: true
-                    onTriggered: {
-                        if (batteryFill.width > 0 && batteryFill.isVisible) {
-                            particleContainer.createParticle();
+                            component.createObject(particleContainer, {
+                                                      "x": startX,
+                                                      "y": startY,
+                                                      "targetX": endX,
+                                                      "maxSize": size,
+                                                      "lifetime": particleLifetime,
+                                                      "isCharging": isCharging,
+                                                      "design": designType
+                                                  });
                         }
                     }
-                }
+
+                    Timer {
+                        id: particleTimer
+                        interval: batteryFill.width > 0 ?
+                                  particleContainer.particleLifetime / particleContainer.particleCount : 1000
+                        running: batteryFill.width > 0 && options.value.batteryAnimation && batteryFill.isVisible
+                        repeat: true
+                        triggeredOnStart: true
+                        onTriggered: {
+                            if (batteryFill.width > 0 && batteryFill.isVisible) {
+                                particleContainer.createParticle();
+                            }
+                        }
+                    }
             }
 
             // Monitor visibility changes
