@@ -13,6 +13,7 @@
 import QtQuick 2.9
 import QtGraphicalEffects 1.12
 import org.asteroid.controls 1.0
+import org.asteroid.utils 1.0
 
 Item {
     id: root
@@ -53,15 +54,9 @@ Item {
         Connections {
             target: grid
             function onCurrentVerticalPosChanged() {
-                if (grid.currentVerticalPos === 0) {
-                    appsListView.highlightMoveDuration = 0
-                    appsListView.currentIndex = 0
-                    // Check if we're leaving the app launcher from top position
-                } else if (grid.currentVerticalPos === 1) {
-                    appsListView.highlightMoveDuration = 1500
-                    forbidTop = !appsListView.atYBeginning
-                    grid.changeAllowedDirections()
-                }
+                appsListView.highlightMoveDuration = 1500
+                forbidTop = !appsListView.atYBeginning
+                grid.changeAllowedDirections()
             }
         }
 
@@ -204,7 +199,7 @@ Item {
             left: parent.left
             right: parent.right
         }
-        height: parent.height * 0.1
+        height: parent.height * DeviceInfo.borderGestureWidth
         z: 999
         touchPoints: [ TouchPoint { id: point1 } ]
         enabled: !appsListView.atYBeginning && grid.currentVerticalPos === 1
