@@ -69,7 +69,7 @@ Item {
     ConfigurationValue {
         id: sliderToggles
         key: "/desktop/asteroid/quicksettings/slider"
-        defaultValue: ["brightnessToggle", "bluetoothToggle", "hapticsToggle", "wifiToggle", "soundToggle", "cinemaToggle"]
+        defaultValue: ["brightnessToggle", "bluetoothToggle", "hapticsToggle", "wifiToggle", "soundToggle", "cinemaToggle", "powerOffToggle", "rebootToggle"]
     }
 
     ConfigurationValue {
@@ -83,7 +83,9 @@ Item {
             "hapticsToggle": true,
             "wifiToggle": true,
             "soundToggle": true,
-            "cinemaToggle": true
+            "cinemaToggle": true,
+            "powerOffToggle": true,
+            "rebootToggle": true
         }
     }
 
@@ -104,6 +106,14 @@ Item {
         path: "/com/nokia/mce/request"
         iface: "com.nokia.mce.request"
         bus: DBus.SystemBus
+    }
+
+    DBusInterface {
+        id: login1DBus
+        bus: DBus.SystemBus
+        service: "org.freedesktop.login1"
+        path: "/org/freedesktop/login1"
+        iface: "org.freedesktop.login1.Manager"
     }
 
     DisplaySettings { id: displaySettings }
@@ -186,7 +196,9 @@ Item {
             "hapticsToggle": { component: hapticsToggleComponent, toggleAvailable: true },
             "wifiToggle": { component: wifiToggleComponent, toggleAvailable: DeviceInfo.hasWlan },
             "soundToggle": { component: soundToggleComponent, toggleAvailable: DeviceInfo.hasSpeaker },
-            "cinemaToggle": { component: cinemaToggleComponent, toggleAvailable: true }
+            "cinemaToggle": { component: cinemaToggleComponent, toggleAvailable: true },
+            "powerOffToggle": { component: powerOffToggleComponent, toggleAvailable: true },
+            "rebootToggle": { component: rebootToggleComponent, toggleAvailable: true }
         })
 
         property var allToggles: {
@@ -643,6 +655,14 @@ Item {
         }
     }
 
+    RemorseTimer {
+        id: remorseTimer
+        interval: 3000
+        gaugeSegmentAmount: 6
+        gaugeStartDegree: -130
+        gaugeEndFromStartDegree: 265
+    }
+
     // Initialize components on options value change
     Connections {
         target: options
@@ -828,6 +848,39 @@ Item {
             togglable: false
             toggled: true
             onChecked: appLauncher.launchApp("asteroid-settings")
+        }
+    }
+
+    Component {
+        id: powerOffToggleComponent
+        QuickSettingsToggle {
+            icon: "ios-power"
+            togglable: false
+            toggled: true
+            onChecked: {
+                remorseTimer.action = qsTrId("id-power-off");
+                remorseTimer.start();
+                remorseTimer.onTriggered.connect(function() {
+                    login1DBus.call("PowerOff", [false]);
+                });
+            }
+        }
+    }
+
+    Component {
+        id: rebootToggleComponent
+        QuickSettingsToggle {
+            icon: "ios-refresh"
+            togglable: false
+            toggled: true
+            onChecked: {
+                remorseTimer.action = qsTrId("id-reboot");
+                remorseTimer.start();
+                remorseTimer.onTriggered.connect(function() {
+                    login1DBus.call("SetRebootParameter", [""]);
+                    login1DBus.call("Reboot", [false]);
+                });
+            }
         }
     }
 }
