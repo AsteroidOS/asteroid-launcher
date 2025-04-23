@@ -61,6 +61,12 @@ Item {
     }
 
     ConfigurationValue {
+        id: preCinemaAodState
+        key: "/desktop/asteroid/quicksettings/pre-cinema-aod-state"
+        defaultValue: true
+    }
+
+    ConfigurationValue {
         id: fixedToggles
         key: "/desktop/asteroid/quicksettings/fixed"
         defaultValue: ["lockButton", "settingsButton"]
@@ -69,7 +75,7 @@ Item {
     ConfigurationValue {
         id: sliderToggles
         key: "/desktop/asteroid/quicksettings/slider"
-        defaultValue: ["brightnessToggle", "bluetoothToggle", "hapticsToggle", "wifiToggle", "soundToggle", "cinemaToggle", "powerOffToggle", "rebootToggle"]
+        defaultValue: ["brightnessToggle", "bluetoothToggle", "hapticsToggle", "wifiToggle", "soundToggle", "cinemaToggle", "aodToggle", "powerOffToggle", "rebootToggle"]
     }
 
     ConfigurationValue {
@@ -84,6 +90,7 @@ Item {
             "wifiToggle": true,
             "soundToggle": true,
             "cinemaToggle": true,
+            "aodToggle": true,
             "powerOffToggle": true,
             "rebootToggle": true
         }
@@ -116,9 +123,9 @@ Item {
         iface: "org.freedesktop.login1.Manager"
     }
 
-    DisplaySettings { id: displaySettings }
     NonGraphicalFeedback { id: feedback; event: "press" }
     ProfileControl { id: profileControl }
+    DisplaySettings { id: displaySettings }
 
     SoundEffect {
         id: unmuteSound
@@ -197,6 +204,7 @@ Item {
             "wifiToggle": { component: wifiToggleComponent, toggleAvailable: DeviceInfo.hasWlan },
             "soundToggle": { component: soundToggleComponent, toggleAvailable: DeviceInfo.hasSpeaker },
             "cinemaToggle": { component: cinemaToggleComponent, toggleAvailable: true },
+            "aodToggle": { component: aodToggleComponent, toggleAvailable: true },
             "powerOffToggle": { component: powerOffToggleComponent, toggleAvailable: true },
             "rebootToggle": { component: rebootToggleComponent, toggleAvailable: true }
         })
@@ -825,8 +833,62 @@ Item {
     Component {
         id: cinemaToggleComponent
         QuickSettingsToggle {
+            id: cinemaToggle
             icon: "ios-film-outline"
-            toggled: true
+            toggled: false
+            onChecked: {
+                // Store pre-cinema states
+                preCinemaAodState.value = alwaysOnDisplay.value;
+                // Mute sound if available
+                if (DeviceInfo.hasSpeaker) {
+                    var tempVolume = volumeControl.volume > 0 ? (volumeControl.volume / volumeControl.maximumVolume) * 100 : 0;
+                    if (tempVolume > 0) {
+                        preMuteLevel.value = tempVolume;
+                        volumeControl.volume = 0;
+                    }
+                }
+                displaySettings.brightness = 10;
+                alwaysOnDisplay.value = false;
+                displaySettings.lowPowerModeEnabled = false;
+            }
+            onUnchecked: {
+                // Restore pre-cinema states
+                displaySettings.brightness = 100;
+                alwaysOnDisplay.value = preCinemaAodState.value;
+                displaySettings.lowPowerModeEnabled = alwaysOnDisplay.value;
+                // Restore sound
+                if (DeviceInfo.hasSpeaker && preMuteLevel.value > 0) {
+                    volumeControl.volume = (preMuteLevel.value / 100) * volumeControl.maximumVolume;
+                    preMuteLevel.value = 0;
+                    unmuteSound.play();
+                }
+            }
+            Component.onCompleted: {
+                // Check initial state
+                var isMuted = DeviceInfo.hasSpeaker ? preMuteLevel.value > 0 : true; // Consider muted if sound unavailable
+                toggled = isMuted && displaySettings.brightness <= 10 && !alwaysOnDisplay.value;
+            }
+            Connections {
+                target: preMuteLevel
+                function onValueChanged() {
+                    var isMuted = DeviceInfo.hasSpeaker ? preMuteLevel.value > 0 : true;
+                    cinemaToggle.toggled = isMuted && displaySettings.brightness <= 10 && !alwaysOnDisplay.value;
+                }
+            }
+            Connections {
+                target: displaySettings
+                function onBrightnessChanged() {
+                    var isMuted = DeviceInfo.hasSpeaker ? preMuteLevel.value > 0 : true;
+                    cinemaToggle.toggled = isMuted && displaySettings.brightness <= 10 && !alwaysOnDisplay.value;
+                }
+            }
+            Connections {
+                target: alwaysOnDisplay
+                function onValueChanged() {
+                    var isMuted = DeviceInfo.hasSpeaker ? preMuteLevel.value > 0 : true;
+                    cinemaToggle.toggled = isMuted && displaySettings.brightness <= 10 && !alwaysOnDisplay.value;
+                }
+            }
         }
     }
 
@@ -852,13 +914,38 @@ Item {
     }
 
     Component {
+        id: aodToggleComponent
+        QuickSettingsToggle {
+            icon: alwaysOnDisplay.value ? "ios-watch-aod-on" : "ios-watch-aod-off"
+            toggled: alwaysOnDisplay.value
+            onChecked: {
+                alwaysOnDisplay.value = true;
+                displaySettings.lowPowerModeEnabled = true;
+            }
+            onUnchecked: {
+                alwaysOnDisplay.value = false;
+                displaySettings.lowPowerModeEnabled = false;
+            }
+            Connections {
+                target: alwaysOnDisplay
+                function onValueChanged() {
+                    toggled = alwaysOnDisplay.value;
+                }
+            }
+        }
+    }
+
+    Component {
         id: powerOffToggleComponent
         QuickSettingsToggle {
             icon: "ios-power"
             togglable: false
             toggled: true
             onChecked: {
+                //% "Powering off in"
                 remorseTimer.action = qsTrId("id-power-off");
+                //% "Tap to cancel"
+                remorseTimer.cancelText = qsTrId("id-tap-to-cancel");
                 remorseTimer.start();
                 remorseTimer.onTriggered.connect(function() {
                     login1DBus.call("PowerOff", [false]);
@@ -874,7 +961,10 @@ Item {
             togglable: false
             toggled: true
             onChecked: {
+                //% "Rebooting in"
                 remorseTimer.action = qsTrId("id-reboot");
+                //% "Tap to cancel"
+                remorseTimer.cancelText = qsTrId("id-tap-to-cancel");
                 remorseTimer.start();
                 remorseTimer.onTriggered.connect(function() {
                     login1DBus.call("SetRebootParameter", [""]);

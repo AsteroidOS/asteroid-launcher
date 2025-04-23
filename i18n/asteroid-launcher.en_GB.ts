@@ -81,7 +81,7 @@
         <translation>d</translation>
     </message>
     <message id="id-no-notifications">
-        <location filename="../src/qml/notifications/NotificationsPanel.qml" line="156"/>
+        <location filename="../src/qml/notifications/NotificationsPanel.qml" line="160"/>
         <source>No notifications</source>
         <translation>No notifications</translation>
     </message>
@@ -204,6 +204,22 @@
         <location filename="../src/qml/firstrun/Tutorial.qml" line="400"/>
         <source>Enjoy!</source>
         <translation>Enjoy!</translation>
+    </message>
+    <message id="id-power-off">
+        <location filename="../src/qml/quicksettings/QuickSettings.qml" line="944"/>
+        <source>Powering off in</source>
+        <translation>Powering off in</translation>
+    </message>
+    <message id="id-tap-to-cancel">
+        <location filename="../src/qml/quicksettings/QuickSettings.qml" line="946"/>
+        <location filename="../src/qml/quicksettings/QuickSettings.qml" line="964"/>
+        <source>Tap to cancel</source>
+        <translation>Tap to cancel</translation>
+    </message>
+    <message id="id-reboot">
+        <location filename="../src/qml/quicksettings/QuickSettings.qml" line="962"/>
+        <source>Rebooting in</source>
+        <translation>Rebooting in</translation>
     </message>
 </context>
 </TS>
