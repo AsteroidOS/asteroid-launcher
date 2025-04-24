@@ -83,7 +83,7 @@
     <message id="id-no-notifications">
         <location filename="../src/qml/notifications/NotificationsPanel.qml" line="156"/>
         <source>No notifications</source>
-        <translation>Καμία ειδοποίηση</translation>
+        <translation>Δεν υπάρχουν ειδοποιήσεις</translation>
     </message>
     <message id="id-today">
         <location filename="../src/qml/today/Today.qml" line="136"/>
