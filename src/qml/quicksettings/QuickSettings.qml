@@ -75,7 +75,7 @@ Item {
     ConfigurationValue {
         id: sliderToggles
         key: "/desktop/asteroid/quicksettings/slider"
-        defaultValue: ["brightnessToggle", "bluetoothToggle", "hapticsToggle", "wifiToggle", "soundToggle", "cinemaToggle", "aodToggle", "powerOffToggle", "rebootToggle"]
+        defaultValue: ["brightnessToggle", "bluetoothToggle", "hapticsToggle", "wifiToggle", "soundToggle", "cinemaToggle", "aodToggle", "powerOffToggle", "rebootToggle", "musicToggle", "flashlightToggle"]
     }
 
     ConfigurationValue {
@@ -92,7 +92,9 @@ Item {
             "cinemaToggle": true,
             "aodToggle": true,
             "powerOffToggle": true,
-            "rebootToggle": true
+            "rebootToggle": true,
+            "musicToggle": false,
+            "flashlightToggle": false
         }
     }
 
@@ -206,7 +208,9 @@ Item {
             "cinemaToggle": { component: cinemaToggleComponent, toggleAvailable: true },
             "aodToggle": { component: aodToggleComponent, toggleAvailable: true },
             "powerOffToggle": { component: powerOffToggleComponent, toggleAvailable: true },
-            "rebootToggle": { component: rebootToggleComponent, toggleAvailable: true }
+            "rebootToggle": { component: rebootToggleComponent, toggleAvailable: true },
+            "musicToggle": { component: musicToggleComponent, toggleAvailable: true },
+            "flashlightToggle": { component: flashlightToggleComponent, toggleAvailable: true }
         })
 
         property var allToggles: {
@@ -910,6 +914,26 @@ Item {
             togglable: false
             toggled: true
             onChecked: appLauncher.launchApp("asteroid-settings")
+        }
+    }
+
+    Component {
+        id: musicToggleComponent
+        QuickSettingsToggle {
+            icon: "ios-musical-notes-outline"
+            togglable: false
+            toggled: true
+            onChecked: appLauncher.launchApp("asteroid-music")
+        }
+    }
+
+    Component {
+        id: flashlightToggleComponent
+        QuickSettingsToggle {
+            icon: "ios-bulb-outline"
+            togglable: false
+            toggled: true
+            onChecked: appLauncher.launchApp("asteroid-flashlight")
         }
     }
 
