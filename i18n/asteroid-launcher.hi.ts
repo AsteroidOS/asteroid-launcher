@@ -7,7 +7,7 @@
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="158"/>
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="170"/>
         <source>Authorize:</source>
-        <translation>ऑथोराएज़ करें:</translation>
+        <translation>ऑथोराएज़/अधिकृत करें :</translation>
     </message>
     <message id="id-btagent-confirm">
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="182"/>
@@ -17,7 +17,7 @@
     <message id="id-btagent-passkey">
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="194"/>
         <source>Pass Key:</source>
-        <translation>पास की:</translation>
+        <translation>पास कुंजी:</translation>
     </message>
     <message id="id-btagent-enterkey">
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="210"/>
@@ -44,13 +44,13 @@
     <message id="id-dismiss-all">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="123"/>
         <source>Dismiss all</source>
-        <translation>सभी खारिज करे</translation>
+        <translation>सभी हटायें</translation>
     </message>
     <message id="id-dismiss">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="138"/>
         <location filename="../src/qml/notifications/NotificationView.qml" line="161"/>
         <source>Dismiss</source>
-        <translation>इसे खारिज करें</translation>
+        <translation>हटायें</translation>
     </message>
     <message id="id-now">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="58"/>
@@ -93,12 +93,12 @@
     <message id="id-no-events-today">
         <location filename="../src/qml/today/Today.qml" line="207"/>
         <source>No events today</source>
-        <translation>आज कोई कार्यक्रम नहीं</translation>
+        <translation>आज कोई आयोजन/इवैंट नहीं</translation>
     </message>
     <message id="id-date-page">
         <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="201"/>
         <source>Date</source>
-        <translation>तारीख</translation>
+        <translation>दिनांक</translation>
     </message>
     <message id="id-add-alarm">
         <location filename="../src/qml/firstrun/FakeAlarmclock.qml" line="85"/>
