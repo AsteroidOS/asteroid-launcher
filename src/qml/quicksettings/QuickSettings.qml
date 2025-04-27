@@ -326,10 +326,28 @@ Item {
         }
     }
 
-    Item {
-        id: batteryMeter
+    ValueMeter {
+        id: valueMeter
         width: toggleSize * 1.8
         height: Dims.l(8)
+        valueLowerBound: 0
+        valueUpperBound: 100
+        value: batteryChargePercentage.percent
+        isIncreasing: mceChargerType.type != MceChargerType.None
+        enableAnimations: options.value.batteryAnimation
+        enableColoredFill: options.value.batteryColored
+        particleDesign: options.value.particleDesign
+        fillColor: {
+            if (!options.value.batteryColored) return Qt.rgba(1, 1, 1, 0.3)
+            var percent = batteryChargePercentage.percent
+            if (percent > 50) return Qt.rgba(0, 1, 0, 0.3)
+            if (percent > 20) {
+                var t = (50 - percent) / 30
+                return Qt.rgba(t, 1 - (t * 0.35), 0, 0.3)
+            }
+            var t = (20 - percent) / 20
+            return Qt.rgba(1, 0.65 * (1 - t), 0, 0.3)
+        }
         anchors {
             horizontalCenter: parent.horizontalCenter
         }
@@ -339,12 +357,12 @@ Item {
                 name: "topPosition"
                 when: !options.value.batteryBottom
                 AnchorChanges {
-                    target: batteryMeter
+                    target: valueMeter
                     anchors.top: undefined
                     anchors.bottom: slidingRow.top
                 }
                 PropertyChanges {
-                    target: batteryMeter
+                    target: valueMeter
                     anchors.topMargin: 0
                     anchors.bottomMargin: Dims.l(12)
                 }
@@ -353,191 +371,17 @@ Item {
                 name: "bottomPosition"
                 when: options.value.batteryBottom
                 AnchorChanges {
-                    target: batteryMeter
+                    target: valueMeter
                     anchors.top: slidingRow.bottom
                     anchors.bottom: undefined
                 }
                 PropertyChanges {
-                    target: batteryMeter
+                    target: valueMeter
                     anchors.topMargin: Dims.l(12)
                     anchors.bottomMargin: 0
                 }
             }
         ]
-
-        Rectangle {
-            id: batteryOutline
-            width: parent.width
-            height: parent.height
-            color: Qt.rgba(1, 1, 1, 0.2)
-            radius: height / 2
-        }
-
-        Rectangle {
-            id: batteryFill
-            height: parent.height
-            width: {
-                var baseWidth = parent.width * (batteryChargePercentage.percent / 100)
-                if (mceChargerType.type != MceChargerType.None && options.value.batteryAnimation && batteryFill.isVisible) {
-                    var waveAmplitude = parent.width * 0.05
-                    return baseWidth + waveAmplitude * Math.sin(waveTime)
-                }
-                return baseWidth
-            }
-            color: {
-                if (!options.value.batteryColored) return Qt.rgba(1, 1, 1, 0.3) // Reduced alpha from 0.4
-                var percent = batteryChargePercentage.percent
-                if (percent > 50) return Qt.rgba(0, 1, 0, 0.3) // Reduced alpha from 0.4
-                if (percent > 20) {
-                    var t = (50 - percent) / 30
-                    return Qt.rgba(t, 1 - (t * 0.35), 0, 0.3) // Reduced alpha from 0.4
-                }
-                var t = (20 - percent) / 20
-                return Qt.rgba(1, 0.65 * (1 - t), 0, 0.3) // Reduced alpha from 0.4
-            }
-            anchors.left: parent.left
-            opacity: 1.0
-            clip: true
-
-            property real waveTime: 0
-            property bool isVisible: rootitem.visible && Qt.application.active
-
-            NumberAnimation on waveTime {
-                id: waveAnimation
-                running: mceChargerType.type != MceChargerType.None && batteryFill.isVisible
-                from: 0
-                to: 2 * Math.PI
-                duration: 1500
-                loops: Animation.Infinite
-            }
-
-            SequentialAnimation on color {
-                running: mceChargerType.type == MceChargerType.None && options.value.batteryAnimation && batteryChargePercentage.percent < 30 && batteryFill.isVisible
-                loops: Animation.Infinite
-                ColorAnimation {
-                    to: options.value.batteryColored ? Qt.rgba(1, 0, 0, 0.7) : Qt.rgba(1, 1, 1, 0.7) // Reduced alpha from 0.8
-                    duration: 500
-                    easing.type: Easing.InOutQuad
-                }
-                ColorAnimation {
-                    to: options.value.batteryColored ? Qt.rgba(1, 0, 0, 0.3) : Qt.rgba(1, 1, 1, 0.3) // Reduced alpha from 0.4
-                    duration: 500
-                    easing.type: Easing.InOutQuad
-                }
-            }
-
-            Item {
-                id: particleContainer
-                anchors.fill: parent
-                visible: options.value.batteryAnimation
-
-                property int particleCount: 5
-                property bool isCharging: mceChargerType.type != MceChargerType.None
-                property int activeParticles: 0
-                // Track horizontal spawn alternation (0 = left half, 1 = right half)
-                property int nextHorizontalBand: 0
-                // Dynamic spawn interval based on charging state
-                property int spawnInterval: 300
-
-                Component {
-                    id: cleanupTimerComponent
-                    Timer {
-                        id: cleanupTimer
-                        interval: 0
-                        running: true
-                        repeat: false
-                        onTriggered: {
-                            particleContainer.activeParticles--;
-                        }
-                    }
-                }
-
-                function createParticle() {
-                    if (!particleContainer.visible || !batteryFill.isVisible || activeParticles >= 16) {
-                        return;
-                    }
-                    var component = Qt.createComponent("qrc:///org/asteroid/controls/qml/BatteryParticles.qml");
-                    if (component.status === Component.Ready) {
-                        var isCharging = mceChargerType.type != MceChargerType.None;
-                        // Define speed (px/s) and calculate lifetime based on path length
-                        var speed = isCharging ? 60 : 20; // 60px/s charging, 20px/s discharging
-                        var pathLength = isCharging ? batteryFill.width / 2 : batteryFill.width;
-                        var lifetime = isCharging ? 2500 : 8500; // Charging: +50% (~1667ms -> 2500ms), Discharging: -15% (~10000ms -> 8500ms)
-                        particleContainer.spawnInterval = isCharging ? 200 : 750;
-                        var maxSize = batteryFill.height / 2;
-                        var minSize = batteryFill.height / 6;
-                        var designType = options.value.particleDesign || "diamonds";
-                        var isLogoOrFlash = designType === "logos" || designType === "flashes";
-                        var sizeMultiplier = isLogoOrFlash ? 1.3 : 1.0;
-                        var opacity = 0.6; // Unified maxOpacity
-
-                        // Horizontal stratification: alternate between left (0) and right (1) halves
-                        var horizontalBand = particleContainer.nextHorizontalBand;
-                        var startX = isCharging ?
-                            (horizontalBand === 0 ? Math.random() * (batteryFill.width / 4) : (batteryFill.width / 4) + Math.random() * (batteryFill.width / 4)) :
-                            (horizontalBand === 0 ? batteryFill.width / 2 + Math.random() * (batteryFill.width / 4) : (3 * batteryFill.width / 4) + Math.random() * (batteryFill.width / 4));
-                        particleContainer.nextHorizontalBand = (horizontalBand + 1) % 2; // Alternate
-
-                        var endX = isCharging ?
-                            startX + pathLength :
-                            startX - pathLength;
-
-                        var band = Math.floor(Math.random() * 3); // 0, 1, 2
-                        var startY = (band * batteryFill.height / 3) + (Math.random() * batteryFill.height / 3);
-
-                        var size = (minSize + Math.random() * (maxSize - minSize)) * sizeMultiplier;
-
-                        var particle = component.createObject(particleContainer, {
-                            "x": startX,
-                            "y": startY,
-                            "targetX": endX,
-                            "maxSize": size,
-                            "lifetime": lifetime,
-                            "isCharging": isCharging,
-                            "design": designType,
-                            "opacity": opacity,
-                            // Destroy if outside batteryFill bounds
-                            "clipBounds": Qt.rect(0, 0, batteryFill.width, batteryFill.height)
-                        });
-                        if (particle !== null) {
-                            activeParticles++;
-                            var cleanupTimer = cleanupTimerComponent.createObject(particleContainer, {
-                                "interval": lifetime
-                            });
-                        }
-                    } else {
-                        // Handle component loading failure silently
-                    }
-                }
-
-                Timer {
-                    id: particleTimer
-                    interval: particleContainer.spawnInterval
-                    running: batteryFill.width > 0 && options.value.batteryAnimation && particleContainer.visible && batteryFill.isVisible
-                    repeat: true
-                    triggeredOnStart: true
-                    onTriggered: {
-                        particleContainer.createParticle();
-                    }
-                }
-            }
-
-            Connections {
-                target: rootitem
-                function onVisibleChanged() {
-                    batteryFill.isVisible = rootitem.visible && Qt.application.active
-                }
-            }
-        }
-
-        layer.enabled: true
-        layer.effect: OpacityMask {
-            maskSource: Item {
-                width: batteryMeter.width
-                height: batteryMeter.height
-                Rectangle { anchors.fill: parent; radius: batteryOutline.radius }
-            }
-        }
     }
 
     Label {
@@ -554,7 +398,7 @@ Item {
                 AnchorChanges {
                     target: batteryPercentText
                     anchors.top: undefined
-                    anchors.bottom: batteryMeter.top
+                    anchors.bottom: valueMeter.top
                 }
                 PropertyChanges {
                     target: batteryPercentText
@@ -567,7 +411,7 @@ Item {
                 when: options.value.batteryBottom
                 AnchorChanges {
                     target: batteryPercentText
-                    anchors.top: batteryMeter.bottom
+                    anchors.top: valueMeter.bottom
                     anchors.bottom: undefined
                 }
                 PropertyChanges {
@@ -587,10 +431,10 @@ Item {
 
         Component.onCompleted: {
             if (options.value.batteryBottom) {
-                anchors.top = batteryMeter.bottom
+                anchors.top = valueMeter.bottom
                 anchors.topMargin = Dims.l(1)
             } else {
-                anchors.bottom = batteryMeter.top
+                anchors.bottom = valueMeter.top
                 anchors.bottomMargin = Dims.l(1)
             }
         }
@@ -601,7 +445,7 @@ Item {
         width: Dims.l(8)
         height: Dims.l(8)
         name: "ios-flash"
-        anchors.centerIn: batteryMeter
+        anchors.centerIn: valueMeter
         y: -Dims.l(10)
         visible: mceChargerType.type != MceChargerType.None
         opacity: 1.0
@@ -686,12 +530,12 @@ Item {
                 fixedRow.anchors.top = undefined
                 fixedRow.anchors.topMargin = 0
 
-                batteryMeter.anchors.top = slidingRow.bottom
-                batteryMeter.anchors.topMargin = Dims.l(12)
-                batteryMeter.anchors.bottom = undefined
-                batteryMeter.anchors.bottomMargin = 0
+                valueMeter.anchors.top = slidingRow.bottom
+                valueMeter.anchors.topMargin = Dims.l(12)
+                valueMeter.anchors.bottom = undefined
+                valueMeter.anchors.bottomMargin = 0
 
-                batteryPercentText.anchors.top = batteryMeter.bottom
+                batteryPercentText.anchors.top = valueMeter.bottom
                 batteryPercentText.anchors.topMargin = Dims.l(1)
                 batteryPercentText.anchors.bottom = undefined
                 batteryPercentText.anchors.bottomMargin = 0
@@ -707,12 +551,12 @@ Item {
                 fixedRow.anchors.bottom = undefined
                 fixedRow.anchors.bottomMargin = 0
 
-                batteryMeter.anchors.bottom = slidingRow.top
-                batteryMeter.anchors.bottomMargin = Dims.l(12)
-                batteryMeter.anchors.top = undefined
-                batteryMeter.anchors.topMargin = 0
+                valueMeter.anchors.bottom = slidingRow.top
+                valueMeter.anchors.bottomMargin = Dims.l(12)
+                valueMeter.anchors.top = undefined
+                valueMeter.anchors.topMargin = 0
 
-                batteryPercentText.anchors.bottom = batteryMeter.top
+                batteryPercentText.anchors.bottom = valueMeter.top
                 batteryPercentText.anchors.bottomMargin = Dims.l(1)
                 batteryPercentText.anchors.top = undefined
                 batteryPercentText.anchors.topMargin = 0
