@@ -75,7 +75,7 @@ Item {
     ConfigurationValue {
         id: sliderToggles
         key: "/desktop/asteroid/quicksettings/slider"
-        defaultValue: ["brightnessToggle", "bluetoothToggle", "hapticsToggle", "wifiToggle", "soundToggle", "cinemaToggle", "aodToggle", "powerOffToggle", "rebootToggle", "musicToggle", "flashlightToggle"]
+        defaultValue: ["brightnessToggle", "bluetoothToggle", "hapticsToggle", "wifiToggle", "soundToggle", "cinemaToggle", "aodToggle", "powerOffToggle", "rebootToggle", "musicButton", "flashlightButton"]
     }
 
     ConfigurationValue {
@@ -93,8 +93,8 @@ Item {
             "aodToggle": true,
             "powerOffToggle": true,
             "rebootToggle": true,
-            "musicToggle": false,
-            "flashlightToggle": false
+            "musicButton": false,
+            "flashlightButton": false
         }
     }
 
@@ -209,8 +209,8 @@ Item {
             "aodToggle": { component: aodToggleComponent, toggleAvailable: true },
             "powerOffToggle": { component: powerOffToggleComponent, toggleAvailable: true },
             "rebootToggle": { component: rebootToggleComponent, toggleAvailable: true },
-            "musicToggle": { component: musicToggleComponent, toggleAvailable: true },
-            "flashlightToggle": { component: flashlightToggleComponent, toggleAvailable: true }
+            "musicButton": { component: musicButtonComponent, toggleAvailable: true },
+            "flashlightButton": { component: flashlightButtonComponent, toggleAvailable: true }
         })
 
         property var allToggles: {
@@ -730,14 +730,90 @@ Item {
         QuickSettingsToggle {
             id: brightnessToggle
             icon: "ios-sunny"
-            onChecked: displaySettings.brightness = 100
+            onChecked: {
+                if (displaySettings.brightness === 0) {
+                    displaySettings.brightness = 100
+                } else if (displaySettings.brightness < 100) {
+                    displaySettings.brightness = 100
+                }
+            }
             onUnchecked: displaySettings.brightness = 0
-            Component.onCompleted: toggled = displaySettings.brightness > 80
+            Component.onCompleted: toggled = displaySettings.brightness > 10
+
+            property bool isIncreasing: true // Current direction for adjustment
+            property string lastDirection: "increasing" // Persist last pressAndHold direction
+            property int elapsedTime: 0 // Tracks elapsed time in ms
+            property int frameCount: 0
+            property int targetBrightness: 0 // Track desired brightness for updates
+            property bool isReleased: false // Flag to prevent updates after release
+
+            MouseArea {
+                anchors.fill: parent
+                pressAndHoldInterval: 300
+                onClicked: parent.toggled ? parent.unchecked() : parent.checked()
+                onPressAndHold: {
+                    // Continue last direction unless at boundary
+                    if (displaySettings.brightness === 100) {
+                        isIncreasing = false
+                        lastDirection = "decreasing"
+                    } else if (displaySettings.brightness === 0) {
+                        isIncreasing = true
+                        lastDirection = "increasing"
+                    } else {
+                        isIncreasing = (lastDirection === "increasing")
+                    }
+                    elapsedTime = 0
+                    frameCount = 0
+                    targetBrightness = displaySettings.brightness
+                    isReleased = false
+                    brightnessHoldTimer.start()
+                }
+                onReleased: {
+                    isReleased = true
+                    brightnessHoldTimer.stop()
+                }
+            }
+
+            Timer {
+                id: brightnessHoldTimer
+                interval: 300
+                repeat: true
+                onTriggered: {
+                    frameCount++
+                    elapsedTime += interval // Increment by timer interval (300ms)
+
+                    // Skip brightness change if released
+                    if (isReleased) {
+                        return
+                    }
+
+                    // Calculate brightness change (10 units per 300ms)
+                    var brightnessChange = 10 // Fixed 10-unit step per interval
+                    if (brightnessChange > 0) {
+                        var oldBrightness = displaySettings.brightness
+                        if (isIncreasing) {
+                            targetBrightness = Math.round(Math.min(100, targetBrightness + brightnessChange))
+                            displaySettings.brightness = targetBrightness
+                            if (displaySettings.brightness === 100) {
+                                lastDirection = "decreasing" // Prepare to decrease next
+                                brightnessHoldTimer.stop()
+                            }
+                        } else {
+                            targetBrightness = Math.round(Math.max(0, targetBrightness - brightnessChange))
+                            displaySettings.brightness = targetBrightness
+                            if (displaySettings.brightness === 0) {
+                                lastDirection = "increasing" // Prepare to increase next
+                                brightnessHoldTimer.stop()
+                            }
+                        }
+                    }
+                }
+            }
 
             Connections {
                 target: displaySettings
                 function onBrightnessChanged() {
-                    brightnessToggle.toggled = displaySettings.brightness > 80
+                    brightnessToggle.toggled = displaySettings.brightness > 10
                 }
             }
         }
@@ -918,7 +994,7 @@ Item {
     }
 
     Component {
-        id: musicToggleComponent
+        id: musicButtonComponent
         QuickSettingsToggle {
             icon: "ios-musical-notes-outline"
             togglable: false
@@ -928,7 +1004,7 @@ Item {
     }
 
     Component {
-        id: flashlightToggleComponent
+        id: flashlightButtonComponent
         QuickSettingsToggle {
             icon: "ios-bulb-outline"
             togglable: false
