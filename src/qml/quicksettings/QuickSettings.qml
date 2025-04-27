@@ -332,12 +332,30 @@ Item {
         height: Dims.l(8)
         valueLowerBound: 0
         valueUpperBound: 100
-        value: batteryChargePercentage.percent
-        isIncreasing: mceChargerType.type != MceChargerType.None
-        enableAnimations: options.value.batteryAnimation
+        value: showingBrightness ? displaySettings.brightness : batteryChargePercentage.percent
+        isIncreasing: showingBrightness ? false : mceChargerType.type != MceChargerType.None
+        enableAnimations: options.value.batteryAnimation && !showingBrightness
         enableColoredFill: options.value.batteryColored
         particleDesign: options.value.particleDesign
+
+        property bool showingBrightness: false
+        property Timer resetTimer: Timer {
+            interval: 2000
+            repeat: false
+            onTriggered: {
+                valueMeter.showingBrightness = false
+                valueMeterCaption.showingBrightness = false
+            }
+        }
+
+        // Opacity transitions for value change
+        Behavior on opacity {
+            NumberAnimation { duration: 500 }
+        }
+
         fillColor: {
+            if (showingBrightness) return Qt.rgba(0.5, 0, 0.8, 0.3) // Purple for brightness
+
             if (!options.value.batteryColored) return Qt.rgba(1, 1, 1, 0.3)
             var percent = batteryChargePercentage.percent
             if (percent > 50) return Qt.rgba(0, 1, 0, 0.3)
@@ -348,6 +366,7 @@ Item {
             var t = (20 - percent) / 20
             return Qt.rgba(1, 0.65 * (1 - t), 0, 0.3)
         }
+
         anchors {
             horizontalCenter: parent.horizontalCenter
         }
@@ -385,7 +404,7 @@ Item {
     }
 
     Label {
-        id: batteryPercentText
+        id: valueMeterCaption
         opacity: mceChargerType.type == MceChargerType.None ? 0.6 : 0.9
         anchors {
             horizontalCenter: parent.horizontalCenter
@@ -396,12 +415,12 @@ Item {
                 name: "topPosition"
                 when: !options.value.batteryBottom
                 AnchorChanges {
-                    target: batteryPercentText
+                    target: valueMeterCaption
                     anchors.top: undefined
                     anchors.bottom: valueMeter.top
                 }
                 PropertyChanges {
-                    target: batteryPercentText
+                    target: valueMeterCaption
                     anchors.topMargin: 0
                     anchors.bottomMargin: Dims.l(1)
                 }
@@ -410,12 +429,12 @@ Item {
                 name: "bottomPosition"
                 when: options.value.batteryBottom
                 AnchorChanges {
-                    target: batteryPercentText
+                    target: valueMeterCaption
                     anchors.top: valueMeter.bottom
                     anchors.bottom: undefined
                 }
                 PropertyChanges {
-                    target: batteryPercentText
+                    target: valueMeterCaption
                     anchors.topMargin: Dims.l(1)
                     anchors.bottomMargin: 0
                 }
@@ -427,7 +446,15 @@ Item {
             family: "Noto Sans"
             styleName: "Condensed Medium"
         }
-        text: batteryChargePercentage.percent + "%"
+
+        property bool showingBrightness: false
+        //% "Brightness"
+        text: showingBrightness ? qsTrId("id-brightness") : batteryChargePercentage.percent + "%"
+
+        // Opacity transitions for text change
+        Behavior on opacity {
+            NumberAnimation { duration: 500 }
+        }
 
         Component.onCompleted: {
             if (options.value.batteryBottom) {
@@ -535,10 +562,10 @@ Item {
                 valueMeter.anchors.bottom = undefined
                 valueMeter.anchors.bottomMargin = 0
 
-                batteryPercentText.anchors.top = valueMeter.bottom
-                batteryPercentText.anchors.topMargin = Dims.l(1)
-                batteryPercentText.anchors.bottom = undefined
-                batteryPercentText.anchors.bottomMargin = 0
+                valueMeterCaption.anchors.top = valueMeter.bottom
+                valueMeterCaption.anchors.topMargin = Dims.l(1)
+                valueMeterCaption.anchors.bottom = undefined
+                valueMeterCaption.anchors.bottomMargin = 0
 
                 pageDots.anchors.top = slidingRow.bottom
                 pageDots.anchors.topMargin = Dims.l(4)
@@ -556,10 +583,10 @@ Item {
                 valueMeter.anchors.top = undefined
                 valueMeter.anchors.topMargin = 0
 
-                batteryPercentText.anchors.bottom = valueMeter.top
-                batteryPercentText.anchors.bottomMargin = Dims.l(1)
-                batteryPercentText.anchors.top = undefined
-                batteryPercentText.anchors.topMargin = 0
+                valueMeterCaption.anchors.bottom = valueMeter.top
+                valueMeterCaption.anchors.bottomMargin = Dims.l(1)
+                valueMeterCaption.anchors.top = undefined
+                valueMeterCaption.anchors.topMargin = 0
 
                 pageDots.anchors.bottom = slidingRow.top
                 pageDots.anchors.bottomMargin = Dims.l(4)
@@ -591,6 +618,12 @@ Item {
             property int targetBrightness: 0 // Track desired brightness for updates
             property bool isReleased: false // Flag to prevent updates after release
 
+            function showInValueMeter() {
+                valueMeter.showingBrightness = true
+                valueMeterCaption.showingBrightness = true
+                valueMeter.resetTimer.restart()
+            }
+
             MouseArea {
                 anchors.fill: parent
                 pressAndHoldInterval: 300
@@ -611,10 +644,14 @@ Item {
                     targetBrightness = displaySettings.brightness
                     isReleased = false
                     brightnessHoldTimer.start()
+
+                    // Show brightness in ValueMeter
+                    showInValueMeter()
                 }
                 onReleased: {
                     isReleased = true
                     brightnessHoldTimer.stop()
+                    valueMeter.resetTimer.restart()
                 }
             }
 
@@ -638,6 +675,10 @@ Item {
                         if (isIncreasing) {
                             targetBrightness = Math.round(Math.min(100, targetBrightness + brightnessChange))
                             displaySettings.brightness = targetBrightness
+
+                            // Update ValueMeter display
+                            showInValueMeter()
+
                             if (displaySettings.brightness === 100) {
                                 lastDirection = "decreasing" // Prepare to decrease next
                                 brightnessHoldTimer.stop()
@@ -645,6 +686,10 @@ Item {
                         } else {
                             targetBrightness = Math.round(Math.max(0, targetBrightness - brightnessChange))
                             displaySettings.brightness = targetBrightness
+
+                            // Update ValueMeter display
+                            showInValueMeter()
+
                             if (displaySettings.brightness === 0) {
                                 lastDirection = "increasing" // Prepare to increase next
                                 brightnessHoldTimer.stop()
