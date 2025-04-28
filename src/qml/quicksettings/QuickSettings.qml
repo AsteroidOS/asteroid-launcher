@@ -332,31 +332,82 @@ Item {
         height: Dims.l(8)
         valueLowerBound: 0
         valueUpperBound: 100
-        value: showingBrightness ? displaySettings.brightness : batteryChargePercentage.percent
-        isIncreasing: showingBrightness ? false : mceChargerType.type != MceChargerType.None
-        enableAnimations: options.value.batteryAnimation && !showingBrightness
+
+        // Signal to notify toggles to reset direction
+        signal resetDirection
+
+        // Use a property for volume to avoid direct soundToggle reference
+        property int volumeValue: 0
+
+        // Force update the value with separate property to ensure binding triggers
+        property int currentValue: showingBrightness ? displaySettings.brightness :
+                                showingVolume ? volumeValue :
+                                batteryChargePercentage.percent
+
+        // Use onCurrentValueChanged to ensure the value is updated
+        onCurrentValueChanged: {
+            value = currentValue
+        }
+
+        isIncreasing: showingBrightness || showingVolume ? false : mceChargerType.type != MceChargerType.None
+        enableAnimations: options.value.batteryAnimation && !(showingBrightness || showingVolume)
         enableColoredFill: options.value.batteryColored
         particleDesign: options.value.particleDesign
-
         property bool showingBrightness: false
+        property bool showingVolume: false
         property Timer resetTimer: Timer {
             interval: 2000
             repeat: false
+            running: false
             onTriggered: {
+                fadeOutTimer.start()
+            }
+        }
+
+        Timer {
+            id: fadeOutTimer
+            interval: 250
+            onTriggered: {
+                // Reset display mode with explicit scope
                 valueMeter.showingBrightness = false
+                valueMeter.showingVolume = false
                 valueMeterCaption.showingBrightness = false
+                valueMeterCaption.showingVolume = false
+
+                // Signal toggles to reset direction
+                valueMeter.resetDirection()
+
+                // Force value update
+                valueMeter.currentValue = batteryChargePercentage.percent
+
+                // Transition opacity
+                valueMeter.opacity = 0.5
+                valueMeterCaption.opacity = 0.3
+
+                // Start fade-in timer
+                fadeInTimer.start()
+            }
+        }
+
+        Timer {
+            id: fadeInTimer
+            interval: 250
+            onTriggered: {
+                // Restore opacity
+                valueMeter.opacity = 1.0
+                valueMeterCaption.opacity = mceChargerType.type == MceChargerType.None ? 0.8 : 1.0
             }
         }
 
         // Opacity transitions for value change
         Behavior on opacity {
-            NumberAnimation { duration: 500 }
+            NumberAnimation { duration: 250 }
         }
 
         fillColor: {
-            if (showingBrightness) return Qt.rgba(0.5, 0, 0.8, 0.3) // Purple for brightness
-
             if (!options.value.batteryColored) return Qt.rgba(1, 1, 1, 0.3)
+            if (showingBrightness) return "#4CA6005F" // Purple with 0.3 alpha
+            if (showingVolume) return "#4C9800A6" // Blue with 0.3 alpha
             var percent = batteryChargePercentage.percent
             if (percent > 50) return Qt.rgba(0, 1, 0, 0.3)
             if (percent > 20) {
@@ -367,8 +418,17 @@ Item {
             return Qt.rgba(1, 0.65 * (1 - t), 0, 0.3)
         }
 
+        // Use behavior for fill color transitions
+        Behavior on fillColor {
+            ColorAnimation { duration: 300 }
+        }
+
         anchors {
             horizontalCenter: parent.horizontalCenter
+            top: options.value.batteryBottom ? slidingRow.bottom : undefined
+            bottom: !options.value.batteryBottom ? slidingRow.top : undefined
+            topMargin: options.value.batteryBottom ? Dims.l(12) : 0
+            bottomMargin: !options.value.batteryBottom ? Dims.l(12) : 0
         }
 
         states: [
@@ -405,9 +465,13 @@ Item {
 
     Label {
         id: valueMeterCaption
-        opacity: mceChargerType.type == MceChargerType.None ? 0.6 : 0.9
+        opacity: mceChargerType.type == MceChargerType.None ? 0.8 : 1.0
         anchors {
             horizontalCenter: parent.horizontalCenter
+            top: options.value.batteryBottom ? valueMeter.bottom : undefined
+            bottom: !options.value.batteryBottom ? valueMeter.top : undefined
+            topMargin: options.value.batteryBottom ? Dims.l(1) : 0
+            bottomMargin: !options.value.batteryBottom ? Dims.l(1) : 0
         }
 
         states: [
@@ -448,22 +512,39 @@ Item {
         }
 
         property bool showingBrightness: false
+        property bool showingVolume: false
         //% "Brightness"
-        text: showingBrightness ? qsTrId("id-brightness") : batteryChargePercentage.percent + "%"
+        //% "Volume"
+        text: showingBrightness ? qsTrId("id-brightness") :
+            showingVolume ? qsTrId("id-volume") :
+            batteryChargePercentage.percent + "%"
+
+        // Timer to handle text transitions
+        property Timer textFadeInTimer: Timer {
+            interval: 250
+            onTriggered: {
+                valueMeterCaption.opacity = mceChargerType.type == MceChargerType.None ? 0.8 : 1.0
+            }
+        }
+
+        // Monitor state changes to trigger opacity transitions
+        onShowingBrightnessChanged: {
+            if (showingBrightness) {
+                opacity = 0.3
+                textFadeInTimer.start()
+            }
+        }
+
+        onShowingVolumeChanged: {
+            if (showingVolume) {
+                opacity = 0.3
+                textFadeInTimer.start()
+            }
+        }
 
         // Opacity transitions for text change
         Behavior on opacity {
-            NumberAnimation { duration: 500 }
-        }
-
-        Component.onCompleted: {
-            if (options.value.batteryBottom) {
-                anchors.top = valueMeter.bottom
-                anchors.topMargin = Dims.l(1)
-            } else {
-                anchors.bottom = valueMeter.top
-                anchors.bottomMargin = Dims.l(1)
-            }
+            NumberAnimation { duration: 250 }
         }
     }
 
@@ -619,9 +700,27 @@ Item {
             property bool isReleased: false // Flag to prevent updates after release
 
             function showInValueMeter() {
-                valueMeter.showingBrightness = true
-                valueMeterCaption.showingBrightness = true
+                // Transition if the mode is changing
+                if (!valueMeter.showingBrightness) {
+                    // Fade out current display
+                    valueMeter.opacity = 0.5
+                    valueMeterCaption.opacity = 0.3
+
+                    // Set the new mode
+                    valueMeter.showingBrightness = true
+                    valueMeterCaption.showingBrightness = true
+                    valueMeter.showingVolume = false
+                    valueMeterCaption.showingVolume = false
+
+                    // Fade back in with delay
+                    fadeInTimer.start()
+                }
+
+                // Restart the reset timer
                 valueMeter.resetTimer.restart()
+
+                // Force update the ValueMeter value
+                valueMeter.currentValue = displaySettings.brightness
             }
 
             MouseArea {
@@ -633,7 +732,7 @@ Item {
                     if (displaySettings.brightness === 100) {
                         isIncreasing = false
                         lastDirection = "decreasing"
-                    } else if (displaySettings.brightness === 0) {
+                    } else if (displaySettings.brightness <= 10) {
                         isIncreasing = true
                         lastDirection = "increasing"
                     } else {
@@ -684,13 +783,13 @@ Item {
                                 brightnessHoldTimer.stop()
                             }
                         } else {
-                            targetBrightness = Math.round(Math.max(0, targetBrightness - brightnessChange))
+                            targetBrightness = Math.round(Math.max(10, targetBrightness - brightnessChange))
                             displaySettings.brightness = targetBrightness
 
                             // Update ValueMeter display
                             showInValueMeter()
 
-                            if (displaySettings.brightness === 0) {
+                            if (displaySettings.brightness === 10) {
                                 lastDirection = "increasing" // Prepare to increase next
                                 brightnessHoldTimer.stop()
                             }
@@ -703,6 +802,17 @@ Item {
                 target: displaySettings
                 function onBrightnessChanged() {
                     brightnessToggle.toggled = displaySettings.brightness > 10
+                    if (valueMeter.showingBrightness) {
+                        valueMeter.currentValue = displaySettings.brightness
+                    }
+                }
+            }
+
+            Connections {
+                target: valueMeter
+                function onResetDirection() {
+                    isIncreasing = true
+                    lastDirection = "increasing"
                 }
             }
         }
@@ -755,15 +865,17 @@ Item {
             }
 
             icon: preMuteLevel.value > 0 ? "ios-sound-indicator-mute" :
-                  volumeControl.volume > toPulseVolume(70) ? "ios-sound-indicator-high" :
-                  volumeControl.volume > toPulseVolume(30) ? "ios-sound-indicator-mid" :
-                  volumeControl.volume > 0 ? "ios-sound-indicator-low" : "ios-sound-indicator-off"
+                volumeControl.volume > toPulseVolume(70) ? "ios-sound-indicator-high" :
+                volumeControl.volume > toPulseVolume(30) ? "ios-sound-indicator-mid" :
+                volumeControl.volume > 0 ? "ios-sound-indicator-low" : "ios-sound-indicator-off"
 
             onChecked: {
                 var tempVolume = linearVolume();
                 volumeControl.volume = toPulseVolume(preMuteLevel.value);
                 preMuteLevel.value = tempVolume;
-                unmuteSound.play();
+                if (volumeControl.volume > 0) {
+                    soundDelayTimer.start();
+                }
             }
 
             onUnchecked: {
@@ -774,26 +886,173 @@ Item {
 
             Component.onCompleted: {
                 toggled = !(preMuteLevel.value > 0);
+                volume = linearVolume();
+            }
+
+            property bool isIncreasing: true // Current direction for adjustment
+            property string lastDirection: "increasing" // Persist last pressAndHold direction
+            property int elapsedTime: 0 // Tracks elapsed time in ms
+            property int frameCount: 0
+            property int volume: linearVolume() // Current volume for ValueMeter binding
+            property bool isReleased: false // Flag to prevent updates after release
+
+            Timer {
+                id: soundDelayTimer
+                interval: 150
+                repeat: false
+                onTriggered: {
+                    if (volumeControl.volume > 0) {
+                        unmuteSound.play();
+                    }
+                }
+            }
+
+            function showInValueMeter() {
+                // Transition if the mode is changing
+                if (!valueMeter.showingVolume) {
+                    // Fade out current display
+                    valueMeter.opacity = 0.5
+                    valueMeterCaption.opacity = 0.3
+
+                    // Set the new mode
+                    valueMeter.showingBrightness = false
+                    valueMeterCaption.showingBrightness = false
+                    valueMeter.showingVolume = true
+                    valueMeterCaption.showingVolume = true
+
+                    // Fade back in with delay
+                    fadeInTimer.start()
+                }
+
+                // Restart the reset timer
+                valueMeter.resetTimer.restart()
+
+                // Force update the ValueMeter value
+                valueMeter.volumeValue = volume
+                valueMeter.currentValue = volume
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                pressAndHoldInterval: 300
+                onClicked: parent.toggled ? parent.unchecked() : parent.checked()
+                onPressAndHold: {
+                    if (preMuteLevel.value > 0) {
+                        // Unmute first
+                        var tempVolume = linearVolume();
+                        volumeControl.volume = toPulseVolume(preMuteLevel.value);
+                        preMuteLevel.value = tempVolume;
+                        if (volumeControl.volume > 0) {
+                            soundDelayTimer.start();
+                        }
+                        toggled = true;
+                    }
+                    // Continue last direction unless at boundary
+                    if (linearVolume() >= 100) {
+                        isIncreasing = false
+                        lastDirection = "decreasing"
+                    } else if (linearVolume() <= 0) {
+                        isIncreasing = true
+                        lastDirection = "increasing"
+                    } else {
+                        isIncreasing = (lastDirection === "increasing")
+                    }
+                    elapsedTime = 0
+                    frameCount = 0
+                    volume = linearVolume()
+                    isReleased = false
+                    volumeHoldTimer.start()
+
+                    // Show volume in ValueMeter
+                    showInValueMeter()
+                }
+                onReleased: {
+                    isReleased = true
+                    volumeHoldTimer.stop()
+                    valueMeter.resetTimer.restart()
+                    if (linearVolume() > 0 && preMuteLevel.value === 0) {
+                        soundDelayTimer.start();
+                    }
+                }
+            }
+
+            Timer {
+                id: volumeHoldTimer
+                interval: 300
+                repeat: true
+                onTriggered: {
+                    frameCount++
+                    elapsedTime += interval
+
+                    if (isReleased) {
+                        return
+                    }
+
+                    var volumeChange = 10
+                    if (volumeChange > 0) {
+                        var oldVolume = linearVolume()
+                        if (isIncreasing) {
+                            volume = Math.round(Math.min(100, volume + volumeChange))
+                            volumeControl.volume = toPulseVolume(volume)
+
+                            // Update ValueMeter display
+                            showInValueMeter()
+
+                            if (linearVolume() >= 100) {
+                                lastDirection = "decreasing"
+                                volumeHoldTimer.stop()
+                            }
+                        } else {
+                            volume = Math.round(Math.max(0, volume - volumeChange))
+                            volumeControl.volume = toPulseVolume(volume)
+
+                            // Update ValueMeter display
+                            showInValueMeter()
+
+                            if (linearVolume() <= 0) {
+                                lastDirection = "increasing"
+                                volumeHoldTimer.stop()
+                            }
+                        }
+                    }
+                }
             }
 
             Connections {
                 target: volumeControl
                 function onVolumeChanged() {
+                    soundToggle.volume = linearVolume();
                     soundToggle.icon = preMuteLevel.value > 0 ? "ios-sound-indicator-mute" :
-                                       volumeControl.volume > toPulseVolume(70) ? "ios-sound-indicator-high" :
-                                       volumeControl.volume > toPulseVolume(30) ? "ios-sound-indicator-mid" :
-                                       volumeControl.volume > 0 ? "ios-sound-indicator-low" : "ios-sound-indicator-off";
+                                    volumeControl.volume > toPulseVolume(70) ? "ios-sound-indicator-high" :
+                                    volumeControl.volume > toPulseVolume(30) ? "ios-sound-indicator-mid" :
+                                    volumeControl.volume > 0 ? "ios-sound-indicator-low" : "ios-sound-indicator-off";
+
+                    // Update ValueMeter if we're showing volume
+                    if (valueMeter.showingVolume) {
+                        valueMeter.volumeValue = soundToggle.volume
+                        valueMeter.currentValue = soundToggle.volume
+                    }
+                    soundToggle.toggled = !(preMuteLevel.value > 0);
                 }
             }
 
             Connections {
                 target: preMuteLevel
                 function onValueChanged() {
+                    soundToggle.volume = linearVolume();
                     soundToggle.toggled = !(preMuteLevel.value > 0);
                     soundToggle.icon = preMuteLevel.value > 0 ? "ios-sound-indicator-mute" :
-                                       volumeControl.volume > toPulseVolume(70) ? "ios-sound-indicator-high" :
-                                       volumeControl.volume > toPulseVolume(30) ? "ios-sound-indicator-mid" :
-                                       volumeControl.volume > 0 ? "ios-sound-indicator-low" : "ios-sound-indicator-off";
+                                    volumeControl.volume > toPulseVolume(70) ? "ios-sound-indicator-high" :
+                                    volumeControl.volume > toPulseVolume(30) ? "ios-sound-indicator-mid" :
+                                    volumeControl.volume > 0 ? "ios-sound-indicator-low" : "ios-sound-indicator-off";
+                }
+            }
+
+            Connections {
+                target: valueMeter
+                function onResetDirection() {
+                    isIncreasing = true
+                    lastDirection = "increasing"
                 }
             }
         }
