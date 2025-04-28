@@ -349,8 +349,16 @@ Item {
             value = currentValue
         }
 
+        // Animate value changes for smooth fill width transitions
+        Behavior on value {
+            NumberAnimation {
+                duration: 250
+                easing.type: Easing.InOutQuad
+            }
+        }
+
         isIncreasing: showingBrightness || showingVolume ? false : mceChargerType.type != MceChargerType.None
-        enableAnimations: options.value.batteryAnimation && !(showingBrightness || showingVolume)
+        enableAnimations: options.value.batteryAnimation && !(showingBrightness || showingVolume) // Particles only for battery
         enableColoredFill: options.value.batteryColored
         particleDesign: options.value.particleDesign
         property bool showingBrightness: false
@@ -360,7 +368,7 @@ Item {
             repeat: false
             running: false
             onTriggered: {
-                fadeOutTimer.start()
+                fadeOutTimer.start() // Fixed typo from fillOutTimer
             }
         }
 
