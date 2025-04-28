@@ -368,7 +368,7 @@ Item {
             repeat: false
             running: false
             onTriggered: {
-                fadeOutTimer.start() // Fixed typo from fillOutTimer
+                fadeOutTimer.start()
             }
         }
 
@@ -522,8 +522,8 @@ Item {
         property bool showingBrightness: false
         property bool showingVolume: false
         //% "Brightness"
-        //% "Volume"
         text: showingBrightness ? qsTrId("id-brightness") :
+        //% "Volume"
             showingVolume ? qsTrId("id-volume") :
             batteryChargePercentage.percent + "%"
 
@@ -685,7 +685,7 @@ Item {
         }
     }
 
-    Component {
+Component {
         id: brightnessToggleComponent
         QuickSettingsToggle {
             id: brightnessToggle
@@ -708,26 +708,18 @@ Item {
             property bool isReleased: false // Flag to prevent updates after release
 
             function showInValueMeter() {
-                // Transition if the mode is changing
                 if (!valueMeter.showingBrightness) {
-                    // Fade out current display
                     valueMeter.opacity = 0.5
                     valueMeterCaption.opacity = 0.3
 
-                    // Set the new mode
                     valueMeter.showingBrightness = true
                     valueMeterCaption.showingBrightness = true
                     valueMeter.showingVolume = false
                     valueMeterCaption.showingVolume = false
 
-                    // Fade back in with delay
                     fadeInTimer.start()
                 }
-
-                // Restart the reset timer
                 valueMeter.resetTimer.restart()
-
-                // Force update the ValueMeter value
                 valueMeter.currentValue = displaySettings.brightness
             }
 
@@ -736,7 +728,6 @@ Item {
                 pressAndHoldInterval: 300
                 onClicked: parent.toggled ? parent.unchecked() : parent.checked()
                 onPressAndHold: {
-                    // Continue last direction unless at boundary
                     if (displaySettings.brightness === 100) {
                         isIncreasing = false
                         lastDirection = "decreasing"
@@ -751,13 +742,12 @@ Item {
                     targetBrightness = displaySettings.brightness
                     isReleased = false
                     brightnessHoldTimer.start()
-
-                    // Show brightness in ValueMeter
                     showInValueMeter()
                 }
                 onReleased: {
                     isReleased = true
                     brightnessHoldTimer.stop()
+                    directionChangeTimer.stop() // Stop the direction change timer if running
                     valueMeter.resetTimer.restart()
                 }
             }
@@ -767,42 +757,42 @@ Item {
                 interval: 300
                 repeat: true
                 onTriggered: {
-                    frameCount++
-                    elapsedTime += interval // Increment by timer interval (300ms)
-
-                    // Skip brightness change if released
                     if (isReleased) {
                         return
                     }
 
-                    // Calculate brightness change (10 units per 300ms)
-                    var brightnessChange = 10 // Fixed 10-unit step per interval
-                    if (brightnessChange > 0) {
-                        var oldBrightness = displaySettings.brightness
-                        if (isIncreasing) {
-                            targetBrightness = Math.round(Math.min(100, targetBrightness + brightnessChange))
-                            displaySettings.brightness = targetBrightness
+                    var brightnessChange = 10
+                    var oldBrightness = displaySettings.brightness
+                    if (isIncreasing) {
+                        targetBrightness = Math.round(Math.min(100, targetBrightness + brightnessChange))
+                        displaySettings.brightness = targetBrightness
+                        showInValueMeter()
 
-                            // Update ValueMeter display
-                            showInValueMeter()
+                        if (displaySettings.brightness === 100) {
+                            brightnessHoldTimer.stop()
+                            directionChangeTimer.start() // Start the delay before reversing
+                        }
+                    } else {
+                        targetBrightness = Math.round(Math.max(0, targetBrightness - brightnessChange))
+                        displaySettings.brightness = targetBrightness
+                        showInValueMeter()
 
-                            if (displaySettings.brightness === 100) {
-                                lastDirection = "decreasing" // Prepare to decrease next
-                                brightnessHoldTimer.stop()
-                            }
-                        } else {
-                            targetBrightness = Math.round(Math.max(10, targetBrightness - brightnessChange))
-                            displaySettings.brightness = targetBrightness
-
-                            // Update ValueMeter display
-                            showInValueMeter()
-
-                            if (displaySettings.brightness === 10) {
-                                lastDirection = "increasing" // Prepare to increase next
-                                brightnessHoldTimer.stop()
-                            }
+                        if (displaySettings.brightness === 0) {
+                            brightnessHoldTimer.stop()
+                            directionChangeTimer.start() // Start the delay before reversing
                         }
                     }
+                }
+            }
+
+            Timer {
+                id: directionChangeTimer
+                interval: 1000 // 1 second delay
+                repeat: false
+                onTriggered: {
+                    isIncreasing = !isIncreasing
+                    lastDirection = isIncreasing ? "increasing" : "decreasing"
+                    brightnessHoldTimer.start() // Restart the increment/decrement timer
                 }
             }
 
@@ -873,9 +863,9 @@ Item {
             }
 
             icon: preMuteLevel.value > 0 ? "ios-sound-indicator-mute" :
-                volumeControl.volume > toPulseVolume(70) ? "ios-sound-indicator-high" :
-                volumeControl.volume > toPulseVolume(30) ? "ios-sound-indicator-mid" :
-                volumeControl.volume > 0 ? "ios-sound-indicator-low" : "ios-sound-indicator-off"
+                  volumeControl.volume > toPulseVolume(70) ? "ios-sound-indicator-high" :
+                  volumeControl.volume > toPulseVolume(30) ? "ios-sound-indicator-mid" :
+                  volumeControl.volume > 0 ? "ios-sound-indicator-low" : "ios-sound-indicator-off"
 
             onChecked: {
                 var tempVolume = linearVolume();
@@ -916,26 +906,18 @@ Item {
             }
 
             function showInValueMeter() {
-                // Transition if the mode is changing
                 if (!valueMeter.showingVolume) {
-                    // Fade out current display
                     valueMeter.opacity = 0.5
                     valueMeterCaption.opacity = 0.3
 
-                    // Set the new mode
                     valueMeter.showingBrightness = false
                     valueMeterCaption.showingBrightness = false
                     valueMeter.showingVolume = true
                     valueMeterCaption.showingVolume = true
 
-                    // Fade back in with delay
                     fadeInTimer.start()
                 }
-
-                // Restart the reset timer
                 valueMeter.resetTimer.restart()
-
-                // Force update the ValueMeter value
                 valueMeter.volumeValue = volume
                 valueMeter.currentValue = volume
             }
@@ -946,7 +928,6 @@ Item {
                 onClicked: parent.toggled ? parent.unchecked() : parent.checked()
                 onPressAndHold: {
                     if (preMuteLevel.value > 0) {
-                        // Unmute first
                         var tempVolume = linearVolume();
                         volumeControl.volume = toPulseVolume(preMuteLevel.value);
                         preMuteLevel.value = tempVolume;
@@ -955,7 +936,6 @@ Item {
                         }
                         toggled = true;
                     }
-                    // Continue last direction unless at boundary
                     if (linearVolume() >= 100) {
                         isIncreasing = false
                         lastDirection = "decreasing"
@@ -970,13 +950,12 @@ Item {
                     volume = linearVolume()
                     isReleased = false
                     volumeHoldTimer.start()
-
-                    // Show volume in ValueMeter
                     showInValueMeter()
                 }
                 onReleased: {
                     isReleased = true
                     volumeHoldTimer.stop()
+                    directionChangeTimer.stop() // Stop the direction change timer if running
                     valueMeter.resetTimer.restart()
                     if (linearVolume() > 0 && preMuteLevel.value === 0) {
                         soundDelayTimer.start();
@@ -989,40 +968,40 @@ Item {
                 interval: 300
                 repeat: true
                 onTriggered: {
-                    frameCount++
-                    elapsedTime += interval
-
                     if (isReleased) {
                         return
                     }
 
                     var volumeChange = 10
-                    if (volumeChange > 0) {
-                        var oldVolume = linearVolume()
-                        if (isIncreasing) {
-                            volume = Math.round(Math.min(100, volume + volumeChange))
-                            volumeControl.volume = toPulseVolume(volume)
-
-                            // Update ValueMeter display
-                            showInValueMeter()
-
-                            if (linearVolume() >= 100) {
-                                lastDirection = "decreasing"
-                                volumeHoldTimer.stop()
-                            }
-                        } else {
-                            volume = Math.round(Math.max(0, volume - volumeChange))
-                            volumeControl.volume = toPulseVolume(volume)
-
-                            // Update ValueMeter display
-                            showInValueMeter()
-
-                            if (linearVolume() <= 0) {
-                                lastDirection = "increasing"
-                                volumeHoldTimer.stop()
-                            }
+                    var oldVolume = linearVolume()
+                    if (isIncreasing) {
+                        volume = Math.round(Math.min(100, volume + volumeChange))
+                        volumeControl.volume = toPulseVolume(volume)
+                        showInValueMeter()
+                        if (linearVolume() >= 100) {
+                            volumeHoldTimer.stop()
+                            directionChangeTimer.start() // Start the delay before reversing
+                        }
+                    } else {
+                        volume = Math.round(Math.max(0, volume - volumeChange))
+                        volumeControl.volume = toPulseVolume(volume)
+                        showInValueMeter()
+                        if (linearVolume() <= 0) {
+                            volumeHoldTimer.stop()
+                            directionChangeTimer.start() // Start the delay before reversing
                         }
                     }
+                }
+            }
+
+            Timer {
+                id: directionChangeTimer
+                interval: 1000 // 1 second delay
+                repeat: false
+                onTriggered: {
+                    isIncreasing = !isIncreasing
+                    lastDirection = isIncreasing ? "increasing" : "decreasing"
+                    volumeHoldTimer.start() // Restart the increment/decrement timer
                 }
             }
 
@@ -1031,11 +1010,10 @@ Item {
                 function onVolumeChanged() {
                     soundToggle.volume = linearVolume();
                     soundToggle.icon = preMuteLevel.value > 0 ? "ios-sound-indicator-mute" :
-                                    volumeControl.volume > toPulseVolume(70) ? "ios-sound-indicator-high" :
-                                    volumeControl.volume > toPulseVolume(30) ? "ios-sound-indicator-mid" :
-                                    volumeControl.volume > 0 ? "ios-sound-indicator-low" : "ios-sound-indicator-off";
+                                         volumeControl.volume > toPulseVolume(70) ? "ios-sound-indicator-high" :
+                                         volumeControl.volume > toPulseVolume(30) ? "ios-sound-indicator-mid" :
+                                         volumeControl.volume > 0 ? "ios-sound-indicator-low" : "ios-sound-indicator-off";
 
-                    // Update ValueMeter if we're showing volume
                     if (valueMeter.showingVolume) {
                         valueMeter.volumeValue = soundToggle.volume
                         valueMeter.currentValue = soundToggle.volume
@@ -1050,9 +1028,9 @@ Item {
                     soundToggle.volume = linearVolume();
                     soundToggle.toggled = !(preMuteLevel.value > 0);
                     soundToggle.icon = preMuteLevel.value > 0 ? "ios-sound-indicator-mute" :
-                                    volumeControl.volume > toPulseVolume(70) ? "ios-sound-indicator-high" :
-                                    volumeControl.volume > toPulseVolume(30) ? "ios-sound-indicator-mid" :
-                                    volumeControl.volume > 0 ? "ios-sound-indicator-low" : "ios-sound-indicator-off";
+                                         volumeControl.volume > toPulseVolume(70) ? "ios-sound-indicator-high" :
+                                         volumeControl.volume > toPulseVolume(30) ? "ios-sound-indicator-mid" :
+                                         volumeControl.volume > 0 ? "ios-sound-indicator-low" : "ios-sound-indicator-off";
                 }
             }
 

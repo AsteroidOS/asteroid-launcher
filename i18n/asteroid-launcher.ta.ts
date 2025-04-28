@@ -205,19 +205,29 @@
         <source>Enjoy!</source>
         <translation>மகிழுங்கள்!</translation>
     </message>
+    <message id="id-brightness">
+        <location filename="../src/qml/quicksettings/QuickSettings.qml" line="525"/>
+        <source>Brightness</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="id-volume">
+        <location filename="../src/qml/quicksettings/QuickSettings.qml" line="527"/>
+        <source>Volume</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message id="id-power-off">
-        <location filename="../src/qml/quicksettings/QuickSettings.qml" line="944"/>
+        <location filename="../src/qml/quicksettings/QuickSettings.qml" line="1180"/>
         <source>Powering off in</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="id-tap-to-cancel">
-        <location filename="../src/qml/quicksettings/QuickSettings.qml" line="946"/>
-        <location filename="../src/qml/quicksettings/QuickSettings.qml" line="964"/>
+        <location filename="../src/qml/quicksettings/QuickSettings.qml" line="1182"/>
+        <location filename="../src/qml/quicksettings/QuickSettings.qml" line="1201"/>
         <source>Tap to cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="id-reboot">
-        <location filename="../src/qml/quicksettings/QuickSettings.qml" line="962"/>
+        <location filename="../src/qml/quicksettings/QuickSettings.qml" line="1199"/>
         <source>Rebooting in</source>
         <translation type="unfinished"></translation>
     </message>
