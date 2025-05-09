@@ -203,8 +203,8 @@ Item {
             "brightnessToggle": { component: brightnessToggleComponent, toggleAvailable: true },
             "bluetoothToggle": { component: bluetoothToggleComponent, toggleAvailable: true },
             "hapticsToggle": { component: hapticsToggleComponent, toggleAvailable: true },
-            "wifiToggle": { component: wifiToggleComponent, toggleAvailable: DeviceInfo.hasWlan },
-            "soundToggle": { component: soundToggleComponent, toggleAvailable: DeviceInfo.hasSpeaker },
+            "wifiToggle": { component: wifiToggleComponent, toggleAvailable: DeviceSpecs.hasWlan },
+            "soundToggle": { component: soundToggleComponent, toggleAvailable: DeviceSpecs.hasSpeaker },
             "cinemaToggle": { component: cinemaToggleComponent, toggleAvailable: true },
             "aodToggle": { component: aodToggleComponent, toggleAvailable: true },
             "powerOffToggle": { component: powerOffToggleComponent, toggleAvailable: true },
@@ -1054,7 +1054,7 @@ Component {
                 // Store pre-cinema states
                 preCinemaAodState.value = alwaysOnDisplay.value;
                 // Mute sound if available
-                if (DeviceInfo.hasSpeaker) {
+                if (DeviceSpecs.hasSpeaker) {
                     var tempVolume = volumeControl.volume > 0 ? (volumeControl.volume / volumeControl.maximumVolume) * 100 : 0;
                     if (tempVolume > 0) {
                         preMuteLevel.value = tempVolume;
@@ -1071,7 +1071,7 @@ Component {
                 alwaysOnDisplay.value = preCinemaAodState.value;
                 displaySettings.lowPowerModeEnabled = alwaysOnDisplay.value;
                 // Restore sound
-                if (DeviceInfo.hasSpeaker && preMuteLevel.value > 0) {
+                if (DeviceSpecs.hasSpeaker && preMuteLevel.value > 0) {
                     volumeControl.volume = (preMuteLevel.value / 100) * volumeControl.maximumVolume;
                     preMuteLevel.value = 0;
                     unmuteSound.play();
@@ -1079,27 +1079,27 @@ Component {
             }
             Component.onCompleted: {
                 // Check initial state
-                var isMuted = DeviceInfo.hasSpeaker ? preMuteLevel.value > 0 : true; // Consider muted if sound unavailable
+                var isMuted = DeviceSpecs.hasSpeaker ? preMuteLevel.value > 0 : true; // Consider muted if sound unavailable
                 toggled = isMuted && displaySettings.brightness <= 10 && !alwaysOnDisplay.value;
             }
             Connections {
                 target: preMuteLevel
                 function onValueChanged() {
-                    var isMuted = DeviceInfo.hasSpeaker ? preMuteLevel.value > 0 : true;
+                    var isMuted = DeviceSpecs.hasSpeaker ? preMuteLevel.value > 0 : true;
                     cinemaToggle.toggled = isMuted && displaySettings.brightness <= 10 && !alwaysOnDisplay.value;
                 }
             }
             Connections {
                 target: displaySettings
                 function onBrightnessChanged() {
-                    var isMuted = DeviceInfo.hasSpeaker ? preMuteLevel.value > 0 : true;
+                    var isMuted = DeviceSpecs.hasSpeaker ? preMuteLevel.value > 0 : true;
                     cinemaToggle.toggled = isMuted && displaySettings.brightness <= 10 && !alwaysOnDisplay.value;
                 }
             }
             Connections {
                 target: alwaysOnDisplay
                 function onValueChanged() {
-                    var isMuted = DeviceInfo.hasSpeaker ? preMuteLevel.value > 0 : true;
+                    var isMuted = DeviceSpecs.hasSpeaker ? preMuteLevel.value > 0 : true;
                     cinemaToggle.toggled = isMuted && displaySettings.brightness <= 10 && !alwaysOnDisplay.value;
                 }
             }
