@@ -199,7 +199,7 @@ Item {
             left: parent.left
             right: parent.right
         }
-        height: parent.height * DeviceInfo.borderGestureWidth
+        height: parent.height * DeviceSpecs.borderGestureWidth
         z: 999
         touchPoints: [ TouchPoint { id: point1 } ]
         enabled: !appsListView.atYBeginning && grid.currentVerticalPos === 1
