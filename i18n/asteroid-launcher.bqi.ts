@@ -7,28 +7,28 @@
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="158"/>
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="170"/>
         <source>Authorize:</source>
-        <translation type="unfinished"></translation>
+        <translation>هشتن:</translation>
     </message>
     <message id="id-btagent-confirm">
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="182"/>
         <source>Confirm:</source>
-        <translation type="unfinished"></translation>
+        <translation>تاییڌ:</translation>
     </message>
     <message id="id-btagent-passkey">
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="194"/>
         <source>Pass Key:</source>
-        <translation type="unfinished"></translation>
+        <translation>رزم:</translation>
     </message>
     <message id="id-btagent-enterkey">
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="210"/>
         <source>Enter Key</source>
-        <translation type="unfinished"></translation>
+        <translation>زیڌن رزم</translation>
     </message>
     <message id="id-btagent-pincode">
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="218"/>
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="230"/>
         <source>PIN Code:</source>
-        <translation type="unfinished"></translation>
+        <translation>رزم پین:</translation>
     </message>
     <message id="id-btagent-enter-pincode">
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="235"/>
@@ -88,7 +88,7 @@
     <message id="id-today">
         <location filename="../src/qml/today/Today.qml" line="136"/>
         <source>Today</source>
-        <translation type="unfinished"></translation>
+        <translation>ٱمرۊز</translation>
     </message>
     <message id="id-no-events-today">
         <location filename="../src/qml/today/Today.qml" line="207"/>
@@ -103,7 +103,7 @@
     <message id="id-add-alarm">
         <location filename="../src/qml/firstrun/FakeAlarmclock.qml" line="85"/>
         <source>Add an alarm</source>
-        <translation type="unfinished"></translation>
+        <translation>ٱووردن هوشدار</translation>
     </message>
     <message id="id-time">
         <location filename="../src/qml/firstrun/FakeAlarmclock.qml" line="125"/>
