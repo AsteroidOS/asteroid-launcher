@@ -88,7 +88,7 @@
     <message id="id-today">
         <location filename="../src/qml/today/Today.qml" line="136"/>
         <source>Today</source>
-        <translation>今日</translation>
+        <translation>今天</translation>
     </message>
     <message id="id-no-events-today">
         <location filename="../src/qml/today/Today.qml" line="207"/>
@@ -128,7 +128,7 @@
     <message id="id-tutorial-welcome-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="62"/>
         <source>This is AsteroidOS.</source>
-        <translation>这是AsteroidOS.</translation>
+        <translation>欢迎使用 AsteroidOS。</translation>
     </message>
     <message id="id-tutorial-indicators-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="73"/>
