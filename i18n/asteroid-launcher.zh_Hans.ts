@@ -93,7 +93,7 @@
     <message id="id-no-events-today">
         <location filename="../src/qml/today/Today.qml" line="207"/>
         <source>No events today</source>
-        <translation>今天没有事件</translation>
+        <translation>今日暂无日程</translation>
     </message>
     <message id="id-date-page">
         <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="201"/>
