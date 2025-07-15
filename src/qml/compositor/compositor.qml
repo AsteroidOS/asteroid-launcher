@@ -265,7 +265,6 @@ Item {
         visible: DeviceSpecs.hasRoundScreen
         layer.enabled: DeviceSpecs.hasRoundScreen
         layer.effect: CircleMaskShader {
-            smoothness: 0.002
             keepInner: false
         }
     }
