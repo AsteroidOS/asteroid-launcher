@@ -14,8 +14,8 @@
         <file alias="NotificationIndicator.qml">qml/notifications/NotificationIndicator.qml</file>
         <file alias="NotificationView.qml">qml/notifications/NotificationView.qml</file>
         <file alias="NotificationsPanel.qml">qml/notifications/NotificationsPanel.qml</file>
-        <file alias="QuickSettings.qml">qml/quicksettings/QuickSettings.qml</file>
-        <file alias="QuickSettingsToggle.qml">qml/quicksettings/QuickSettingsToggle.qml</file>
+        <file alias="QuickPanel.qml">qml/quickpanel/QuickPanel.qml</file>
+        <file alias="QuickPanelToggle.qml">qml/quickpanel/QuickPanelToggle.qml</file>
         <file alias="FakeAlarmclock.qml">qml/firstrun/FakeAlarmclock.qml</file>
         <file alias="FirstRunConfig.qml">qml/firstrun/FirstRunConfig.qml</file>
         <file alias="Tutorial.qml">qml/firstrun/Tutorial.qml</file>

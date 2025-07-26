@@ -62,25 +62,25 @@ Item {
 
     ConfigurationValue {
         id: preCinemaAodState
-        key: "/desktop/asteroid/quicksettings/pre-cinema-aod-state"
+        key: "/desktop/asteroid/quickpanel/pre-cinema-aod-state"
         defaultValue: true
     }
 
     ConfigurationValue {
         id: fixedToggles
-        key: "/desktop/asteroid/quicksettings/fixed"
+        key: "/desktop/asteroid/quickpanel/fixed"
         defaultValue: ["lockButton", "settingsButton"]
     }
 
     ConfigurationValue {
         id: sliderToggles
-        key: "/desktop/asteroid/quicksettings/slider"
+        key: "/desktop/asteroid/quickpanel/slider"
         defaultValue: ["brightnessToggle", "bluetoothToggle", "hapticsToggle", "wifiToggle", "soundToggle", "cinemaToggle", "aodToggle", "powerOffToggle", "rebootToggle", "musicButton", "flashlightButton"]
     }
 
     ConfigurationValue {
         id: toggleEnabled
-        key: "/desktop/asteroid/quicksettings/enabled"
+        key: "/desktop/asteroid/quickpanel/enabled"
         defaultValue: {
             "lockButton": true,
             "settingsButton": true,
@@ -100,7 +100,7 @@ Item {
 
     ConfigurationValue {
         id: options
-        key: "/desktop/asteroid/quicksettings/options"
+        key: "/desktop/asteroid/quickpanel/options"
         defaultValue: {
             "batteryBottom": true,
             "batteryAnimation": true,
@@ -687,7 +687,7 @@ Item {
 
 Component {
         id: brightnessToggleComponent
-        QuickSettingsToggle {
+        QuickPanelToggle {
             id: brightnessToggle
             icon: "ios-sunny"
             onChecked: {
@@ -818,7 +818,7 @@ Component {
 
     Component {
         id: hapticsToggleComponent
-        QuickSettingsToggle {
+        QuickPanelToggle {
             icon: "ios-watch-vibrating"
             onChecked: { profileControl.profile = "general"; delayTimer.start() }
             onUnchecked: profileControl.profile = "silent"
@@ -828,7 +828,7 @@ Component {
 
     Component {
         id: wifiToggleComponent
-        QuickSettingsToggle {
+        QuickPanelToggle {
             icon: wifiStatus.connected ? "ios-wifi" : "ios-wifi-outline"
             toggled: wifiStatus.powered
             onChecked: wifiStatus.powered = true
@@ -840,7 +840,7 @@ Component {
 
     Component {
         id: bluetoothToggleComponent
-        QuickSettingsToggle {
+        QuickPanelToggle {
             icon: btStatus.connected ? "ios-bluetooth-connected" : "ios-bluetooth"
             onChecked: btStatus.powered = true
             onUnchecked: btStatus.powered = false
@@ -850,7 +850,7 @@ Component {
 
     Component {
         id: soundToggleComponent
-        QuickSettingsToggle {
+        QuickPanelToggle {
             id: soundToggle
             function linearVolume() {
                 if (volumeControl.volume <= 0 || volumeControl.maximumVolume <= 0)
@@ -1046,7 +1046,7 @@ Component {
 
     Component {
         id: cinemaToggleComponent
-        QuickSettingsToggle {
+        QuickPanelToggle {
             id: cinemaToggle
             icon: "ios-film-outline"
             toggled: false
@@ -1108,7 +1108,7 @@ Component {
 
     Component {
         id: lockButtonComponent
-        QuickSettingsToggle {
+        QuickPanelToggle {
             id: lockedToggle
             icon: "ios-unlock"
             togglable: false
@@ -1119,7 +1119,7 @@ Component {
 
     Component {
         id: settingsButtonComponent
-        QuickSettingsToggle {
+        QuickPanelToggle {
             icon: "ios-settings"
             togglable: false
             toggled: true
@@ -1129,7 +1129,7 @@ Component {
 
     Component {
         id: musicButtonComponent
-        QuickSettingsToggle {
+        QuickPanelToggle {
             icon: "ios-musical-notes-outline"
             togglable: false
             toggled: true
@@ -1139,7 +1139,7 @@ Component {
 
     Component {
         id: flashlightButtonComponent
-        QuickSettingsToggle {
+        QuickPanelToggle {
             icon: "ios-bulb-outline"
             togglable: false
             toggled: true
@@ -1149,7 +1149,7 @@ Component {
 
     Component {
         id: aodToggleComponent
-        QuickSettingsToggle {
+        QuickPanelToggle {
             icon: alwaysOnDisplay.value ? "ios-watch-aod-on" : "ios-watch-aod-off"
             toggled: alwaysOnDisplay.value
             onChecked: {
@@ -1171,7 +1171,7 @@ Component {
 
     Component {
         id: powerOffToggleComponent
-        QuickSettingsToggle {
+        QuickPanelToggle {
             icon: "ios-power"
             togglable: false
             toggled: true
@@ -1190,7 +1190,7 @@ Component {
 
     Component {
         id: rebootToggleComponent
-        QuickSettingsToggle {
+        QuickPanelToggle {
             icon: "ios-refresh"
             togglable: false
             toggled: true
