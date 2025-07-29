@@ -64,7 +64,7 @@
         <location filename="../src/qml/notifications/NotificationActions.qml" line="179"/>
         <location filename="../src/qml/notifications/NotificationView.qml" line="68"/>
         <source>m</source>
-        <translation type="unfinished"></translation>
+        <translation>د</translation>
     </message>
     <message id="id-hour-abbrev">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="68"/>
@@ -72,18 +72,18 @@
         <location filename="../src/qml/notifications/NotificationActions.qml" line="201"/>
         <location filename="../src/qml/notifications/NotificationView.qml" line="73"/>
         <source>h</source>
-        <translation type="unfinished"></translation>
+        <translation>س</translation>
     </message>
     <message id="id-day-abbrev">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="72"/>
         <location filename="../src/qml/notifications/NotificationView.qml" line="77"/>
         <source>d</source>
-        <translation type="unfinished"></translation>
+        <translation>ر</translation>
     </message>
     <message id="id-no-notifications">
         <location filename="../src/qml/notifications/NotificationsPanel.qml" line="156"/>
         <source>No notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>بؽ وارسۊوی</translation>
     </message>
     <message id="id-today">
         <location filename="../src/qml/today/Today.qml" line="136"/>
@@ -93,12 +93,12 @@
     <message id="id-no-events-today">
         <location filename="../src/qml/today/Today.qml" line="207"/>
         <source>No events today</source>
-        <translation type="unfinished"></translation>
+        <translation>ٱمرۊز تفاقی نؽ</translation>
     </message>
     <message id="id-date-page">
         <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="201"/>
         <source>Date</source>
-        <translation type="unfinished"></translation>
+        <translation>ویرگار</translation>
     </message>
     <message id="id-add-alarm">
         <location filename="../src/qml/firstrun/FakeAlarmclock.qml" line="85"/>
@@ -108,22 +108,22 @@
     <message id="id-time">
         <location filename="../src/qml/firstrun/FakeAlarmclock.qml" line="125"/>
         <source>Time</source>
-        <translation type="unfinished"></translation>
+        <translation>زمووݩ</translation>
     </message>
     <message id="id-language-page">
         <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="171"/>
         <source>Language</source>
-        <translation type="unfinished"></translation>
+        <translation>زووݩ</translation>
     </message>
     <message id="id-time-page">
         <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="190"/>
         <source>Time</source>
-        <translation type="unfinished"></translation>
+        <translation>زمووݩ</translation>
     </message>
     <message id="id-tutorial-welcome-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="60"/>
         <source>Welcome.</source>
-        <translation type="unfinished"></translation>
+        <translation>خش ٱوۊڌین.</translation>
     </message>
     <message id="id-tutorial-welcome-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="62"/>
