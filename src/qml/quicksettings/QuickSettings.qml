@@ -83,7 +83,7 @@ Item {
         anchors.verticalCenter: rootitem.verticalCenter
         icon: "ios-sunny"
         onChecked: displaySettings.brightness = 100
-        onUnchecked: displaySettings.brightness = 0
+        onUnchecked: displaySettings.brightness = 10
         Component.onCompleted: updateBrightnessToggle()
     }
 
