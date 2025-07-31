@@ -128,22 +128,22 @@
     <message id="id-tutorial-welcome-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="62"/>
         <source>This is AsteroidOS.</source>
-        <translation type="unfinished"></translation>
+        <translation>یو سیستوم عامل ٱستروید هڌ.</translation>
     </message>
     <message id="id-tutorial-indicators-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="73"/>
         <source>Indicators</source>
-        <translation type="unfinished"></translation>
+        <translation>نشووݩ گرا</translation>
     </message>
     <message id="id-tutorial-indicators-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="75"/>
         <source>show you possible gestures.</source>
-        <translation type="unfinished"></translation>
+        <translation>نشووݩ داڌن هرکات مووجۊد و ایسا.</translation>
     </message>
     <message id="id-tutorial-notifications-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="93"/>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>وارسۊویا</translation>
     </message>
     <message id="id-tutorial-notifications-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="95"/>
@@ -153,7 +153,7 @@
     <message id="id-tutorial-today-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="122"/>
         <source>Today&apos;s Events</source>
-        <translation type="unfinished"></translation>
+        <translation>تفاقا ٱمرۊز</translation>
     </message>
     <message id="id-tutorial-today-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="124"/>
@@ -163,7 +163,7 @@
     <message id="id-tutorial-quicksettings-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="171"/>
         <source>Quick Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>سامووا زل</translation>
     </message>
     <message id="id-tutorial-quicksettings-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="173"/>
@@ -173,7 +173,7 @@
     <message id="id-tutorial-applications-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="220"/>
         <source>Apps</source>
-        <translation type="unfinished"></translation>
+        <translation>برنومه یل</translation>
     </message>
     <message id="id-tutorial-applications-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="222"/>
@@ -183,7 +183,7 @@
     <message id="id-tutorial-startapp-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="269"/>
         <source>Start an app</source>
-        <translation type="unfinished"></translation>
+        <translation>گۊشیڌن ی برنومه وا لمس</translation>
     </message>
     <message id="id-tutorial-startapp-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="271"/>
@@ -204,7 +204,7 @@
     <message id="id-tutorial-enjoy-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="400"/>
         <source>Enjoy!</source>
-        <translation type="unfinished"></translation>
+        <translation>کیف بۊکۊنین!</translation>
     </message>
 </context>
 </TS>
