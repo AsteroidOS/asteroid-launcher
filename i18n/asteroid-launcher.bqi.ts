@@ -33,7 +33,7 @@
     <message id="id-btagent-enter-pincode">
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="235"/>
         <source>Enter PIN Code</source>
-        <translation type="unfinished"></translation>
+        <translation>زیڌن رزم پین</translation>
     </message>
     <message id="id-snooze">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="115"/>
@@ -44,19 +44,19 @@
     <message id="id-dismiss-all">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="123"/>
         <source>Dismiss all</source>
-        <translation type="unfinished"></translation>
+        <translation>دیر رؽڌن پوی</translation>
     </message>
     <message id="id-dismiss">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="138"/>
         <location filename="../src/qml/notifications/NotificationView.qml" line="161"/>
         <source>Dismiss</source>
-        <translation type="unfinished"></translation>
+        <translation>دیر رؽڌن</translation>
     </message>
     <message id="id-now">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="58"/>
         <location filename="../src/qml/notifications/NotificationView.qml" line="63"/>
         <source>Now</source>
-        <translation type="unfinished"></translation>
+        <translation>سکو</translation>
     </message>
     <message id="id-minute-abbrev">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="63"/>
