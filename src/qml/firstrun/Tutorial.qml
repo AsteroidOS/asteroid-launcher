@@ -167,10 +167,10 @@ Item {
                 ScriptAction {
                     script: {
                         centerIcon.name = "ios-arrow-round-up"
-                        //% "Quick Settings"
-                        title.text = qsTrId("id-tutorial-quicksettings-title")
+                        //% "Quick Panel"
+                        title.text = qsTrId("id-tutorial-quickpanel-title")
                         //% "are up here."
-                        subtitle.text = qsTrId("id-tutorial-quicksettings-subtitle")
+                        subtitle.text = qsTrId("id-tutorial-quickpanel-subtitle")
                         finger.x = Dims.w(76)
                         finger.y = Dims.h(43)
                         finger.opacity = 0.8
