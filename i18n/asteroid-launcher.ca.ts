@@ -22,7 +22,7 @@
     <message id="id-btagent-enterkey">
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="210"/>
         <source>Enter Key</source>
-        <translation>Entra la clau</translation>
+        <translation>Inseriu la clau</translation>
     </message>
     <message id="id-btagent-pincode">
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="218"/>
@@ -33,7 +33,7 @@
     <message id="id-btagent-enter-pincode">
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="235"/>
         <source>Enter PIN Code</source>
-        <translation>Entra codi PIN</translation>
+        <translation>Inseriu el PIN</translation>
     </message>
     <message id="id-snooze">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="115"/>
@@ -103,7 +103,7 @@
     <message id="id-add-alarm">
         <location filename="../src/qml/firstrun/FakeAlarmclock.qml" line="85"/>
         <source>Add an alarm</source>
-        <translation>Afegir una alarma</translation>
+        <translation>Afegeix una alarma</translation>
     </message>
     <message id="id-time">
         <location filename="../src/qml/firstrun/FakeAlarmclock.qml" line="125"/>
