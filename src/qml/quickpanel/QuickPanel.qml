@@ -633,6 +633,8 @@ Item {
         gaugeSegmentAmount: 6
         gaugeStartDegree: -130
         gaugeEndFromStartDegree: 265
+        //% "Tap to cancel"
+        cancelText: qsTrId("id-tap-to-cancel")
     }
 
     // Initialize components on options value change
@@ -1178,8 +1180,6 @@ Component {
             onChecked: {
                 //% "Powering off in"
                 remorseTimer.action = qsTrId("id-power-off");
-                //% "Tap to cancel"
-                remorseTimer.cancelText = qsTrId("id-tap-to-cancel");
                 remorseTimer.start();
                 remorseTimer.onTriggered.connect(function() {
                     login1DBus.call("PowerOff", [false]);
@@ -1197,8 +1197,6 @@ Component {
             onChecked: {
                 //% "Rebooting in"
                 remorseTimer.action = qsTrId("id-reboot");
-                //% "Tap to cancel"
-                remorseTimer.cancelText = qsTrId("id-tap-to-cancel");
                 remorseTimer.start();
                 remorseTimer.onTriggered.connect(function() {
                     login1DBus.call("SetRebootParameter", [""]);
