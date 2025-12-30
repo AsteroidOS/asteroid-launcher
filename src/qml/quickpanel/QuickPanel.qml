@@ -1180,10 +1180,10 @@ Component {
             onChecked: {
                 //% "Powering off in"
                 remorseTimer.action = qsTrId("id-power-off");
-                remorseTimer.start();
                 remorseTimer.onTriggered.connect(function() {
                     login1DBus.call("PowerOff", [false]);
                 });
+                remorseTimer.start();
             }
         }
     }
@@ -1197,11 +1197,11 @@ Component {
             onChecked: {
                 //% "Rebooting in"
                 remorseTimer.action = qsTrId("id-reboot");
-                remorseTimer.start();
                 remorseTimer.onTriggered.connect(function() {
                     login1DBus.call("SetRebootParameter", [""]);
                     login1DBus.call("Reboot", [false]);
                 });
+                remorseTimer.start();
             }
         }
     }
