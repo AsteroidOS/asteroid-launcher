@@ -629,7 +629,7 @@ Item {
 
     RemorseTimer {
         id: remorseTimer
-        interval: 3000
+        duration: 3000
         gaugeSegmentAmount: 6
         gaugeStartDegree: -130
         gaugeEndFromStartDegree: 265
