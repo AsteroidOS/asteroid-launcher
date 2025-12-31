@@ -706,9 +706,8 @@ Component {
             Component.onCompleted: toggled = displaySettings.brightness > 10
 
             property bool isIncreasing: true // Current direction for adjustment
-            property string lastDirection: "increasing" // Persist last pressAndHold direction
+            property string lastDirection: "increasing"
             property int elapsedTime: 0 // Tracks elapsed time in ms
-            property int frameCount: 0
             property int targetBrightness: 0 // Track desired brightness for updates
             property bool isReleased: false // Flag to prevent updates after release
 
@@ -743,7 +742,6 @@ Component {
                         isIncreasing = (lastDirection === "increasing")
                     }
                     elapsedTime = 0
-                    frameCount = 0
                     targetBrightness = displaySettings.brightness
                     isReleased = false
                     brightnessHoldTimer.start()
@@ -873,7 +871,7 @@ Component {
                   volumeControl.volume > 0 ? "ios-sound-indicator-low" : "ios-sound-indicator-off"
 
             onChecked: {
-                var tempVolume = linearVolume();
+                const tempVolume = linearVolume();
                 volumeControl.volume = toPulseVolume(preMuteLevel.value);
                 preMuteLevel.value = tempVolume;
                 if (volumeControl.volume > 0) {
@@ -882,7 +880,7 @@ Component {
             }
 
             onUnchecked: {
-                var tempVolume = linearVolume();
+                const tempVolume = linearVolume();
                 volumeControl.volume = toPulseVolume(preMuteLevel.value);
                 preMuteLevel.value = tempVolume;
             }
@@ -892,10 +890,9 @@ Component {
                 volume = linearVolume();
             }
 
-            property bool isIncreasing: true // Current direction for adjustment
+            property bool isIncreasing: true
             property string lastDirection: "increasing" // Persist last pressAndHold direction
             property int elapsedTime: 0 // Tracks elapsed time in ms
-            property int frameCount: 0
             property int volume: linearVolume() // Current volume for ValueMeter binding
             property bool isReleased: false // Flag to prevent updates after release
 
@@ -903,11 +900,7 @@ Component {
                 id: soundDelayTimer
                 interval: 150
                 repeat: false
-                onTriggered: {
-                    if (volumeControl.volume > 0) {
-                        unmuteSound.play();
-                    }
-                }
+                onTriggered: unmuteSound.play()
             }
 
             function showInValueMeter() {
@@ -951,7 +944,6 @@ Component {
                         isIncreasing = (lastDirection === "increasing")
                     }
                     elapsedTime = 0
-                    frameCount = 0
                     volume = linearVolume()
                     isReleased = false
                     volumeHoldTimer.start()
@@ -960,7 +952,7 @@ Component {
                 onReleased: {
                     isReleased = true
                     volumeHoldTimer.stop()
-                    directionChangeTimer.stop() // Stop the direction change timer if running
+                    directionChangeTimer.stop()
                     valueMeter.resetTimer.restart()
                     if (linearVolume() > 0 && preMuteLevel.value === 0) {
                         soundDelayTimer.start();
@@ -985,7 +977,7 @@ Component {
                         showInValueMeter()
                         if (linearVolume() >= 100) {
                             volumeHoldTimer.stop()
-                            directionChangeTimer.start() // Start the delay before reversing
+                            directionChangeTimer.start()
                         }
                     } else {
                         volume = Math.round(Math.max(0, volume - volumeChange))
@@ -993,7 +985,7 @@ Component {
                         showInValueMeter()
                         if (linearVolume() <= 0) {
                             volumeHoldTimer.stop()
-                            directionChangeTimer.start() // Start the delay before reversing
+                            directionChangeTimer.start()
                         }
                     }
                 }
@@ -1001,12 +993,12 @@ Component {
 
             Timer {
                 id: directionChangeTimer
-                interval: 1000 // 1 second delay
+                interval: 1000
                 repeat: false
                 onTriggered: {
                     isIncreasing = !isIncreasing
                     lastDirection = isIncreasing ? "increasing" : "decreasing"
-                    volumeHoldTimer.start() // Restart the increment/decrement timer
+                    volumeHoldTimer.start()
                 }
             }
 
