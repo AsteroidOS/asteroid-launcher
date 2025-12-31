@@ -34,6 +34,7 @@ import QtGraphicalEffects 1.15
 import QtMultimedia 5.8
 import org.asteroid.controls 1.0
 import org.asteroid.utils 1.0
+import org.asteroid.launcher 1.0
 import org.nemomobile.systemsettings 1.0
 import Nemo.Configuration 1.0
 import Nemo.Mce 1.0
@@ -53,6 +54,8 @@ Item {
     MceBatteryLevel { id: batteryChargePercentage }
     MceBatteryState { id: batteryChargeState }
     MceChargerType { id: mceChargerType }
+
+    AppLauncher { id: appLauncher }
 
     ConfigurationValue {
         id: preMuteLevel
