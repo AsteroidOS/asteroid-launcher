@@ -954,7 +954,6 @@ Component {
                     }
 
                     var volumeChange = 10
-                    var oldVolume = linearVolume()
                     if (isIncreasing) {
                         volume = Math.round(Math.min(100, volume + volumeChange))
                         volumeControl.volume = toPulseVolume(volume)
