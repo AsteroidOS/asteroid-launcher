@@ -380,9 +380,6 @@ Item {
                 // Signal toggles to reset direction
                 valueMeter.resetDirection()
 
-                // Force value update
-                valueMeter.currentValue = batteryChargePercentage.percent
-
                 // Transition opacity
                 valueMeter.opacity = 0.5
                 valueMeterCaption.opacity = 0.3
@@ -716,7 +713,6 @@ Component {
                     fadeInTimer.start()
                 }
                 fadeOutTimer.restart()
-                valueMeter.currentValue = displaySettings.brightness
             }
 
             MouseArea {
@@ -795,9 +791,6 @@ Component {
                 target: displaySettings
                 function onBrightnessChanged() {
                     brightnessToggle.toggled = displaySettings.brightness > 10
-                    if (valueMeter.showingBrightness) {
-                        valueMeter.currentValue = displaySettings.brightness
-                    }
                 }
             }
 
@@ -909,7 +902,6 @@ Component {
                 }
                 fadeOutTimer.restart()
                 valueMeter.volumeValue = volume
-                valueMeter.currentValue = volume
             }
 
             MouseArea {
@@ -1005,7 +997,6 @@ Component {
 
                     if (valueMeter.showingVolume) {
                         valueMeter.volumeValue = soundToggle.volume
-                        valueMeter.currentValue = soundToggle.volume
                     }
                     soundToggle.toggled = !(preMuteLevel.value > 0);
                 }
