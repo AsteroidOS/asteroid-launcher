@@ -366,18 +366,10 @@ Item {
         particleDesign: options.value.particleDesign
         property bool showingBrightness: false
         property bool showingVolume: false
-        property Timer resetTimer: Timer {
-            interval: 2000
-            repeat: false
-            running: false
-            onTriggered: {
-                fadeOutTimer.start()
-            }
-        }
 
         Timer {
             id: fadeOutTimer
-            interval: 250
+            interval: 2000
             onTriggered: {
                 // Reset display mode with explicit scope
                 valueMeter.showingBrightness = false
@@ -723,7 +715,7 @@ Component {
 
                     fadeInTimer.start()
                 }
-                valueMeter.resetTimer.restart()
+                fadeOutTimer.restart()
                 valueMeter.currentValue = displaySettings.brightness
             }
 
@@ -751,7 +743,7 @@ Component {
                     isReleased = true
                     brightnessHoldTimer.stop()
                     directionChangeTimer.stop() // Stop the direction change timer if running
-                    valueMeter.resetTimer.restart()
+                    fadeOutTimer.restart()
                 }
             }
 
@@ -915,7 +907,7 @@ Component {
 
                     fadeInTimer.start()
                 }
-                valueMeter.resetTimer.restart()
+                fadeOutTimer.restart()
                 valueMeter.volumeValue = volume
                 valueMeter.currentValue = volume
             }
@@ -953,7 +945,7 @@ Component {
                     isReleased = true
                     volumeHoldTimer.stop()
                     directionChangeTimer.stop()
-                    valueMeter.resetTimer.restart()
+                    fadeOutTimer.restart()
                     if (linearVolume() > 0 && preMuteLevel.value === 0) {
                         soundDelayTimer.start();
                     }
