@@ -747,11 +747,15 @@ Component {
         id: wifiToggleComponent
         QuickPanelToggle {
             icon: wifiStatus.connected ? "ios-wifi" : "ios-wifi-outline"
-            toggled: wifiStatus.powered
             onChecked: wifiStatus.powered = true
             onUnchecked: wifiStatus.powered = false
-            Component.onCompleted: Qt.callLater(function() { toggled = wifiStatus.powered })
-            Connections { target: wifiStatus; function onPoweredChanged() { toggled = wifiStatus.powered } }
+
+            Connections {
+                target: wifiStatus
+                function onPoweredChanged() {
+                    toggled = wifiStatus.powered
+                }
+            }
         }
     }
 
