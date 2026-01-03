@@ -714,10 +714,7 @@ Component {
                 fadeOutTimer.restart()
             }
 
-            onPressAndHold: {
-                rangeValue = displaySettings.brightness
-                showInValueMeter()
-            }
+            onPressAndHold: rangeValue = displaySettings.brightness
 
             onReleased: fadeOutTimer.restart()
 
