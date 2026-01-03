@@ -689,13 +689,7 @@ Component {
             rangeMax: 100
             rangeStepSize: 10
 
-            onChecked: {
-                if (displaySettings.brightness === 0) {
-                    displaySettings.brightness = 100
-                } else if (displaySettings.brightness < 100) {
-                    displaySettings.brightness = 100
-                }
-            }
+            onChecked: displaySettings.brightness = rangeMax
             onUnchecked: displaySettings.brightness = rangeMin
             Component.onCompleted: toggled = displaySettings.brightness > 10
 
