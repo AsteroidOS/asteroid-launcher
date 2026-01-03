@@ -41,7 +41,7 @@ MouseArea {
 
     SoundEffect {
         id: notifSound
-        source: "/usr/share/sounds/notification.wav"
+        source: "file:///usr/share/sounds/notification.wav"
     }
 
     onNotificationChanged: {
