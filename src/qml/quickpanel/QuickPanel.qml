@@ -684,6 +684,11 @@ Component {
         QuickPanelToggle {
             id: brightnessToggle
             icon: "ios-sunny"
+            rangeBased: true
+            rangeMin: 0
+            rangeMax: 100
+            rangeStepSize: 10
+
             onChecked: {
                 if (displaySettings.brightness === 0) {
                     displaySettings.brightness = 100
@@ -691,14 +696,8 @@ Component {
                     displaySettings.brightness = 100
                 }
             }
-            onUnchecked: displaySettings.brightness = 0
+            onUnchecked: displaySettings.brightness = rangeMin
             Component.onCompleted: toggled = displaySettings.brightness > 10
-
-            property bool isIncreasing: true // Current direction for adjustment
-            property string lastDirection: "increasing"
-            property int elapsedTime: 0 // Tracks elapsed time in ms
-            property int targetBrightness: 0 // Track desired brightness for updates
-            property bool isReleased: false // Flag to prevent updates after release
 
             function showInValueMeter() {
                 if (!valueMeter.showingBrightness) {
@@ -715,76 +714,16 @@ Component {
                 fadeOutTimer.restart()
             }
 
-            MouseArea {
-                anchors.fill: parent
-                pressAndHoldInterval: 300
-                onClicked: parent.toggled ? parent.unchecked() : parent.checked()
-                onPressAndHold: {
-                    if (displaySettings.brightness === 100) {
-                        isIncreasing = false
-                        lastDirection = "decreasing"
-                    } else if (displaySettings.brightness <= 10) {
-                        isIncreasing = true
-                        lastDirection = "increasing"
-                    } else {
-                        isIncreasing = (lastDirection === "increasing")
-                    }
-                    elapsedTime = 0
-                    targetBrightness = displaySettings.brightness
-                    isReleased = false
-                    brightnessHoldTimer.start()
-                    showInValueMeter()
-                }
-                onReleased: {
-                    isReleased = true
-                    brightnessHoldTimer.stop()
-                    directionChangeTimer.stop() // Stop the direction change timer if running
-                    fadeOutTimer.restart()
-                }
+            onPressAndHold: {
+                rangeValue = displaySettings.brightness
+                showInValueMeter()
             }
 
-            Timer {
-                id: brightnessHoldTimer
-                interval: 300
-                repeat: true
-                onTriggered: {
-                    if (isReleased) {
-                        return
-                    }
+            onReleased: fadeOutTimer.restart()
 
-                    var brightnessChange = 10
-                    var oldBrightness = displaySettings.brightness
-                    if (isIncreasing) {
-                        targetBrightness = Math.round(Math.min(100, targetBrightness + brightnessChange))
-                        displaySettings.brightness = targetBrightness
-                        showInValueMeter()
-
-                        if (displaySettings.brightness === 100) {
-                            brightnessHoldTimer.stop()
-                            directionChangeTimer.start() // Start the delay before reversing
-                        }
-                    } else {
-                        targetBrightness = Math.round(Math.max(0, targetBrightness - brightnessChange))
-                        displaySettings.brightness = targetBrightness
-                        showInValueMeter()
-
-                        if (displaySettings.brightness === 0) {
-                            brightnessHoldTimer.stop()
-                            directionChangeTimer.start() // Start the delay before reversing
-                        }
-                    }
-                }
-            }
-
-            Timer {
-                id: directionChangeTimer
-                interval: 1000 // 1 second delay
-                repeat: false
-                onTriggered: {
-                    isIncreasing = !isIncreasing
-                    lastDirection = isIncreasing ? "increasing" : "decreasing"
-                    brightnessHoldTimer.start() // Restart the increment/decrement timer
-                }
+            onRangeValueChanged: {
+                displaySettings.brightness = rangeValue
+                showInValueMeter()
             }
 
             Connections {
@@ -798,7 +737,6 @@ Component {
                 target: valueMeter
                 function onResetDirection() {
                     isIncreasing = true
-                    lastDirection = "increasing"
                 }
             }
         }
