@@ -82,6 +82,7 @@ MouseArea {
         id: holdTimer
         interval: 300
         repeat: true
+        triggeredOnStart: true
         onTriggered: {
             const newValue = rangeValue + currentStep
             rangeValue = Math.max(rangeMin, Math.min(rangeMax, newValue))
