@@ -73,10 +73,7 @@ MouseArea {
         holdTimer.start()
     }
 
-    onReleased: {
-        holdTimer.stop()
-        directionChangeTimer.stop()
-    }
+    onReleased: holdTimer.stop()
 
     Timer {
         id: holdTimer
@@ -93,7 +90,7 @@ MouseArea {
         id: directionChangeTimer
         interval: 1000
         repeat: false
-        running: isAtEnd
+        running: pressed && isAtEnd
         onTriggered: isIncreasing = !isIncreasing
     }
 
