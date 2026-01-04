@@ -816,20 +816,15 @@ Component {
                   volume > 30 ? "ios-sound-indicator-mid" :
                   volume > 0 ? "ios-sound-indicator-low" : "ios-sound-indicator-off"
 
-            onChecked: {
+            onClicked: {
                 const tempVolume = volume;
-                volumeControl.volume = toPulseVolume(preMuteLevel.value);
+                const targetVolume = toPulseVolume(preMuteLevel.value);
+                volumeControl.volume = targetVolume;
                 preMuteLevel.value = tempVolume;
 
-                if (volumeControl.volume > 0) {
+                if (targetVolume > 0) {
                     soundDelayTimer.start();
                 }
-            }
-
-            onUnchecked: {
-                const tempVolume = volume;
-                volumeControl.volume = toPulseVolume(preMuteLevel.value);
-                preMuteLevel.value = tempVolume;
             }
 
             Component.onCompleted: toggled = !(preMuteLevel.value > 0)
