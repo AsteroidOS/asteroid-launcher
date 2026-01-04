@@ -858,16 +858,6 @@ Component {
             }
 
             Connections {
-                target: volumeControl
-                function onVolumeChanged() {
-                    if (valueMeter.showingVolume) {
-                        valueMeter.volumeValue = soundToggle.volume
-                    }
-                    soundToggle.toggled = !(preMuteLevel.value > 0);
-                }
-            }
-
-            Connections {
                 target: preMuteLevel
                 function onValueChanged() {
                     soundToggle.toggled = !(preMuteLevel.value > 0);
