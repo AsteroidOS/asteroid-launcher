@@ -779,13 +779,13 @@ Component {
             rangeMax: 100
             rangeStepSize: 10
 
-            property int volume: linearVolume()
+            property int volume: volumeControl.maximumVolume ? Math.round((volumeControl.volume / volumeControl.maximumVolume) * 100) : 0
 
             onPressAndHold: {
                 rangeValue = volume
 
                 if (preMuteLevel.value > 0) {
-                    const tempVolume = linearVolume();
+                    const tempVolume = volume;
                     const targetVolume = toPulseVolume(preMuteLevel.value);
                     volumeControl.volume = targetVolume
                     preMuteLevel.value = tempVolume;
@@ -797,7 +797,7 @@ Component {
             onReleased: {
                 fadeOutTimer.restart()
 
-                if (linearVolume() > 0 && preMuteLevel.value === 0) {
+                if (volume > 0 && preMuteLevel.value === 0) {
                     soundDelayTimer.start();
                 }
             }
@@ -805,13 +805,6 @@ Component {
             onRangeValueChanged: {
                 volumeControl.volume = toPulseVolume(rangeValue)
                 showInValueMeter()
-
-            }
-
-            function linearVolume() {
-                if (volumeControl.volume <= 0 || volumeControl.maximumVolume <= 0)
-                    return 0;
-                return Math.round((volumeControl.volume / volumeControl.maximumVolume) * 100);
             }
 
             function toPulseVolume(linear) {
@@ -819,12 +812,12 @@ Component {
             }
 
             icon: preMuteLevel.value > 0 ? "ios-sound-indicator-mute" :
-                  volumeControl.volume > toPulseVolume(70) ? "ios-sound-indicator-high" :
-                  volumeControl.volume > toPulseVolume(30) ? "ios-sound-indicator-mid" :
-                  volumeControl.volume > 0 ? "ios-sound-indicator-low" : "ios-sound-indicator-off"
+                  volume > 70 ? "ios-sound-indicator-high" :
+                  volume > 30 ? "ios-sound-indicator-mid" :
+                  volume > 0 ? "ios-sound-indicator-low" : "ios-sound-indicator-off"
 
             onChecked: {
-                const tempVolume = linearVolume();
+                const tempVolume = volume;
                 volumeControl.volume = toPulseVolume(preMuteLevel.value);
                 preMuteLevel.value = tempVolume;
 
@@ -834,15 +827,12 @@ Component {
             }
 
             onUnchecked: {
-                const tempVolume = linearVolume();
+                const tempVolume = volume;
                 volumeControl.volume = toPulseVolume(preMuteLevel.value);
                 preMuteLevel.value = tempVolume;
             }
 
-            Component.onCompleted: {
-                toggled = !(preMuteLevel.value > 0);
-                volume = linearVolume();
-            }
+            Component.onCompleted: toggled = !(preMuteLevel.value > 0)
 
             Timer {
                 id: soundDelayTimer
@@ -870,12 +860,6 @@ Component {
             Connections {
                 target: volumeControl
                 function onVolumeChanged() {
-                    soundToggle.volume = linearVolume();
-                    soundToggle.icon = preMuteLevel.value > 0 ? "ios-sound-indicator-mute" :
-                                         volumeControl.volume > toPulseVolume(70) ? "ios-sound-indicator-high" :
-                                         volumeControl.volume > toPulseVolume(30) ? "ios-sound-indicator-mid" :
-                                         volumeControl.volume > 0 ? "ios-sound-indicator-low" : "ios-sound-indicator-off";
-
                     if (valueMeter.showingVolume) {
                         valueMeter.volumeValue = soundToggle.volume
                     }
@@ -886,12 +870,7 @@ Component {
             Connections {
                 target: preMuteLevel
                 function onValueChanged() {
-                    soundToggle.volume = linearVolume();
                     soundToggle.toggled = !(preMuteLevel.value > 0);
-                    soundToggle.icon = preMuteLevel.value > 0 ? "ios-sound-indicator-mute" :
-                                         volumeControl.volume > toPulseVolume(70) ? "ios-sound-indicator-high" :
-                                         volumeControl.volume > toPulseVolume(30) ? "ios-sound-indicator-mid" :
-                                         volumeControl.volume > 0 ? "ios-sound-indicator-low" : "ios-sound-indicator-off";
                 }
             }
 
