@@ -773,6 +773,41 @@ Component {
         id: soundToggleComponent
         QuickPanelToggle {
             id: soundToggle
+
+            rangeBased: true
+            rangeMin: 0
+            rangeMax: 100
+            rangeStepSize: 10
+
+            property int volume: linearVolume()
+
+            onPressAndHold: {
+                rangeValue = volume
+
+                if (preMuteLevel.value > 0) {
+                    const tempVolume = linearVolume();
+                    const targetVolume = toPulseVolume(preMuteLevel.value);
+                    volumeControl.volume = targetVolume
+                    preMuteLevel.value = tempVolume;
+
+                    toggled = true;
+                }
+            }
+
+            onReleased: {
+                fadeOutTimer.restart()
+
+                if (linearVolume() > 0 && preMuteLevel.value === 0) {
+                    soundDelayTimer.start();
+                }
+            }
+
+            onRangeValueChanged: {
+                volumeControl.volume = toPulseVolume(rangeValue)
+                showInValueMeter()
+
+            }
+
             function linearVolume() {
                 if (volumeControl.volume <= 0 || volumeControl.maximumVolume <= 0)
                     return 0;
@@ -792,6 +827,7 @@ Component {
                 const tempVolume = linearVolume();
                 volumeControl.volume = toPulseVolume(preMuteLevel.value);
                 preMuteLevel.value = tempVolume;
+
                 if (volumeControl.volume > 0) {
                     soundDelayTimer.start();
                 }
@@ -807,12 +843,6 @@ Component {
                 toggled = !(preMuteLevel.value > 0);
                 volume = linearVolume();
             }
-
-            property bool isIncreasing: true
-            property string lastDirection: "increasing" // Persist last pressAndHold direction
-            property int elapsedTime: 0 // Tracks elapsed time in ms
-            property int volume: linearVolume() // Current volume for ValueMeter binding
-            property bool isReleased: false // Flag to prevent updates after release
 
             Timer {
                 id: soundDelayTimer
@@ -835,87 +865,6 @@ Component {
                 }
                 fadeOutTimer.restart()
                 valueMeter.volumeValue = volume
-            }
-
-            MouseArea {
-                anchors.fill: parent
-                pressAndHoldInterval: 300
-                onClicked: parent.toggled ? parent.unchecked() : parent.checked()
-                onPressAndHold: {
-                    if (preMuteLevel.value > 0) {
-                        var tempVolume = linearVolume();
-                        volumeControl.volume = toPulseVolume(preMuteLevel.value);
-                        preMuteLevel.value = tempVolume;
-                        if (volumeControl.volume > 0) {
-                            soundDelayTimer.start();
-                        }
-                        toggled = true;
-                    }
-                    if (linearVolume() >= 100) {
-                        isIncreasing = false
-                        lastDirection = "decreasing"
-                    } else if (linearVolume() <= 0) {
-                        isIncreasing = true
-                        lastDirection = "increasing"
-                    } else {
-                        isIncreasing = (lastDirection === "increasing")
-                    }
-                    elapsedTime = 0
-                    volume = linearVolume()
-                    isReleased = false
-                    volumeHoldTimer.start()
-                    showInValueMeter()
-                }
-                onReleased: {
-                    isReleased = true
-                    volumeHoldTimer.stop()
-                    directionChangeTimer.stop()
-                    fadeOutTimer.restart()
-                    if (linearVolume() > 0 && preMuteLevel.value === 0) {
-                        soundDelayTimer.start();
-                    }
-                }
-            }
-
-            Timer {
-                id: volumeHoldTimer
-                interval: 300
-                repeat: true
-                onTriggered: {
-                    if (isReleased) {
-                        return
-                    }
-
-                    var volumeChange = 10
-                    if (isIncreasing) {
-                        volume = Math.round(Math.min(100, volume + volumeChange))
-                        volumeControl.volume = toPulseVolume(volume)
-                        showInValueMeter()
-                        if (linearVolume() >= 100) {
-                            volumeHoldTimer.stop()
-                            directionChangeTimer.start()
-                        }
-                    } else {
-                        volume = Math.round(Math.max(0, volume - volumeChange))
-                        volumeControl.volume = toPulseVolume(volume)
-                        showInValueMeter()
-                        if (linearVolume() <= 0) {
-                            volumeHoldTimer.stop()
-                            directionChangeTimer.start()
-                        }
-                    }
-                }
-            }
-
-            Timer {
-                id: directionChangeTimer
-                interval: 1000
-                repeat: false
-                onTriggered: {
-                    isIncreasing = !isIncreasing
-                    lastDirection = isIncreasing ? "increasing" : "decreasing"
-                    volumeHoldTimer.start()
-                }
             }
 
             Connections {
@@ -950,7 +899,6 @@ Component {
                 target: valueMeter
                 function onResetDirection() {
                     isIncreasing = true
-                    lastDirection = "increasing"
                 }
             }
         }
