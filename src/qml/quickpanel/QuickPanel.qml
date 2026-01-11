@@ -957,14 +957,12 @@ Component {
         QuickPanelToggle {
             icon: alwaysOnDisplay.value ? "ios-watch-aod-on" : "ios-watch-aod-off"
             toggled: alwaysOnDisplay.value
-            onChecked: {
-                alwaysOnDisplay.value = true;
-                displaySettings.lowPowerModeEnabled = true;
+
+            onToggledChanged: {
+                alwaysOnDisplay.value = toggled;
+                displaySettings.lowPowerModeEnabled = toggled;
             }
-            onUnchecked: {
-                alwaysOnDisplay.value = false;
-                displaySettings.lowPowerModeEnabled = false;
-            }
+
             Connections {
                 target: alwaysOnDisplay
                 function onValueChanged() {
