@@ -873,6 +873,12 @@ Component {
         QuickPanelToggle {
             id: cinemaToggle
             icon: "ios-film-outline"
+
+            property bool isMuted: DeviceSpecs.hasSpeaker ? preMuteLevel.value > 0 : true
+            property bool actualState: isMuted && displaySettings.brightness <= 10 && !alwaysOnDisplay.value;
+
+            onActualStateChanged: toggled = actualState
+
             toggled: false
             onChecked: {
                 // Store pre-cinema states
@@ -889,6 +895,7 @@ Component {
                 alwaysOnDisplay.value = false;
                 displaySettings.lowPowerModeEnabled = false;
             }
+
             onUnchecked: {
                 // Restore pre-cinema states
                 displaySettings.brightness = 100;
@@ -899,32 +906,6 @@ Component {
                     volumeControl.volume = (preMuteLevel.value / 100) * volumeControl.maximumVolume;
                     preMuteLevel.value = 0;
                     unmuteSound.play();
-                }
-            }
-            Component.onCompleted: {
-                // Check initial state
-                var isMuted = DeviceSpecs.hasSpeaker ? preMuteLevel.value > 0 : true; // Consider muted if sound unavailable
-                toggled = isMuted && displaySettings.brightness <= 10 && !alwaysOnDisplay.value;
-            }
-            Connections {
-                target: preMuteLevel
-                function onValueChanged() {
-                    var isMuted = DeviceSpecs.hasSpeaker ? preMuteLevel.value > 0 : true;
-                    cinemaToggle.toggled = isMuted && displaySettings.brightness <= 10 && !alwaysOnDisplay.value;
-                }
-            }
-            Connections {
-                target: displaySettings
-                function onBrightnessChanged() {
-                    var isMuted = DeviceSpecs.hasSpeaker ? preMuteLevel.value > 0 : true;
-                    cinemaToggle.toggled = isMuted && displaySettings.brightness <= 10 && !alwaysOnDisplay.value;
-                }
-            }
-            Connections {
-                target: alwaysOnDisplay
-                function onValueChanged() {
-                    var isMuted = DeviceSpecs.hasSpeaker ? preMuteLevel.value > 0 : true;
-                    cinemaToggle.toggled = isMuted && displaySettings.brightness <= 10 && !alwaysOnDisplay.value;
                 }
             }
         }
