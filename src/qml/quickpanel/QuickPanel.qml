@@ -332,12 +332,9 @@ Item {
         // Signal to notify toggles to reset direction
         signal resetDirection
 
-        // Use a property for volume to avoid direct soundToggle reference
-        property int volumeValue: 0
-
         // Force update the value with separate property to ensure binding triggers
         property int currentValue: showingBrightness ? displaySettings.brightness :
-                                showingVolume ? volumeValue :
+                                showingVolume ? volume :
                                 batteryChargePercentage.percent
 
         // Use onCurrentValueChanged to ensure the value is updated
@@ -846,7 +843,6 @@ Component {
                     fadeInTimer.start()
                 }
                 fadeOutTimer.restart()
-                valueMeter.volumeValue = volume
             }
 
             Connections {
