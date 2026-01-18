@@ -228,10 +228,7 @@ Item {
             return toggles;
         }
 
-        property var availableToggles: allToggles
-        property int rowCount: 1 // Always one row
-
-        model: [availableToggles] // Single row of two or fewer toggles
+        model: [allToggles]
 
         contentWidth: width
 
@@ -255,9 +252,7 @@ Item {
             }
         }
 
-        Component.onCompleted: {
-            positionViewAtBeginning()
-        }
+        Component.onCompleted: positionViewAtBeginning()
     }
 
     ListView {
@@ -287,13 +282,12 @@ Item {
             return toggles;
         }
 
-        property var availableToggles: allToggles
-        property int rowCount: Math.ceil(availableToggles.length / 3)
+        property int rowCount: Math.ceil(allToggles.length / 3)
 
         model: {
             var rows = [];
-            for (var i = 0; i < availableToggles.length; i += 3) {
-                rows.push(availableToggles.slice(i, i + 3));
+            for (var i = 0; i < allToggles.length; i += 3) {
+                rows.push(allToggles.slice(i, i + 3));
             }
             return rows;
         }
