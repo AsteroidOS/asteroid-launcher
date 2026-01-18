@@ -901,7 +901,6 @@ Component {
                 if (DeviceSpecs.hasSpeaker && preMuteLevel.value > 0) {
                     setVolume(preMuteLevel.value);
                     preMuteLevel.value = 0;
-                    unmuteSound.play();
                 }
             }
         }
