@@ -55,7 +55,7 @@ Item {
     MceBatteryState { id: batteryChargeState }
     MceChargerType { id: mceChargerType }
 
-    readonly property int volume: volumeControl.maximumVolume ? Math.round((volumeControl.volume / volumeControl.maximumVolume) * 100) : 0
+    readonly property int volume: volumeControl ? (volumeControl.maximumVolume ? Math.round((volumeControl.volume / volumeControl.maximumVolume) * 100) : 0) :0
 
     function setVolume(volume) {
         volumeControl.volume = Math.round((volume / 100) * volumeControl.maximumVolume);
