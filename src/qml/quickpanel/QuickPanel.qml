@@ -883,11 +883,9 @@ Component {
                 // Store pre-cinema states
                 preCinemaAodState.value = alwaysOnDisplay.value;
                 // Mute sound if available
-                if (DeviceSpecs.hasSpeaker) {
-                    if (volume > 0) {
-                        preMuteLevel.value = volume;
-                        setVolume(0);
-                    }
+                if (DeviceSpecs.hasSpeaker && !isMuted) {
+                    preMuteLevel.value = volume;
+                    setVolume(0);
                 }
                 alwaysOnDisplay.value = false;
                 displaySettings.lowPowerModeEnabled = false;
@@ -898,7 +896,7 @@ Component {
                 alwaysOnDisplay.value = preCinemaAodState.value;
                 displaySettings.lowPowerModeEnabled = alwaysOnDisplay.value;
                 // Restore sound
-                if (DeviceSpecs.hasSpeaker && preMuteLevel.value > 0) {
+                if (DeviceSpecs.hasSpeaker && isMuted) {
                     setVolume(preMuteLevel.value);
                     preMuteLevel.value = 0;
                 }
