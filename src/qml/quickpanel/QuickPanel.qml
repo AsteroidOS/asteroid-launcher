@@ -61,6 +61,8 @@ Item {
         volumeControl.volume = Math.round((volume / 100) * volumeControl.maximumVolume);
     }
 
+    readonly property bool isCharging: mceChargerType.type != MceChargerType.None
+
     AppLauncher { id: appLauncher }
 
     ConfigurationValue {
@@ -411,7 +413,7 @@ Item {
             }
         }
 
-        isIncreasing: showingBrightness || showingVolume ? false : mceChargerType.type != MceChargerType.None
+        isIncreasing: showingBrightness || showingVolume ? false : isCharging
         enableAnimations: options.value.batteryAnimation && !(showingBrightness || showingVolume) // Particles only for battery
         enableColoredFill: options.value.batteryColored
         particleDesign: options.value.particleDesign
@@ -446,7 +448,7 @@ Item {
             onTriggered: {
                 // Restore opacity
                 valueMeter.opacity = 1.0
-                valueMeterCaption.opacity = mceChargerType.type == MceChargerType.None ? 0.8 : 1.0
+                valueMeterCaption.opacity = !isCharging ? 0.8 : 1.0
             }
         }
 
@@ -477,7 +479,7 @@ Item {
 
     Label {
         id: valueMeterCaption
-        opacity: mceChargerType.type == MceChargerType.None ? 0.8 : 1.0
+        opacity: !isCharging ? 0.8 : 1.0
         anchors.horizontalCenter: parent.horizontalCenter
 
         font {
@@ -498,7 +500,7 @@ Item {
         property Timer textFadeInTimer: Timer {
             interval: 250
             onTriggered: {
-                valueMeterCaption.opacity = mceChargerType.type == MceChargerType.None ? 0.8 : 1.0
+                valueMeterCaption.opacity = !isCharging ? 0.8 : 1.0
             }
         }
 
@@ -530,11 +532,11 @@ Item {
         name: "ios-flash"
         anchors.centerIn: valueMeter
         y: -Dims.l(10)
-        visible: mceChargerType.type != MceChargerType.None
+        visible: isCharging
         opacity: 1.0
 
         SequentialAnimation on opacity {
-            running: mceChargerType.type != MceChargerType.None && options.value.batteryAnimation
+            running: isCharging && options.value.batteryAnimation
             loops: Animation.Infinite
             NumberAnimation { to: 0.7; duration: 1500; easing.type: Easing.InOutQuad }
             NumberAnimation { to: 1.0; duration: 1500; easing.type: Easing.InOutQuad }
