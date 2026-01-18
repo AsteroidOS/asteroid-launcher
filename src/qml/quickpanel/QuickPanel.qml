@@ -159,12 +159,12 @@ Item {
         anchors {
             horizontalCenter: parent.horizontalCenter
         }
-        width: toggleSize * 2 + spacing // Two toggles
+        width: toggleSize * 2 + spacing
         height: toggleSize
         orientation: ListView.Horizontal
         snapMode: ListView.SnapOneItem
         clip: true
-        interactive: false // No scrolling needed for two items
+        interactive: false
         boundsBehavior: Flickable.StopAtBounds
         spacing: Dims.l(4)
 
