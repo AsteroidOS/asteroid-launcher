@@ -144,13 +144,6 @@ Item {
         volume: 0.8
     }
 
-    Timer {
-        id: delayTimer
-        interval: 125
-        repeat: false
-        onTriggered: feedback.play()
-    }
-
     BluetoothStatus {
         id: btStatus
         onPoweredChanged: bluetoothToggle.toggled = btStatus.powered
@@ -743,9 +736,20 @@ Component {
         id: hapticsToggleComponent
         QuickPanelToggle {
             icon: "ios-watch-vibrating"
-            onChecked: { profileControl.profile = "general"; delayTimer.start() }
+            onChecked: {
+                profileControl.profile = "general";
+                feedbackDelayTimer.start();
+            }
             onUnchecked: profileControl.profile = "silent"
+
             Component.onCompleted: toggled = profileControl.profile == "general"
+
+            Timer {
+                id: feedbackDelayTimer
+                interval: 125
+                repeat: false
+                onTriggered: feedback.play()
+            }
         }
     }
 
