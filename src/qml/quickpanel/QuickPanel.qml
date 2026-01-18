@@ -329,18 +329,13 @@ Item {
         valueLowerBound: 0
         valueUpperBound: 100
 
-        // Signal to notify toggles to reset direction
-        signal resetDirection
-
-        // Force update the value with separate property to ensure binding triggers
-        property int currentValue: showingBrightness ? displaySettings.brightness :
+        value: showingBrightness ? displaySettings.brightness :
                                 showingVolume ? volume :
                                 batteryChargePercentage.percent
 
-        // Use onCurrentValueChanged to ensure the value is updated
-        onCurrentValueChanged: {
-            value = currentValue
-        }
+        // Signal to notify toggles to reset direction
+        signal resetDirection
+
 
         // Animate value changes for smooth fill width transitions
         Behavior on value {
