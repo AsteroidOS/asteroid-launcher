@@ -154,11 +154,108 @@ Item {
         path: "/net/connman/technology/wifi"
     }
 
+    states: [
+        State {
+            name: "batteryBottom"
+            when: options.value.batteryBottom
+
+            AnchorChanges {
+                target: fixedRow
+                anchors.top: undefined
+                anchors.bottom: slidingRow.top
+            }
+            PropertyChanges {
+                target: fixedRow
+                anchors.topMargin: 0
+                anchors.bottomMargin: 0
+            }
+
+            AnchorChanges {
+                target: valueMeter
+                anchors.top: slidingRow.bottom
+                anchors.bottom: undefined
+            }
+            PropertyChanges {
+                target: valueMeter
+                anchors.topMargin: Dims.l(12)
+                anchors.bottomMargin: 0
+            }
+
+            AnchorChanges {
+                target: valueMeterCaption
+                anchors.top: valueMeter.bottom
+                anchors.bottom: undefined
+            }
+            PropertyChanges {
+                target: valueMeterCaption
+                anchors.topMargin: Dims.l(1)
+                anchors.bottomMargin: 0
+            }
+
+            AnchorChanges {
+                target: pageDots
+                anchors.top: slidingRow.bottom
+                anchors.bottom: undefined
+            }
+            PropertyChanges {
+                target: pageDots
+                anchors.topMargin: Dims.l(4)
+                anchors.bottomMargin: 0
+            }
+        },
+        State {
+            name: "batteryTop"
+            when: !options.value.batteryBottom
+
+            AnchorChanges {
+                target: fixedRow
+                anchors.top: slidingRow.bottom
+                anchors.bottom: undefined
+            }
+            PropertyChanges {
+                target: fixedRow
+                anchors.topMargin: Dims.l(4)
+                anchors.bottomMargin: 0
+            }
+
+            AnchorChanges {
+                target: valueMeter
+                anchors.top: undefined
+                anchors.bottom: slidingRow.top
+            }
+            PropertyChanges {
+                target: valueMeter
+                anchors.topMargin: 0
+                anchors.bottomMargin: Dims.l(12)
+            }
+
+            AnchorChanges {
+                target: valueMeterCaption
+                anchors.top: undefined
+                anchors.bottom: valueMeter.top
+            }
+            PropertyChanges {
+                target: valueMeterCaption
+                anchors.topMargin: 0
+                anchors.bottomMargin: Dims.l(1)
+            }
+
+            AnchorChanges {
+                target: pageDots
+                anchors.top: undefined
+                anchors.bottom: slidingRow.top
+            }
+            PropertyChanges {
+                target: pageDots
+                anchors.topMargin: 0
+                anchors.bottomMargin: Dims.l(4)
+            }
+        }
+    ]
+
     ListView {
         id: fixedRow
-        anchors {
-            horizontalCenter: parent.horizontalCenter
-        }
+        anchors.horizontalCenter: parent.horizontalCenter
         width: toggleSize * 2 + spacing
         height: toggleSize
         orientation: ListView.Horizontal
@@ -167,37 +264,6 @@ Item {
         interactive: false
         boundsBehavior: Flickable.StopAtBounds
         spacing: Dims.l(4)
-
-        states: [
-            State {
-                name: "topPosition"
-                when: !options.value.batteryBottom
-                AnchorChanges {
-                    target: fixedRow
-                    anchors.top: slidingRow.bottom
-                    anchors.bottom: undefined
-                }
-                PropertyChanges {
-                    target: fixedRow
-                    anchors.topMargin: Dims.l(4)
-                    anchors.bottomMargin: 0
-                }
-            },
-            State {
-                name: "bottomPosition"
-                when: options.value.batteryBottom
-                AnchorChanges {
-                    target: fixedRow
-                    anchors.top: undefined
-                    anchors.bottom: slidingRow.top
-                }
-                PropertyChanges {
-                    target: fixedRow
-                    anchors.topMargin: 0
-                    anchors.bottomMargin: Dims.l(0)
-                }
-            }
-        ]
 
         property var toggleRegistry: ({
             "lockButton": { component: lockButtonComponent, toggleAvailable: true },
@@ -328,6 +394,7 @@ Item {
         height: Dims.l(8)
         valueLowerBound: 0
         valueUpperBound: 100
+        anchors.horizontalCenter: parent.horizontalCenter
 
         value: showingBrightness ? displaySettings.brightness :
                                 showingVolume ? volume :
@@ -335,7 +402,6 @@ Item {
 
         // Signal to notify toggles to reset direction
         signal resetDirection
-
 
         // Animate value changes for smooth fill width transitions
         Behavior on value {
@@ -407,88 +473,12 @@ Item {
         Behavior on fillColor {
             ColorAnimation { duration: 300 }
         }
-
-        anchors {
-            horizontalCenter: parent.horizontalCenter
-            top: options.value.batteryBottom ? slidingRow.bottom : undefined
-            bottom: !options.value.batteryBottom ? slidingRow.top : undefined
-            topMargin: options.value.batteryBottom ? Dims.l(12) : 0
-            bottomMargin: !options.value.batteryBottom ? Dims.l(12) : 0
-        }
-
-        states: [
-            State {
-                name: "topPosition"
-                when: !options.value.batteryBottom
-                AnchorChanges {
-                    target: valueMeter
-                    anchors.top: undefined
-                    anchors.bottom: slidingRow.top
-                }
-                PropertyChanges {
-                    target: valueMeter
-                    anchors.topMargin: 0
-                    anchors.bottomMargin: Dims.l(12)
-                }
-            },
-            State {
-                name: "bottomPosition"
-                when: options.value.batteryBottom
-                AnchorChanges {
-                    target: valueMeter
-                    anchors.top: slidingRow.bottom
-                    anchors.bottom: undefined
-                }
-                PropertyChanges {
-                    target: valueMeter
-                    anchors.topMargin: Dims.l(12)
-                    anchors.bottomMargin: 0
-                }
-            }
-        ]
     }
 
     Label {
         id: valueMeterCaption
         opacity: mceChargerType.type == MceChargerType.None ? 0.8 : 1.0
-        anchors {
-            horizontalCenter: parent.horizontalCenter
-            top: options.value.batteryBottom ? valueMeter.bottom : undefined
-            bottom: !options.value.batteryBottom ? valueMeter.top : undefined
-            topMargin: options.value.batteryBottom ? Dims.l(1) : 0
-            bottomMargin: !options.value.batteryBottom ? Dims.l(1) : 0
-        }
-
-        states: [
-            State {
-                name: "topPosition"
-                when: !options.value.batteryBottom
-                AnchorChanges {
-                    target: valueMeterCaption
-                    anchors.top: undefined
-                    anchors.bottom: valueMeter.top
-                }
-                PropertyChanges {
-                    target: valueMeterCaption
-                    anchors.topMargin: 0
-                    anchors.bottomMargin: Dims.l(1)
-                }
-            },
-            State {
-                name: "bottomPosition"
-                when: options.value.batteryBottom
-                AnchorChanges {
-                    target: valueMeterCaption
-                    anchors.top: valueMeter.bottom
-                    anchors.bottom: undefined
-                }
-                PropertyChanges {
-                    target: valueMeterCaption
-                    anchors.topMargin: Dims.l(1)
-                    anchors.bottomMargin: 0
-                }
-            }
-        ]
+        anchors.horizontalCenter: parent.horizontalCenter
 
         font {
             pixelSize: Dims.l(9)
@@ -554,54 +544,10 @@ Item {
     PageDot {
         id: pageDots
         height: Dims.l(4)
-        anchors {
-            horizontalCenter: parent.horizontalCenter
-        }
-
-        states: [
-            State {
-                name: "topPosition"
-                when: !options.value.batteryBottom
-                AnchorChanges {
-                    target: pageDots
-                    anchors.top: undefined
-                    anchors.bottom: slidingRow.top
-                }
-                PropertyChanges {
-                    target: pageDots
-                    anchors.topMargin: 0
-                    anchors.bottomMargin: Dims.l(4)
-                }
-            },
-            State {
-                name: "bottomPosition"
-                when: options.value.batteryBottom
-                AnchorChanges {
-                    target: pageDots
-                    anchors.top: slidingRow.bottom
-                    anchors.bottom: undefined
-                }
-                PropertyChanges {
-                    target: pageDots
-                    anchors.topMargin: Dims.l(4)
-                    anchors.bottomMargin: 0
-                }
-            }
-        ]
-
+        anchors.horizontalCenter: parent.horizontalCenter
         currentIndex: slidingRow.currentIndex
         dotNumber: slidingRow.rowCount
         opacity: 0.5
-
-        Component.onCompleted: {
-            if (options.value.batteryBottom) {
-                anchors.top = slidingRow.bottom
-                anchors.topMargin = Dims.l(4)
-            } else {
-                anchors.bottom = slidingRow.top
-                anchors.bottomMargin = Dims.l(4)
-            }
-        }
     }
 
     RemorseTimer {
@@ -614,57 +560,8 @@ Item {
         cancelText: qsTrId("id-tap-to-cancel")
     }
 
-    // Initialize components on options value change
-    Connections {
-        target: options
-        function onValueChanged() {
-            if (options.value.batteryBottom) {
-                // Bottom configuration
-                fixedRow.anchors.bottom = slidingRow.top
-                fixedRow.anchors.bottomMargin = Dims.l(0)
-                fixedRow.anchors.top = undefined
-                fixedRow.anchors.topMargin = 0
-
-                valueMeter.anchors.top = slidingRow.bottom
-                valueMeter.anchors.topMargin = Dims.l(12)
-                valueMeter.anchors.bottom = undefined
-                valueMeter.anchors.bottomMargin = 0
-
-                valueMeterCaption.anchors.top = valueMeter.bottom
-                valueMeterCaption.anchors.topMargin = Dims.l(1)
-                valueMeterCaption.anchors.bottom = undefined
-                valueMeterCaption.anchors.bottomMargin = 0
-
-                pageDots.anchors.top = slidingRow.bottom
-                pageDots.anchors.topMargin = Dims.l(4)
-                pageDots.anchors.bottom = undefined
-                pageDots.anchors.bottomMargin = 0
-            } else {
-                // Top configuration
-                fixedRow.anchors.top = slidingRow.bottom
-                fixedRow.anchors.topMargin = Dims.l(4)
-                fixedRow.anchors.bottom = undefined
-                fixedRow.anchors.bottomMargin = 0
-
-                valueMeter.anchors.bottom = slidingRow.top
-                valueMeter.anchors.bottomMargin = Dims.l(12)
-                valueMeter.anchors.top = undefined
-                valueMeter.anchors.topMargin = 0
-
-                valueMeterCaption.anchors.bottom = valueMeter.top
-                valueMeterCaption.anchors.bottomMargin = Dims.l(1)
-                valueMeterCaption.anchors.top = undefined
-                valueMeterCaption.anchors.topMargin = 0
-
-                pageDots.anchors.bottom = slidingRow.top
-                pageDots.anchors.bottomMargin = Dims.l(4)
-                pageDots.anchors.top = undefined
-                pageDots.anchors.topMargin = 0
-            }
-        }
-    }
-
-Component {
+    // Components remain unchanged below this point
+    Component {
         id: brightnessToggleComponent
         QuickPanelToggle {
             id: brightnessToggle
