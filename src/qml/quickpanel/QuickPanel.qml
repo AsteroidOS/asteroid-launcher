@@ -55,6 +55,12 @@ Item {
     MceBatteryState { id: batteryChargeState }
     MceChargerType { id: mceChargerType }
 
+    readonly property int volume: volumeControl.maximumVolume ? Math.round((volumeControl.volume / volumeControl.maximumVolume) * 100) : 0
+
+    function setVolume(volume) {
+        volumeControl.volume = Math.round((volume / 100) * volumeControl.maximumVolume);
+    }
+
     AppLauncher { id: appLauncher }
 
     ConfigurationValue {
@@ -779,15 +785,12 @@ Component {
             rangeMax: 100
             rangeStepSize: 10
 
-            property int volume: volumeControl.maximumVolume ? Math.round((volumeControl.volume / volumeControl.maximumVolume) * 100) : 0
-
             onPressAndHold: {
                 rangeValue = volume
 
                 if (preMuteLevel.value > 0) {
                     const tempVolume = volume;
-                    const targetVolume = toPulseVolume(preMuteLevel.value);
-                    volumeControl.volume = targetVolume
+                    setVolume(preMuteLevel.value);
                     preMuteLevel.value = tempVolume;
 
                     toggled = true;
@@ -803,12 +806,8 @@ Component {
             }
 
             onRangeValueChanged: {
-                volumeControl.volume = toPulseVolume(rangeValue)
-                showInValueMeter()
-            }
-
-            function toPulseVolume(linear) {
-                return Math.round((linear / 100) * volumeControl.maximumVolume);
+                setVolume(rangeValue);
+                showInValueMeter();
             }
 
             icon: preMuteLevel.value > 0 ? "ios-sound-indicator-mute" :
@@ -818,8 +817,8 @@ Component {
 
             onClicked: {
                 const tempVolume = volume;
-                const targetVolume = toPulseVolume(preMuteLevel.value);
-                volumeControl.volume = targetVolume;
+                const targetVolume = preMuteLevel.value;
+                setVolume(targetVolume);
                 preMuteLevel.value = tempVolume;
 
                 if (targetVolume > 0) {
@@ -885,10 +884,9 @@ Component {
                 preCinemaAodState.value = alwaysOnDisplay.value;
                 // Mute sound if available
                 if (DeviceSpecs.hasSpeaker) {
-                    var tempVolume = volumeControl.volume > 0 ? (volumeControl.volume / volumeControl.maximumVolume) * 100 : 0;
-                    if (tempVolume > 0) {
-                        preMuteLevel.value = tempVolume;
-                        volumeControl.volume = 0;
+                    if (volume > 0) {
+                        preMuteLevel.value = volume;
+                        setVolume(0);
                     }
                 }
                 displaySettings.brightness = 10;
@@ -903,7 +901,7 @@ Component {
                 displaySettings.lowPowerModeEnabled = alwaysOnDisplay.value;
                 // Restore sound
                 if (DeviceSpecs.hasSpeaker && preMuteLevel.value > 0) {
-                    volumeControl.volume = (preMuteLevel.value / 100) * volumeControl.maximumVolume;
+                    setVolume(preMuteLevel.value);
                     preMuteLevel.value = 0;
                     unmuteSound.play();
                 }
