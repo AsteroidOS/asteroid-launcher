@@ -874,7 +874,7 @@ Component {
             icon: "ios-film-outline"
 
             property bool isMuted: DeviceSpecs.hasSpeaker ? preMuteLevel.value > 0 : true
-            property bool actualState: isMuted && displaySettings.brightness <= 10 && !alwaysOnDisplay.value;
+            property bool actualState: isMuted && !alwaysOnDisplay.value;
 
             onActualStateChanged: toggled = actualState
 
@@ -889,14 +889,12 @@ Component {
                         setVolume(0);
                     }
                 }
-                displaySettings.brightness = 10;
                 alwaysOnDisplay.value = false;
                 displaySettings.lowPowerModeEnabled = false;
             }
 
             onUnchecked: {
                 // Restore pre-cinema states
-                displaySettings.brightness = 100;
                 alwaysOnDisplay.value = preCinemaAodState.value;
                 displaySettings.lowPowerModeEnabled = alwaysOnDisplay.value;
                 // Restore sound
