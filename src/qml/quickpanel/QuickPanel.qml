@@ -59,17 +59,13 @@ Item {
     property bool showingVolume: false
 
     onShowingBrightnessChanged: {
-        if (showingBrightness) {
-            valueMeter.animate = true
-            valueMeterCaption.animate = true
-        }
+        valueMeter.animate = true
+        valueMeterCaption.animate = true
     }
 
     onShowingVolumeChanged: {
-        if (showingVolume) {
-            valueMeter.animate = true
-            valueMeterCaption.animate = true
-        }
+        valueMeter.animate = true
+        valueMeterCaption.animate = true
     }
 
     readonly property int volume: volumeControl ? (volumeControl.maximumVolume ? Math.round((volumeControl.volume / volumeControl.maximumVolume) * 100) : 0) :0
@@ -445,9 +441,6 @@ Item {
 
                 // Signal toggles to reset direction
                 valueMeter.resetDirection()
-
-                valueMeter.animate = true
-                valueMeterCaption.animate = true
             }
         }
 
