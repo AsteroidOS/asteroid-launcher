@@ -459,7 +459,6 @@ Item {
             onTriggered: {
                 // Restore opacity
                 valueMeter.opacity = 1.0
-                valueMeterCaption.animate = false
             }
         }
 
