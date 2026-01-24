@@ -487,10 +487,10 @@ Item {
             styleName: "Condensed Medium"
         }
 
-        opacity: animate ? 0.3 : (!isCharging ? 0.8 : 1.0)
+        opacity: animate ? 0 : (!isCharging ? 0.8 : 1.0)
 
         property bool animate: false
-        onOpacityChanged: animate = opacity > 0.3 ? animate : false
+        onOpacityChanged: animate = opacity > 0.6 ? animate : false
 
         property bool showingBrightness: false
         property bool showingVolume: false
