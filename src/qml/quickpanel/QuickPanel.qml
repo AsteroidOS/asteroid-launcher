@@ -435,7 +435,7 @@ Item {
 
                 // Transition opacity
                 valueMeter.opacity = 0.5
-                valueMeterCaption.opacity = 0.3
+                valueMeterCaption.animate = true
 
                 // Start fade-in timer
                 fadeInTimer.start()
@@ -448,7 +448,7 @@ Item {
             onTriggered: {
                 // Restore opacity
                 valueMeter.opacity = 1.0
-                valueMeterCaption.opacity = !isCharging ? 0.8 : 1.0
+                valueMeterCaption.animate = false
             }
         }
 
@@ -479,7 +479,6 @@ Item {
 
     Label {
         id: valueMeterCaption
-        opacity: !isCharging ? 0.8 : 1.0
         anchors.horizontalCenter: parent.horizontalCenter
 
         font {
@@ -487,6 +486,11 @@ Item {
             family: "Noto Sans"
             styleName: "Condensed Medium"
         }
+
+        opacity: animate ? 0.3 : (!isCharging ? 0.8 : 1.0)
+
+        property bool animate: false
+        onOpacityChanged: animate = opacity > 0.3 ? animate : false
 
         property bool showingBrightness: false
         property bool showingVolume: false
@@ -496,30 +500,9 @@ Item {
             showingVolume ? qsTrId("id-volume") :
             batteryChargePercentage.percent + "%"
 
-        // Timer to handle text transitions
-        property Timer textFadeInTimer: Timer {
-            interval: 250
-            onTriggered: {
-                valueMeterCaption.opacity = !isCharging ? 0.8 : 1.0
-            }
-        }
+        onShowingBrightnessChanged: animate = showingBrightness ? true: animate
+        onShowingVolumeChanged: animate = showingVolume ? true: animate
 
-        // Monitor state changes to trigger opacity transitions
-        onShowingBrightnessChanged: {
-            if (showingBrightness) {
-                opacity = 0.3
-                textFadeInTimer.start()
-            }
-        }
-
-        onShowingVolumeChanged: {
-            if (showingVolume) {
-                opacity = 0.3
-                textFadeInTimer.start()
-            }
-        }
-
-        // Opacity transitions for text change
         Behavior on opacity {
             NumberAnimation { duration: 250 }
         }
@@ -580,7 +563,6 @@ Item {
             function showInValueMeter() {
                 if (!valueMeter.showingBrightness) {
                     valueMeter.opacity = 0.5
-                    valueMeterCaption.opacity = 0.3
 
                     valueMeter.showingBrightness = true
                     valueMeterCaption.showingBrightness = true
@@ -727,7 +709,6 @@ Item {
             function showInValueMeter() {
                 if (!valueMeter.showingVolume) {
                     valueMeter.opacity = 0.5
-                    valueMeterCaption.opacity = 0.3
 
                     valueMeter.showingBrightness = false
                     valueMeterCaption.showingBrightness = false
