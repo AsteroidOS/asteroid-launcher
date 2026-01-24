@@ -55,6 +55,21 @@ Item {
     MceBatteryState { id: batteryChargeState }
     MceChargerType { id: mceChargerType }
 
+    property bool showingBrightness: false
+    property bool showingVolume: false
+
+    onShowingBrightnessChanged: {
+        if (showingBrightness) {
+            valueMeterCaption.animate = true
+        }
+    }
+
+    onShowingVolumeChanged: {
+        if (showingVolume) {
+            valueMeterCaption.animate = true
+        }
+    }
+
     readonly property int volume: volumeControl ? (volumeControl.maximumVolume ? Math.round((volumeControl.volume / volumeControl.maximumVolume) * 100) : 0) :0
 
     function setVolume(volume) {
@@ -417,18 +432,14 @@ Item {
         enableAnimations: options.value.batteryAnimation && !(showingBrightness || showingVolume) // Particles only for battery
         enableColoredFill: options.value.batteryColored
         particleDesign: options.value.particleDesign
-        property bool showingBrightness: false
-        property bool showingVolume: false
 
         Timer {
             id: fadeOutTimer
             interval: 2000
             onTriggered: {
                 // Reset display mode with explicit scope
-                valueMeter.showingBrightness = false
-                valueMeter.showingVolume = false
-                valueMeterCaption.showingBrightness = false
-                valueMeterCaption.showingVolume = false
+                showingBrightness = false
+                showingVolume = false
 
                 // Signal toggles to reset direction
                 valueMeter.resetDirection()
@@ -492,16 +503,11 @@ Item {
         property bool animate: false
         onOpacityChanged: animate = opacity > 0.6 ? animate : false
 
-        property bool showingBrightness: false
-        property bool showingVolume: false
         //% "Brightness"
         text: showingBrightness ? qsTrId("id-brightness") :
         //% "Volume"
             showingVolume ? qsTrId("id-volume") :
             batteryChargePercentage.percent + "%"
-
-        onShowingBrightnessChanged: animate = showingBrightness ? true: animate
-        onShowingVolumeChanged: animate = showingVolume ? true: animate
 
         Behavior on opacity {
             NumberAnimation { duration: 250 }
@@ -561,13 +567,11 @@ Item {
             Component.onCompleted: toggled = displaySettings.brightness > 10
 
             function showInValueMeter() {
-                if (!valueMeter.showingBrightness) {
+                if (!showingBrightness) {
                     valueMeter.opacity = 0.5
 
-                    valueMeter.showingBrightness = true
-                    valueMeterCaption.showingBrightness = true
-                    valueMeter.showingVolume = false
-                    valueMeterCaption.showingVolume = false
+                    showingBrightness = true
+                    showingVolume = false
 
                     fadeInTimer.start()
                 }
@@ -707,13 +711,11 @@ Item {
             }
 
             function showInValueMeter() {
-                if (!valueMeter.showingVolume) {
+                if (!showingVolume) {
                     valueMeter.opacity = 0.5
 
-                    valueMeter.showingBrightness = false
-                    valueMeterCaption.showingBrightness = false
-                    valueMeter.showingVolume = true
-                    valueMeterCaption.showingVolume = true
+                    showingBrightness = false
+                    showingVolume = true
 
                     fadeInTimer.start()
                 }
