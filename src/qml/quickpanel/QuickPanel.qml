@@ -60,12 +60,14 @@ Item {
 
     onShowingBrightnessChanged: {
         if (showingBrightness) {
+            valueMeter.animate = true
             valueMeterCaption.animate = true
         }
     }
 
     onShowingVolumeChanged: {
         if (showingVolume) {
+            valueMeter.animate = true
             valueMeterCaption.animate = true
         }
     }
@@ -444,23 +446,15 @@ Item {
                 // Signal toggles to reset direction
                 valueMeter.resetDirection()
 
-                // Transition opacity
-                valueMeter.opacity = 0.5
+                valueMeter.animate = true
                 valueMeterCaption.animate = true
-
-                // Start fade-in timer
-                fadeInTimer.start()
             }
         }
 
-        Timer {
-            id: fadeInTimer
-            interval: 250
-            onTriggered: {
-                // Restore opacity
-                valueMeter.opacity = 1.0
-            }
-        }
+        opacity: animate ? 0 : 1
+
+        property bool animate: false
+        onOpacityChanged: animate = opacity > 0.5 ? animate : false
 
         // Opacity transitions for value change
         Behavior on opacity {
@@ -567,12 +561,8 @@ Item {
 
             function showInValueMeter() {
                 if (!showingBrightness) {
-                    valueMeter.opacity = 0.5
-
                     showingBrightness = true
                     showingVolume = false
-
-                    fadeInTimer.start()
                 }
                 fadeOutTimer.restart()
             }
@@ -711,12 +701,8 @@ Item {
 
             function showInValueMeter() {
                 if (!showingVolume) {
-                    valueMeter.opacity = 0.5
-
                     showingBrightness = false
                     showingVolume = true
-
-                    fadeInTimer.start()
                 }
                 fadeOutTimer.restart()
             }
