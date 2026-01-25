@@ -466,8 +466,8 @@ Item {
 
         fillColor: {
             if (!options.value.batteryColored) return Qt.rgba(1, 1, 1, 0.3)
-            if (showingBrightness) return "#4CA6005F" // Purple with 0.3 alpha
-            if (showingVolume) return "#4C9800A6" // Blue with 0.3 alpha
+            if (!showingBattery) return "#4CA6005F"
+
             const percent = batteryChargePercentage.percent
             if (percent > 50) return Qt.rgba(0, 1, 0, 0.3)
             if (percent > 20) {
