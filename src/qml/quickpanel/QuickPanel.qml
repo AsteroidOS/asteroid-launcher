@@ -537,7 +537,6 @@ Item {
         cancelText: qsTrId("id-tap-to-cancel")
     }
 
-    // Components remain unchanged below this point
     Component {
         id: brightnessToggleComponent
         QuickPanelToggle {
