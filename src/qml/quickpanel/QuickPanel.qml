@@ -269,26 +269,34 @@ Item {
         }
     ]
 
-    property var toggleRegistry: {
-        var toggles = {}
+    readonly property var toggleRegistry: {
+        const map = {
+            "lockButton": lockButtonComponent,
+            "settingsButton": settingsButtonComponent,
+            "brightnessToggle": brightnessToggleComponent,
+            "bluetoothToggle": bluetoothToggleComponent,
+            "hapticsToggle": hapticsToggleComponent,
+            "cinemaToggle": cinemaToggleComponent,
+            "aodToggle": aodToggleComponent,
+            "powerOffToggle": powerOffToggleComponent,
+            "rebootToggle": rebootToggleComponent,
+            "musicButton": musicButtonComponent,
+            "flashlightButton": flashlightButtonComponent
+        };
 
-        toggles["lockButton"] = lockButtonComponent;
-        toggles["settingsButton"] = settingsButtonComponent;
-        toggles["brightnessToggle"] = brightnessToggleComponent;
-        toggles["bluetoothToggle"] = bluetoothToggleComponent;
-        toggles["hapticsToggle"] = hapticsToggleComponent;
         if (DeviceSpecs.hasWlan) {
-            toggles["wifiToggle"] = wifiToggleComponent;
+            map["wifiToggle"] = wifiToggleComponent;
         }
         if (DeviceSpecs.hasSpeaker) {
-            toggles["soundToggle"] = soundToggleComponent;
+            map["soundToggle"] = soundToggleComponent;
         }
-        toggles["cinemaToggle"] = cinemaToggleComponent;
-        toggles["aodToggle"] = aodToggleComponent;
-        toggles["powerOffToggle"] = powerOffToggleComponent;
-        toggles["rebootToggle"] = rebootToggleComponent;
-        toggles["musicButton"] = musicButtonComponent;
-        toggles["flashlightButton"] = flashlightButtonComponent;
+
+        const toggles = {};
+        for (const key in map) {
+            if (toggleEnabled.value[key]) {
+                toggles[key] = map[key];
+            }
+        }
 
         return toggles;
     }
@@ -310,7 +318,7 @@ Item {
             var usedIds = [];
             for (var i = 0; i < fixedToggles.value.length; i++) {
                 var toggleId = fixedToggles.value[i];
-                if (toggleId && toggleRegistry[toggleId] && toggleEnabled.value[toggleId] && usedIds.indexOf(toggleId) === -1) {
+                if (toggleId && toggleRegistry[toggleId] && usedIds.indexOf(toggleId) === -1) {
                     toggles.push(toggleRegistry[toggleId]);
                     usedIds.push(toggleId);
                 }
@@ -362,7 +370,7 @@ Item {
             var usedIds = [];
             for (var i = 0; i < sliderToggles.value.length; i++) {
                 var toggleId = sliderToggles.value[i];
-                if (toggleId && toggleRegistry[toggleId] && toggleEnabled.value[toggleId] && usedIds.indexOf(toggleId) === -1) {
+                if (toggleId && toggleRegistry[toggleId] && usedIds.indexOf(toggleId) === -1) {
                     toggles.push(toggleRegistry[toggleId]);
                     usedIds.push(toggleId);
                 }
