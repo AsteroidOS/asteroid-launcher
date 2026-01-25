@@ -313,17 +313,10 @@ Item {
         boundsBehavior: Flickable.StopAtBounds
         spacing: Dims.l(4)
 
-        property var allToggles: {
-            var toggles = [];
-            var usedIds = [];
-            for (var i = 0; i < fixedToggles.value.length; i++) {
-                var toggleId = fixedToggles.value[i];
-                if (toggleId && toggleRegistry[toggleId] && usedIds.indexOf(toggleId) === -1) {
-                    toggles.push(toggleRegistry[toggleId]);
-                    usedIds.push(toggleId);
-                }
-            }
-            return toggles;
+        readonly property var allToggles: {
+            return fixedToggles.value
+                .map(id => toggleRegistry[id])
+                .filter(Boolean)
         }
 
         model: [allToggles]
@@ -365,17 +358,10 @@ Item {
         boundsBehavior: Flickable.StopAtBounds
         spacing: Dims.l(4)
 
-        property var allToggles: {
-            var toggles = [];
-            var usedIds = [];
-            for (var i = 0; i < sliderToggles.value.length; i++) {
-                var toggleId = sliderToggles.value[i];
-                if (toggleId && toggleRegistry[toggleId] && usedIds.indexOf(toggleId) === -1) {
-                    toggles.push(toggleRegistry[toggleId]);
-                    usedIds.push(toggleId);
-                }
-            }
-            return toggles;
+        readonly property var allToggles: {
+            return sliderToggles.value
+                .map(id => toggleRegistry[id])
+                .filter(Boolean)
         }
 
         property int rowCount: Math.ceil(allToggles.length / 3)
