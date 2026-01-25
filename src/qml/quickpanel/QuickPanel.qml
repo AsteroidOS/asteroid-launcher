@@ -552,21 +552,17 @@ Item {
             onUnchecked: displaySettings.brightness = rangeMin
             Component.onCompleted: toggled = displaySettings.brightness > 10
 
-            function showInValueMeter() {
-                if (!showingBrightness) {
-                    showingBrightness = true
-                    showingVolume = false
-                }
-                fadeOutTimer.restart()
-            }
-
             onPressAndHold: rangeValue = displaySettings.brightness
 
             onReleased: fadeOutTimer.restart()
 
             onRangeValueChanged: {
                 displaySettings.brightness = rangeValue
-                showInValueMeter()
+
+                showingBrightness = true
+                showingVolume = false
+
+                fadeOutTimer.restart()
             }
 
             Connections {
@@ -664,7 +660,11 @@ Item {
 
             onRangeValueChanged: {
                 setVolume(rangeValue);
-                showInValueMeter();
+
+                showingBrightness = false
+                showingVolume = true
+
+                fadeOutTimer.restart()
             }
 
             icon: preMuteLevel.value > 0 ? "ios-sound-indicator-mute" :
@@ -690,14 +690,6 @@ Item {
                 interval: 150
                 repeat: false
                 onTriggered: unmuteSound.play()
-            }
-
-            function showInValueMeter() {
-                if (!showingVolume) {
-                    showingBrightness = false
-                    showingVolume = true
-                }
-                fadeOutTimer.restart()
             }
 
             Connections {
