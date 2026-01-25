@@ -469,13 +469,15 @@ Item {
             if (!showingBattery) return "#4CA6005F"
 
             const percent = batteryChargePercentage.percent
-            if (percent > 50) return Qt.rgba(0, 1, 0, 0.3)
-            if (percent > 20) {
+            if (percent <= 20) {
+                const t = (20 - percent) / 20
+                return Qt.rgba(1, 0.65 * (1 - t), 0, 0.3)
+            }
+            if (percent <= 50) {
                 const t = (50 - percent) / 30
                 return Qt.rgba(t, 1 - (t * 0.35), 0, 0.3)
             }
-            const t = (20 - percent) / 20
-            return Qt.rgba(1, 0.65 * (1 - t), 0, 0.3)
+            return Qt.rgba(0, 1, 0, 0.3)
         }
 
         // Use behavior for fill color transitions
