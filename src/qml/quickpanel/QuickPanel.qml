@@ -346,6 +346,15 @@ Item {
         Component.onCompleted: positionViewAtBeginning()
     }
 
+    Connections {
+        target: grid
+        function onCurrentVerticalPosChanged() {
+            if (grid.currentVerticalPos === -1) {
+                slidingRow.positionViewAtBeginning()
+            }
+        }
+    }
+
     ListView {
         id: slidingRow
         anchors.centerIn: parent
