@@ -367,8 +367,8 @@ Item {
         property int rowCount: Math.ceil(allToggles.length / 3)
 
         model: {
-            var rows = [];
-            for (var i = 0; i < allToggles.length; i += 3) {
+            const rows = [];
+            for (let i = 0; i < allToggles.length; i += 3) {
                 rows.push(allToggles.slice(i, i + 3));
             }
             return rows;
@@ -399,7 +399,7 @@ Item {
         Component.onCompleted: positionViewAtBeginning()
 
         onContentXChanged: {
-            var newIndex = Math.round(contentX / width)
+            const newIndex = Math.round(contentX / width)
             if (newIndex >= 0 && newIndex < rowCount) currentIndex = newIndex
         }
     }
@@ -459,13 +459,13 @@ Item {
             if (!options.value.batteryColored) return Qt.rgba(1, 1, 1, 0.3)
             if (showingBrightness) return "#4CA6005F" // Purple with 0.3 alpha
             if (showingVolume) return "#4C9800A6" // Blue with 0.3 alpha
-            var percent = batteryChargePercentage.percent
+            const percent = batteryChargePercentage.percent
             if (percent > 50) return Qt.rgba(0, 1, 0, 0.3)
             if (percent > 20) {
-                var t = (50 - percent) / 30
+                const t = (50 - percent) / 30
                 return Qt.rgba(t, 1 - (t * 0.35), 0, 0.3)
             }
-            var t = (20 - percent) / 20
+            const t = (20 - percent) / 20
             return Qt.rgba(1, 0.65 * (1 - t), 0, 0.3)
         }
 
