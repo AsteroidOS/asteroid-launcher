@@ -207,28 +207,27 @@
         <translation>Zövq alın!</translation>
     </message>
     <message id="id-brightness">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="525"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="503"/>
         <source>Brightness</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="id-volume">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="527"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="505"/>
         <source>Volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="id-power-off">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="1180"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="826"/>
         <source>Powering off in</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="id-tap-to-cancel">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="1182"/>
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="1201"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="547"/>
         <source>Tap to cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="id-reboot">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="1199"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="843"/>
         <source>Rebooting in</source>
         <translation type="unfinished"></translation>
     </message>
