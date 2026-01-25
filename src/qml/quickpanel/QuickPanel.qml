@@ -57,6 +57,7 @@ Item {
 
     property bool showingBrightness: false
     property bool showingVolume: false
+    readonly property bool showingBattery: !showingBrightness && !showingVolume
 
     onShowingBrightnessChanged: {
         valueMeter.animate = true
@@ -426,8 +427,8 @@ Item {
             }
         }
 
-        isIncreasing: showingBrightness || showingVolume ? false : isCharging
-        enableAnimations: options.value.batteryAnimation && !(showingBrightness || showingVolume) // Particles only for battery
+        isIncreasing: showingBattery ? isCharging : false
+        enableAnimations: options.value.batteryAnimation && showingBattery
         enableColoredFill: options.value.batteryColored
         particleDesign: options.value.particleDesign
 
