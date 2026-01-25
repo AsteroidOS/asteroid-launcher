@@ -269,6 +269,30 @@ Item {
         }
     ]
 
+    property var toggleRegistry: {
+        var toggles = {}
+
+        toggles["lockButton"] = lockButtonComponent;
+        toggles["settingsButton"] = settingsButtonComponent;
+        toggles["brightnessToggle"] = brightnessToggleComponent;
+        toggles["bluetoothToggle"] = bluetoothToggleComponent;
+        toggles["hapticsToggle"] = hapticsToggleComponent;
+        if (DeviceSpecs.hasWlan) {
+            toggles["wifiToggle"] = wifiToggleComponent;
+        }
+        if (DeviceSpecs.hasSpeaker) {
+            toggles["soundToggle"] = soundToggleComponent;
+        }
+        toggles["cinemaToggle"] = cinemaToggleComponent;
+        toggles["aodToggle"] = aodToggleComponent;
+        toggles["powerOffToggle"] = powerOffToggleComponent;
+        toggles["rebootToggle"] = rebootToggleComponent;
+        toggles["musicButton"] = musicButtonComponent;
+        toggles["flashlightButton"] = flashlightButtonComponent;
+
+        return toggles;
+    }
+
     ListView {
         id: fixedRow
         anchors.horizontalCenter: parent.horizontalCenter
@@ -281,28 +305,12 @@ Item {
         boundsBehavior: Flickable.StopAtBounds
         spacing: Dims.l(4)
 
-        property var toggleRegistry: ({
-            "lockButton": { component: lockButtonComponent, toggleAvailable: true },
-            "settingsButton": { component: settingsButtonComponent, toggleAvailable: true },
-            "brightnessToggle": { component: brightnessToggleComponent, toggleAvailable: true },
-            "bluetoothToggle": { component: bluetoothToggleComponent, toggleAvailable: true },
-            "hapticsToggle": { component: hapticsToggleComponent, toggleAvailable: true },
-            "wifiToggle": { component: wifiToggleComponent, toggleAvailable: DeviceSpecs.hasWlan },
-            "soundToggle": { component: soundToggleComponent, toggleAvailable: DeviceSpecs.hasSpeaker },
-            "cinemaToggle": { component: cinemaToggleComponent, toggleAvailable: true },
-            "aodToggle": { component: aodToggleComponent, toggleAvailable: true },
-            "powerOffToggle": { component: powerOffToggleComponent, toggleAvailable: true },
-            "rebootToggle": { component: rebootToggleComponent, toggleAvailable: true },
-            "musicButton": { component: musicButtonComponent, toggleAvailable: true },
-            "flashlightButton": { component: flashlightButtonComponent, toggleAvailable: true }
-        })
-
         property var allToggles: {
             var toggles = [];
             var usedIds = [];
             for (var i = 0; i < fixedToggles.value.length; i++) {
                 var toggleId = fixedToggles.value[i];
-                if (toggleId && toggleRegistry[toggleId] && toggleRegistry[toggleId].toggleAvailable && toggleEnabled.value[toggleId] && usedIds.indexOf(toggleId) === -1) {
+                if (toggleId && toggleRegistry[toggleId] && toggleEnabled.value[toggleId] && usedIds.indexOf(toggleId) === -1) {
                     toggles.push(toggleRegistry[toggleId]);
                     usedIds.push(toggleId);
                 }
@@ -327,7 +335,7 @@ Item {
                     delegate: Loader {
                         width: toggleSize - Dims.l(4)
                         height: width
-                        sourceComponent: modelData.component
+                        sourceComponent: modelData
                     }
                 }
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -349,14 +357,12 @@ Item {
         boundsBehavior: Flickable.StopAtBounds
         spacing: Dims.l(4)
 
-        property var toggleRegistry: fixedRow.toggleRegistry
-
         property var allToggles: {
             var toggles = [];
             var usedIds = [];
             for (var i = 0; i < sliderToggles.value.length; i++) {
                 var toggleId = sliderToggles.value[i];
-                if (toggleId && toggleRegistry[toggleId] && toggleRegistry[toggleId].toggleAvailable && toggleEnabled.value[toggleId] && usedIds.indexOf(toggleId) === -1) {
+                if (toggleId && toggleRegistry[toggleId] && toggleEnabled.value[toggleId] && usedIds.indexOf(toggleId) === -1) {
                     toggles.push(toggleRegistry[toggleId]);
                     usedIds.push(toggleId);
                 }
@@ -389,7 +395,7 @@ Item {
                     delegate: Loader {
                         width: toggleSize
                         height: toggleSize
-                        sourceComponent: modelData.component
+                        sourceComponent: modelData
                     }
                 }
                 anchors.horizontalCenter: parent.horizontalCenter
