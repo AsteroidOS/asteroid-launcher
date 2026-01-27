@@ -34,6 +34,7 @@
 #include <QQmlEngine>
 #include <QQmlContext>
 #include <QTranslator>
+#include <QProcess>
 
 #include <lipstickqmlpath.h>
 #include <homeapplication.h>
@@ -45,6 +46,7 @@
 #include "launcherlocalemanager.h"
 #include "gesturefilterarea.h"
 #include "notificationsnoozer.h"
+#include "applauncher.h"
 
 int main(int argc, char **argv)
 {
@@ -85,6 +87,7 @@ int main(int argc, char **argv)
     qmlRegisterType<AppLauncherBackground>("org.asteroid.launcher", 1, 0, "AppLauncherBackground");
     qmlRegisterType<GestureFilterArea>("org.asteroid.launcher", 1, 0, "GestureFilterArea");
     qmlRegisterType<NotificationSnoozer>("org.asteroid.launcher", 1, 0, "NotificationSnoozer");
+    qmlRegisterType<AppLauncher>("org.asteroid.launcher", 1, 0, "AppLauncher");
     app.setQmlPath("qrc:/qml/MainScreen.qml");
 
     // Give these to the environment inside the lipstick homescreen
@@ -95,4 +98,3 @@ int main(int argc, char **argv)
     app.mainWindowInstance()->showFullScreen();
     return app.exec();
 }
-

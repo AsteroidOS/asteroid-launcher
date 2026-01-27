@@ -81,7 +81,7 @@
         <translation>д</translation>
     </message>
     <message id="id-no-notifications">
-        <location filename="../src/qml/notifications/NotificationsPanel.qml" line="156"/>
+        <location filename="../src/qml/notifications/NotificationsPanel.qml" line="160"/>
         <source>No notifications</source>
         <translation>Нет уведомлений</translation>
     </message>
@@ -160,12 +160,12 @@
         <source>are on the right.</source>
         <translation>находятся справа.</translation>
     </message>
-    <message id="id-tutorial-quicksettings-title">
+    <message id="id-tutorial-quickpanel-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="171"/>
-        <source>Quick Settings</source>
+        <source>Quick Panel</source>
         <translation>Быстрые настройки</translation>
     </message>
-    <message id="id-tutorial-quicksettings-subtitle">
+    <message id="id-tutorial-quickpanel-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="173"/>
         <source>are up here.</source>
         <translation>находятся здесь.</translation>
@@ -204,6 +204,31 @@
         <location filename="../src/qml/firstrun/Tutorial.qml" line="400"/>
         <source>Enjoy!</source>
         <translation>Наслаждайтесь!</translation>
+    </message>
+    <message id="id-brightness">
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="503"/>
+        <source>Brightness</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="id-volume">
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="505"/>
+        <source>Volume</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="id-power-off">
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="826"/>
+        <source>Powering off in</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="id-tap-to-cancel">
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="547"/>
+        <source>Tap to cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="id-reboot">
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="843"/>
+        <source>Rebooting in</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

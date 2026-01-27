@@ -332,7 +332,7 @@ Item {
         }
     }
 
-    Component { id: topPanel;    QuickSettings      { } }
+    Component { id: topPanel;    QuickPanel      { } }
     Component { id: leftPanel;   NotificationsPanel { panelsGrid: grid } }
     Component { id: rightPanel;  Today              { } }
     Component {

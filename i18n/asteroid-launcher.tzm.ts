@@ -160,12 +160,12 @@
         <source>are on the right.</source>
         <translation type="unfinished"></translation>
     </message>
-    <message id="id-tutorial-quicksettings-title">
+    <message id="id-tutorial-quickpanel-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="167"/>
-        <source>Quick Settings</source>
+        <source>Quick Panel</source>
         <translation type="unfinished"></translation>
     </message>
-    <message id="id-tutorial-quicksettings-subtitle">
+    <message id="id-tutorial-quickpanel-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="169"/>
         <source>are up here.</source>
         <translation type="unfinished"></translation>

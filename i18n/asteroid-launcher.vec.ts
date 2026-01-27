@@ -160,12 +160,12 @@
         <source>are on the right.</source>
         <translation>i ze inte ła drita.</translation>
     </message>
-    <message id="id-tutorial-quicksettings-title">
+    <message id="id-tutorial-quickpanel-title">
         <location filename="../qml/firstrun/Tutorial.qml" line="167"/>
-        <source>Quick Settings</source>
+        <source>Quick Panel</source>
         <translation>Configurasion ràpide</translation>
     </message>
-    <message id="id-tutorial-quicksettings-subtitle">
+    <message id="id-tutorial-quickpanel-subtitle">
         <location filename="../qml/firstrun/Tutorial.qml" line="169"/>
         <source>are up here.</source>
         <translation>łe ze cuà sora.</translation>

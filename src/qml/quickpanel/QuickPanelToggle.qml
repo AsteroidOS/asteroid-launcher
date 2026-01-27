@@ -33,7 +33,9 @@ import org.asteroid.controls 1.0
 MouseArea {
     id: ma
 
-    width: parent.width/3
+    pressAndHoldInterval: 300
+
+    width: parent.width
     height: width
 
     property alias icon : ic.name
@@ -42,15 +44,59 @@ MouseArea {
 
     signal checked
     signal unchecked
+
+    property bool rangeBased: false
+    property int rangeMin: 0
+    property int rangeMax: 100
+    property int rangeStepSize: 10
+    property int rangeValue: 0
+
+    property bool isIncreasing: true
+
+    property int currentStep: (isIncreasing ? 1 : -1) * rangeStepSize
+    property bool isAtEnd: rangeValue >= rangeMax || rangeValue <= rangeMin
+
     onClicked: {
         if (ma.togglable) toggled = !toggled;
         ma.toggled ? ma.checked() : ma.unchecked()
     }
 
+    onPressAndHold: {
+        if (!rangeBased) return;
+
+        if (rangeValue === rangeMax) {
+            isIncreasing = false
+        } else if (rangeValue <= rangeMin) {
+            isIncreasing = true
+        }
+
+        holdTimer.start()
+    }
+
+    onReleased: holdTimer.stop()
+
+    Timer {
+        id: holdTimer
+        interval: 300
+        repeat: true
+        triggeredOnStart: true
+        onTriggered: {
+            const newValue = rangeValue + currentStep
+            rangeValue = Math.max(rangeMin, Math.min(rangeMax, newValue))
+        }
+    }
+
+    Timer {
+        id: directionChangeTimer
+        interval: 1000
+        repeat: false
+        running: pressed && isAtEnd
+        onTriggered: isIncreasing = !isIncreasing
+    }
+
     Rectangle {
         anchors.fill: parent
         radius: width/2
-        anchors.margins: ma.width*0.1
         color: "#222222"
         opacity: ma.pressed ? 0.6 : ma.toggled ? 0.75 : 0.2
     }
