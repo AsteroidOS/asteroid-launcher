@@ -438,7 +438,6 @@ Item {
 
         isIncreasing: showingBattery ? isCharging : false
         enableAnimations: options.value.batteryAnimation && showingBattery
-        enableColoredFill: options.value.batteryColored
         particleDesign: options.value.particleDesign
 
         Timer {
