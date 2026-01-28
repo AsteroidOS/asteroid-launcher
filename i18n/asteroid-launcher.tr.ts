@@ -44,13 +44,13 @@
     <message id="id-dismiss-all">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="123"/>
         <source>Dismiss all</source>
-        <translation>Tümünü at</translation>
+        <translation>Tümünü sil</translation>
     </message>
     <message id="id-dismiss">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="138"/>
         <location filename="../src/qml/notifications/NotificationView.qml" line="161"/>
         <source>Dismiss</source>
-        <translation>At</translation>
+        <translation>Sil</translation>
     </message>
     <message id="id-now">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="58"/>
@@ -108,7 +108,7 @@
     <message id="id-time">
         <location filename="../src/qml/firstrun/FakeAlarmclock.qml" line="125"/>
         <source>Time</source>
-        <translation>Saat</translation>
+        <translation>Zaman</translation>
     </message>
     <message id="id-language-page">
         <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="171"/>
@@ -118,7 +118,7 @@
     <message id="id-time-page">
         <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="190"/>
         <source>Time</source>
-        <translation>Saat</translation>
+        <translation>Zaman</translation>
     </message>
     <message id="id-tutorial-welcome-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="60"/>
