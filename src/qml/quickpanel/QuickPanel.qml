@@ -703,6 +703,13 @@ Item {
             }
 
             Connections {
+                target: volumeControl
+                function onVolumeChanged() {
+                    soundToggle.toggled = !(preMuteLevel.value > 0);
+                }
+            }
+
+            Connections {
                 target: preMuteLevel
                 function onValueChanged() {
                     soundToggle.toggled = !(preMuteLevel.value > 0);
