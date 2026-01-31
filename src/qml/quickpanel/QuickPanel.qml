@@ -677,14 +677,19 @@ Item {
                 fadeOutTimer.restart()
             }
 
-            icon: preMuteLevel.value > 0 ? "ios-sound-indicator-mute" :
+            icon: preMuteLevel.value > 0 || volume === 0 ? "ios-sound-indicator-mute" :
                   volume > 70 ? "ios-sound-indicator-high" :
                   volume > 30 ? "ios-sound-indicator-mid" :
                   volume > 0 ? "ios-sound-indicator-low" : "ios-sound-indicator-off"
 
             onClicked: {
                 const tempVolume = volume;
-                const targetVolume = preMuteLevel.value;
+                let targetVolume = preMuteLevel.value;
+
+                if (tempVolume === 0 &&  targetVolume === 0) {
+                    targetVolume = 100;
+                }
+
                 setVolume(targetVolume);
                 preMuteLevel.value = tempVolume;
 
@@ -693,7 +698,7 @@ Item {
                 }
             }
 
-            Component.onCompleted: toggled = !(preMuteLevel.value > 0)
+            Component.onCompleted: toggled = !(preMuteLevel.value > 0 || volume === 0)
 
             Timer {
                 id: soundDelayTimer
@@ -705,14 +710,14 @@ Item {
             Connections {
                 target: volumeControl
                 function onVolumeChanged() {
-                    soundToggle.toggled = !(preMuteLevel.value > 0);
+                    soundToggle.toggled = !(preMuteLevel.value > 0 || volume === 0);
                 }
             }
 
             Connections {
                 target: preMuteLevel
                 function onValueChanged() {
-                    soundToggle.toggled = !(preMuteLevel.value > 0);
+                    soundToggle.toggled = !(preMuteLevel.value > 0 || volume === 0);
                 }
             }
 
