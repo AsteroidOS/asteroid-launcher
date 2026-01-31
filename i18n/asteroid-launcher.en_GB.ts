@@ -167,8 +167,9 @@
     </message>
     <message id="id-tutorial-quickpanel-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="173"/>
-        <source>are up here.</source>
-        <translation>are up here.</translation>
+        <source>is up here.</source>
+        <oldsource>are up here.</oldsource>
+        <translation>is up here.</translation>
     </message>
     <message id="id-tutorial-applications-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="220"/>
@@ -206,27 +207,27 @@
         <translation>Enjoy!</translation>
     </message>
     <message id="id-brightness">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="503"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="504"/>
         <source>Brightness</source>
         <translation>Brightness</translation>
     </message>
     <message id="id-volume">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="505"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="506"/>
         <source>Volume</source>
         <translation>Volume</translation>
     </message>
     <message id="id-power-off">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="826"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="827"/>
         <source>Powering off in</source>
         <translation>Powering off in</translation>
     </message>
     <message id="id-tap-to-cancel">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="547"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="548"/>
         <source>Tap to cancel</source>
         <translation>Tap to cancel</translation>
     </message>
     <message id="id-reboot">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="843"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="844"/>
         <source>Rebooting in</source>
         <translation>Rebooting in</translation>
     </message>

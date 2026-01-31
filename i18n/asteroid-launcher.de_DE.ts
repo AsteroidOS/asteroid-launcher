@@ -167,8 +167,9 @@
     </message>
     <message id="id-tutorial-quickpanel-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="173"/>
-        <source>are up here.</source>
-        <translation>sind hier oben.</translation>
+        <source>is up here.</source>
+        <oldsource>are up here.</oldsource>
+        <translation type="unfinished">sind hier oben.</translation>
     </message>
     <message id="id-tutorial-applications-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="220"/>
@@ -206,27 +207,27 @@
         <translation>Viel Spaß!</translation>
     </message>
     <message id="id-brightness">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="503"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="504"/>
         <source>Brightness</source>
         <translation>Helligkeit</translation>
     </message>
     <message id="id-volume">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="505"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="506"/>
         <source>Volume</source>
         <translation>Lautstärke</translation>
     </message>
     <message id="id-power-off">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="826"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="827"/>
         <source>Powering off in</source>
         <translation>Schalt aus in</translation>
     </message>
     <message id="id-tap-to-cancel">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="547"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="548"/>
         <source>Tap to cancel</source>
         <translation>Tippe zum Abbrechen</translation>
     </message>
     <message id="id-reboot">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="843"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="844"/>
         <source>Rebooting in</source>
         <translation>Neustart in</translation>
     </message>
