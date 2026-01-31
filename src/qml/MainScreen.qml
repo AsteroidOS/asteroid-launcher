@@ -205,6 +205,7 @@ Item {
         function onDisplayAboutToBeOff() { wallClock.enabled = false }
         function onDisplayOn() {
             grid.animateIndicators()
+            wallpaperDarkener.opacity = 0
             if (Lipstick.compositor.ambientEnabled) grid.moveTo(0, 0)
         }
         function onDisplayAmbientChanged() { wallpaperAnimation.duration = 300 }
@@ -213,7 +214,6 @@ Item {
             grid.hideOffscreen();
         }
         function onDisplayAmbientLeft() {
-            wallpaperDarkener.opacity = 0
             if (burnInProtectionManager.enabled) leftIndicator.anchors.verticalCenterOffset = 0
         }
         function onDisplayAmbientUpdate() {
