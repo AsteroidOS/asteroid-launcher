@@ -208,7 +208,7 @@
     <message id="id-brightness">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="503"/>
         <source>Brightness</source>
-        <translation type="unfinished"></translation>
+        <translation>სიკაშკაშე</translation>
     </message>
     <message id="id-volume">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="505"/>
