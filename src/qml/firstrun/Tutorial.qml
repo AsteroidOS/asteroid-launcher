@@ -292,7 +292,7 @@ Item {
                 }
 
                 ParallelAnimation {
-                    NumberAnimation { target: Desktop.appLauncher; property: "contentX"; from: 0.0; to: Dims.w(200); duration: 600 }
+                    NumberAnimation { target: Desktop.appLauncher; property: "tutorialScroll"; from: 0.0; to: Dims.w(200); duration: 600 }
                     NumberAnimation { target: finger; property: "x"; from: Dims.w(80); to: Dims.w(-20); duration: 500 }
                 }
                 ScriptAction { script: { Desktop.panelsGrid.currentVerticalPos = 1
@@ -301,7 +301,7 @@ Item {
                 PauseAnimation { duration: 300 }
                 ScriptAction { script: finger.opacity = 0.8 }
                 ParallelAnimation {
-                    NumberAnimation { target: Desktop.appLauncher; property: "contentX"; from: Dims.w(200); to: Dims.w(100); duration: 600 }
+                    NumberAnimation { target: Desktop.appLauncher; property: "tutorialScroll"; from: Dims.w(200); to: Dims.w(100); duration: 600 }
                     SequentialAnimation {
                         NumberAnimation { target: finger; property: "x"; from: Dims.w(20); to: Dims.w(50); duration: 300 }
                         ScriptAction { script: finger.opacity = 0.0 }
@@ -393,7 +393,7 @@ Item {
 
                 ScriptAction {
                     script: {
-                        Desktop.appLauncher.contentX = 0.0
+                        Desktop.appLauncher.tutorialScroll = 0.0
 
                         centerIcon.name = "ios-happy-outline"
                         //% "Enjoy!"
