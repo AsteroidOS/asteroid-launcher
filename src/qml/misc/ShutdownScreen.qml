@@ -31,25 +31,26 @@
 import QtQuick 2.9
 import QtQuick.Window 2.0
 import org.nemomobile.lipstick 0.1
-import ".."
 
 Rectangle {
     id: shutdownWindow
-    width: parent.width
-    height: parent.height
+    width: initialSize.width
+    height: initialSize.height
     color: "black"
-    property bool shouldVisible
-    opacity: shutdownScreen.windowVisible
+    opacity: shutdownScreen.windowVisible ? 1.0 : 0.0
 
     Image {
-        anchors.centerIn: parent
-        source: shutdownMode ? "" : "qrc:/images/shutdown-logo.png"
+        property var logoSize: (parent.width > parent.height ? parent.height : parent.width) * 0.55
+        id: logoSvg
+        anchors.fill: parent
+        fillMode: Image.Pad
+        source: "qrc:/images/bootlogo.svg"
+        sourceSize: Qt.size(logoSize, logoSize)
     }
 
     Behavior on opacity {
         NumberAnimation {
             duration: 500
-            onRunningChanged: if (!running && shutdownWindow.opacity == 0) shutdownScreen.windowVisible = false
         }
     }
 }
