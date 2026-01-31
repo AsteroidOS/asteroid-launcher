@@ -169,7 +169,7 @@ Item {
                         centerIcon.name = "ios-arrow-round-up"
                         //% "Quick Panel"
                         title.text = qsTrId("id-tutorial-quickpanel-title")
-                        //% "are up here."
+                        //% "is up here."
                         subtitle.text = qsTrId("id-tutorial-quickpanel-subtitle")
                         finger.x = Dims.w(76)
                         finger.y = Dims.h(43)
