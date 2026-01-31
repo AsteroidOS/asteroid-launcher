@@ -34,11 +34,12 @@ import org.asteroid.controls 1.0
 import org.asteroid.utils 1.0
 
 ShaderEffect {
-    property real smoothness: 0.0007
+    property real smoothness: 0.05
     property bool keepInner: true
+    property real radius: 0.51
 
-    property real end: 0.25
-    property real beginning: 0.25 - smoothness
+    property real end: radius * radius
+    property real beginning: (radius - smoothness) * (radius - smoothness)
 
     fragmentShader: "
     #extension GL_OES_standard_derivatives: enable
@@ -50,22 +51,22 @@ ShaderEffect {
     uniform lowp sampler2D source;
     uniform lowp float end;
     uniform lowp float beginning;
+    uniform lowp float radius;
     uniform bool keepInner;
 
     void main(void) {
-        lowp float x, y;
-        x = (qt_TexCoord0.x - 0.5);
-        y = (qt_TexCoord0.y - 0.5);
-        if(keepInner) {
-            gl_FragColor = texture2D(source, qt_TexCoord0).rgba
-                * step(x * x + y * y, 0.25)
-                * smoothstep((x * x + y * y) , end, beginning)
-                * qt_Opacity;
+        lowp float x, y, distSquared;
+        x = qt_TexCoord0.x - 0.5;
+        y = qt_TexCoord0.y - 0.5;
+        distSquared = x * x + y * y;
+
+        lowp float vignette = step(distSquared, radius * radius)
+                                * smoothstep(end, beginning, distSquared);
+
+        if (keepInner) {
+            gl_FragColor = texture2D(source, qt_TexCoord0).rgba * vignette * qt_Opacity;
         } else {
-            gl_FragColor = texture2D(source, qt_TexCoord0).rgba
-                * (1.0 - (step(x * x + y * y, 0.25)
-                * smoothstep((x * x + y * y) , end, beginning)))
-                * qt_Opacity;
+            gl_FragColor = texture2D(source, qt_TexCoord0).rgba * (1.0 - vignette) * qt_Opacity;
         }
     }"
 }
