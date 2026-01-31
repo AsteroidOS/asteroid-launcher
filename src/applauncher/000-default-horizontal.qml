@@ -38,6 +38,8 @@ import org.asteroid.controls 1.0
 Item {
     property alias currentIndex: appsListView.currentIndex
     property alias count: appsListView.count
+    property real tutorialScroll:  0.0
+    property bool fakePressed: false
 
     anchors.fill: parent
     ListView {
@@ -46,7 +48,8 @@ Item {
         orientation: ListView.Horizontal
         snapMode: ListView.SnapToItem
         width: parent.width
-        height: parent.width > parent.height ? parent.height : parent.width
+	height: parent.width > parent.height ? parent.height : parent.width
+	contentX: tutorialScroll
         anchors.centerIn: parent
         clip: true
 
