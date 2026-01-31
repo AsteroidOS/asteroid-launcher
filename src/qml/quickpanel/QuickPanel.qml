@@ -160,11 +160,6 @@ Item {
         volume: 0.8
     }
 
-    BluetoothStatus {
-        id: btStatus
-        onPoweredChanged: bluetoothToggle.toggled = btStatus.powered
-    }
-
     NetworkTechnology {
         id: wifiStatus
         path: "/net/connman/technology/wifi"
@@ -631,10 +626,15 @@ Item {
     Component {
         id: bluetoothToggleComponent
         QuickPanelToggle {
+            id: bluetoothToggle
             icon: btStatus.connected ? "ios-bluetooth-connected" : "ios-bluetooth"
             onChecked: btStatus.powered = true
             onUnchecked: btStatus.powered = false
             Component.onCompleted: toggled = btStatus.powered
+            BluetoothStatus {
+                id: btStatus
+                onPoweredChanged: bluetoothToggle.toggled = btStatus.powered
+            }
         }
     }
 
