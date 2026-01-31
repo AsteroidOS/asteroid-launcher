@@ -819,7 +819,7 @@ Item {
     Component {
         id: powerOffToggleComponent
         QuickPanelToggle {
-            icon: "ios-power"
+            icon: "ios-power-outline"
             togglable: false
             toggled: true
             onChecked: {
@@ -836,7 +836,7 @@ Item {
     Component {
         id: rebootToggleComponent
         QuickPanelToggle {
-            icon: "ios-refresh"
+            icon: "ios-sync"
             togglable: false
             toggled: true
             onChecked: {
