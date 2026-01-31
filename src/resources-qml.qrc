@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>images/shutdown-logo.png</file>
         <file>images/bootlogo.svg</file>
     </qresource>
     <qresource prefix="/qml/">
