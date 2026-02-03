@@ -39,7 +39,7 @@
         <location filename="../src/qml/notifications/NotificationActions.qml" line="115"/>
         <location filename="../src/qml/notifications/NotificationActions.qml" line="157"/>
         <source>Snooze</source>
-        <translation type="unfinished"></translation>
+        <translation>تعویق</translation>
     </message>
     <message id="id-dismiss-all">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="123"/>
@@ -148,7 +148,7 @@
     <message id="id-tutorial-notifications-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="95"/>
         <source>can be accessed on the left.</source>
-        <translation type="unfinished"></translation>
+        <translation>ز سمت چپ من دسرس هڌن.</translation>
     </message>
     <message id="id-tutorial-today-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="122"/>
@@ -158,7 +158,7 @@
     <message id="id-tutorial-today-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="124"/>
         <source>are on the right.</source>
-        <translation type="unfinished"></translation>
+        <translation>من سمت راست هڌن.</translation>
     </message>
     <message id="id-tutorial-quicksettings-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="171"/>
@@ -168,7 +168,7 @@
     <message id="id-tutorial-quicksettings-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="173"/>
         <source>are up here.</source>
-        <translation type="unfinished"></translation>
+        <translation>ایچو هڌن.</translation>
     </message>
     <message id="id-tutorial-applications-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="220"/>
@@ -178,7 +178,7 @@
     <message id="id-tutorial-applications-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="222"/>
         <source>are down there.</source>
-        <translation type="unfinished"></translation>
+        <translation>ای بلم هڌن.</translation>
     </message>
     <message id="id-tutorial-startapp-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="269"/>
@@ -188,18 +188,18 @@
     <message id="id-tutorial-startapp-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="271"/>
         <source>by pressing its icon.</source>
-        <translation type="unfinished"></translation>
+        <translation>وا فشار داڌن آیکون هو.</translation>
     </message>
     <message id="id-tutorial-leaveapp-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="334"/>
         <source>Leave an app</source>
-        <translation type="unfinished"></translation>
+        <translation>ز برنومه زنین و در</translation>
     </message>
     <message id="id-tutorial-leaveapp-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="336"/>
         <source>following a rightward gesture.</source>
         <oldsource>following a rightward gesture</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>و دین ی هرکت و سمت راست.</translation>
     </message>
     <message id="id-tutorial-enjoy-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="400"/>
