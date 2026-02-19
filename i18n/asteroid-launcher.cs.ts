@@ -169,7 +169,7 @@
         <location filename="../src/qml/firstrun/Tutorial.qml" line="173"/>
         <source>is up here.</source>
         <oldsource>are up here.</oldsource>
-        <translation type="unfinished">jsou zde nahoře.</translation>
+        <translation>je zde nahoře.</translation>
     </message>
     <message id="id-tutorial-applications-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="220"/>
@@ -184,7 +184,7 @@
     <message id="id-tutorial-startapp-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="269"/>
         <source>Start an app</source>
-        <translation>spustit aplikaci</translation>
+        <translation>Spustit aplikaci</translation>
     </message>
     <message id="id-tutorial-startapp-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="271"/>
@@ -214,22 +214,22 @@
     <message id="id-volume">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="506"/>
         <source>Volume</source>
-        <translation type="unfinished"></translation>
+        <translation>Hlasitost</translation>
     </message>
     <message id="id-power-off">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="827"/>
         <source>Powering off in</source>
-        <translation type="unfinished"></translation>
+        <translation>Vypnutí za</translation>
     </message>
     <message id="id-tap-to-cancel">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="548"/>
         <source>Tap to cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Klepnutím zrušíte</translation>
     </message>
     <message id="id-reboot">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="844"/>
         <source>Rebooting in</source>
-        <translation type="unfinished"></translation>
+        <translation>Restart za</translation>
     </message>
 </context>
 </TS>
