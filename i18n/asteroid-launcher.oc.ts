@@ -7,28 +7,28 @@
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="158"/>
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="170"/>
         <source>Authorize:</source>
-        <translation type="unfinished"></translation>
+        <translation>Autorizar :</translation>
     </message>
     <message id="id-btagent-confirm">
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="182"/>
         <source>Confirm:</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmar :</translation>
     </message>
     <message id="id-btagent-passkey">
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="194"/>
         <source>Pass Key:</source>
-        <translation type="unfinished"></translation>
+        <translation>Clau d’accés:</translation>
     </message>
     <message id="id-btagent-enterkey">
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="210"/>
         <source>Enter Key</source>
-        <translation type="unfinished"></translation>
+        <translation>Picatz la clau</translation>
     </message>
     <message id="id-btagent-pincode">
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="218"/>
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="230"/>
         <source>PIN Code:</source>
-        <translation type="unfinished"></translation>
+        <translation>Còdi PIN :</translation>
     </message>
     <message id="id-btagent-enter-pincode">
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="235"/>
@@ -50,7 +50,7 @@
         <location filename="../src/qml/notifications/NotificationActions.qml" line="138"/>
         <location filename="../src/qml/notifications/NotificationView.qml" line="161"/>
         <source>Dismiss</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignorar</translation>
     </message>
     <message id="id-now">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="58"/>
@@ -83,12 +83,12 @@
     <message id="id-no-notifications">
         <location filename="../src/qml/notifications/NotificationsPanel.qml" line="160"/>
         <source>No notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Cap de notificacion</translation>
     </message>
     <message id="id-today">
         <location filename="../src/qml/today/Today.qml" line="136"/>
         <source>Today</source>
-        <translation type="unfinished"></translation>
+        <translation>Uèi</translation>
     </message>
     <message id="id-no-events-today">
         <location filename="../src/qml/today/Today.qml" line="207"/>
@@ -98,7 +98,7 @@
     <message id="id-date-page">
         <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="201"/>
         <source>Date</source>
-        <translation type="unfinished"></translation>
+        <translation>Data</translation>
     </message>
     <message id="id-add-alarm">
         <location filename="../src/qml/firstrun/FakeAlarmclock.qml" line="85"/>
@@ -108,22 +108,22 @@
     <message id="id-time">
         <location filename="../src/qml/firstrun/FakeAlarmclock.qml" line="125"/>
         <source>Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Ora</translation>
     </message>
     <message id="id-language-page">
         <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="171"/>
         <source>Language</source>
-        <translation type="unfinished"></translation>
+        <translation>Lenga</translation>
     </message>
     <message id="id-time-page">
         <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="190"/>
         <source>Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Ora</translation>
     </message>
     <message id="id-tutorial-welcome-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="60"/>
         <source>Welcome.</source>
-        <translation type="unfinished"></translation>
+        <translation>Benvenguts.</translation>
     </message>
     <message id="id-tutorial-welcome-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="62"/>
@@ -215,7 +215,7 @@
     <message id="id-volume">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="506"/>
         <source>Volume</source>
-        <translation type="unfinished"></translation>
+        <translation>Volum</translation>
     </message>
     <message id="id-power-off">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="827"/>
