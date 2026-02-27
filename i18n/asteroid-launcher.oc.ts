@@ -33,18 +33,18 @@
     <message id="id-btagent-enter-pincode">
         <location filename="../src/qml/misc/BluetoothAgent.qml" line="235"/>
         <source>Enter PIN Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Picatz lo còdi PIN</translation>
     </message>
     <message id="id-snooze">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="115"/>
         <location filename="../src/qml/notifications/NotificationActions.qml" line="157"/>
         <source>Snooze</source>
-        <translation type="unfinished"></translation>
+        <translation>Remandar</translation>
     </message>
     <message id="id-dismiss-all">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="123"/>
         <source>Dismiss all</source>
-        <translation type="unfinished"></translation>
+        <translation>Tot ignorar</translation>
     </message>
     <message id="id-dismiss">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="138"/>
@@ -56,7 +56,7 @@
         <location filename="../src/qml/notifications/NotificationActions.qml" line="58"/>
         <location filename="../src/qml/notifications/NotificationView.qml" line="63"/>
         <source>Now</source>
-        <translation type="unfinished"></translation>
+        <translation>Ara</translation>
     </message>
     <message id="id-minute-abbrev">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="63"/>
@@ -64,7 +64,7 @@
         <location filename="../src/qml/notifications/NotificationActions.qml" line="179"/>
         <location filename="../src/qml/notifications/NotificationView.qml" line="68"/>
         <source>m</source>
-        <translation type="unfinished"></translation>
+        <translation>min</translation>
     </message>
     <message id="id-hour-abbrev">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="68"/>
@@ -72,13 +72,13 @@
         <location filename="../src/qml/notifications/NotificationActions.qml" line="201"/>
         <location filename="../src/qml/notifications/NotificationView.qml" line="73"/>
         <source>h</source>
-        <translation type="unfinished"></translation>
+        <translation>h</translation>
     </message>
     <message id="id-day-abbrev">
         <location filename="../src/qml/notifications/NotificationActions.qml" line="72"/>
         <location filename="../src/qml/notifications/NotificationView.qml" line="77"/>
         <source>d</source>
-        <translation type="unfinished"></translation>
+        <translation>d</translation>
     </message>
     <message id="id-no-notifications">
         <location filename="../src/qml/notifications/NotificationsPanel.qml" line="160"/>
@@ -93,7 +93,7 @@
     <message id="id-no-events-today">
         <location filename="../src/qml/today/Today.qml" line="207"/>
         <source>No events today</source>
-        <translation type="unfinished"></translation>
+        <translation>Cap d&apos;eveniment uèi</translation>
     </message>
     <message id="id-date-page">
         <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="201"/>
@@ -103,7 +103,7 @@
     <message id="id-add-alarm">
         <location filename="../src/qml/firstrun/FakeAlarmclock.qml" line="85"/>
         <source>Add an alarm</source>
-        <translation type="unfinished"></translation>
+        <translation>Apondre una alarma</translation>
     </message>
     <message id="id-time">
         <location filename="../src/qml/firstrun/FakeAlarmclock.qml" line="125"/>
@@ -128,89 +128,89 @@
     <message id="id-tutorial-welcome-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="62"/>
         <source>This is AsteroidOS.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aquò&apos;s AsteroidOS.</translation>
     </message>
     <message id="id-tutorial-indicators-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="73"/>
         <source>Indicators</source>
-        <translation type="unfinished"></translation>
+        <translation>Indicadors</translation>
     </message>
     <message id="id-tutorial-indicators-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="75"/>
         <source>show you possible gestures.</source>
-        <translation type="unfinished"></translation>
+        <translation>vos mostrar los gèstes possibles.</translation>
     </message>
     <message id="id-tutorial-notifications-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="93"/>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Notificacions</translation>
     </message>
     <message id="id-tutorial-notifications-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="95"/>
         <source>can be accessed on the left.</source>
-        <translation type="unfinished"></translation>
+        <translation>son accessibles a man esquèrra.</translation>
     </message>
     <message id="id-tutorial-today-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="122"/>
         <source>Today&apos;s Events</source>
-        <translation type="unfinished"></translation>
+        <translation>Eveniments d&apos;uèi</translation>
     </message>
     <message id="id-tutorial-today-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="124"/>
         <source>are on the right.</source>
-        <translation type="unfinished"></translation>
+        <translation>son a man drecha.</translation>
     </message>
     <message id="id-tutorial-quickpanel-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="171"/>
         <source>Quick Panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Opcions rapidas</translation>
     </message>
     <message id="id-tutorial-quickpanel-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="173"/>
         <source>is up here.</source>
         <oldsource>are up here.</oldsource>
-        <translation type="unfinished">sont au-dessus.</translation>
+        <translation>son aquí ennaut.</translation>
     </message>
     <message id="id-tutorial-applications-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="220"/>
         <source>Apps</source>
-        <translation type="unfinished"></translation>
+        <translation>Aplicacions</translation>
     </message>
     <message id="id-tutorial-applications-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="222"/>
         <source>are down there.</source>
-        <translation type="unfinished"></translation>
+        <translation>son çaijós.</translation>
     </message>
     <message id="id-tutorial-startapp-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="269"/>
         <source>Start an app</source>
-        <translation type="unfinished"></translation>
+        <translation>Lançar una aplicacion</translation>
     </message>
     <message id="id-tutorial-startapp-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="271"/>
         <source>by pressing its icon.</source>
-        <translation type="unfinished"></translation>
+        <translation>en clicant l’icòna.</translation>
     </message>
     <message id="id-tutorial-leaveapp-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="334"/>
         <source>Leave an app</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortir d&apos;una aplicacion</translation>
     </message>
     <message id="id-tutorial-leaveapp-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="336"/>
         <source>following a rightward gesture.</source>
         <oldsource>following a rightward gesture</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>en lisant cap a drecha.</translation>
     </message>
     <message id="id-tutorial-enjoy-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="400"/>
         <source>Enjoy!</source>
-        <translation type="unfinished"></translation>
+        <translation>Aprofichatz ben !</translation>
     </message>
     <message id="id-brightness">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="504"/>
         <source>Brightness</source>
-        <translation type="unfinished"></translation>
+        <translation>Luminositat</translation>
     </message>
     <message id="id-volume">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="506"/>
@@ -220,17 +220,17 @@
     <message id="id-power-off">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="827"/>
         <source>Powering off in</source>
-        <translation type="unfinished"></translation>
+        <translation>Extincion d&apos;aquí</translation>
     </message>
     <message id="id-tap-to-cancel">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="548"/>
         <source>Tap to cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Tocatz per anullar</translation>
     </message>
     <message id="id-reboot">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="844"/>
         <source>Rebooting in</source>
-        <translation type="unfinished"></translation>
+        <translation>Reaviada d&apos;aquí</translation>
     </message>
 </context>
 </TS>
