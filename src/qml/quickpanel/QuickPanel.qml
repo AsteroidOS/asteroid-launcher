@@ -553,8 +553,8 @@ Item {
             rangeMax: 100
             rangeStepSize: 10
 
-            onChecked: displaySettings.brightness = rangeMax
-            onUnchecked: displaySettings.brightness = rangeMin
+            onChecked: displaySettings.brightness = 100
+            onUnchecked: displaySettings.brightness = 10
             Component.onCompleted: toggled = displaySettings.brightness > 10
 
             onPressAndHold: rangeValue = displaySettings.brightness
