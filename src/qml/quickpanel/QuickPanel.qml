@@ -60,13 +60,13 @@ Item {
     readonly property bool showingBattery: !showingBrightness && !showingVolume
 
     onShowingBrightnessChanged: {
-        valueMeter.animate = true
-        valueMeterCaption.animate = true
+        valueMeter.opacityAnimation.start()
+        valueMeterCaption.opacityAnimation.start()
     }
 
     onShowingVolumeChanged: {
-        valueMeter.animate = true
-        valueMeterCaption.animate = true
+        valueMeter.opacityAnimation.start()
+        valueMeterCaption.opacityAnimation.start()
     }
 
     readonly property int volume: volumeControl ? (volumeControl.maximumVolume ? Math.round((volumeControl.volume / volumeControl.maximumVolume) * 100) : 0) :0
@@ -448,14 +448,11 @@ Item {
             }
         }
 
-        opacity: animate ? 0 : 1
-
-        property bool animate: false
-        onOpacityChanged: animate = opacity > 0.5 ? animate : false
-
-        // Opacity transitions for value change
-        Behavior on opacity {
-            NumberAnimation { duration: 250 }
+        property SequentialAnimation opacityAnimation: meterOpacityAnimation
+        SequentialAnimation on opacity {
+            id: meterOpacityAnimation
+            NumberAnimation { to: 0.5; duration: 125; easing.type: Easing.InOutQuad }
+            NumberAnimation { to: 1.0; duration: 125; easing.type: Easing.InOutQuad }
         }
 
         fillColor: {
@@ -490,10 +487,12 @@ Item {
             styleName: "Condensed Medium"
         }
 
-        opacity: animate ? 0 : (!isCharging ? 0.8 : 1.0)
-
-        property bool animate: false
-        onOpacityChanged: animate = opacity > 0.6 ? animate : false
+        property SequentialAnimation opacityAnimation: meterLabelOpacityAnimation
+        SequentialAnimation on opacity {
+            id: meterLabelOpacityAnimation
+            NumberAnimation { to: 0.5; duration: 125; easing.type: Easing.InOutQuad }
+            NumberAnimation { to: 1.0; duration: 125; easing.type: Easing.InOutQuad }
+        }
 
         //% "Brightness"
         text: showingBrightness ? qsTrId("id-brightness") :
@@ -501,9 +500,6 @@ Item {
             showingVolume ? qsTrId("id-volume") :
             batteryChargePercentage.percent + "%"
 
-        Behavior on opacity {
-            NumberAnimation { duration: 250 }
-        }
     }
 
     Icon {
@@ -548,17 +544,30 @@ Item {
         QuickPanelToggle {
             id: brightnessToggle
             icon: "ios-sunny"
+            checkable: true
             rangeBased: true
             rangeMin: 0
             rangeMax: 100
             rangeStepSize: 10
 
-            onChecked: displaySettings.brightness = rangeMax
-            onUnchecked: displaySettings.brightness = rangeMin
-            Component.onCompleted: toggled = displaySettings.brightness > 10
+            checked: displaySettings.brightness > 10
 
-            onPressAndHold: rangeValue = displaySettings.brightness
+            onClicked: {
+                if(checked) {
+                    displaySettings.brightness = rangeMin
+                    isIncreasing = true
+                } else {
+                    displaySettings.brightness = rangeMax
+                    isIncreasing = false
+                }
+            }
 
+            rangeValue: displaySettings.brightness
+
+            onPressed: {
+                valueMeter.showingBrightness = true
+                valueMeter.showingVolume = false
+            }
             onReleased: fadeOutTimer.restart()
 
             onRangeValueChanged: {
@@ -569,14 +578,6 @@ Item {
 
                 fadeOutTimer.restart()
             }
-
-            Connections {
-                target: displaySettings
-                function onBrightnessChanged() {
-                    brightnessToggle.toggled = displaySettings.brightness > 10
-                }
-            }
-
             Connections {
                 target: valueMeter
                 function onResetDirection() {
@@ -590,13 +591,17 @@ Item {
         id: hapticsToggleComponent
         QuickPanelToggle {
             icon: "ios-watch-vibrating"
-            onChecked: {
-                profileControl.profile = "general";
-                feedbackDelayTimer.start();
-            }
-            onUnchecked: profileControl.profile = "silent"
+            checkable: true
+            checked: profileControl.profile == "general"
 
-            Component.onCompleted: toggled = profileControl.profile == "general"
+            onClicked: {
+                if(checked) {
+                    profileControl.profile = "silent"
+                } else {
+                    profileControl.profile = "general";
+                    feedbackDelayTimer.start();
+                }
+            }
 
             Timer {
                 id: feedbackDelayTimer
@@ -611,14 +616,12 @@ Item {
         id: wifiToggleComponent
         QuickPanelToggle {
             icon: wifiStatus.connected ? "ios-wifi" : "ios-wifi-outline"
-            onChecked: wifiStatus.powered = true
-            onUnchecked: wifiStatus.powered = false
 
-            Connections {
-                target: wifiStatus
-                function onPoweredChanged() {
-                    toggled = wifiStatus.powered
-                }
+            checkable: true
+            checked: wifiStatus.powered
+
+            onClicked: {
+                wifiStatus.powered = !checked
             }
         }
     }
@@ -627,13 +630,17 @@ Item {
         id: bluetoothToggleComponent
         QuickPanelToggle {
             id: bluetoothToggle
+
             icon: btStatus.connected ? "ios-bluetooth-connected" : "ios-bluetooth"
-            onChecked: btStatus.powered = true
-            onUnchecked: btStatus.powered = false
-            Component.onCompleted: toggled = btStatus.powered
+
+            checkable: true
+            checked: btStatus.powered
             BluetoothStatus {
                 id: btStatus
-                onPoweredChanged: bluetoothToggle.toggled = btStatus.powered
+            }
+
+            onClicked: {
+                btStatus.powered = !checked
             }
         }
     }
@@ -642,6 +649,7 @@ Item {
         id: soundToggleComponent
         QuickPanelToggle {
             id: soundToggle
+            checkable: true
 
             rangeBased: true
             rangeMin: 0
@@ -660,6 +668,10 @@ Item {
                 }
             }
 
+            onPressed: {
+                valueMeter.showingBrightness = true
+                valueMeter.showingVolume = false
+            }
             onReleased: {
                 fadeOutTimer.restart()
 
@@ -667,6 +679,7 @@ Item {
                     soundDelayTimer.start();
                 }
             }
+
 
             onRangeValueChanged: {
                 setVolume(rangeValue);
@@ -698,7 +711,7 @@ Item {
                 }
             }
 
-            Component.onCompleted: toggled = !(preMuteLevel.value > 0 || volume === 0)
+            checked: !(preMuteLevel.value > 0 || volume === 0)
 
             Timer {
                 id: soundDelayTimer
@@ -710,14 +723,9 @@ Item {
             Connections {
                 target: volumeControl
                 function onVolumeChanged() {
-                    soundToggle.toggled = !(preMuteLevel.value > 0 || volume === 0);
-                }
-            }
-
-            Connections {
-                target: preMuteLevel
-                function onValueChanged() {
-                    soundToggle.toggled = !(preMuteLevel.value > 0 || volume === 0);
+                    if(!pressed) {
+                        rangeValue = volume
+                    }
                 }
             }
 
@@ -739,29 +747,29 @@ Item {
             property bool isMuted: DeviceSpecs.hasSpeaker ? preMuteLevel.value > 0 : true
             property bool actualState: isMuted && !alwaysOnDisplay.value;
 
-            onActualStateChanged: toggled = actualState
+            checkable: true
 
-            toggled: false
-            onChecked: {
-                // Store pre-cinema states
-                preCinemaAodState.value = alwaysOnDisplay.value;
-                // Mute sound if available
-                if (DeviceSpecs.hasSpeaker && !isMuted) {
-                    preMuteLevel.value = volume;
-                    setVolume(0);
-                }
-                alwaysOnDisplay.value = false;
-                displaySettings.lowPowerModeEnabled = false;
-            }
-
-            onUnchecked: {
-                // Restore pre-cinema states
-                alwaysOnDisplay.value = preCinemaAodState.value;
-                displaySettings.lowPowerModeEnabled = alwaysOnDisplay.value;
-                // Restore sound
-                if (DeviceSpecs.hasSpeaker && isMuted) {
-                    setVolume(preMuteLevel.value);
-                    preMuteLevel.value = 0;
+            checked: actualState
+            onClicked: {
+                if(checked) {
+                    // Store pre-cinema states
+                    preCinemaAodState.value = alwaysOnDisplay.value;
+                    // Mute sound if available
+                    if (DeviceSpecs.hasSpeaker && !isMuted) {
+                        preMuteLevel.value = volume;
+                        setVolume(0);
+                    }
+                    alwaysOnDisplay.value = false;
+                    displaySettings.lowPowerModeEnabled = false;
+                } else {
+                    // Restore pre-cinema states
+                    alwaysOnDisplay.value = preCinemaAodState.value;
+                    displaySettings.lowPowerModeEnabled = alwaysOnDisplay.value;
+                    // Restore sound
+                    if (DeviceSpecs.hasSpeaker && isMuted) {
+                        setVolume(preMuteLevel.value);
+                        preMuteLevel.value = 0;
+                    }
                 }
             }
         }
@@ -772,9 +780,7 @@ Item {
         QuickPanelToggle {
             id: lockedToggle
             icon: "ios-unlock"
-            togglable: false
-            toggled: true
-            onChecked: mce_dbus.call("req_display_state_lpm", undefined)
+            onClicked: mce_dbus.call("req_display_state_lpm", undefined)
         }
     }
 
@@ -782,9 +788,7 @@ Item {
         id: settingsButtonComponent
         QuickPanelToggle {
             icon: "ios-settings"
-            togglable: false
-            toggled: true
-            onChecked: appLauncher.launchApp("asteroid-settings")
+            onClicked: appLauncher.launchApp("asteroid-settings")
         }
     }
 
@@ -792,9 +796,7 @@ Item {
         id: musicButtonComponent
         QuickPanelToggle {
             icon: "ios-musical-notes-outline"
-            togglable: false
-            toggled: true
-            onChecked: appLauncher.launchApp("asteroid-music")
+            onClicked: appLauncher.launchApp("asteroid-music")
         }
     }
 
@@ -802,9 +804,7 @@ Item {
         id: flashlightButtonComponent
         QuickPanelToggle {
             icon: "ios-bulb-outline"
-            togglable: false
-            toggled: true
-            onChecked: appLauncher.launchApp("asteroid-flashlight")
+            onClicked: appLauncher.launchApp("asteroid-flashlight")
         }
     }
 
@@ -812,18 +812,12 @@ Item {
         id: aodToggleComponent
         QuickPanelToggle {
             icon: alwaysOnDisplay.value ? "ios-watch-aod-on" : "ios-watch-aod-off"
-            toggled: alwaysOnDisplay.value
+            checkable: true
+            checked: alwaysOnDisplay.value
 
-            onToggledChanged: {
-                alwaysOnDisplay.value = toggled;
-                displaySettings.lowPowerModeEnabled = toggled;
-            }
-
-            Connections {
-                target: alwaysOnDisplay
-                function onValueChanged() {
-                    toggled = alwaysOnDisplay.value;
-                }
+            onClicked: {
+                alwaysOnDisplay.value = !checked;
+                displaySettings.lowPowerModeEnabled = alwaysOnDisplay.value;
             }
         }
     }
@@ -832,9 +826,7 @@ Item {
         id: powerOffToggleComponent
         QuickPanelToggle {
             icon: "ios-power-outline"
-            togglable: false
-            toggled: true
-            onChecked: {
+            onClicked: {
                 //% "Powering off in"
                 remorseTimer.action = qsTrId("id-power-off");
                 remorseTimer.onTriggered.connect(function() {
@@ -849,9 +841,7 @@ Item {
         id: rebootToggleComponent
         QuickPanelToggle {
             icon: "ios-sync"
-            togglable: false
-            toggled: true
-            onChecked: {
+            onClicked: {
                 //% "Rebooting in"
                 remorseTimer.action = qsTrId("id-reboot");
                 remorseTimer.onTriggered.connect(function() {
