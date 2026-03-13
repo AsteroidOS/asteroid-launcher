@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2015 Florent Revest <revestflo@gmail.com>
+ * Copyright (C) 2026 Timo Könnecke <github.com/moWerk>
+ *               2015 Florent Revest <revestflo@gmail.com>
  *               2014 Aleksi Suomalainen <suomalainen.aleksi@gmail.com>
  * All rights reserved.
  *
@@ -102,9 +103,9 @@ Item {
     }
 
     ConfigurationValue {
-        id: useBip
-        key: "/org/asteroidos/settings/use-burn-in-protection"
-        defaultValue: DeviceSpecs.needsBurnInProtection
+        id: bipLevel
+        key: "/org/asteroidos/settings/burn-in-protection-level"
+        defaultValue: DeviceSpecs.needsBurnInProtection ? 1 : 0
     }
 
     ConfigurationValue {
@@ -130,7 +131,8 @@ Item {
         property int heightOffset
 
         // Enable/disable burn in protection.
-        enabled: DeviceSpecs.needsBurnInProtection && useBip.value
+        enabled: DeviceSpecs.needsBurnInProtection && bipLevel.value > 0
+        readonly property real bipMultiplier: [0.0, 1.0, 0.5, 0.25][Math.max(0, Math.min(3, bipLevel.value))]
 
         onHeightOffsetChanged: {
             topOffset = heightOffset/2
@@ -219,11 +221,13 @@ Item {
         function onDisplayAmbientUpdate() {
             // Perform burn in protection
             if (burnInProtectionManager.enabled) {
-                grid.contentX = Math.random()*(burnInProtectionManager.leftOffset + burnInProtectionManager.rightOffset)-burnInProtectionManager.leftOffset
-                grid.contentY = Math.random()*(burnInProtectionManager.topOffset + burnInProtectionManager.bottomOffset)-burnInProtectionManager.topOffset
+                var xRange = (burnInProtectionManager.leftOffset + burnInProtectionManager.rightOffset) * burnInProtectionManager.bipMultiplier
+                var yRange = (burnInProtectionManager.topOffset + burnInProtectionManager.bottomOffset) * burnInProtectionManager.bipMultiplier
+                grid.contentX = Math.random() * xRange - burnInProtectionManager.leftOffset * burnInProtectionManager.bipMultiplier
+                grid.contentY = Math.random() * yRange - burnInProtectionManager.topOffset * burnInProtectionManager.bipMultiplier
 
-                leftIndicator.anchors.horizontalCenterOffset = (Math.random()*2)*leftIndicator.finWidth
-                leftIndicator.anchors.verticalCenterOffset = (Math.random()-0.5)*4*leftIndicator.finWidth
+                leftIndicator.anchors.horizontalCenterOffset = (Math.random() * 2) * leftIndicator.finWidth
+                leftIndicator.anchors.verticalCenterOffset = (Math.random() - 0.5) * 4 * leftIndicator.finWidth
             }
             // Give watchface some time to update, then go back to deep sleep.
             wallClockAmbientTimeout.start();
