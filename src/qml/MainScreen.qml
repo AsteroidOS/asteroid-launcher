@@ -105,7 +105,7 @@ Item {
     ConfigurationValue {
         id: bipLevel
         key: "/org/asteroidos/settings/burn-in-protection-level"
-        defaultValue: DeviceSpecs.needsBurnInProtection ? 1 : 0
+        defaultValue: DeviceSpecs.needsBurnInProtection ? 1.0 : 0.0
     }
 
     ConfigurationValue {
@@ -131,8 +131,8 @@ Item {
         property int heightOffset
 
         // Enable/disable burn in protection.
-        enabled: DeviceSpecs.needsBurnInProtection && bipLevel.value > 0
-        readonly property real bipMultiplier: [0.0, 1.0, 0.5, 0.25][Math.max(0, Math.min(3, bipLevel.value))]
+        enabled: DeviceSpecs.needsBurnInProtection && bipLevel.value > 0.0
+        readonly property real bipMultiplier: Math.max(0.0, Math.min(1.0, bipLevel.value))
 
         onHeightOffsetChanged: {
             topOffset = heightOffset/2
