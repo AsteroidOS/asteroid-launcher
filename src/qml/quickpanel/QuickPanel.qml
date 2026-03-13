@@ -55,20 +55,6 @@ Item {
     MceBatteryState { id: batteryChargeState }
     MceChargerType { id: mceChargerType }
 
-    property bool showingBrightness: false
-    property bool showingVolume: false
-    readonly property bool showingBattery: !showingBrightness && !showingVolume
-
-    onShowingBrightnessChanged: {
-        valueMeter.opacityAnimation.start()
-        valueMeterCaption.opacityAnimation.start()
-    }
-
-    onShowingVolumeChanged: {
-        valueMeter.opacityAnimation.start()
-        valueMeterCaption.opacityAnimation.start()
-    }
-
     readonly property int volume: volumeControl ? (volumeControl.maximumVolume ? Math.round((volumeControl.volume / volumeControl.maximumVolume) * 100) : 0) :0
 
     function setVolume(volume) {
@@ -415,10 +401,20 @@ Item {
         valueLowerBound: 0
         valueUpperBound: 100
         anchors.horizontalCenter: parent.horizontalCenter
+        property Timer fadeOutTimer: fadeOutTimer
 
-        value: showingBrightness ? displaySettings.brightness :
-                                showingVolume ? volume :
-                                batteryChargePercentage.percent
+        Timer {
+            id: fadeOutTimer
+            interval: 2000
+            onTriggered: {
+                valueMeter.state = ""
+
+                // Signal toggles to reset direction
+                valueMeter.resetDirection()
+            }
+        }
+
+        value: batteryChargePercentage.percent
 
         // Signal to notify toggles to reset direction
         signal resetDirection
@@ -431,33 +427,13 @@ Item {
             }
         }
 
-        isIncreasing: showingBattery ? isCharging : false
-        enableAnimations: options.value.batteryAnimation && showingBattery
+        isIncreasing: valueMeter.state == "" ? isCharging : false
+        enableAnimations: options.value.batteryAnimation && valueMeter.state == ""
         particleDesign: options.value.particleDesign
-
-        Timer {
-            id: fadeOutTimer
-            interval: 2000
-            onTriggered: {
-                // Reset display mode with explicit scope
-                showingBrightness = false
-                showingVolume = false
-
-                // Signal toggles to reset direction
-                valueMeter.resetDirection()
-            }
-        }
-
-        property SequentialAnimation opacityAnimation: meterOpacityAnimation
-        SequentialAnimation on opacity {
-            id: meterOpacityAnimation
-            NumberAnimation { to: 0.5; duration: 125; easing.type: Easing.InOutQuad }
-            NumberAnimation { to: 1.0; duration: 125; easing.type: Easing.InOutQuad }
-        }
 
         fillColor: {
             if (!options.value.batteryColored) return Qt.rgba(1, 1, 1, 0.3)
-            if (!showingBattery) return "#4CA6005F"
+            if (!valueMeter.state == "") return "#4CA6005F"
 
             const percent = batteryChargePercentage.percent
             if (percent <= 20) {
@@ -475,31 +451,42 @@ Item {
         Behavior on fillColor {
             ColorAnimation { duration: 300 }
         }
-    }
 
-    Label {
-        id: valueMeterCaption
-        anchors.horizontalCenter: parent.horizontalCenter
-
-        font {
-            pixelSize: Dims.l(9)
-            family: "Noto Sans"
-            styleName: "Condensed Medium"
+        states: [
+            State {
+                name: "brightness"
+                PropertyChanges { target: valueMeter; value: displaySettings.brightness }
+                PropertyChanges { target: flashIcon; visible: false }
+                //% "Brightness"
+                PropertyChanges { target: valueMeterCaption; text: qsTrId("id-brightness") }
+                PropertyChanges { target: flashIcon; visible: false }
+            },
+            State {
+                name: "volume"
+                PropertyChanges { target: valueMeter; value: volume }
+                //% "Volume"
+                PropertyChanges { target: valueMeterCaption; text: qsTrId("id-volume") }
+            }
+        ]
+        transitions: Transition {
+            SequentialAnimation {
+                ParallelAnimation {
+                    NumberAnimation { target: valueMeter; property: "opacity"; duration: 125; to: 0 }
+                    NumberAnimation { target: valueMeterCaption; property: "opacity"; duration: 125; to: 0 }
+                    NumberAnimation { target: flashIcon; property: "opacity"; duration: 125; to: 0 }
+                }
+                ParallelAnimation {
+                    PropertyAnimation { target: valueMeter; property: "value"; duration: 0 }
+                    PropertyAnimation { target: valueMeterCaption; property: "text"; duration: 0 }
+                    PropertyAnimation { target: flashIcon; property: "visible"; duration: 0 }
+                }
+                ParallelAnimation {
+                    NumberAnimation { target: valueMeter; property: "opacity"; duration: 125; to: 1 }
+                    NumberAnimation { target: valueMeterCaption; property: "opacity"; duration: 125; to: 1 }
+                    NumberAnimation { target: flashIcon; property: "opacity"; duration: 125; to: 1 }
+                }
+            }
         }
-
-        property SequentialAnimation opacityAnimation: meterLabelOpacityAnimation
-        SequentialAnimation on opacity {
-            id: meterLabelOpacityAnimation
-            NumberAnimation { to: 0.5; duration: 125; easing.type: Easing.InOutQuad }
-            NumberAnimation { to: 1.0; duration: 125; easing.type: Easing.InOutQuad }
-        }
-
-        //% "Brightness"
-        text: showingBrightness ? qsTrId("id-brightness") :
-        //% "Volume"
-            showingVolume ? qsTrId("id-volume") :
-            batteryChargePercentage.percent + "%"
-
     }
 
     Icon {
@@ -519,6 +506,21 @@ Item {
             NumberAnimation { to: 1.0; duration: 1500; easing.type: Easing.InOutQuad }
         }
     }
+
+    Label {
+        id: valueMeterCaption
+        anchors.horizontalCenter: parent.horizontalCenter
+
+        font {
+            pixelSize: Dims.l(9)
+            family: "Noto Sans"
+            styleName: "Condensed Medium"
+        }
+
+        text: batteryChargePercentage.percent + "%"
+
+    }
+
 
     PageDot {
         id: pageDots
@@ -564,20 +566,11 @@ Item {
 
             rangeValue: displaySettings.brightness
 
-            onPressed: {
-                valueMeter.showingBrightness = true
-                valueMeter.showingVolume = false
-            }
-            onReleased: fadeOutTimer.restart()
+            onPressed: valueMeter.state = "brightness"
+            onReleased: valueMeter.fadeOutTimer.restart()
 
-            onRangeValueChanged: {
-                displaySettings.brightness = rangeValue
+            onRangeValueChanged: displaySettings.brightness = rangeValue
 
-                showingBrightness = true
-                showingVolume = false
-
-                fadeOutTimer.restart()
-            }
             Connections {
                 target: valueMeter
                 function onResetDirection() {
@@ -668,12 +661,9 @@ Item {
                 }
             }
 
-            onPressed: {
-                valueMeter.showingBrightness = true
-                valueMeter.showingVolume = false
-            }
+            onPressed: valueMeter.state = "volume"
             onReleased: {
-                fadeOutTimer.restart()
+                valueMeter.fadeOutTimer.restart()
 
                 if (volume > 0 && preMuteLevel.value === 0) {
                     soundDelayTimer.start();
@@ -681,14 +671,7 @@ Item {
             }
 
 
-            onRangeValueChanged: {
-                setVolume(rangeValue);
-
-                showingBrightness = false
-                showingVolume = true
-
-                fadeOutTimer.restart()
-            }
+            onRangeValueChanged: setVolume(rangeValue)
 
             icon: preMuteLevel.value > 0 || volume === 0 ? "ios-sound-indicator-mute" :
                   volume > 70 ? "ios-sound-indicator-high" :
