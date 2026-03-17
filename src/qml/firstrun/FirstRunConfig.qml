@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2017 Florent Revest <revestflo@gmail.com>
+ * Copyright (C) 2026 Timo Könnecke <github.com/moWerk>
+ *               2017 Florent Revest <revestflo@gmail.com>
  * All rights reserved.
  *
  * You may use this file under the terms of BSD license as follows:
@@ -33,6 +34,7 @@ import Nemo.Time 1.0
 import org.nemomobile.systemsettings 1.0
 import Nemo.Configuration 1.0
 import "desktop.js" as Desktop
+import Nemo.DBus 2.0
 
 FlatMesh {
     id: config
@@ -53,7 +55,9 @@ FlatMesh {
     states: [
         State { name: "LANGUAGE" },
         State { name: "TIME" },
-        State { name: "DATE" }
+        State { name: "DATE" },
+        State { name: "TIMEZONE_REGION" },
+        State { name: "TIMEZONE_CITY" }
     ]
 
     LanguageModel { id: langSettings }
@@ -165,6 +169,93 @@ FlatMesh {
         }
     }
 
+    property var timezoneList: []
+    property string pendingRegion: ""
+    property string currentTz: ""
+
+    onTimezoneListChanged: buildRegionModel()
+
+    function buildRegionModel() {
+        regionModel.clear()
+        var regions = []
+        var currentRegion = config.currentTz.split("/")[0]
+        var selectIdx = 0
+        for (var i = 0; i < timezoneList.length; i++) {
+            var region = timezoneList[i].split("/")[0]
+            if (regions.indexOf(region) < 0) {
+                if (region === currentRegion)
+                    selectIdx = regions.length
+                    regions.push(region)
+                    regionModel.append({ "name": region, "visualName": region.replace(/_/g, " ") })
+            }
+        }
+        regionLV.positionViewAtIndex(selectIdx, ListView.SnapPosition)
+    }
+
+    function buildCityModel(region) {
+        cityModel.clear()
+        var prefix = region + "/"
+        var selectIdx = 0
+        var count = 0
+        for (var i = 0; i < timezoneList.length; i++) {
+            var tz = timezoneList[i]
+            if (tz.indexOf(prefix) === 0) {
+                var sub = tz.substring(prefix.length).replace(/_/g, " ")
+                cityModel.append({ "fullPath": tz, "visualName": sub })
+                if (tz === config.currentTz)
+                    selectIdx = count
+                count++
+            }
+        }
+        cityLV.positionViewAtIndex(selectIdx, ListView.SnapPosition)
+    }
+
+    DBusInterface {
+        id: timedateDbus
+        bus: DBus.SystemBus
+        service: "org.freedesktop.timedate1"
+        path: "/org/freedesktop/timedate1"
+        iface: "org.freedesktop.timedate1"
+    }
+
+    ListModel {
+        id: regionModel
+        Component.onCompleted: {
+            config.currentTz = timedateDbus.getProperty("Timezone")
+            timedateDbus.call("ListTimezones", undefined, function(m) {
+                config.timezoneList = m
+            })
+        }
+    }
+
+    ListModel { id: cityModel }
+
+    Spinner {
+        id: regionLV
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: title.bottom
+        height: Dims.h(60)
+        model: regionModel
+        visible: config.state == "TIMEZONE_REGION"
+        enabled: visible
+
+        delegate: SpinnerDelegate { text: visualName }
+    }
+
+    Spinner {
+        id: cityLV
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: title.bottom
+        height: Dims.h(60)
+        model: cityModel
+        visible: config.state == "TIMEZONE_CITY"
+        enabled: visible
+
+        delegate: SpinnerDelegate { text: visualName }
+    }
+
     PageHeader {
         id: title
         //% "Language"
@@ -195,19 +286,41 @@ FlatMesh {
                     var hour = hourLV.currentIndex;
                     if(use12H.value)
                         hour += amPmLV.currentIndex*12;
-                    dtSettings.setTime(hour, minuteLV.currentIndex)
+                dtSettings.setTime(hour, minuteLV.currentIndex)
 
-                    //% "Date"
-                    title.text = qsTrId("id-date-page") + localeManager.changesObserver
+                //% "Date"
+                title.text = qsTrId("id-date-page") + localeManager.changesObserver
 
-                    config.state = "DATE";
-                    break;
+                config.state = "DATE";
+                break;
                 case "DATE":
                     var date = new Date();
                     date.setDate(dayLV.currentIndex+1)
                     date.setMonth(monthLV.currentIndex)
                     date.setFullYear(yearLV.currentIndex+2000)
                     dtSettings.setDate(date)
+
+                    //% "Timezone"
+                    title.text = qsTrId("id-timezone-page") + localeManager.changesObserver
+
+                    config.state = "TIMEZONE_REGION";
+                    break;
+                case "TIMEZONE_REGION":
+                    config.pendingRegion = regionModel.get(regionLV.currentIndex).name
+                    buildCityModel(config.pendingRegion)
+
+                    title.text = qsTrId("id-timezone-page") + localeManager.changesObserver
+
+                    config.state = "TIMEZONE_CITY";
+                    break;
+                case "TIMEZONE_CITY":
+                    var tzName = cityModel.get(cityLV.currentIndex).fullPath
+                    timedateDbus.typedCall("SetTimezone", [
+                        { "type": "s", "value": tzName },
+                        { "type": "b", "value": false }
+                    ],
+                    function(result) { console.log("FirstRunConfig: timezone set to", tzName) },
+                    function(error, message) { console.log("FirstRunConfig: SetTimezone failed:", error, message) })
 
                     config.destroy()
                     break;
