@@ -96,7 +96,7 @@
         <translation>امروز رویدادی وجود ندارد</translation>
     </message>
     <message id="id-date-page">
-        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="201"/>
+        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="292"/>
         <source>Date</source>
         <translation>تاریخ</translation>
     </message>
@@ -111,14 +111,20 @@
         <translation>زمان</translation>
     </message>
     <message id="id-language-page">
-        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="171"/>
+        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="262"/>
         <source>Language</source>
         <translation>زبان</translation>
     </message>
     <message id="id-time-page">
-        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="190"/>
+        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="281"/>
         <source>Time</source>
         <translation>زمان</translation>
+    </message>
+    <message id="id-timezone-page">
+        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="304"/>
+        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="312"/>
+        <source>Timezone</source>
+        <translation type="unfinished"></translation>
     </message>
     <message id="id-tutorial-welcome-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="60"/>
@@ -207,27 +213,27 @@
         <translation>لذّت ببرید!</translation>
     </message>
     <message id="id-brightness">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="504"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="499"/>
         <source>Brightness</source>
         <translation>روشنایی</translation>
     </message>
     <message id="id-volume">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="506"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="501"/>
         <source>Volume</source>
         <translation>حجم صدا</translation>
     </message>
     <message id="id-power-off">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="827"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="839"/>
         <source>Powering off in</source>
         <translation>خاموش کردن در</translation>
     </message>
     <message id="id-tap-to-cancel">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="548"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="543"/>
         <source>Tap to cancel</source>
         <translation>زدن برای لغو</translation>
     </message>
     <message id="id-reboot">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="844"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="856"/>
         <source>Rebooting in</source>
         <translation>راه‌اندازی دوباره در</translation>
     </message>
