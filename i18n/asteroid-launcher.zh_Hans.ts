@@ -96,7 +96,7 @@
         <translation>今日暂无日程</translation>
     </message>
     <message id="id-date-page">
-        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="201"/>
+        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="292"/>
         <source>Date</source>
         <translation>日期</translation>
     </message>
@@ -111,14 +111,20 @@
         <translation>时间</translation>
     </message>
     <message id="id-language-page">
-        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="171"/>
+        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="262"/>
         <source>Language</source>
         <translation>语言</translation>
     </message>
     <message id="id-time-page">
-        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="190"/>
+        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="281"/>
         <source>Time</source>
         <translation>时间</translation>
+    </message>
+    <message id="id-timezone-page">
+        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="304"/>
+        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="312"/>
+        <source>Timezone</source>
+        <translation type="unfinished"></translation>
     </message>
     <message id="id-tutorial-welcome-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="60"/>
@@ -207,27 +213,27 @@
         <translation>享受吧!</translation>
     </message>
     <message id="id-brightness">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="504"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="499"/>
         <source>Brightness</source>
         <translation>亮度</translation>
     </message>
     <message id="id-volume">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="506"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="501"/>
         <source>Volume</source>
         <translation>音量</translation>
     </message>
     <message id="id-power-off">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="827"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="839"/>
         <source>Powering off in</source>
         <translation>在…后关机</translation>
     </message>
     <message id="id-tap-to-cancel">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="548"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="543"/>
         <source>Tap to cancel</source>
         <translation>点击取消</translation>
     </message>
     <message id="id-reboot">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="844"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="856"/>
         <source>Rebooting in</source>
         <translation>将在…后重启</translation>
     </message>
