@@ -160,11 +160,6 @@ Item {
         volume: 0.8
     }
 
-    NetworkTechnology {
-        id: wifiStatus
-        path: "/net/connman/technology/wifi"
-    }
-
     states: [
         State {
             name: "batteryBottom"
@@ -610,6 +605,13 @@ Item {
     Component {
         id: wifiToggleComponent
         QuickPanelToggle {
+            id: wifiToggle
+
+            NetworkTechnology {
+                id: wifiStatus
+                path: "/net/connman/technology/wifi"
+            }
+
             icon: wifiStatus.connected ? "ios-wifi" : "ios-wifi-outline"
             onChecked: wifiStatus.powered = true
             onUnchecked: wifiStatus.powered = false
