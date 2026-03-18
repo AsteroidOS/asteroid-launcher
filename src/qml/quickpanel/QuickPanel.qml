@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Timo Könnecke <github.com/eLtMosen>
+ * Copyright (C) 2026 Timo Könnecke <github.com/eLtMosen>
  *               2015 Florent Revest <revestflo@gmail.com>
  *               2014 Aleksi Suomalainen <suomalainen.aleksi@gmail.com>
  * All rights reserved.
@@ -613,6 +613,8 @@ Item {
             icon: wifiStatus.connected ? "ios-wifi" : "ios-wifi-outline"
             onChecked: wifiStatus.powered = true
             onUnchecked: wifiStatus.powered = false
+
+            Component.onCompleted: toggled = wifiStatus.powered
 
             Connections {
                 target: wifiStatus
