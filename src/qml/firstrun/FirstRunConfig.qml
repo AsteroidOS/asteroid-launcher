@@ -186,7 +186,8 @@ FlatMesh {
                 if (region === currentRegion)
                     selectIdx = regions.length
                     regions.push(region)
-                    regionModel.append({ "name": region, "visualName": region.replace(/_/g, " ") })
+                    var isLeaf = timezoneList[i].indexOf("/") < 0
+                    regionModel.append({ "name": region, "visualName": region.replace(/_/g, " "), "isLeaf": isLeaf, "fullPath": timezoneList[i] })
             }
         }
         regionLV.positionViewAtIndex(selectIdx, ListView.SnapPosition)
@@ -306,12 +307,21 @@ FlatMesh {
                     config.state = "TIMEZONE_REGION";
                     break;
                 case "TIMEZONE_REGION":
-                    config.pendingRegion = regionModel.get(regionLV.currentIndex).name
-                    buildCityModel(config.pendingRegion)
-
-                    title.text = qsTrId("id-timezone-page") + localeManager.changesObserver
-
-                    config.state = "TIMEZONE_CITY";
+                    var selectedEntry = regionModel.get(regionLV.currentIndex)
+                    if (selectedEntry.isLeaf) {
+                        timedateDbus.typedCall("SetTimezone", [
+                            { "type": "s", "value": selectedEntry.fullPath },
+                            { "type": "b", "value": false }
+                        ],
+                        function(result) { console.log("FirstRunConfig: timezone set to", selectedEntry.fullPath) },
+                        function(error, message) { console.log("FirstRunConfig: SetTimezone failed:", error, message) })
+                        config.destroy()
+                    } else {
+                        config.pendingRegion = selectedEntry.name
+                        buildCityModel(config.pendingRegion)
+                        title.text = qsTrId("id-timezone-page") + localeManager.changesObserver
+                        config.state = "TIMEZONE_CITY";
+                    }
                     break;
                 case "TIMEZONE_CITY":
                     var tzName = cityModel.get(cityLV.currentIndex).fullPath
