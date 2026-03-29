@@ -54,10 +54,10 @@ FlatMesh {
 
     states: [
         State { name: "LANGUAGE" },
-        State { name: "TIME" },
-        State { name: "DATE" },
         State { name: "TIMEZONE_REGION" },
-        State { name: "TIMEZONE_CITY" }
+        State { name: "TIMEZONE_CITY" },
+        State { name: "TIME" },
+        State { name: "DATE" }
     ]
 
     LanguageModel { id: langSettings }
@@ -269,33 +269,10 @@ FlatMesh {
                     var locale = langSettings.locale(langLV.currentIndex)
                     langSettings.setSystemLocale(locale, LanguageModel.UpdateWithoutReboot)
                     localeManager.selectLocale(locale)
-
-                    //% "Time"
-                    title.text = qsTrId("id-time-page") + localeManager.changesObserver
-
-                    config.state = "TIME";
-                    break;
-                case "TIME":
-                    var hour = hourLV.currentIndex;
-                    if(use12H.value)
-                        hour += amPmLV.currentIndex*12;
-                dtSettings.setTime(hour, minuteLV.currentIndex)
-
-                //% "Date"
-                title.text = qsTrId("id-date-page") + localeManager.changesObserver
-
-                config.state = "DATE";
-                break;
-                case "DATE":
-                    var date = new Date();
-                    date.setDate(dayLV.currentIndex+1)
-                    date.setMonth(monthLV.currentIndex)
-                    date.setFullYear(yearLV.currentIndex+2000)
-                    dtSettings.setDate(date)
-
-                    //% "Timezone"
+                    
+                    //% "Time Zone"
                     title.text = qsTrId("id-timezone-page") + localeManager.changesObserver
-
+                    
                     config.state = "TIMEZONE_REGION";
                     break;
                 case "TIMEZONE_REGION":
@@ -305,9 +282,13 @@ FlatMesh {
                             { "type": "s", "value": selectedEntry.fullPath },
                             { "type": "b", "value": false }
                         ],
-                        function(result) { console.log("FirstRunConfig: timezone set to", selectedEntry.fullPath) },
+                        function(result) { console.log("FirstRunConfig: time zone set to", selectedEntry.fullPath) },
                         function(error, message) { console.log("FirstRunConfig: SetTimezone failed:", error, message) })
-                        config.destroy()
+
+                        //% "Time"
+                        title.text = qsTrId("id-time-page") + localeManager.changesObserver
+
+                        config.state = "TIME";
                     } else {
                         config.pendingRegion = selectedEntry.name
                         buildCityModel(config.pendingRegion)
@@ -321,9 +302,32 @@ FlatMesh {
                         { "type": "s", "value": tzName },
                         { "type": "b", "value": false }
                     ],
-                    function(result) { console.log("FirstRunConfig: timezone set to", tzName) },
+                    function(result) { console.log("FirstRunConfig: time zone set to", tzName) },
                     function(error, message) { console.log("FirstRunConfig: SetTimezone failed:", error, message) })
 
+                    //% "Time"
+                    title.text = qsTrId("id-time-page") + localeManager.changesObserver
+
+                    config.state = "TIME";
+                    break;
+                case "TIME":
+                    var hour = hourLV.currentIndex;
+                    if(use12H.value)
+                        hour += amPmLV.currentIndex*12;
+                    dtSettings.setTime(hour, minuteLV.currentIndex)
+                    
+                    //% "Date"
+                    title.text = qsTrId("id-date-page") + localeManager.changesObserver
+                    
+                    config.state = "DATE";
+                    break;
+                case "DATE":
+                    var date = new Date();
+                    date.setDate(dayLV.currentIndex+1)
+                    date.setMonth(monthLV.currentIndex)
+                    date.setFullYear(yearLV.currentIndex+2000)
+                    dtSettings.setDate(date)
+                    
                     config.destroy()
                     break;
                 default:
