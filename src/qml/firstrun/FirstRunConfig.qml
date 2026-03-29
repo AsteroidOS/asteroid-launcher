@@ -176,21 +176,13 @@ FlatMesh {
     onTimezoneListChanged: buildRegionModel()
 
     function buildRegionModel() {
+        var allowlist = ["Africa", "America", "Antarctica", "Arctic", "Asia", "Atlantic", "Australia", "Europe", "Indian", "Pacific"]
         regionModel.clear()
-        var regions = []
-        var currentRegion = config.currentTz.split("/")[0]
-        var selectIdx = 0
-        for (var i = 0; i < timezoneList.length; i++) {
-            var region = timezoneList[i].split("/")[0]
-            if (regions.indexOf(region) < 0) {
-                if (region === currentRegion)
-                    selectIdx = regions.length
-                    regions.push(region)
-                    var isLeaf = timezoneList[i].indexOf("/") < 0
-                    regionModel.append({ "name": region, "visualName": region.replace(/_/g, " "), "isLeaf": isLeaf, "fullPath": timezoneList[i] })
-            }
+        for (var i = 0; i < allowlist.length; i++) {
+            regionModel.append({ "name": allowlist[i], "visualName": allowlist[i], "isLeaf": false, "fullPath": "" })
         }
-        regionLV.positionViewAtIndex(selectIdx, ListView.SnapPosition)
+        regionModel.append({ "name": "Zulu", "visualName": "Zulu", "isLeaf": true, "fullPath": "Zulu" })
+        regionLV.positionViewAtIndex(5, ListView.SnapPosition)
     }
 
     function buildCityModel(region) {
