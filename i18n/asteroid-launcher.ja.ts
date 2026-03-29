@@ -96,7 +96,7 @@
         <translation>今日のイベントなし</translation>
     </message>
     <message id="id-date-page">
-        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="292"/>
+        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="320"/>
         <source>Date</source>
         <translation>日付</translation>
     </message>
@@ -111,19 +111,21 @@
         <translation>時間</translation>
     </message>
     <message id="id-language-page">
-        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="262"/>
+        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="255"/>
         <source>Language</source>
         <translation>言語</translation>
     </message>
     <message id="id-time-page">
-        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="281"/>
+        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="289"/>
+        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="309"/>
         <source>Time</source>
         <translation>時間</translation>
     </message>
     <message id="id-timezone-page">
-        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="304"/>
-        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="312"/>
-        <source>Timezone</source>
+        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="274"/>
+        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="295"/>
+        <source>Time Zone</source>
+        <oldsource>Timezone</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message id="id-tutorial-welcome-title">
@@ -214,27 +216,29 @@
         <translation>エンジョイ！</translation>
     </message>
     <message id="id-brightness">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="499"/>
-        <source>Brightness</source>
-        <translation>明るさ</translation>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="461"/>
+        <source></source>
+        <oldsource>Brightness</oldsource>
+        <translation type="unfinished">明るさ</translation>
     </message>
     <message id="id-volume">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="501"/>
-        <source>Volume</source>
-        <translation>音量</translation>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="468"/>
+        <source></source>
+        <oldsource>Volume</oldsource>
+        <translation type="unfinished">音量</translation>
     </message>
     <message id="id-power-off">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="839"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="814"/>
         <source>Powering off in</source>
         <translation>後に電源が切れます</translation>
     </message>
     <message id="id-tap-to-cancel">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="543"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="541"/>
         <source>Tap to cancel</source>
         <translation>タップして取り消す</translation>
     </message>
     <message id="id-reboot">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="856"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="829"/>
         <source>Rebooting in</source>
         <translation>後に再起動します</translation>
     </message>

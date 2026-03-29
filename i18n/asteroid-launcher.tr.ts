@@ -96,7 +96,7 @@
         <translation>Bugün etkinlik yok</translation>
     </message>
     <message id="id-date-page">
-        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="292"/>
+        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="320"/>
         <source>Date</source>
         <translation>Tarih</translation>
     </message>
@@ -111,19 +111,21 @@
         <translation>Zaman</translation>
     </message>
     <message id="id-language-page">
-        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="262"/>
+        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="255"/>
         <source>Language</source>
         <translation>Dil</translation>
     </message>
     <message id="id-time-page">
-        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="281"/>
+        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="289"/>
+        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="309"/>
         <source>Time</source>
         <translation>Zaman</translation>
     </message>
     <message id="id-timezone-page">
-        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="304"/>
-        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="312"/>
-        <source>Timezone</source>
+        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="274"/>
+        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="295"/>
+        <source>Time Zone</source>
+        <oldsource>Timezone</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message id="id-tutorial-welcome-title">
@@ -213,27 +215,29 @@
         <translation>Tadını çıkarın!</translation>
     </message>
     <message id="id-brightness">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="499"/>
-        <source>Brightness</source>
-        <translation>Parlaklık</translation>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="461"/>
+        <source></source>
+        <oldsource>Brightness</oldsource>
+        <translation type="unfinished">Parlaklık</translation>
     </message>
     <message id="id-volume">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="501"/>
-        <source>Volume</source>
-        <translation>Ses</translation>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="468"/>
+        <source></source>
+        <oldsource>Volume</oldsource>
+        <translation type="unfinished">Ses</translation>
     </message>
     <message id="id-power-off">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="839"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="814"/>
         <source>Powering off in</source>
         <translation>Kapatılıyor:</translation>
     </message>
     <message id="id-tap-to-cancel">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="543"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="541"/>
         <source>Tap to cancel</source>
         <translation>İptal için dokun</translation>
     </message>
     <message id="id-reboot">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="856"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="829"/>
         <source>Rebooting in</source>
         <translation>Yeniden başlatılıyor:</translation>
     </message>
