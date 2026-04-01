@@ -169,7 +169,7 @@ Item {
 
     WallClock {
         id: wallClock
-        enabled: true
+        enabled: desktop.visible
         updateFrequency: WallClock.Second
     }
 
