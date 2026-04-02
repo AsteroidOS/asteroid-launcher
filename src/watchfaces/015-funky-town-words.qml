@@ -1,36 +1,10 @@
-/*
- * Copyright (C) 2023 - Timo Könnecke <github.com/eLtMosen>
- *               2022 - Darrel Griët <dgriet@gmail.com>
- *               2022 - Ed Beroset <github.com/beroset>
- *               2016 - Sylvia van Os <iamsylvie@openmailbox.org>
- *               2015 - Florent Revest <revestflo@gmail.com>
- *               2014 - Aleksi Suomalainen <suomalainen.aleksi@gmail.com>
- * All rights reserved.
- *
- * You may use this file under the terms of BSD license as follows:
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *     * Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the author nor the
- *       names of its contributors may be used to endorse or promote products
- *       derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+// SPDX-FileCopyrightText: 2023 Timo Könnecke <github.com/eLtMosen>
+// SPDX-FileCopyrightText: 2022 Darrel Griët <dgriet@gmail.com>
+// SPDX-FileCopyrightText: 2022 Ed Beroset <github.com/beroset>
+// SPDX-FileCopyrightText: 2016 Sylvia van Os <iamsylvie@openmailbox.org>
+// SPDX-FileCopyrightText: 2015 Florent Revest <revestflo@gmail.com>
+// SPDX-FileCopyrightText: 2014 Aleksi Suomalainen <suomalainen.aleksi@gmail.com>
+// SPDX-License-Identifier: BSD-3-Clause
 
 import QtQuick 2.15
 import QtQuick.Shapes 1.15
@@ -46,30 +20,45 @@ Item {
 
     Item {
         anchors.centerIn: parent
-
         height: parent.width > parent.height ? parent.height : parent.width
         width: height
 
-        Image {
-            anchors.centerIn: parent
-            source: imgPath +
-                    wallClock.time.toLocaleString(Qt.locale(), "hh am").slice(0, 2) +
-                    (nightstandMode.active || displayAmbient ? "-bw.svg" : ".svg")
-            sourceSize.width: parent.width
-            sourceSize.height: parent.height
-            width: parent.width
-            height: parent.height
-        }
+        // OpacityMask clips square SVGs to circle on round screens — layer disabled on square screens for zero cost
+        Item {
+            id: imageWrapper
 
-        Image {
-            anchors.centerIn: parent
-            source: imgPath +
-                    wallClock.time.toLocaleString(Qt.locale("en_EN"), "ap").toLowerCase().slice(0, 2) + ".svg"
-            visible: use12H.value
-            sourceSize.width: parent.width
-            sourceSize.height: parent.height
-            width: parent.width
-            height: parent.height
+            anchors.fill: parent
+            layer.enabled: DeviceSpecs.hasRoundScreen
+            layer.effect: OpacityMask {
+                maskSource: Rectangle {
+                    width: imageWrapper.width
+                    height: imageWrapper.height
+                    radius: width / 2
+                    visible: false
+                }
+            }
+
+            Image {
+                anchors.centerIn: parent
+                width: parent.width
+                height: parent.height
+                source: imgPath +
+                        wallClock.time.toLocaleString(Qt.locale(), "hh am").slice(0, 2) +
+                        (nightstandMode.active || displayAmbient ? "-bw.svg" : ".svg")
+                sourceSize.width: parent.width
+                sourceSize.height: parent.height
+            }
+
+            Image {
+                anchors.centerIn: parent
+                width: parent.width
+                height: parent.height
+                visible: use12H.value
+                source: imgPath +
+                        wallClock.time.toLocaleString(Qt.locale("en_EN"), "ap").toLowerCase().slice(0, 2) + ".svg"
+                sourceSize.width: parent.width
+                sourceSize.height: parent.height
+            }
         }
 
         Text {
@@ -79,14 +68,14 @@ Item {
                 bottom: parent.bottom
                 bottomMargin: parent.height * .15
                 horizontalCenter: parent.horizontalCenter
-                horizontalCenterOffset: parent.width*.2
+                horizontalCenterOffset: parent.width * .2
             }
+            color: nightstandMode.active || displayAmbient ? "#000" : "#fff"
             font {
                 pixelSize: parent.height * .22
                 family: "Source Sans Pro"
                 styleName: "Light"
             }
-            color: nightstandMode.active || displayAmbient ? "#000" : "#fff"
             text: wallClock.time.toLocaleString(Qt.locale(), "mm")
 
             Behavior on text {
@@ -107,27 +96,20 @@ Item {
             property int batteryPercentChanged: batteryChargePercentage.percent
 
             anchors.fill: parent
+            layer.enabled: true
+            layer.samples: 4
             visible: nightstandMode.active
-            layer {
-                enabled: true
-                samples: 4
-                smooth: true
-                textureSize: Qt.size(nightstandMode.width * 2, nightstandMode.height * 2)
-            }
 
             Shape {
                 id: chargeArc
 
                 property real angle: batteryChargePercentage.percent * 360 / 100
-                // radius of arc is scalefactor * height or width
                 property real arcStrokeWidth: .016
                 property real scalefactor: .45 - (arcStrokeWidth / 2)
-                property real chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
-                readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
+                property int chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
+                readonly property var colorArray: ["red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
                 anchors.fill: parent
-                smooth: true
-                antialiasing: true
 
                 ShapePath {
                     fillColor: "transparent"
@@ -136,7 +118,7 @@ Item {
                     capStyle: ShapePath.RoundCap
                     joinStyle: ShapePath.MiterJoin
                     startX: chargeArc.width / 2
-                    startY: chargeArc.height * ( .5 - chargeArc.scalefactor)
+                    startY: chargeArc.height * (.5 - chargeArc.scalefactor)
 
                     PathAngleArc {
                         centerX: chargeArc.width / 2
@@ -157,14 +139,13 @@ Item {
                     centerIn: parent
                     verticalCenterOffset: -parent.width * .28
                 }
-
+                visible: nightstandMode.active
+                color: chargeArc.colorArray[chargeArc.chargecolor]
                 font {
                     pixelSize: parent.width * .13
                     family: "Source Sans Pro"
                     styleName: "Light"
                 }
-                visible: nightstandMode.active
-                color: chargeArc.colorArray[chargeArc.chargecolor]
                 text: batteryChargePercentage.percent
             }
         }
@@ -173,19 +154,11 @@ Item {
             id: batteryChargePercentage
         }
 
-        MceBatteryState {
-            id: batteryChargeState
-        }
-
-        MceCableState {
-            id: mceCableState
-        }
-
         Component.onCompleted: {
-            burnInProtectionManager.leftOffset = Qt.binding(function() { return width * nightstandMode.active ? .05 : .4})
-            burnInProtectionManager.rightOffset = Qt.binding(function() { return width * .05})
-            burnInProtectionManager.topOffset = Qt.binding(function() { return height * nightstandMode.active ? .05 : .4})
-            burnInProtectionManager.bottomOffset = Qt.binding(function() { return height * .05})
+            burnInProtectionManager.leftOffset = Qt.binding(function() { return width * (nightstandMode.active ? .05 : .4) })
+            burnInProtectionManager.rightOffset = Qt.binding(function() { return width * .05 })
+            burnInProtectionManager.topOffset = Qt.binding(function() { return height * (nightstandMode.active ? .05 : .4) })
+            burnInProtectionManager.bottomOffset = Qt.binding(function() { return height * .05 })
         }
     }
 }
