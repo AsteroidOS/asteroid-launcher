@@ -1,28 +1,12 @@
-/*
- * Copyright (C) 2022 - Timo Könnecke <github.com/eLtMosen>
- *               2022 - Darrel Griët <dgriet@gmail.com>
- *               2022 - Ed Beroset <github.com/beroset>
- *               2016 - Sylvia van Os <iamsylvie@openmailbox.org>
- *               2015 - Florent Revest <revestflo@gmail.com>
- *               2012 - Vasiliy Sorokin <sorokin.vasiliy@gmail.com>
- *                      Aleksey Mikhailichenko <a.v.mich@gmail.com>
- *                      Arto Jalkanen <ajalkane@gmail.com>
- *
- * All rights reserved.
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 2.1 of the
- * License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
+// SPDX-FileCopyrightText: 2022 Timo Könnecke <github.com/eLtMosen>
+// SPDX-FileCopyrightText: 2022 Darrel Griët <dgriet@gmail.com>
+// SPDX-FileCopyrightText: 2022 Ed Beroset <github.com/beroset>
+// SPDX-FileCopyrightText: 2016 Sylvia van Os <iamsylvie@openmailbox.org>
+// SPDX-FileCopyrightText: 2015 Florent Revest <revestflo@gmail.com>
+// SPDX-FileCopyrightText: 2012 Vasiliy Sorokin <sorokin.vasiliy@gmail.com>
+// SPDX-FileCopyrightText: 2012 Aleksey Mikhailichenko <a.v.mich@gmail.com>
+// SPDX-FileCopyrightText: 2012 Arto Jalkanen <ajalkane@gmail.com>
+// SPDX-License-Identifier: LGPL-2.1-or-later
 
 import QtQuick 2.15
 import QtGraphicalEffects 1.15
@@ -49,14 +33,9 @@ Item {
             id: batterySegments
 
             anchors.fill: parent
+            layer.enabled: true
+            layer.samples: 4
             visible: !displayAmbient || nightstand
-
-            layer {
-                enabled: true
-                samples: 4
-                smooth: true
-                textureSize: Qt.size(root.width * 2, root.height * 2)
-            }
 
             Repeater {
                 id: segmentedArc
@@ -82,7 +61,7 @@ Item {
                         capStyle: ShapePath.RoundCap
                         joinStyle: ShapePath.MiterJoin
                         startX: parent.width / 2
-                        startY: parent.height * ( .5 - segmentedArc.scalefactor)
+                        startY: parent.height * (.5 - segmentedArc.scalefactor)
 
                         PathAngleArc {
                             centerX: parent.width / 2
@@ -104,137 +83,82 @@ Item {
 
             anchors.fill: root
 
+            // second hand has no layer — continuous 60fps rotation would force constant recomposite
             Image {
                 id: secondSVG
 
+                anchors.fill: handBox
                 visible: !displayAmbient
                 source: imgPath + "second.svg"
-                anchors.fill: handBox
 
                 transform: Rotation {
+                    id: secondRot
                     origin.x: handBox.width / 2
                     origin.y: handBox.height / 2
-                    angle: (wallClock.time.getSeconds() * 6)
-
-                    Behavior on angle {
-                        enabled: !displayAmbient
-
-                        RotationAnimation {
-                            duration: 1000
-                            direction: RotationAnimation.Clockwise
-                        }
-                    }
-                }
-
-                layer {
-                    enabled: true
-                    effect: DropShadow {
-                        transparentBorder: true
-                        horizontalOffset: 0
-                        verticalOffset: 0
-                        radius: 10.0
-                        samples: 21
-                        color: Qt.rgba(0, 0, 0, .8)
-                    }
                 }
             }
 
             Text {
                 id: secondDisplay
 
-                property real rotM: ((wallClock.time.getSeconds() - 15) / 60)
-                property real centerX: parent.width / 2 - width / 1.9
-                property real centerY: parent.height / 2 - height / 2.06
-
                 visible: !displayAmbient
-
-                font{
+                color: "white"
+                font {
                     pixelSize: parent.height * .082
                     family: "Roboto Flex"
                     letterSpacing: -parent.height * .005
-                }
-                color: "white"
-                x: centerX + Math.cos(rotM * 2 * Math.PI) * parent.width * .366
-                y: centerY + Math.sin(rotM * 2 * Math.PI) * parent.height * .366
-                text: wallClock.time.toLocaleString(Qt.locale(), "ss")
-
-                Behavior on x {
-                    enabled: !displayAmbient
-
-                    NumberAnimation {
-                        duration: 1000
-                    }
-                }
-
-                Behavior on y {
-                    enabled: !displayAmbient
-
-                    NumberAnimation {
-                        duration: 1000
-                    }
                 }
             }
 
             Image {
                 id: minuteSVG
 
-                source: imgPath + "minute.svg"
                 anchors.fill: handBox
+                source: imgPath + "minute.svg"
 
                 transform: Rotation {
+                    id: minuteRot
                     origin.x: handBox.width / 2
                     origin.y: handBox.height / 2
-                    angle: (wallClock.time.getMinutes() * 6) + (wallClock.time.getSeconds() * 6 / 60)
                 }
 
-                layer {
-                    enabled: true
-                    effect: DropShadow {
-                        transparentBorder: true
-                        horizontalOffset: 0
-                        verticalOffset: 0
-                        radius: 15.0
-                        samples: 31
-                        color: Qt.rgba(0, 0, 0, .8)
-                    }
+                layer.enabled: true
+                layer.effect: DropShadow {
+                    transparentBorder: true
+                    horizontalOffset: 0
+                    verticalOffset: 0
+                    radius: 15.0
+                    samples: 9
+                    color: Qt.rgba(0, 0, 0, .8)
                 }
             }
 
             Text {
                 id: minuteDisplay
 
-                property real rotM: ((wallClock.time.getMinutes() - 15 + (wallClock.time.getSeconds() / 60)) / 60)
-                property real centerX: parent.width / 2 - width / 1.92
-                property real centerY: parent.height / 2 - height / 2.04
-
-                font{
+                color: "black"
+                font {
                     pixelSize: parent.height * .12
                     family: "Roboto Flex"
                     styleName: "Medium"
                     letterSpacing: -parent.height * .006
                 }
-                color: "black"
-                x: centerX + Math.cos(rotM * 2 * Math.PI) * parent.height * .214
-                y: centerY + Math.sin(rotM * 2 * Math.PI) * parent.width * .214
-                text: wallClock.time.toLocaleString(Qt.locale(), "mm")
             }
 
             Image {
                 id: hourSVG
 
-                source:imgPath + "hour.svg"
                 anchors.fill: parent
+                source: imgPath + "hour.svg"
 
-                layer {
-                    enabled: true
-                    effect: DropShadow {
-                        transparentBorder: true
-                        horizontalOffset: 0
-                        verticalOffset: 0
-                        radius: 20.0
-                        samples: 41
-                        color: Qt.rgba(0, 0, 0, .8)
-                    }
+                layer.enabled: true
+                layer.effect: DropShadow {
+                    transparentBorder: true
+                    horizontalOffset: 0
+                    verticalOffset: 0
+                    radius: 20.0
+                    samples: 9
+                    color: Qt.rgba(0, 0, 0, .8)
                 }
             }
         }
@@ -247,17 +171,57 @@ Item {
                 verticalCenterOffset: parent.height * .004
                 horizontalCenterOffset: -parent.height * .0012
             }
+            color: "black"
             font {
                 pixelSize: parent.height * .18
                 family: "Roboto Flex"
                 styleName: "Medium"
                 letterSpacing: -parent.height * .005
             }
-            color: "black"
-            text: if (use12H.value) {
-                      wallClock.time.toLocaleString(Qt.locale(), "hh ap").slice(0, 2) }
-                  else
-                      wallClock.time.toLocaleString(Qt.locale(), "HH")
+            text: use12H.value ? wallClock.time.toLocaleString(Qt.locale(), "hh ap").slice(0, 2) :
+                                 wallClock.time.toLocaleString(Qt.locale(), "HH")
+        }
+
+        // 16ms Timer drives both second hand rotation and orbiting secondDisplay position
+        // using new Date() for millisecond precision — eliminates Behavior catch-up on return
+        Timer {
+            interval: 16
+            repeat: true
+            running: !displayAmbient && visible
+
+            onTriggered: {
+                var now = new Date()
+                var secMs = now.getSeconds() * 1000 + now.getMilliseconds()
+                secondRot.angle = secMs * 6 / 1000
+                var rotS = (secMs / 1000 - 15) / 60
+                secondDisplay.x = root.width / 2 - secondDisplay.width / 1.9 + Math.cos(rotS * 2 * Math.PI) * root.width * .366
+                secondDisplay.y = root.height / 2 - secondDisplay.height / 2.06 + Math.sin(rotS * 2 * Math.PI) * root.height * .366
+            }
+        }
+
+        Connections {
+            target: wallClock
+            function onTimeChanged() {
+                var min = wallClock.time.getMinutes()
+                var sec = wallClock.time.getSeconds()
+                minuteRot.angle = min * 6 + sec * 6 / 60
+                var rotM = (min - 15 + sec / 60) / 60
+                minuteDisplay.x = root.width / 2 - minuteDisplay.width / 1.92 + Math.cos(rotM * 2 * Math.PI) * root.height * .214
+                minuteDisplay.y = root.height / 2 - minuteDisplay.height / 2.04 + Math.sin(rotM * 2 * Math.PI) * root.width * .214
+                minuteDisplay.text = wallClock.time.toLocaleString(Qt.locale(), "mm")
+                secondDisplay.text = wallClock.time.toLocaleString(Qt.locale(), "ss")
+            }
+        }
+
+        Component.onCompleted: {
+            var min = wallClock.time.getMinutes()
+            var sec = wallClock.time.getSeconds()
+            minuteRot.angle = min * 6 + sec * 6 / 60
+            var rotM = (min - 15 + sec / 60) / 60
+            minuteDisplay.x = root.width / 2 - minuteDisplay.width / 1.92 + Math.cos(rotM * 2 * Math.PI) * root.height * .214
+            minuteDisplay.y = root.height / 2 - minuteDisplay.height / 2.04 + Math.sin(rotM * 2 * Math.PI) * root.width * .214
+            minuteDisplay.text = wallClock.time.toLocaleString(Qt.locale(), "mm")
+            secondDisplay.text = wallClock.time.toLocaleString(Qt.locale(), "ss")
         }
     }
 }
