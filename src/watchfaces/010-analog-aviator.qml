@@ -1,21 +1,5 @@
-/*
- * Copyright (C) 2023 - Timo Könnecke <github.com/eLtMosen>
- *
- * All rights reserved.
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 2.1 of the
- * License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
+// SPDX-FileCopyrightText: 2023 Timo Könnecke <github.com/eLtMosen>
+// SPDX-License-Identifier: LGPL-2.1-or-later
 
 import QtQuick 2.15
 import QtQuick.Shapes 1.15
@@ -39,7 +23,6 @@ Item {
         id: root
 
         anchors.centerIn: parent
-
         height: parent.width > parent.height ? parent.height : parent.width
         width: height
 
@@ -49,13 +32,8 @@ Item {
             readonly property bool active: nightstand
 
             anchors.fill: parent
-
-            layer {
-                enabled: true
-                samples: 4
-                smooth: true
-                textureSize: Qt.size(nightstandMode.width * 2, nightstandMode.height * 2)
-            }
+            layer.enabled: true
+            layer.samples: 4
             visible: nightstandMode.active
 
             Repeater {
@@ -69,15 +47,15 @@ Item {
                 property bool clockwise: true
                 property real arcStrokeWidth: .015
                 property real scalefactor: .49 - (arcStrokeWidth / 2)
-                property real chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
-                readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
+                property int chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
+                readonly property var colorArray: ["red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
                 model: segmentAmount
 
                 Shape {
                     id: segment
 
-                    visible: index === 0 ? true : (index/segmentedArc.segmentAmount) < segmentedArc.inputValue
+                    visible: index === 0 ? true : (index / segmentedArc.segmentAmount) < segmentedArc.inputValue
 
                     ShapePath {
                         fillColor: "transparent"
@@ -86,7 +64,7 @@ Item {
                         capStyle: ShapePath.RoundCap
                         joinStyle: ShapePath.MiterJoin
                         startX: parent.width / 2
-                        startY: parent.height * ( .5 - segmentedArc.scalefactor)
+                        startY: parent.height * (.5 - segmentedArc.scalefactor)
 
                         PathAngleArc {
                             centerX: parent.width / 2
@@ -114,7 +92,7 @@ Item {
                 horizontalOffset: 2
                 verticalOffset: 2
                 radius: 12.0
-                samples: 17
+                samples: 9
                 color: "#bb000000"
             }
 
@@ -125,14 +103,15 @@ Item {
                     centerIn: parent
                     verticalCenterOffset: -parent.height * 0.324
                 }
-                source: "../watchfaces-img/asteroid-logo-white.svg"
                 antialiasing: true
-
+                opacity: 1
                 width: parent.width / 5.5
                 height: parent.height / 5.5
-                opacity: 1
+                source: "../watchfaces-img/asteroid-logo-white.svg"
                 state: currentColor
-                states: State { name: "black"
+
+                states: State {
+                    name: "black"
                     PropertyChanges {
                         target: asteroidLogo
                         source: "../watchfaces-img/asteroid-logo-black.svg"
@@ -148,20 +127,22 @@ Item {
                     verticalCenterOffset: -parent.height * 0.146
                 }
                 visible: !displayAmbient
+                color: "#bbffffff"
+                horizontalAlignment: Text.AlignHCenter
                 font {
                     pixelSize: parent.height * 0.048
                     family: "Raleway"
                 }
-                color: "#bbffffff"
-                horizontalAlignment: Text.AlignHCenter
                 text: "<b>AsteroidOS</b><br>Free Your Wrist"
                 state: currentColor
-                states: State { name: "black";
+
+                states: State {
+                    name: "black"
                     PropertyChanges { target: asteroidSlogan; color: "black" }
                 }
                 transitions: Transition {
                     from: ""; to: "black"; reversible: true
-                        ColorAnimation { duration: 300 }
+                    ColorAnimation { duration: 300 }
                 }
             }
 
@@ -170,52 +151,53 @@ Item {
 
                 anchors {
                     centerIn: parent
-                    verticalCenterOffset: parent.height*0.14
+                    verticalCenterOffset: parent.height * 0.14
                 }
                 visible: !displayAmbient
+                color: "#bbffffff"
+                horizontalAlignment: Text.AlignHCenter
                 font {
                     pixelSize: parent.height * 0.052
                     family: "Raleway"
                 }
-                color: "#bbffffff"
-                horizontalAlignment: Text.AlignHCenter
                 text: wallClock.time.toLocaleString(Qt.locale(), "<b>dd</b> MMMM<br>yyyy")
                 state: currentColor
-                states: State { name: "black";
+
+                states: State {
+                    name: "black"
                     PropertyChanges { target: dateDisplay; color: "black" }
                 }
                 transitions: Transition {
                     from: ""; to: "black"; reversible: true
-                        ColorAnimation { duration: 300 }
+                    ColorAnimation { duration: 300 }
                 }
             }
 
             Text {
                 id: apDisplay
 
-                property int day: wallClock.time.toLocaleString(Qt.locale(), "d")
-                property int month: wallClock.time.toLocaleString(Qt.locale(), "M")
-
                 anchors {
                     centerIn: parent
                     verticalCenterOffset: parent.height / 3.8
-                    horizontalCenterOffset: parent.width/3.8
+                    horizontalCenterOffset: parent.width / 3.8
                 }
+                color: "white"
+                horizontalAlignment: Text.AlignHCenter
                 font {
                     pixelSize: parent.height * 0.065
                     family: "PTSans"
                     styleName: "Regular"
                 }
-                color: "white"
-                horizontalAlignment: Text.AlignHCenter
                 text: wallClock.time.toLocaleString(Qt.locale(), "ap").toUpperCase()
                 state: currentColor
-                states: State { name: "black";
+
+                states: State {
+                    name: "black"
                     PropertyChanges { target: apDisplay; color: "black" }
                 }
                 transitions: Transition {
                     from: ""; to: "black"; reversible: true
-                        ColorAnimation { duration: 300 }
+                    ColorAnimation { duration: 300 }
                 }
             }
 
@@ -227,115 +209,111 @@ Item {
                     verticalCenterOffset: parent.height / 3.8
                     horizontalCenterOffset: -parent.width / 3.8
                 }
+                color: "white"
+                horizontalAlignment: Text.AlignHCenter
                 font {
-                    pixelSize: parent.height*0.065
+                    pixelSize: parent.height * 0.065
                     family: "PTSans"
                     styleName: "Regular"
                 }
-                color: "white"
-                horizontalAlignment: Text.AlignHCenter
                 text: wallClock.time.toLocaleString(Qt.locale(), "ddd").slice(0, 2).toUpperCase()
                 state: currentColor
-                states: State { name: "black";
+
+                states: State {
+                    name: "black"
                     PropertyChanges { target: dowDisplay; color: "black" }
                 }
                 transitions: Transition {
                     from: ""; to: "black"; reversible: true
-                        ColorAnimation { duration: 300 }
+                    ColorAnimation { duration: 300 }
                 }
             }
 
             Repeater {
                 model: 60
-
                 Rectangle {
-                    id: minuteStrokes
-
-                    property real rotM: ((index) - 15) / 60
+                    property real rotM: (index - 15) / 60
                     property real centerX: parent.width / 2 - width / 2
                     property real centerY: parent.height / 2 - height / 2
 
                     visible: index % 5
-                    antialiasing : true
-                    x: centerX+Math.cos(rotM * 2 * Math.PI) * parent.width * 0.48
-                    y: centerY+Math.sin(rotM * 2 * Math.PI) * parent.width * 0.48
+                    antialiasing: true
+                    x: centerX + Math.cos(rotM * 2 * Math.PI) * parent.width * 0.48
+                    y: centerY + Math.sin(rotM * 2 * Math.PI) * parent.width * 0.48
                     color: "#bbffffff"
                     width: parent.width * 0.0055
                     height: parent.height * 0.04
-                    transform: Rotation { origin.x: width / 2; origin.y: height / 2; angle: (index) * 6}
+
+                    transform: Rotation { origin.x: width / 2; origin.y: height / 2; angle: index * 6 }
                     state: currentColor
-                    states: State { name: "black";
-                        PropertyChanges { target: minuteStrokes; color: "black" }
+
+                    states: State {
+                        name: "black"
+                        PropertyChanges { target: parent; color: "black" }
                     }
                     transitions: Transition {
                         from: ""; to: "black"; reversible: true
-                            ColorAnimation { duration: 300 }
+                        ColorAnimation { duration: 300 }
                     }
                 }
             }
 
             Repeater {
                 model: 4
-
                 Text {
-                    id: hourNumbers
-
-                    property real rotM: ((index * 15 ) - 15) / 60
+                    property real rotM: ((index * 15) - 15) / 60
                     property real centerX: parent.width / 2 - width / 2
-                    property real centerY: parent.height / 2 - height / 2.0
+                    property real centerY: parent.height / 2 - height / 2
 
+                    x: centerX + Math.cos(rotM * 2 * Math.PI) * parent.width * 0.35
+                    y: centerY + Math.sin(rotM * 2 * Math.PI) * parent.width * 0.35
+                    color: "#ccffffff"
                     font {
                         pixelSize: parent.height * 0.21
                         family: "Signika"
                     }
-                    x: centerX+Math.cos(rotM * 2 * Math.PI) * parent.width * 0.35
-                    y: centerY+Math.sin(rotM * 2 * Math.PI) * parent.width * 0.35
-                    color: "#ccffffff"
-                    text: if (index === 0)
-                              ""
-                          else
-                              index * 3
+                    text: index === 0 ? "" : index * 3
                     state: currentColor
-                    states: State { name: "black";
-                        PropertyChanges { target: hourNumbers; color: "black" }
+
+                    states: State {
+                        name: "black"
+                        PropertyChanges { target: parent; color: "black" }
                     }
                     transitions: Transition {
                         from: ""; to: "black"; reversible: true
-                            ColorAnimation { duration: 300 }
+                        ColorAnimation { duration: 300 }
                     }
                 }
             }
 
             Repeater {
                 model: 12
-
                 Rectangle {
-                    id: hourStrokes
-
-                    property real rotM: ((index * 5 ) - 15) / 60
+                    property real rotM: ((index * 5) - 15) / 60
                     property real centerX: parent.width / 2 - width / 2
                     property real centerY: parent.height / 2 - height / 2
 
                     width: parent.width * 0.020
                     height: [0, 3, 6, 9].includes(index) ? parent.height * 0.04 : parent.height * 0.13
-                    x: if ([0, 3, 6, 9].includes(index))
-                           centerX + Math.cos(rotM * 2 * Math.PI) * parent.width * 0.48
-                       else
-                           centerX + Math.cos(rotM * 2 * Math.PI) * parent.width * 0.44
-                    y: if ([0, 3, 6, 9].includes(index))
-                           centerY + Math.sin(rotM * 2 * Math.PI) * parent.width * 0.48
-                       else
-                           centerY + Math.sin(rotM * 2 * Math.PI) * parent.width * 0.44
-                    antialiasing : true
+                    x: [0, 3, 6, 9].includes(index) ?
+                       centerX + Math.cos(rotM * 2 * Math.PI) * parent.width * 0.48 :
+                       centerX + Math.cos(rotM * 2 * Math.PI) * parent.width * 0.44
+                    y: [0, 3, 6, 9].includes(index) ?
+                       centerY + Math.sin(rotM * 2 * Math.PI) * parent.width * 0.48 :
+                       centerY + Math.sin(rotM * 2 * Math.PI) * parent.width * 0.44
+                    antialiasing: true
                     color: "#ccffffff"
-                    transform: Rotation { origin.x: width / 2; origin.y: height / 2; angle: (index * 5) * 6}
+
+                    transform: Rotation { origin.x: width / 2; origin.y: height / 2; angle: index * 5 * 6 }
                     state: currentColor
-                    states: State { name: "black";
-                        PropertyChanges { target: hourStrokes; color: "black" }
+
+                    states: State {
+                        name: "black"
+                        PropertyChanges { target: parent; color: "black" }
                     }
                     transitions: Transition {
                         from: ""; to: "black"; reversible: true
-                            ColorAnimation { duration: 300 }
+                        ColorAnimation { duration: 300 }
                     }
                 }
             }
@@ -345,28 +323,28 @@ Item {
             id: hourSVG
 
             anchors.fill: root
+            source: imgPath + "hour-ambient.svg"
 
-            source: !displayAmbient ? imgPath + "hour-ambient.svg" : imgPath + "hour-ambient.svg"
             transform: Rotation {
-                origin.x: root.width / 2;
-                origin.y: root.height / 2;
-                angle: (wallClock.time.getHours()*30) + (wallClock.time.getMinutes() * 0.5)
+                id: hourRot
+                origin.x: root.width / 2
+                origin.y: root.height / 2
             }
+
             layer.enabled: true
             layer.effect: DropShadow {
                 transparentBorder: true
                 horizontalOffset: 4
                 verticalOffset: 4
                 radius: 6.0
-                samples: 17
+                samples: 9
                 color: "#22000000"
             }
             state: currentColor
-            states: State { name: "black"
-                PropertyChanges {
-                    target: hourSVG
-                    source: imgPath + "hour.svg"
-                }
+
+            states: State {
+                name: "black"
+                PropertyChanges { target: hourSVG; source: imgPath + "hour.svg" }
             }
         }
 
@@ -374,87 +352,112 @@ Item {
             id: minuteSVG
 
             anchors.fill: root
+            source: imgPath + "minute-ambient.svg"
 
-            source: !displayAmbient ? imgPath + "minute-ambient.svg" : imgPath + "minute-ambient.svg"
             transform: Rotation {
-                origin.x: root.width / 2;
-                origin.y: root.height / 2;
-                angle: (wallClock.time.getMinutes()*6)+(wallClock.time.getSeconds() * 6 / 60)
+                id: minuteRot
+                origin.x: root.width / 2
+                origin.y: root.height / 2
             }
+
             layer.enabled: true
             layer.effect: DropShadow {
                 transparentBorder: true
                 horizontalOffset: 6
                 verticalOffset: 6
                 radius: 8.0
-                samples: 17
+                samples: 9
                 color: "#22000000"
             }
             state: currentColor
-            states: State { name: "black"
-                PropertyChanges {
-                    target: minuteSVG
-                    source: imgPath + "minute.svg"
-                }
+
+            states: State {
+                name: "black"
+                PropertyChanges { target: minuteSVG; source: imgPath + "minute.svg" }
             }
         }
 
+        // second hand has no layer — 16ms Timer rotation would force constant 60fps recomposite
         Image {
             id: secondSVG
 
             property int toggle: 1
 
             anchors.fill: root
-
             visible: !displayAmbient
             source: imgPath + "second-ambient.svg"
+
             transform: Rotation {
-                origin.x: root.width / 2;
-                origin.y: root.height / 2;
-                angle: (wallClock.time.getSeconds() * 6)
+                id: secondRot
+                origin.x: root.width / 2
+                origin.y: root.height / 2
             }
-            layer.enabled: true
-            layer.effect: DropShadow {
-                transparentBorder: true
-                horizontalOffset: 8
-                verticalOffset: 8
-                radius: 9.0
-                samples: 12
-                color: "#22000000"
-            }
+
             MouseArea {
                 anchors.fill: parent
                 onDoubleClicked: {
-                   if (secondSVG.toggle === 1) {
+                    if (secondSVG.toggle === 1) {
                         currentColor = "black"
                         secondSVG.toggle = 0
-                   } else {
+                    } else {
                         currentColor = ""
                         secondSVG.toggle = 1
                     }
                 }
             }
             state: currentColor
-            states: State { name: "black"
-                PropertyChanges {
-                    target: secondSVG
-                    source: imgPath + "second.svg"
+
+            states: State {
+                name: "black"
+                PropertyChanges { target: secondSVG; source: imgPath + "second.svg" }
+            }
+        }
+
+        Timer {
+            interval: 16
+            repeat: true
+            running: !displayAmbient && visible
+
+            onTriggered: {
+                var now = new Date()
+                secondRot.angle = (now.getSeconds() * 1000 + now.getMilliseconds()) * 6 / 1000
+            }
+        }
+
+        Connections {
+            target: wallClock
+            function onTimeChanged() {
+                var h = wallClock.time.getHours()
+                var min = wallClock.time.getMinutes()
+                var sec = wallClock.time.getSeconds()
+                hourRot.angle = h * 30 + min * 0.5
+                minuteRot.angle = min * 6 + sec * 6 / 60
+            }
+        }
+
+        Connections {
+            target: compositor
+            function onDisplayAmbientEntered() {
+                if (currentColor === "black") {
+                    currentColor = ""
+                    userColor = "black"
+                } else {
+                    userColor = ""
+                }
+            }
+            function onDisplayAmbientLeft() {
+                if (userColor === "black") {
+                    currentColor = "black"
                 }
             }
         }
-    }
 
-    Connections {
-        target: compositor
-        onDisplayAmbientEntered: if (currentColor == "black") {
-                                     currentColor = ""
-                                     userColor = "black"
-                                 }
-                                 else
-                                     userColor = ""
-
-        onDisplayAmbientLeft:    if (userColor == "black") {
-                                     currentColor = "black"
-                                 }
+        Component.onCompleted: {
+            var h = wallClock.time.getHours()
+            var min = wallClock.time.getMinutes()
+            var sec = wallClock.time.getSeconds()
+            hourRot.angle = h * 30 + min * 0.5
+            minuteRot.angle = min * 6 + sec * 6 / 60
+        }
     }
 }
