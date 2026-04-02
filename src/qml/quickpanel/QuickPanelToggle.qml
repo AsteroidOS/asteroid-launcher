@@ -37,6 +37,8 @@ MouseArea {
     height: width
 
     property alias icon: ic.name
+    // checkable defaults false so non-toggle buttons render at full opacity
+    // without the caller needing to force a workaround state
     property bool checkable: false
     property bool checked: false
 
@@ -55,6 +57,8 @@ MouseArea {
         holdTimer.start()
     }
 
+    // onReleased is the unconditional cleanup — stops both timers regardless
+    // of which state they were in when the finger lifted
     onReleased: {
         holdTimer.stop()
         directionChangeTimer.stop()
@@ -65,6 +69,9 @@ MouseArea {
         interval: 300
         repeat: true
         triggeredOnStart: true
+        // holdTimer manages its own lifecycle explicitly — stops itself at range
+        // boundary, flips direction, then hands off to directionChangeTimer
+        // to re-arm after a deliberate pause. No binding loop risk.
         onTriggered: {
             const newValue = rangeValue + (isIncreasing ? 1 : -1) * rangeStepSize
             rangeValue = Math.max(rangeMin, Math.min(rangeMax, newValue))
@@ -78,9 +85,10 @@ MouseArea {
 
     Timer {
         id: directionChangeTimer
-        //delay after direction is changed
+        // delay after direction is changed
         interval: 1000
         repeat: false
+        // re-arms holdTimer after direction change, but only if still pressed
         onTriggered: {
             if (ma.pressed)
                 holdTimer.start()

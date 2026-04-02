@@ -401,11 +401,15 @@ Item {
         valueLowerBound: 0
         valueUpperBound: 100
         anchors.horizontalCenter: parent.horizontalCenter
+        // timer lives inside valueMeter and is exposed as a property so toggle
+        // components can restart it without reaching into panel root scope
         property Timer fadeOutTimer: fadeOutTimer
 
         Timer {
             id: fadeOutTimer
             interval: 2000
+            // state "" returns to default which rebinds value to battery percentage
+            // and re-enables charging animations
             onTriggered: {
                 valueMeter.state = ""
 
@@ -416,7 +420,8 @@ Item {
 
         value: batteryChargePercentage.percent
 
-        // Signal to notify toggles to reset direction
+        // signal broadcast to all range-based toggles to reset their scrub
+        // direction after the fadeOutTimer returns the meter to battery mode
         signal resetDirection
 
         // Animate value changes for smooth fill width transitions
@@ -451,7 +456,12 @@ Item {
         Behavior on fillColor {
             ColorAnimation { duration: 300 }
         }
-
+        
+        // -- ValueMeter state machine --
+        // Replaces the old animate-flag pattern. PropertyChanges inside a State
+        // are withheld by the animation engine during transitions, so value and
+        // text only update after the fade-out step completes. A plain binding
+        // cannot provide this ordering guarantee.
         states: [
             State {
                 name: "brightness"
@@ -480,6 +490,9 @@ Item {
                     PropertyAnimation { target: valueMeterCaption; property: "text"; duration: 0 }
                     PropertyAnimation { target: flashIcon; property: "visible"; duration: 0 }
                 }
+                // duration: 0 is intentional — this step commits the deferred
+                // PropertyChanges (value, text, visibility) between the two fade steps
+                // without consuming any frame time
                 ParallelAnimation {
                     NumberAnimation { target: valueMeter; property: "opacity"; duration: 125; to: 1 }
                     NumberAnimation { target: valueMeterCaption; property: "opacity"; duration: 125; to: 1 }
@@ -564,6 +577,8 @@ Item {
                 }
             }
 
+            // binding keeps rangeValue current so press-and-hold always scrubs
+            // from the real current brightness, not a snapshot from last interaction
             rangeValue: displaySettings.brightness
 
             onPressed: valueMeter.state = "brightness"
@@ -611,8 +626,13 @@ Item {
             icon: wifiStatus.connected ? "ios-wifi" : "ios-wifi-outline"
 
             checkable: true
+            // -- Toggle pattern --
+            // checked binds directly to the system source of truth. No Connections
+            // block needed to stay in sync with external state changes.
             checked: wifiStatus.powered
 
+            // !checked reads the value before the click flips it, so this is
+            // effectively: set powered to whatever it currently isn't
             onClicked: {
                 wifiStatus.powered = !checked
             }
