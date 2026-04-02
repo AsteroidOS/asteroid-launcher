@@ -1,21 +1,5 @@
-/*
- * Copyright (C) 2023 - Timo Könnecke <github.com/eLtMosen>
- *
- * All rights reserved.
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 2.1 of the
- * License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
+// SPDX-FileCopyrightText: 2023 Timo Könnecke <github.com/moWerk>
+// SPDX-License-Identifier: LGPL-2.1-or-later
 
 import QtQuick 2.15
 import QtQuick.Shapes 1.15
@@ -41,13 +25,9 @@ Item {
             property int batteryPercentChanged: batteryChargePercentage.percent
 
             anchors.fill: root
+            layer.enabled: true
+            layer.samples: 4
             visible: nightstandMode.active
-            layer {
-                enabled: true
-                samples: 4
-                smooth: true
-                textureSize: Qt.size(nightstandMode.width * 2, nightstandMode.height * 2)
-            }
 
             Repeater {
                 id: segmentedArc
@@ -60,15 +40,15 @@ Item {
                 property bool clockwise: true
                 property real arcStrokeWidth: .05
                 property real scalefactor: .46 - (arcStrokeWidth / 2)
-                property real chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
-                readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
+                property int chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
+                readonly property var colorArray: ["red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
                 model: segmentAmount
 
                 Shape {
                     id: segment
 
-                    visible: index === 0 ? true : (index/segmentedArc.segmentAmount) < segmentedArc.inputValue
+                    visible: index === 0 ? true : (index / segmentedArc.segmentAmount) < segmentedArc.inputValue
 
                     ShapePath {
                         fillColor: "transparent"
@@ -77,7 +57,7 @@ Item {
                         capStyle: ShapePath.FlatCap
                         joinStyle: ShapePath.MiterJoin
                         startX: parent.width / 2
-                        startY: parent.height * ( .5 - segmentedArc.scalefactor)
+                        startY: parent.height * (.5 - segmentedArc.scalefactor)
 
                         PathAngleArc {
                             centerX: parent.width / 2
@@ -113,14 +93,14 @@ Item {
                     verticalCenterOffset: -watchfaceRoot.height * .218
                 }
                 renderType: Text.NativeRendering
+                color: "#ffffff"
+                horizontalAlignment: Text.AlignHCenter
                 font {
                     pixelSize: watchfaceRoot.height * .4
                     letterSpacing: watchfaceRoot.height * .006
                     family: "Outfit"
                     styleName: "Medium"
                 }
-                color: "#ffffff"
-                horizontalAlignment: Text.AlignHCenter
                 text: use12H.value ?
                           wallClock.time.toLocaleString(Qt.locale(), "hh ap").slice(0, 2) :
                           wallClock.time.toLocaleString(Qt.locale(), "HH")
@@ -151,7 +131,6 @@ Item {
                 id: monthDisplay
 
                 anchors.centerIn: watchfaceRoot
-
                 renderType: Text.NativeRendering
                 color: "#ddffffff"
                 horizontalAlignment: Text.AlignHCenter
@@ -189,7 +168,7 @@ Item {
                 horizontalOffset: 4
                 verticalOffset: 4
                 radius: 7.0
-                samples: 15
+                samples: 9
                 color: "#99000000"
             }
         }
