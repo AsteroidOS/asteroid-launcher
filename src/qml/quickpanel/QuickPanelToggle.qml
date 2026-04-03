@@ -37,6 +37,7 @@ MouseArea {
     height: width
 
     property alias icon: ic.name
+
     // checkable defaults false so non-toggle buttons render at full opacity
     // without the caller needing to force a workaround state
     property bool checkable: false
@@ -50,65 +51,80 @@ MouseArea {
 
     pressAndHoldInterval: 300
 
-    property bool isIncreasing: true
+    // -- Scrub interaction --
+    // scrubWidth must be set by the caller to the available drag distance
+    // (typically rootitem.width) so the full range maps across the panel.
+    property bool scrubbing: false
+    property int scrubWidth: 0
+    property int startScrubX: 0
+    property int startValue: 0
 
+    // wasScrubbing is a backup guard for the case where onClicked does fire
+    // after a short drag. For long drags Qt may not fire onClicked at all,
+    // in which case scrubEventGuard on rootitem swallows the stray event.
+    property bool wasScrubbing: false
+
+    // Clear wasScrubbing at the start of a new press so the next full
+    // click cycle works normally after a long drag that skipped onClicked
+    onPressed: {
+        if (wasScrubbing) wasScrubbing = false
+    }
+    
     onPressAndHold: {
-        if (!rangeBased) return;
-        holdTimer.start()
+        if (!rangeBased) return
+            scrubbing = true
+            wasScrubbing = true
+            preventStealing = true
+            startScrubX = mouseX
+            startValue = rangeValue
+            updateValue(mapToItem(rootitem, mouseX, 0).x)
     }
 
-    // onReleased is the unconditional cleanup — stops both timers regardless
-    // of which state they were in when the finger lifted
+    onPositionChanged: {
+        // Before hold is confirmed, preventStealing is false so the parent
+        // ListView steals horizontal swipes naturally. Once scrubbing is
+        // active, all position events are ours.
+        if (!scrubbing) return
+        updateValue(mapToItem(rootitem, mouseX, 0).x)
+    }
+
+    // onReleased is the unconditional cleanup — clears scrub state regardless
+    // of which path activated it. wasScrubbing intentionally NOT cleared here
+    // since onClicked fires after onReleased and needs to read it.
     onReleased: {
-        holdTimer.stop()
-        directionChangeTimer.stop()
+        scrubbing = false
+        preventStealing = false
     }
 
-    Timer {
-        id: holdTimer
-        interval: 300
-        repeat: true
-        triggeredOnStart: true
-        // holdTimer manages its own lifecycle explicitly — stops itself at range
-        // boundary, flips direction, then hands off to directionChangeTimer
-        // to re-arm after a deliberate pause. No binding loop risk.
-        onTriggered: {
-            const newValue = rangeValue + (isIncreasing ? 1 : -1) * rangeStepSize
-            rangeValue = Math.max(rangeMin, Math.min(rangeMax, newValue))
-            if (rangeValue >= rangeMax || rangeValue <= rangeMin) {
-                holdTimer.stop()
-                isIncreasing = !isIncreasing
-                directionChangeTimer.start()
-            }
-        }
+    onCanceled: {
+        scrubbing = false
+        wasScrubbing = false
+        preventStealing = false
     }
 
-    Timer {
-        id: directionChangeTimer
-        // delay after direction is changed
-        interval: 1000
-        repeat: false
-        // re-arms holdTimer after direction change, but only if still pressed
-        onTriggered: {
-            if (ma.pressed)
-                holdTimer.start()
-        }
+    // Snap-to-position with fat-finger margins: maps absolute panel x to the
+    // value range. The 0.15 margin on each side matches scrubRangeWidth in
+    // QuickPanel so the visual bar boundaries and finger position correspond.
+    function updateValue(mx) {
+        var margin = scrubWidth * 0.15
+        var f = Math.max(0, Math.min(1, (mx - margin) / Math.max(1, scrubWidth - 2 * margin)))
+        var newVal = rangeMin + f * (rangeMax - rangeMin)
+        rangeValue = Math.max(rangeMin, Math.min(rangeMax, Math.round(newVal / rangeStepSize) * rangeStepSize))
     }
 
     Rectangle {
         anchors.fill: parent
-        radius: width/2
+        radius: width / 2
         color: "#222222"
-        opacity: ma.pressed ? 0.6 : ma.checked ?  0.75 : (ma.checkable ? 0.2 : 1)
+        opacity: ma.pressed ? 0.6 : ma.checked ? 0.75 : (ma.checkable ? 0.2 : 1)
     }
 
     Icon {
         id: ic
-        width: parent.width*0.5
+        width: parent.width * 0.5
         height: width
         anchors.centerIn: parent
         color: ma.pressed ? "lightgrey" : "white"
         opacity: ma.pressed ? 0.5 : ma.checked ? 1 : (ma.checkable ? 0.3 : 1)
     }
 }
-
