@@ -51,11 +51,117 @@ Item {
     property bool forbidRight: true
     property int toggleSize: Dims.l(28)
 
+    // Set true while a range toggle is scrubbing. Single source of truth that
+    // drives all simultaneous panel fades via Behavior on opacity bindings.
+    property bool activeScrub: false
+
+    // scrubEventGuard stays true for guardTimer interval after scrub ends.
+    // The MouseArea on scrubCover uses this to swallow stray touch events that
+    // Qt may deliver to underlying toggles after preventStealing is released.
+    // This is the primary fix for spurious toggle-on-scrub-release — wasScrubbing
+    // in the toggle is a backup for the short-drag case where onClicked fires.
+    property bool scrubEventGuard: false
+
+    Timer {
+        id: guardTimer
+        interval: 250
+        onTriggered: scrubEventGuard = false
+    }
+
+    // Tracks which toggle is scrubbing so scrubFill and scrubCaptionLabel
+    // know which value and string to display
+    property string scrubMode: ""
+
+    // scrubRangeWidth defines both the visual scrubber width and the effective
+    // input range. The 0.15 margin on each side of rootitem.width matches the
+    // margin formula in QuickPanelToggle.updateValue so the visual bar
+    // boundaries and finger position always correspond truthfully.
+    readonly property real scrubRangeWidth: width * 0.80
+    readonly property real scrubCoverHeight: Dims.l(20)
+
+    readonly property real scrubCoverX: (width - scrubRangeWidth) / 2
+    readonly property real scrubCoverY: (height - scrubCoverHeight) / 2
+
+    // Stored valueMeter geometry captured at scrub start for symmetric reverse morph
+    property real morphStartX: 0
+    property real morphStartY: 0
+    property real morphStartW: 0
+    property real morphStartH: 0
+    property color morphStartColor: Qt.rgba(1, 1, 1, 0.3)
+
+    // -- Morph animation orchestration --
+    // On scrub start: snapshot valueMeter position, set morphRect there, then
+    // animate it to scrubCover geometry while the panel fades out via Behaviors.
+    // scrubCover fades in after the morph is nearly complete.
+    // On scrub end: reverse — scrubCover fades out, morphRect shrinks back to
+    // valueMeter geometry as panel fades back in.
+    onActiveScrubChanged: {
+        if (activeScrub) {
+            scrubEventGuard = true
+            guardTimer.stop()
+            scrubEndAnim.stop()
+            var pos = valueMeter.mapToItem(rootitem, 0, 0)
+            morphStartX = pos.x
+            morphStartY = pos.y
+            morphStartW = valueMeter.width
+            morphStartH = valueMeter.height
+            morphRect.x = morphStartX
+            morphRect.y = morphStartY
+            morphRect.width = morphStartW
+            morphRect.height = morphStartH
+            // onActiveScrubChanged — start morph at valueMeter fillColor
+            morphRect.color = Qt.rgba(valueMeter.fillColor.r, valueMeter.fillColor.g, valueMeter.fillColor.b, 1.0)
+            morphRect.opacity = valueMeter.fillColor.a
+            morphRect.visible = true
+            scrubCover.opacity = 0.0
+            scrubStartAnim.start()
+        } else {
+            scrubStartAnim.stop()
+            scrubEndAnim.start()
+            guardTimer.restart()
+        }
+    }
+
+    ParallelAnimation {
+        id: scrubStartAnim
+        NumberAnimation { target: morphRect; property: "opacity"; to: 0.75; duration: 250 }
+        NumberAnimation { target: morphRect; property: "x"; to: scrubCoverX; duration: 250; easing.type: Easing.InOutQuad }
+        NumberAnimation { target: morphRect; property: "y"; to: scrubCoverY; duration: 250; easing.type: Easing.InOutQuad }
+        NumberAnimation { target: morphRect; property: "width"; to: scrubRangeWidth; duration: 250; easing.type: Easing.InOutQuad }
+        NumberAnimation { target: morphRect; property: "height"; to: scrubCoverHeight; duration: 250; easing.type: Easing.InOutQuad }
+        // Color transitions from valueMeter fill light to scrubCover dark during expand
+        ColorAnimation { target: morphRect; property: "color"; to: Qt.rgba(0.13, 0.13, 0.13, 0.75); duration: 250 }
+        SequentialAnimation {
+            // scrubCover fades in after morphRect has nearly reached final geometry
+            PauseAnimation { duration: 150 }
+            NumberAnimation { target: scrubCover; property: "opacity"; to: 1.0; duration: 100 }
+        }
+    }
+
+    SequentialAnimation {
+        id: scrubEndAnim
+        ParallelAnimation {
+            NumberAnimation { target: scrubCover; property: "opacity"; to: 0.0; duration: 100 }
+            SequentialAnimation {
+                PauseAnimation { duration: 50 }
+                ParallelAnimation {
+                    NumberAnimation { target: morphRect; property: "x"; to: morphStartX; duration: 250; easing.type: Easing.InOutQuad }
+                    NumberAnimation { target: morphRect; property: "y"; to: morphStartY; duration: 250; easing.type: Easing.InOutQuad }
+                    NumberAnimation { target: morphRect; property: "width"; to: morphStartW; duration: 250; easing.type: Easing.InOutQuad }
+                    NumberAnimation { target: morphRect; property: "height"; to: morphStartH; duration: 250; easing.type: Easing.InOutQuad }
+                    ColorAnimation { target: morphRect; property: "color"; to: morphStartColor; duration: 250 }
+                    NumberAnimation { target: morphRect; property: "opacity"; to: valueMeter.fillColor.a; duration: 250 }
+                }
+            }
+        }
+        ScriptAction { script: morphRect.visible = false }
+    }
+
     MceBatteryLevel { id: batteryChargePercentage }
     MceBatteryState { id: batteryChargeState }
     MceChargerType { id: mceChargerType }
 
-    readonly property int volume: volumeControl ? (volumeControl.maximumVolume ? Math.round((volumeControl.volume / volumeControl.maximumVolume) * 100) : 0) :0
+    readonly property int volume: volumeControl ? (volumeControl.maximumVolume ? Math.round((volumeControl.volume / volumeControl.maximumVolume) * 100) : 0) : 0
 
     function setVolume(volume) {
         volumeControl.volume = Math.round((volume / 100) * volumeControl.maximumVolume);
@@ -293,6 +399,10 @@ Item {
         interactive: false
         boundsBehavior: Flickable.StopAtBounds
         spacing: Dims.l(4)
+        opacity: activeScrub ? 0.0 : 1.0
+        Behavior on opacity {
+            NumberAnimation { duration: 200; easing.type: Easing.InOutQuad }
+        }
 
         readonly property var allToggles: {
             return fixedToggles.value
@@ -327,6 +437,22 @@ Item {
         Component.onCompleted: positionViewAtBeginning()
     }
 
+    // Live value label shown in the fixedRow area during scrub
+    Label {
+        id: scrubValueLabel
+        anchors.centerIn: options.value.batteryBottom ? fixedRow : valueMeter
+        opacity: activeScrub ? 0.9 : 0.0
+        text: scrubMode === "brightness" ? displaySettings.brightness + "%" : volume + "%"
+        font {
+            pixelSize: Dims.l(12)
+            family: "Noto Sans"
+            styleName: "SemiCondensed SemiBold"
+        }
+        Behavior on opacity {
+            NumberAnimation { duration: 200; easing.type: Easing.InOutQuad }
+        }
+    }
+
     Connections {
         target: grid
         function onCurrentVerticalPosChanged() {
@@ -347,6 +473,10 @@ Item {
         interactive: true
         boundsBehavior: Flickable.StopAtBounds
         spacing: Dims.l(4)
+        opacity: activeScrub ? 0.0 : 1.0
+        Behavior on opacity {
+            NumberAnimation { duration: 200; easing.type: Easing.InOutQuad }
+        }
 
         readonly property var allToggles: {
             return sliderToggles.value
@@ -394,6 +524,71 @@ Item {
         }
     }
 
+    // morphRect — plain pill that animates between valueMeter geometry and
+    // scrubCover geometry during scrub start/end transitions. Color animates
+    // from valueMeter fill light to scrubCover dark on expand, and reverse on
+    // collapse. Declared before scrubCover so scrubCover paints on top.
+    Rectangle {
+        id: morphRect
+        visible: false
+        color: "#eee0e0e0"
+        radius: height / 2
+        // x, y, width, height are set imperatively in onActiveScrubChanged
+    }
+
+    // scrubCover — the actual interactive scrubber display. Position and size
+    // are fixed at scrubRangeWidth/scrubCoverHeight; only opacity is animated
+    // by scrubStartAnim/scrubEndAnim. Declared after morphRect so it paints
+    // above and cleanly takes over at morph completion.
+    Rectangle {
+        id: scrubCover
+        x: scrubCoverX
+        y: scrubCoverY
+        width: scrubRangeWidth
+        height: scrubCoverHeight
+        radius: height / 2
+        color: Qt.rgba(0, 0, 0, 0)
+        opacity: 0 // managed exclusively by scrubStartAnim / scrubEndAnim
+
+        layer.enabled: true
+        layer.effect: OpacityMask {
+            maskSource: Rectangle {
+                width: scrubCover.width
+                height: scrubCover.height
+                radius: scrubCover.radius
+            }
+        }
+
+        Rectangle {
+            anchors.fill: parent
+            color: Qt.rgba(0.13, 0.13, 0.13, 0.75)
+        }
+
+        // Value fill — width tracks current brightness or volume fraction.
+        // Color matches ValueMeter: white when batteryColored off, accent when on.
+        Rectangle {
+            id: scrubFill
+            height: parent.height
+            width: parent.width * Math.max(0, Math.min(1,
+                (scrubMode === "brightness" ? displaySettings.brightness : volume) / 100))
+            color: !options.value.batteryColored ? Qt.rgba(1, 1, 1, 0.3) : "#4CA6005F"
+            Behavior on width {
+                NumberAnimation { duration: 80; easing.type: Easing.OutQuad }
+            }
+        }
+
+        // Event-swallowing MouseArea covering the full scrubCover area.
+        // Enabled by scrubEventGuard which outlives activeScrub by guardTimer
+        // interval, covering the fade-out window where stray Qt touch events
+        // could otherwise reach the toggles underneath.
+        MouseArea {
+            anchors.fill: parent
+            enabled: scrubEventGuard
+            // No handlers needed — default MouseArea behaviour accepts and
+            // swallows all mouse/touch events when enabled
+        }
+    }
+
     ValueMeter {
         id: valueMeter
         width: toggleSize * 1.8
@@ -401,40 +596,27 @@ Item {
         valueLowerBound: 0
         valueUpperBound: 100
         anchors.horizontalCenter: parent.horizontalCenter
-        property Timer fadeOutTimer: fadeOutTimer
 
-        Timer {
-            id: fadeOutTimer
-            interval: 2000
-            onTriggered: {
-                valueMeter.state = ""
-
-                // Signal toggles to reset direction
-                valueMeter.resetDirection()
-            }
-        }
-
+        // Always shows battery. Fades out during scrub while scrubCover takes over.
         value: batteryChargePercentage.percent
+        opacity: activeScrub ? 0.0 : 1.0
 
-        // Signal to notify toggles to reset direction
-        signal resetDirection
-
-        // Animate value changes for smooth fill width transitions
+        // Disable value animation during scrub — the fill would constantly
+        // restart the 250ms animation and permanently lag behind the label
         Behavior on value {
+            enabled: !activeScrub
             NumberAnimation {
                 duration: 250
                 easing.type: Easing.InOutQuad
             }
         }
 
-        isIncreasing: valueMeter.state == "" ? isCharging : false
-        enableAnimations: options.value.batteryAnimation && valueMeter.state == ""
+        isIncreasing: isCharging
+        enableAnimations: options.value.batteryAnimation
         particleDesign: options.value.particleDesign
 
         fillColor: {
             if (!options.value.batteryColored) return Qt.rgba(1, 1, 1, 0.3)
-            if (!valueMeter.state == "") return "#4CA6005F"
-
             const percent = batteryChargePercentage.percent
             if (percent <= 20) {
                 const t = (20 - percent) / 20
@@ -447,48 +629,17 @@ Item {
             return Qt.rgba(0, 1, 0, 0.3)
         }
 
-        // Use behavior for fill color transitions
         Behavior on fillColor {
             ColorAnimation { duration: 300 }
         }
 
-        states: [
-            State {
-                name: "brightness"
-                PropertyChanges { target: valueMeter; value: displaySettings.brightness }
-                PropertyChanges { target: flashIcon; visible: false }
-                //% "Brightness"
-                PropertyChanges { target: valueMeterCaption; text: qsTrId("id-brightness") }
-                PropertyChanges { target: flashIcon; visible: false }
-            },
-            State {
-                name: "volume"
-                PropertyChanges { target: valueMeter; value: volume }
-                //% "Volume"
-                PropertyChanges { target: valueMeterCaption; text: qsTrId("id-volume") }
-            }
-        ]
-        transitions: Transition {
-            SequentialAnimation {
-                ParallelAnimation {
-                    NumberAnimation { target: valueMeter; property: "opacity"; duration: 125; to: 0 }
-                    NumberAnimation { target: valueMeterCaption; property: "opacity"; duration: 125; to: 0 }
-                    NumberAnimation { target: flashIcon; property: "opacity"; duration: 125; to: 0 }
-                }
-                ParallelAnimation {
-                    PropertyAnimation { target: valueMeter; property: "value"; duration: 0 }
-                    PropertyAnimation { target: valueMeterCaption; property: "text"; duration: 0 }
-                    PropertyAnimation { target: flashIcon; property: "visible"; duration: 0 }
-                }
-                ParallelAnimation {
-                    NumberAnimation { target: valueMeter; property: "opacity"; duration: 125; to: 1 }
-                    NumberAnimation { target: valueMeterCaption; property: "opacity"; duration: 125; to: 1 }
-                    NumberAnimation { target: flashIcon; property: "opacity"; duration: 125; to: 1 }
-                }
-            }
+        Behavior on opacity {
+            NumberAnimation { duration: 200; easing.type: Easing.InOutQuad }
         }
     }
 
+    // flashIcon cannot share a Behavior on opacity with its own
+    // SequentialAnimation on opacity, so visibility is toggled instead
     Icon {
         id: flashIcon
         width: Dims.l(8)
@@ -496,7 +647,7 @@ Item {
         name: "ios-flash"
         anchors.centerIn: valueMeter
         y: -Dims.l(10)
-        visible: isCharging
+        visible: isCharging && !activeScrub
         opacity: 1.0
 
         SequentialAnimation on opacity {
@@ -510,6 +661,7 @@ Item {
     Label {
         id: valueMeterCaption
         anchors.horizontalCenter: parent.horizontalCenter
+        opacity: activeScrub ? 0.0 : 1.0
 
         font {
             pixelSize: Dims.l(9)
@@ -519,8 +671,37 @@ Item {
 
         text: batteryChargePercentage.percent + "%"
 
+        Behavior on opacity {
+            NumberAnimation { duration: 200; easing.type: Easing.InOutQuad }
+        }
     }
 
+    // Mode caption shown in place of valueMeterCaption during scrub.
+    // anchors.centerIn: valueMeterCaption tracks the batteryBottom/batteryTop
+    // layout state automatically without needing its own AnchorChanges entries.
+    Label {
+        id: scrubCaptionLabel
+        anchors{
+            centerIn: options.value.batteryBottom ? valueMeter : fixedRow            
+            verticalCenterOffset: -Dims.l(3)
+        }
+        opacity: activeScrub ? 0.9 : 0.0
+
+        font {
+            pixelSize: Dims.l(12)
+            family: "Noto Sans"
+            styleName: "Condensed Medium"
+        }
+
+        //% "Brightness"
+        text: scrubMode === "brightness" ? qsTrId("id-brightness") :
+        //% "Volume"
+              qsTrId("id-volume")
+
+        Behavior on opacity {
+            NumberAnimation { duration: 200; easing.type: Easing.InOutQuad }
+        }
+    }
 
     PageDot {
         id: pageDots
@@ -528,7 +709,10 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         currentIndex: slidingRow.currentIndex
         dotNumber: slidingRow.rowCount
-        opacity: 0.5
+        opacity: activeScrub ? 0.0 : 0.5
+        Behavior on opacity {
+            NumberAnimation { duration: 200; easing.type: Easing.InOutQuad }
+        }
     }
 
     RemorseTimer {
@@ -548,33 +732,33 @@ Item {
             icon: "ios-sunny"
             checkable: true
             rangeBased: true
-            rangeMin: 0
+            rangeMin: 10
             rangeMax: 100
             rangeStepSize: 10
+            scrubWidth: rootitem.width
 
             checked: displaySettings.brightness > 10
-
+            
             onClicked: {
-                if(checked) {
+                if (wasScrubbing) { wasScrubbing = false; return }
+                if (checked) {
                     displaySettings.brightness = rangeMin
-                    isIncreasing = true
                 } else {
                     displaySettings.brightness = rangeMax
-                    isIncreasing = false
                 }
             }
 
+            // binding keeps rangeValue current so scrub always starts from the
+            // real current brightness, not a snapshot from a previous interaction
             rangeValue: displaySettings.brightness
-
-            onPressed: valueMeter.state = "brightness"
-            onReleased: valueMeter.fadeOutTimer.restart()
-
             onRangeValueChanged: displaySettings.brightness = rangeValue
 
-            Connections {
-                target: valueMeter
-                function onResetDirection() {
-                    isIncreasing = true
+            onScrubbingChanged: {
+                if (scrubbing) {
+                    rootitem.scrubMode = "brightness"
+                    rootitem.activeScrub = true
+                } else {
+                    rootitem.activeScrub = false
                 }
             }
         }
@@ -588,7 +772,7 @@ Item {
             checked: profileControl.profile == "general"
 
             onClicked: {
-                if(checked) {
+                if (checked) {
                     profileControl.profile = "silent"
                 } else {
                     profileControl.profile = "general";
@@ -611,8 +795,12 @@ Item {
             icon: wifiStatus.connected ? "ios-wifi" : "ios-wifi-outline"
 
             checkable: true
+            // checked binds directly to the system source of truth. No Connections
+            // block needed to stay in sync with external state changes.
             checked: wifiStatus.powered
 
+            // !checked reads the value before the click flips it, so this is
+            // effectively: set powered to whatever it currently isn't
             onClicked: {
                 wifiStatus.powered = !checked
             }
@@ -643,80 +831,58 @@ Item {
         QuickPanelToggle {
             id: soundToggle
             checkable: true
-
             rangeBased: true
             rangeMin: 0
             rangeMax: 100
             rangeStepSize: 10
-
-            onPressAndHold: {
-                rangeValue = volume
-
-                if (preMuteLevel.value > 0) {
-                    const tempVolume = volume;
-                    setVolume(preMuteLevel.value);
-                    preMuteLevel.value = tempVolume;
-
-                    toggled = true;
-                }
-            }
-
-            onPressed: valueMeter.state = "volume"
-            onReleased: {
-                valueMeter.fadeOutTimer.restart()
-
-                if (volume > 0 && preMuteLevel.value === 0) {
-                    soundDelayTimer.start();
-                }
-            }
-
-
-            onRangeValueChanged: setVolume(rangeValue)
+            scrubWidth: rootitem.width
 
             icon: preMuteLevel.value > 0 || volume === 0 ? "ios-sound-indicator-mute" :
                   volume > 70 ? "ios-sound-indicator-high" :
                   volume > 30 ? "ios-sound-indicator-mid" :
                   volume > 0 ? "ios-sound-indicator-low" : "ios-sound-indicator-off"
 
+            // checked reflects mute state only — volume at 0% while unmuted
+            // is silent but not muted and should not deactivate the toggle
+            checked: !(preMuteLevel.value > 0 || volume === 0)
+
             onClicked: {
-                const tempVolume = volume;
-                let targetVolume = preMuteLevel.value;
+                if (wasScrubbing) { wasScrubbing = false; return }
+                const tempVolume = volume
+                let targetVolume = preMuteLevel.value
+                if (tempVolume === 0 && targetVolume === 0) targetVolume = 100
+                setVolume(targetVolume)
+                preMuteLevel.value = tempVolume
+                if (targetVolume > 0) soundDelayTimer.start()
+            }
 
-                if (tempVolume === 0 &&  targetVolume === 0) {
-                    targetVolume = 100;
-                }
-
-                setVolume(targetVolume);
-                preMuteLevel.value = tempVolume;
-
-                if (targetVolume > 0) {
-                    soundDelayTimer.start();
+            rangeValue: volume
+            onRangeValueChanged: {
+                if (scrubbing) {
+                    // Scrubbing to any value > 0 while muted clears the mute
+                    // state — the user is explicitly setting a volume level
+                    if (rangeValue > 0 && preMuteLevel.value > 0) {
+                        preMuteLevel.value = 0
+                    }
+                    setVolume(rangeValue)
                 }
             }
 
-            checked: !(preMuteLevel.value > 0 || volume === 0)
+            onScrubbingChanged: {
+                if (scrubbing) {
+                    rootitem.scrubMode = "volume"
+                    rootitem.activeScrub = true
+                } else {
+                    rootitem.activeScrub = false
+                    if (rangeValue > 0) soundDelayTimer.start()
+                }
+            }
 
             Timer {
                 id: soundDelayTimer
                 interval: 150
                 repeat: false
                 onTriggered: unmuteSound.play()
-            }
-
-            Connections {
-                target: volumeControl
-                function onVolumeChanged() {
-                    if(!pressed) {
-                        rangeValue = volume
-                    }
-                }
-            }
-
-            Connections {
-                target: valueMeter
-                function onResetDirection() {
-                    isIncreasing = true
-                }
             }
         }
     }
@@ -734,10 +900,8 @@ Item {
 
             checked: actualState
             onClicked: {
-                if(checked) {
-                    // Store pre-cinema states
+                if (!checked) {
                     preCinemaAodState.value = alwaysOnDisplay.value;
-                    // Mute sound if available
                     if (DeviceSpecs.hasSpeaker && !isMuted) {
                         preMuteLevel.value = volume;
                         setVolume(0);
@@ -745,10 +909,8 @@ Item {
                     alwaysOnDisplay.value = false;
                     displaySettings.lowPowerModeEnabled = false;
                 } else {
-                    // Restore pre-cinema states
                     alwaysOnDisplay.value = preCinemaAodState.value;
                     displaySettings.lowPowerModeEnabled = alwaysOnDisplay.value;
-                    // Restore sound
                     if (DeviceSpecs.hasSpeaker && isMuted) {
                         setVolume(preMuteLevel.value);
                         preMuteLevel.value = 0;
