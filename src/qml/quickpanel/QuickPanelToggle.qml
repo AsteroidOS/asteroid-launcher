@@ -60,6 +60,11 @@ MouseArea {
         directionChangeTimer.stop()
     }
 
+    onCanceled: {
+        holdTimer.stop()
+        directionChangeTimer.stop()
+    }
+
     Timer {
         id: holdTimer
         interval: 300
