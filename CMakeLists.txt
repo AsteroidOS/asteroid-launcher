@@ -5,12 +5,9 @@ project(asteroid-launcher
 	DESCRIPTION "AsteroidOS launcher and Wayland compositor based on Qt5, QML and QtWayland via Lipstick")
 
 find_package(ECM REQUIRED NO_MODULE)
-
-set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
-
 find_package(AsteroidApp REQUIRED)
 
-set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ASTEROID_MODULE_PATH})
+set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ASTEROID_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 
 include(FeatureSummary)
 include(GNUInstallDirs)
