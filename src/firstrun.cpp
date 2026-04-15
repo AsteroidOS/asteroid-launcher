@@ -33,9 +33,9 @@
 #include <QDBusPendingCall>
 #include <QDBusVariant>
 
-FirstRun::FirstRun()
+FirstRun::FirstRun(QObject *parent) : QObject(parent)
 {
-    m_mceDbus = new QDBusInterface("com.nokia.mce", "/com/nokia/mce/request", "com.nokia.mce.request", QDBusConnection::systemBus());
+    m_mceDbus = new QDBusInterface("com.nokia.mce", "/com/nokia/mce/request", "com.nokia.mce.request", QDBusConnection::systemBus(), this);
     firstRunDone = new MGConfItem("/org/asteroidos/launcher/firstRunDone", this);
 }
 
