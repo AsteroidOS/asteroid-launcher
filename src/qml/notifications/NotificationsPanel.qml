@@ -75,6 +75,8 @@ Item {
                 notifView.notification = item
                 notifView.panelsGrid = panelsGrid
             } else {
+                if (firstNotifView !== null)
+                    firstNotifView.destroy()
                 firstNotifView = notificationViewComp.createObject(notifPanel)
 
                 firstNotifView.x = 0
@@ -108,6 +110,8 @@ Item {
                     notifActions.notification = notifModel.get(0)
                     notifActions.notificationModel = notifModel
 
+                    if (firstNotifView !== null)
+                        firstNotifView.destroy()
                     firstNotifView = notificationViewComp.createObject(notifPanel)
                     firstNotifView.x = 0
                     firstNotifView.y = 0
