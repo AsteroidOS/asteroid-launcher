@@ -159,6 +159,7 @@ void GestureFilterArea::mouseReleaseEvent(QMouseEvent *event) {
                 currVel = m_velocityY;
             emit swipeReleased(m_horizontal, currVel, m_tracing);
             m_pressed = false;
+            ungrabMouse();
         }
     }
 }
