@@ -86,10 +86,14 @@ signals:
 private:
     bool m_toRightAllowed, m_toLeftAllowed, m_toBottomAllowed, m_toTopAllowed;
 
-    bool m_horizontal, m_pressed, m_tracing;
-    unsigned int m_counter;
+    bool m_horizontal = false;
+    bool m_pressed = false;
+    bool m_tracing = false;
+    unsigned int m_counter = 0;
     QPointF m_prevPos;
-    qreal m_velocityX, m_velocityY, m_threshold;
+    qreal m_velocityX = 0;
+    qreal m_velocityY = 0;
+    qreal m_threshold = 0;
 
 protected:
     virtual bool childMouseEventFilter(QQuickItem *, QEvent *);
