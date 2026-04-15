@@ -44,10 +44,10 @@ GestureFilterArea::GestureFilterArea(QQuickItem *parent) : QQuickItem(parent)
     m_threshold = width()*0.01;
 }
 
-void GestureFilterArea::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
+void GestureFilterArea::geometryChange(const QRectF &newGeometry, const QRectF &oldGeometry)
 {
     m_threshold = newGeometry.width()*0.01;
-    QQuickItem::geometryChanged(newGeometry, oldGeometry);
+    QQuickItem::geometryChange(newGeometry, oldGeometry);
 }
 
 bool GestureFilterArea::childMouseEventFilter(QQuickItem *i, QEvent *e)
@@ -82,7 +82,7 @@ void GestureFilterArea::mousePressEvent(QMouseEvent *event) {
         m_velocityY = 0;
         m_tracing = true;
         m_horizontal = false;
-        m_prevPos = event->localPos();
+        m_prevPos = event->position();
         m_counter = 0;
     }
 }
@@ -94,8 +94,8 @@ void GestureFilterArea::mouseMoveEvent(QMouseEvent *event) {
     }
     m_counter++;
 
-    m_velocityX = (m_velocityX*(m_counter-1) + (event->localPos().x()-m_prevPos.x()))/m_counter;
-    m_velocityY = (m_velocityY*(m_counter-1) + (event->localPos().y()-m_prevPos.y()))/m_counter;
+    m_velocityX = (m_velocityX*(m_counter-1) + (event->position().x()-m_prevPos.x()))/m_counter;
+    m_velocityY = (m_velocityY*(m_counter-1) + (event->position().y()-m_prevPos.y()))/m_counter;
     if(m_tracing) {
         if (abs(m_velocityX) > abs(m_velocityY)) {
             if(m_velocityX > m_threshold) {
@@ -137,13 +137,13 @@ void GestureFilterArea::mouseMoveEvent(QMouseEvent *event) {
     } else if(m_pressed) {
         qreal delta;
         if(m_horizontal)
-            delta = event->localPos().x() - m_prevPos.x();
+            delta = event->position().x() - m_prevPos.x();
         else
-            delta = event->localPos().y() - m_prevPos.y();
+            delta = event->position().y() - m_prevPos.y();
 
         emit swipeMoved(m_horizontal, delta);
     }
-    m_prevPos = event->localPos();
+    m_prevPos = event->position();
 }
 
 void GestureFilterArea::mouseReleaseEvent(QMouseEvent *event) {
@@ -164,12 +164,12 @@ void GestureFilterArea::mouseReleaseEvent(QMouseEvent *event) {
 }
 
 bool GestureFilterArea::filterMouseEvent(QQuickItem *item, QMouseEvent *event) {
-    QPointF localPos = mapFromScene(event->windowPos());
+    QPointF localPos = mapFromScene(event->scenePosition());
     QQuickWindow *c = window();
     QQuickItem *grabber = c ? c->mouseGrabberItem() : 0;
 
     if ((contains(localPos)) && (!grabber || !grabber->keepMouseGrab())) {
-        QMouseEvent mouseEvent(event->type(), localPos, event->windowPos(), event->screenPos(),
+        QMouseEvent mouseEvent(event->type(), localPos, event->scenePosition(), event->globalPosition(),
                                event->button(), event->buttons(), event->modifiers());
         mouseEvent.setAccepted(false);
 

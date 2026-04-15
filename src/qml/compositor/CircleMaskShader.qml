@@ -29,9 +29,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.9
-import org.asteroid.controls 1.0
-import org.asteroid.utils 1.0
+import QtQuick
+import org.asteroid.controls
+import org.asteroid.utils
 
 ShaderEffect {
     property real smoothness: 0.0007

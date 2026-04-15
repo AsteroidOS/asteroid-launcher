@@ -28,9 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.9
-import QtQuick.Window 2.0
-import org.nemomobile.lipstick 0.1
+import QtQuick
+import QtQuick.Window
+import org.nemomobile.lipstick
 
 Rectangle {
     id: shutdownWindow

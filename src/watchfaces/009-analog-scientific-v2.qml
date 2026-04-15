@@ -21,12 +21,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.15
-import QtQuick.Shapes 1.15
-import QtGraphicalEffects 1.15
-import org.asteroid.controls 1.0
-import org.asteroid.utils 1.0
-import Nemo.Mce 1.0
+import QtQuick
+import QtQuick.Shapes
+import Qt5Compat.GraphicalEffects
+import org.asteroid.controls
+import org.asteroid.utils
+import Nemo.Mce
 
 Item {
     anchors.fill: parent

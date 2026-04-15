@@ -29,15 +29,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.9
-import Nemo.Time 1.0
-import Nemo.Configuration 1.0
-import Nemo.Mce 1.0
-import org.nemomobile.lipstick 0.1
-import org.nemomobile.systemsettings 1.0
-import org.asteroid.controls 1.0
-import org.asteroid.utils 1.0
-import org.asteroid.launcher 1.0
+import QtQuick
+import Nemo.Time
+import Nemo.Configuration
+import Nemo.Mce
+import org.nemomobile.lipstick
+import org.nemomobile.systemsettings
+import org.asteroid.controls
+import org.asteroid.utils
+import org.asteroid.launcher
 import "desktop.js" as Desktop
 
 Item {
