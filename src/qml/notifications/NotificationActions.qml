@@ -27,9 +27,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.9
-import org.asteroid.controls 1.0
-import org.asteroid.launcher 1.0
+import QtQuick
+import org.asteroid.controls
+import org.asteroid.launcher
 
 Item {
     id: actions

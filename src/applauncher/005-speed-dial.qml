@@ -17,9 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.15
-import QtGraphicalEffects 1.12
-import org.asteroid.controls 1.0
+import QtQuick
+import Qt5Compat.GraphicalEffects
+import org.asteroid.controls
 
 
 Item {

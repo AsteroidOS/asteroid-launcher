@@ -32,7 +32,7 @@
 
 #include <QObject>
 #include <QDBusInterface>
-#include <MGConfItem>
+#include <MDConfItem>
 
 class FirstRun : public QObject
 {
@@ -46,7 +46,7 @@ public:
 
 private:
     QDBusInterface *m_mceDbus;
-    MGConfItem *firstRunDone;
+    MDConfItem *firstRunDone;
 };
 
 #endif // FIRSTRUN_H

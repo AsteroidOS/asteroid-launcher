@@ -32,7 +32,7 @@
 
 #include <QObject>
 
-#include <lipstick-qt5/lipsticknotification.h>
+#include <lipstick-qt6/lipsticknotification.h>
 
 class Q_DECL_EXPORT NotificationSnoozer : public QObject
 {

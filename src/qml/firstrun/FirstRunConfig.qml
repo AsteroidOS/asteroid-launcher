@@ -28,13 +28,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.9
-import org.asteroid.controls 1.0
-import Nemo.Time 1.0
-import org.nemomobile.systemsettings 1.0
-import Nemo.Configuration 1.0
+import QtQuick
+import org.asteroid.controls
+import Nemo.Time
+import org.nemomobile.systemsettings
+import Nemo.Configuration
 import "desktop.js" as Desktop
-import Nemo.DBus 2.0
+import Nemo.DBus
 
 FlatMesh {
     id: config

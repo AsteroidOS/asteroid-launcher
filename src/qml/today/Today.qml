@@ -27,12 +27,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.9
-import org.asteroid.controls 1.0
-import org.asteroid.utils 1.0
-import org.nemomobile.calendar 1.0
-import Nemo.Configuration 1.0
-import Nemo.Time 1.0
+import QtQuick
+import org.asteroid.controls
+import org.asteroid.utils
+import org.nemomobile.calendar
+import Nemo.Configuration
+import Nemo.Time
 import 'weathericons.js' as IconTools
 
 ListView {

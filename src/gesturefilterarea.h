@@ -97,7 +97,7 @@ protected:
     virtual void mouseMoveEvent(QMouseEvent *event);
     virtual void mouseReleaseEvent(QMouseEvent *event);
     virtual void mouseUngrabEvent();
-    virtual void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
+    virtual void geometryChange(const QRectF &newGeometry, const QRectF &oldGeometry);
     bool filterMouseEvent(QQuickItem *item, QMouseEvent *event);
 };
 
