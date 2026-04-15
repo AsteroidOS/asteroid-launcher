@@ -30,7 +30,7 @@
  */
 
 import QtQuick 2.9
-import QtGraphicalEffects 1.15
+import QtGraphicalEffects 1.0
 import QtMultimedia 5.8
 import org.asteroid.controls 1.0
 import org.asteroid.utils 1.0
@@ -345,6 +345,7 @@ Item {
         snapMode: ListView.SnapOneItem
         clip: true
         interactive: true
+        pressDelay: 200
         boundsBehavior: Flickable.StopAtBounds
         spacing: Dims.l(4)
 
@@ -531,6 +532,8 @@ Item {
         opacity: 0.5
     }
 
+    property var _remorseAction: null
+
     RemorseTimer {
         id: remorseTimer
         duration: 3000
@@ -539,6 +542,8 @@ Item {
         gaugeEndFromStartDegree: 265
         //% "Tap to cancel"
         cancelText: qsTrId("id-tap-to-cancel")
+        onTriggered: { if (_remorseAction) _remorseAction(); _remorseAction = null }
+        onCancelled: _remorseAction = null
     }
 
     Component {
@@ -812,9 +817,7 @@ Item {
             onClicked: {
                 //% "Powering off in"
                 remorseTimer.action = qsTrId("id-power-off");
-                remorseTimer.onTriggered.connect(function() {
-                    login1DBus.call("PowerOff", [false]);
-                });
+                _remorseAction = function() { login1DBus.call("PowerOff", [false]) };
                 remorseTimer.start();
             }
         }
@@ -827,10 +830,10 @@ Item {
             onClicked: {
                 //% "Rebooting in"
                 remorseTimer.action = qsTrId("id-reboot");
-                remorseTimer.onTriggered.connect(function() {
+                _remorseAction = function() {
                     login1DBus.call("SetRebootParameter", [""]);
                     login1DBus.call("Reboot", [false]);
-                });
+                };
                 remorseTimer.start();
             }
         }
