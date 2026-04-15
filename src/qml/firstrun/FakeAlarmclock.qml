@@ -27,13 +27,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQml 2.2
-import QtQuick 2.8
-import org.asteroid.controls 1.0
-import org.asteroid.utils 1.0
+import QtQml
+import QtQuick
+import org.asteroid.controls
+import org.asteroid.utils
 import "qrc:/qml/compositor/";
-import Nemo.Time 1.0
-import Nemo.Configuration 1.0
+import Nemo.Time
+import Nemo.Configuration
 
 FlatMesh {
     centerColor: "#CC9800"

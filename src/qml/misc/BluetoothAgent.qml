@@ -27,10 +27,10 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.9
-import QtGraphicalEffects 1.12
-import org.asteroid.controls 1.0
-import org.nemomobile.lipstick 0.1
+import QtQuick
+import Qt5Compat.GraphicalEffects
+import org.asteroid.controls
+import org.nemomobile.lipstick
 
 Item {
     id: btAgent

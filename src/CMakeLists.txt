@@ -19,13 +19,14 @@ add_executable(asteroid-launcher ${SRC} ${HEADERS} resources-qml.qrc)
 target_link_libraries(
 	asteroid-launcher
 	PRIVATE
-		Qt5::Quick
-		Qt5::WaylandCompositor
-		Qt5::DBus
-		Mlite5::Mlite5
+		Qt6::Quick
+		Qt6::WaylandCompositor
+		Qt6::DBus
 		Lipstick::Lipstick
 		Timed::Timed
+		${mlite6_LIBRARIES}
 )
+target_include_directories(asteroid-launcher PRIVATE ${mlite6_INCLUDE_DIRS})
 
 install(
 	TARGETS asteroid-launcher

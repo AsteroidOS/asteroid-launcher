@@ -29,18 +29,18 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import QtQuick 2.9
-import QtGraphicalEffects 1.15
-import QtMultimedia 5.8
-import org.asteroid.controls 1.0
-import org.asteroid.utils 1.0
-import org.asteroid.launcher 1.0
-import org.nemomobile.systemsettings 1.0
-import Nemo.Configuration 1.0
-import Nemo.Mce 1.0
-import Nemo.DBus 2.0
-import Nemo.Ngf 1.0
-import Connman 0.2
+import QtQuick
+import Qt5Compat.GraphicalEffects
+import QtMultimedia
+import org.asteroid.controls
+import org.asteroid.utils
+import org.asteroid.launcher
+import org.nemomobile.systemsettings
+import Nemo.Configuration
+import Nemo.Mce
+import Nemo.DBus
+import Nemo.Ngf
+import Connman
 
 Item {
     id: rootitem

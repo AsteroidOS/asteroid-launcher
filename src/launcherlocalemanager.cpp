@@ -36,14 +36,18 @@
 LauncherLocaleManager::LauncherLocaleManager()
 {
     m_translator = new QTranslator(this);
-    m_translator->load(QLocale(), "asteroid-launcher", ".", "/usr/share/translations", ".qm");
+    if (!m_translator->load(QLocale(), "asteroid-launcher", ".", "/usr/share/translations", ".qm")) {
+        qDebug() << "asteroid-launcher: Failed to load" << QLocale().name() << "translations";
+    }
     qApp->installTranslator(m_translator);
 }
 
 void LauncherLocaleManager::onLocaleChanged()
 {
     qApp->removeTranslator(m_translator);
-    m_translator->load(QLocale(), "asteroid-launcher", ".", "/usr/share/translations", ".qm");
+    if (!m_translator->load(QLocale(), "asteroid-launcher", ".", "/usr/share/translations", ".qm")) {
+        qDebug() << "asteroid-launcher: Failed to load" << QLocale().name() << "translations";
+    }
     qApp->installTranslator(m_translator);
 
     QDBusInterface systemdInterface("org.freedesktop.systemd1", "/org/freedesktop/systemd1", "org.freedesktop.systemd1.Manager", QDBusConnection::sessionBus());
