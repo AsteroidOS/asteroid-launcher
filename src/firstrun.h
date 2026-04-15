@@ -38,7 +38,7 @@ class FirstRun : public QObject
 {
     Q_OBJECT
 public:
-    FirstRun();
+    explicit FirstRun(QObject *parent = nullptr);
 
     Q_INVOKABLE bool isFirstRun();
     Q_INVOKABLE void startFirstRun();
