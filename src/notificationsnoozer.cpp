@@ -32,6 +32,16 @@
 #include <timed-qt5/event>
 #include <timed-qt5/interface>
 
+static QString shellEscape(const QString &s)
+{
+    QString escaped = s;
+    escaped.replace(QLatin1Char('\\'), QLatin1String("\\\\"));
+    escaped.replace(QLatin1Char('"'),  QLatin1String("\\\""));
+    escaped.replace(QLatin1Char('$'),  QLatin1String("\\$"));
+    escaped.replace(QLatin1Char('`'),  QLatin1String("\\`"));
+    return escaped;
+}
+
 bool NotificationSnoozer::snooze(LipstickNotification *notif, int minutes)
 {
     /* Build a notificationtool command to be triggered later */
@@ -43,13 +53,13 @@ bool NotificationSnoozer::snooze(LipstickNotification *notif, int minutes)
     const QVariantHash hints(notif->hints());
     QVariantHash::const_iterator hit = hints.constBegin(), hend = hints.constEnd();
     for( ; hit != hend; ++hit)
-        cmdStream << " --hint=\"" << hit.key() << " " << hit.value().toString() << "\"";
+        cmdStream << " --hint=\"" << shellEscape(hit.key()) << " " << shellEscape(hit.value().toString()) << "\"";
 
-    cmdStream << " --application=\"" << notif->appName() << "\"";
-    cmdStream << " --icon=\"" << notif->appIcon() << "\"";
+    cmdStream << " --application=\"" << shellEscape(notif->appName()) << "\"";
+    cmdStream << " --icon=\"" << shellEscape(notif->appIcon()) << "\"";
     cmdStream << " --timeout=\"" << notif->expireTimeout() << "\"";
-    cmdStream << " \"" << notif->summary() << "\"";
-    cmdStream << " \"" << notif->body() << "\"";
+    cmdStream << " \"" << shellEscape(notif->summary()) << "\"";
+    cmdStream << " \"" << shellEscape(notif->body()) << "\"";
 
     /* Build a timed countdown that will run the notificationtool command */
     Maemo::Timed::Interface interface;
