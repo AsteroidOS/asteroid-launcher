@@ -35,6 +35,7 @@ MouseArea {
 
     width: parent.width
     height: width
+    preventStealing: true
 
     property alias icon: ic.name
     property bool checkable: false

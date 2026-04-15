@@ -345,6 +345,7 @@ Item {
         snapMode: ListView.SnapOneItem
         clip: true
         interactive: true
+        pressDelay: 200
         boundsBehavior: Flickable.StopAtBounds
         spacing: Dims.l(4)
 
