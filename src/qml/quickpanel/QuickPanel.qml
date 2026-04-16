@@ -30,7 +30,7 @@
  */
 
 import QtQuick 2.9
-import QtGraphicalEffects 1.15
+import QtGraphicalEffects 1.0
 import QtMultimedia 5.8
 import org.asteroid.controls 1.0
 import org.asteroid.utils 1.0
@@ -86,7 +86,7 @@ Item {
     ConfigurationValue {
         id: sliderToggles
         key: "/desktop/asteroid/quickpanel/slider"
-        defaultValue: ["brightnessToggle", "bluetoothToggle", "hapticsToggle", "wifiToggle", "soundToggle", "cinemaToggle", "aodToggle", "powerOffToggle", "rebootToggle", "musicButton", "flashlightButton"]
+        defaultValue: ["brightnessToggle", "bluetoothToggle", "hapticsToggle", "wifiToggle", "soundToggle", "airplaneModeToggle", "aodToggle", "powerOffToggle", "rebootToggle", "cinemaToggle", "musicButton", "flashlightButton"]
     }
 
     ConfigurationValue {
@@ -100,10 +100,11 @@ Item {
             "hapticsToggle": true,
             "wifiToggle": true,
             "soundToggle": true,
-            "cinemaToggle": true,
+            "airplaneModeToggle": true,
             "aodToggle": true,
             "powerOffToggle": true,
             "rebootToggle": true,
+            "cinemaToggle": false,
             "musicButton": false,
             "flashlightButton": false
         }
@@ -146,10 +147,27 @@ Item {
         volume: 0.8
     }
 
+    NetworkManager {
+        id: networkManager
+    }
+
     NetworkTechnology {
         id: wifiStatus
         path: "/net/connman/technology/wifi"
     }
+
+    NetworkTechnology {
+        id: btTechnology
+        path: "/net/connman/technology/bluetooth"
+    }
+
+    // Transient airplane-mode state — intentionally plain properties so they
+    // reset on reboot.  Persisting these via dconf would pollute the config
+    // namespace for runtime-only bookkeeping.
+    property bool preAirplaneWifi: false
+    property bool preAirplaneBt: false
+    property bool airplaneWifiUserChanged: false
+    property bool airplaneBtUserChanged: false
 
     states: [
         State {
@@ -257,10 +275,11 @@ Item {
             "brightnessToggle": brightnessToggleComponent,
             "bluetoothToggle": bluetoothToggleComponent,
             "hapticsToggle": hapticsToggleComponent,
-            "cinemaToggle": cinemaToggleComponent,
+            "airplaneModeToggle": airplaneModeToggleComponent,
             "aodToggle": aodToggleComponent,
             "powerOffToggle": powerOffToggleComponent,
             "rebootToggle": rebootToggleComponent,
+            "cinemaToggle": cinemaToggleComponent,
             "musicButton": musicButtonComponent,
             "flashlightButton": flashlightButtonComponent
         };
@@ -615,6 +634,8 @@ Item {
 
             onClicked: {
                 wifiStatus.powered = !checked
+                if (networkManager.offlineMode)
+                    airplaneWifiUserChanged = true
             }
         }
     }
@@ -634,6 +655,8 @@ Item {
 
             onClicked: {
                 btStatus.powered = !checked
+                if (networkManager.offlineMode)
+                    airplaneBtUserChanged = true
             }
         }
     }
@@ -716,6 +739,33 @@ Item {
                 target: valueMeter
                 function onResetDirection() {
                     isIncreasing = true
+                }
+            }
+        }
+    }
+
+    Component {
+        id: airplaneModeToggleComponent
+        QuickPanelToggle {
+            icon: networkManager.offlineMode ? "ios-plane" : "ios-plane-outline"
+            checkable: true
+            checked: networkManager.offlineMode
+
+            onClicked: {
+                if (!checked) {
+                    preAirplaneWifi = wifiStatus.powered
+                    preAirplaneBt = btTechnology.powered
+                    airplaneWifiUserChanged = false
+                    airplaneBtUserChanged = false
+                    networkManager.offlineMode = true
+                } else {
+                    networkManager.offlineMode = false
+                    if (!airplaneWifiUserChanged)
+                        wifiStatus.powered = preAirplaneWifi
+                    if (!airplaneBtUserChanged)
+                        btTechnology.powered = preAirplaneBt
+                    airplaneWifiUserChanged = false
+                    airplaneBtUserChanged = false
                 }
             }
         }
