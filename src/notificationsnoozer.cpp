@@ -29,8 +29,8 @@
 
 #include "notificationsnoozer.h"
 
-#include <timed-qt5/event>
-#include <timed-qt5/interface>
+#include <timed-qt6/event>
+#include <timed-qt6/interface>
 
 bool NotificationSnoozer::snooze(LipstickNotification *notif, int minutes)
 {
