@@ -1,22 +1,6 @@
-/*
- * Copyright (C) 2023 - Timo Könnecke <github.com/eLtMosen>
- *               2021 - Ed Beroset <github.com/beroset>
- *
- * All rights reserved.
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 2.1 of the
- * License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
+// SPDX-FileCopyrightText: 2023 Timo Könnecke <github.com/eLtMosen>
+// SPDX-FileCopyrightText: 2021 Ed Beroset <github.com/beroset>
+// SPDX-License-Identifier: LGPL-2.1-or-later
 
 import QtQuick 2.15
 import QtQuick.Shapes 1.15
@@ -30,7 +14,7 @@ Item {
 
     property string currentColor: ""
     property string userColor: ""
-    property int hour: wallClock.time.toLocaleString(Qt.locale(), "h ap").slice(0, 2) === "12" ? 0 : wallClock.time.toLocaleString(Qt.locale(), "h ap").slice(0, 2)
+    property int hour: 0
     property var colorOffset: ["#ff0000", "#ff8000", "#ffff00", "#80ff00", "#00ff00", "#00ff80", "#00ffff", "#0080ff", "#0000ff", "#8000ff", "#ff00ff", "#ff0080"]
     property var wordsDE: ["zwölf", "eins", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun", "zehn", "elf"]
     property var wordsEN: ["twelve", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven"]
@@ -49,10 +33,9 @@ Item {
     Item {
         id: root
 
+        anchors.centerIn: parent
         height: parent.width > parent.height ? parent.height : parent.width
         width: height
-
-        anchors.centerIn: parent
 
         Item {
             id: nightstandMode
@@ -60,13 +43,8 @@ Item {
             readonly property bool active: nightstand
 
             anchors.fill: parent
-
-            layer {
-                enabled: true
-                samples: 4
-                smooth: true
-                textureSize: Qt.size(nightstandMode.width * 2, nightstandMode.height * 2)
-            }
+            layer.enabled: true
+            layer.samples: 4
             visible: nightstandMode.active
 
             Repeater {
@@ -80,15 +58,15 @@ Item {
                 property bool clockwise: true
                 property real arcStrokeWidth: .02
                 property real scalefactor: .48 - (arcStrokeWidth / 2)
-                property real chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
-                readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
+                property int chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
+                readonly property var colorArray: ["red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
                 model: segmentAmount
 
                 Shape {
                     id: segment
 
-                    visible: index === 0 ? true : (index/segmentedArc.segmentAmount) < segmentedArc.inputValue
+                    visible: index === 0 ? true : (index / segmentedArc.segmentAmount) < segmentedArc.inputValue
 
                     ShapePath {
                         fillColor: "transparent"
@@ -97,7 +75,7 @@ Item {
                         capStyle: ShapePath.FlatCap
                         joinStyle: ShapePath.MiterJoin
                         startX: parent.width / 2
-                        startY: parent.height * ( .5 - segmentedArc.scalefactor)
+                        startY: parent.height * (.5 - segmentedArc.scalefactor)
 
                         PathAngleArc {
                             centerX: parent.width / 2
@@ -118,14 +96,17 @@ Item {
             id: batteryChargePercentage
         }
 
+        // z: 2 retained — circleBack must always paint above Repeater delegates
+        // whose z is dynamic (hour == index ? 1 : 0); declaration order cannot satisfy this
         Rectangle {
             id: circleBack
             z: 2
 
-            property var toggle: 1
-            antialiasing : true
-            x: parent.width / 2 - width / 2
-            y: parent.height / 2 - height / 2
+            anchors {
+                horizontalCenter: parent.horizontalCenter
+                verticalCenter: parent.verticalCenter
+            }
+            antialiasing: true
             color: "white"
             width: parent.width * 0.3
             height: parent.height * 0.3
@@ -134,12 +115,14 @@ Item {
             Text {
                 id: minuteDisplay
 
-                font.pixelSize: parent.height * 0.549
-                font.family: "Montserrat"
-                font.styleName: "Regular"
+                anchors.centerIn: parent
                 color: "black"
                 opacity: 1
-                anchors.centerIn: parent
+                font {
+                    pixelSize: parent.height * 0.549
+                    family: "Montserrat"
+                    styleName: "Regular"
+                }
                 text: wallClock.time.toLocaleString(Qt.locale(), "mm")
             }
         }
@@ -157,11 +140,12 @@ Item {
                 color: hour == index ? "white" : colorOffset[index]
                 opacity: 1
                 radius: width * 0.5
+
                 transform: [
                     Rotation {
-                        origin.x: backRectangles.height / 2;
-                        origin.y: backRectangles.height / 2;
-                        angle: ((index) * 30) - 90
+                        origin.x: backRectangles.height / 2
+                        origin.y: backRectangles.height / 2
+                        angle: (index * 30) - 90
                     },
                     Translate {
                         x: (parent.width - backRectangles.height) / 2
@@ -169,13 +153,24 @@ Item {
                     }
                 ]
                 state: currentColor
-                states: State { name: "black";
-                    PropertyChanges { target: backRectangles;
-                        color: hour == index ? "white" : "black" }
+
+                states: State {
+                    name: "black"
+                    PropertyChanges { target: backRectangles; color: hour == index ? "white" : "black" }
                 }
                 transitions: Transition {
                     from: ""; to: "black"; reversible: true
-                        ColorAnimation { duration: 500 }
+                    ColorAnimation { duration: 500 }
+                }
+
+                layer.enabled: true
+                layer.effect: DropShadow {
+                    transparentBorder: true
+                    horizontalOffset: 3
+                    verticalOffset: 3
+                    radius: 12.0
+                    samples: 9
+                    color: "#50000000"
                 }
 
                 Text {
@@ -183,71 +178,75 @@ Item {
 
                     property var heightFontOffest: (index > 0 && index < 7) ? -parent.height * 0.05 : parent.height * 0.05
 
-                    font.pixelSize: parent.height * (hour == index ? 0.70 : 0.56)
-                    font.family: "SourceSansPro"
-                    font.styleName: hour == index ? "Semibold" : "Light"
-                    font.letterSpacing: hour == index ? -parent.height * 0.02 : parent.height * 0.001
-                    color: "black"
                     x: hour == index ? parent.height * 1.58 : parent.height * 1.94
                     y: ((parent.height - hourText.height) / 2) + heightFontOffest
-                    text: Qt.locale().name.substring(0,2) === "de" ? wordsDE[index]:
-                          Qt.locale().name.substring(0,2) === "fr" ? wordsFR[index]:
-                          Qt.locale().name.substring(0,2) === "es" ? wordsES[index]:
-                          Qt.locale().name.substring(0,2) === "it" ? wordsIT[index]:
-                          Qt.locale().name.substring(0,2) === "nl" ? wordsNL[index]:
-                          Qt.locale().name.substring(0,2) === "el" ? wordsGR[index]:
-                          Qt.locale().name.substring(0,2) === "sv" ? wordsSV[index]:
-                          Qt.locale().name.substring(0,2) === "sk" ? wordsSK[index]:
-                          Qt.locale().name.substring(0,2) === "da" ? wordsDA[index]:
-                          Qt.locale().name.substring(0,2) === "pt" ? wordsPT[index]:
-                          Qt.locale().name.substring(0,2) === "tr" ? wordsTR[index]:
-                          Qt.locale().name.substring(0,2) === "nb" ? wordsNB[index]:
+                    color: "black"
+                    font {
+                        pixelSize: parent.height * (hour == index ? 0.70 : 0.56)
+                        family: "SourceSansPro"
+                        styleName: hour == index ? "Semibold" : "Light"
+                        letterSpacing: hour == index ? -parent.height * 0.02 : parent.height * 0.001
+                    }
+                    text: Qt.locale().name.substring(0,2) === "de" ? wordsDE[index] :
+                          Qt.locale().name.substring(0,2) === "fr" ? wordsFR[index] :
+                          Qt.locale().name.substring(0,2) === "es" ? wordsES[index] :
+                          Qt.locale().name.substring(0,2) === "it" ? wordsIT[index] :
+                          Qt.locale().name.substring(0,2) === "nl" ? wordsNL[index] :
+                          Qt.locale().name.substring(0,2) === "el" ? wordsGR[index] :
+                          Qt.locale().name.substring(0,2) === "sv" ? wordsSV[index] :
+                          Qt.locale().name.substring(0,2) === "sk" ? wordsSK[index] :
+                          Qt.locale().name.substring(0,2) === "da" ? wordsDA[index] :
+                          Qt.locale().name.substring(0,2) === "pt" ? wordsPT[index] :
+                          Qt.locale().name.substring(0,2) === "tr" ? wordsTR[index] :
+                          Qt.locale().name.substring(0,2) === "nb" ? wordsNB[index] :
                                                                      wordsEN[index]
+
                     transform: Rotation {
-                        origin.x: hourText.width / 2;
-                        origin.y: hourText.height / 2;
+                        origin.x: hourText.width / 2
+                        origin.y: hourText.height / 2
                         /* flip text for readability for hours 1 through 6 */
                         angle: (index > 0 && index < 7) ? 0 : 180
                     }
                     state: currentColor
-                    states: State { name: "black";
-                        PropertyChanges { target: hourText;
-                            color: hour == index ? "black" : "white" }
+
+                    states: State {
+                        name: "black"
+                        PropertyChanges { target: hourText; color: hour == index ? "black" : "white" }
                     }
                     transitions: Transition {
                         from: ""; to: "black"; reversible: true
-                            ColorAnimation { duration: 500 }
+                        ColorAnimation { duration: 500 }
                     }
-                }
-                layer.enabled: true
-                layer.effect: DropShadow {
-                    transparentBorder: true
-                    horizontalOffset: 3
-                    verticalOffset: 3
-                    radius: 12.0
-                    samples: 17
-                    color: "#50000000"
                 }
             }
         }
 
         Connections {
             target: compositor
-
             function onDisplayAmbientEntered() {
-                if (currentColor == "") {
+                if (currentColor === "") {
                     currentColor = "black"
                     userColor = ""
-                }
-                else
+                } else {
                     userColor = "black"
+                }
             }
-
             function onDisplayAmbientLeft() {
-                if (userColor == "") {
+                if (userColor === "") {
                     currentColor = ""
                 }
             }
         }
+    }
+
+    Connections {
+        target: wallClock
+        function onTimeChanged() {
+            hour = wallClock.time.getHours() % 12
+        }
+    }
+
+    Component.onCompleted: {
+        hour = wallClock.time.getHours() % 12
     }
 }

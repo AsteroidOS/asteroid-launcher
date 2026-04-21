@@ -1,37 +1,11 @@
-/*
- * Copyright (C) 2023 - Timo Könnecke <github.com/eLtMosen>
- *               2022 - Darrel Griët <dgriet@gmail.com>
- *               2022 - Ed Beroset <github.com/beroset>
- *               2021 - Oliver Geneser <olivergeneser@gmail.com>
- *               2016 - Sylvia van Os <iamsylvie@openmailbox.org>
- *               2015 - Florent Revest <revestflo@gmail.com>
- *               2014 - Aleksi Suomalainen <suomalainen.aleksi@gmail.com>
- * All rights reserved.
- *
- * You may use this file under the terms of BSD license as follows:
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *     * Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the author nor the
- *       names of its contributors may be used to endorse or promote products
- *       derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+// SPDX-FileCopyrightText: 2023 Timo Könnecke <github.com/eLtMosen>
+// SPDX-FileCopyrightText: 2022 Darrel Griët <dgriet@gmail.com>
+// SPDX-FileCopyrightText: 2022 Ed Beroset <github.com/beroset>
+// SPDX-FileCopyrightText: 2021 Oliver Geneser <olivergeneser@gmail.com>
+// SPDX-FileCopyrightText: 2016 Sylvia van Os <iamsylvie@openmailbox.org>
+// SPDX-FileCopyrightText: 2015 Florent Revest <revestflo@gmail.com>
+// SPDX-FileCopyrightText: 2014 Aleksi Suomalainen <suomalainen.aleksi@gmail.com>
+// SPDX-License-Identifier: BSD-3-Clause
 
 import QtQuick 2.15
 import QtQuick.Shapes 1.15
@@ -54,7 +28,6 @@ Item {
             id: watchfaceRoot
 
             anchors.centerIn: parent
-
             width: parent.width * (nightstandMode.active ? .8 : 1)
             height: width
 
@@ -86,6 +59,7 @@ Item {
                     var hoursListmenos = ["<b>doce</b><br>menos", "<b>una</b><br>menos", "<b>dos</b><br>menos", "<b>tres</b><br>menos", "<b>cuatro</b><br>menos", "<b>cinco</b><br>menos", "<b>seis</b><br>menos", "<b>siete</b><br>menos", "<b>ocho</b><br>menos", "<b>nueve</b><br>menos", "<b>diez</b><br>menos", "<b>once</b><br>menos"]
                     var nextHour = [false, false, false, false, false, false, false, true, true, true, true, true, true]
                     var enPunto = [true, false, false, false, false, false, false, false, false, false, false, false, true]
+
                     var minutes = Math.round(time.getMinutes() / 5)
                     var hours = (time.getHours() + (nextHour[minutes] ? 1 : 0)) % 12
 
@@ -94,7 +68,6 @@ Item {
                     if (enPunto[minutes]) {
                         var generatedString = hoursList[hours] + newline + minutesList[minutes]
                     } else {
-                        //also use next hour to decide between y or menos
                         if (nextHour[minutes]) {
                             var generatedString = hoursListmenos[hours] + newline + minutesList[minutes]
                         } else {
@@ -105,30 +78,30 @@ Item {
                 }
 
                 function generateTimeDe(time) {
-                    var nextHour   = [false, false, false, false, false, true, true, true, true, true, true, true, true]
+                    var nextHour = [false, false, false, false, false, true, true, true, true, true, true, true, true]
+
                     var minutes = Math.round(time.getMinutes() / 5)
                     var hours = (time.getHours() + (nextHour[minutes] ? 1 : 0)) % 12
 
                     var minutesList = ["uhr", "fünf<br>nach", "zehn<br>nach", "viertel<br>nach", "zwanzig<br>nach", "fünf<br>vor halb", "halb", "fünf<br>nach halb", "zwanzig<br>vor", "viertel<br>vor", "zehn<br>vor", "fünf<br>vor", "uhr"]
                     var hoursList = ["<b>zwölf</b>", minutesList[minutes] === "uhr" ? "<b>ein</b>" : "<b>eins</b>", "<b>zwei</b>", "<b>drei</b>", "<b>vier</b>", "<b>fünf</b>", "<b>sechs</b>", "<b>sieben</b>", "<b>acht</b>", "<b>neun</b>", "<b>zehn</b>", "<b>elf</b>"]
                     var minutesFirst = [false, true, true, true, true, true, true, true, true, true, true, true, false]
-                    var hourSuffix = [false, false, false, false ,false, false, false, false, false, false, false, false, false]
+                    var hourSuffix = [false, false, false, false, false, false, false, false, false, false, false, false, false]
 
                     var newline = "<br>"
 
                     if (hourSuffix[minutes]) {
                         if (minutesFirst[minutes]) {
-                            var generatedString = minutesList[minutes] + newline + hoursList[hours] +" uhr"
+                            var generatedString = minutesList[minutes] + newline + hoursList[hours] + " uhr"
                         } else {
-                            var generatedString = hoursList[hours]+ newline + " uhr" + newline + minutesList[minutes]}
+                            var generatedString = hoursList[hours] + newline + " uhr" + newline + minutesList[minutes]
+                        }
                     } else {
-
-                            if (minutesFirst[minutes]) {
-                                var generatedString = minutesList[minutes] + newline + hoursList[hours]
-                            } else {
-                                var generatedString = hoursList[hours] + newline + minutesList[minutes]
-                            }
-
+                        if (minutesFirst[minutes]) {
+                            var generatedString = minutesList[minutes] + newline + hoursList[hours]
+                        } else {
+                            var generatedString = hoursList[hours] + newline + minutesList[minutes]
+                        }
                     }
                     return generatedString
                 }
@@ -202,8 +175,6 @@ Item {
                                   Qt.locale().name.substring(0,2) === "da" ?
                                       generateTimeDa(wallClock.time) :
                                       generateTimeEn(wallClock.time)
-
-
             }
 
             layer.enabled: true
@@ -212,7 +183,7 @@ Item {
                 horizontalOffset: 4
                 verticalOffset: 4
                 radius: 8.0
-                samples: 17
+                samples: 9
                 color: "#60000000"
             }
 
@@ -269,7 +240,8 @@ Item {
                     }
                     visible: nightstandMode.active
                     color: "#ffffffff"
-                    style: Text.Outline; styleColor: "#80000000"
+                    style: Text.Outline
+                    styleColor: "#80000000"
                     text: batteryChargePercentage.percent + "%"
                 }
             }
@@ -282,12 +254,8 @@ Item {
             property int batteryPercentChanged: batteryChargePercentage.percent
 
             anchors.fill: parent
-            layer {
-                enabled: true
-                samples: 4
-                smooth: true
-                textureSize: Qt.size(nightstandMode.width * 2, nightstandMode.height * 2)
-            }
+            layer.enabled: true
+            layer.samples: 4
             visible: nightstandMode.active
 
             Repeater {
@@ -301,15 +269,15 @@ Item {
                 property bool clockwise: true
                 property real arcStrokeWidth: .024
                 property real scalefactor: .45 - (arcStrokeWidth / 2)
-                property real chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
-                readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
+                property int chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
+                readonly property var colorArray: ["red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
                 model: segmentAmount
 
                 Shape {
                     id: segment
 
-                    visible: index === 0 ? true : (index/segmentedArc.segmentAmount) < segmentedArc.inputValue
+                    visible: index === 0 ? true : (index / segmentedArc.segmentAmount) < segmentedArc.inputValue
 
                     ShapePath {
                         fillColor: "transparent"
@@ -318,7 +286,7 @@ Item {
                         capStyle: ShapePath.FlatCap
                         joinStyle: ShapePath.MiterJoin
                         startX: parent.width / 2
-                        startY: parent.height * ( .5 - segmentedArc.scalefactor)
+                        startY: parent.height * (.5 - segmentedArc.scalefactor)
 
                         PathAngleArc {
                             centerX: parent.width / 2
@@ -348,8 +316,8 @@ Item {
         }
 
         Component.onCompleted: {
-            burnInProtectionManager.widthOffset = Qt.binding(function() { return width * (nightstandMode.active ? .08 : .2)})
-            burnInProtectionManager.heightOffset = Qt.binding(function() { return height * (nightstandMode.active ? .08 : .2)})
+            burnInProtectionManager.widthOffset = Qt.binding(function() { return width * (nightstandMode.active ? .08 : .2) })
+            burnInProtectionManager.heightOffset = Qt.binding(function() { return height * (nightstandMode.active ? .08 : .2) })
         }
     }
 }
