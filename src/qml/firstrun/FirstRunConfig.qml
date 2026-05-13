@@ -214,7 +214,8 @@ FlatMesh {
     ListModel {
         id: regionModel
         Component.onCompleted: {
-            config.currentTz = timedateDbus.getProperty("Timezone")
+            var tzRaw = timedateDbus.getProperty("Timezone")
+            config.currentTz = tzRaw ? tzRaw.toString() : ""
             timedateDbus.call("ListTimezones", undefined, function(m) {
                 config.timezoneList = m
             })
