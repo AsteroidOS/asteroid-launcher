@@ -53,7 +53,7 @@ Item {
     Item {
         property bool ready: false
         id: appLayer
-        visible: comp.appActive
+        visible: comp ? comp.appActive : false
         z: 2
 
         opacity: (width-2*gestureArea.value)/width
@@ -81,15 +81,15 @@ Item {
 
     BorderGestureArea {
         id: gestureArea
-        enabled: comp.appActive
+        enabled: comp ? comp.appActive : false
         z: 5
         anchors.fill: parent
         acceptsDown: true
-        acceptsRight: !comp.topmostWindowRequestsGesturesDisabled
+        acceptsRight: comp != null && comp.topmostWindow != null && !comp.topmostWindowRequestsGesturesDisabled
 
         property real swipeThreshold: 0.15
 
-        onGestureStarted: {
+        onGestureStarted: (gesture) => {
             swipeAnimation.stop()
             if (gesture == "down") {
                 Desktop.desktop.aboutToClose = true
@@ -98,7 +98,7 @@ Item {
             }
         }
 
-        onGestureFinished: {
+        onGestureFinished: (gesture) => {
             if ((gesture == "down" || gesture == "right")) {
                 if (gestureArea.progress >= swipeThreshold) {
                     swipeAnimation.valueTo = inverted ? -max : max
@@ -168,7 +168,13 @@ Item {
 
         // Only used to change blank timeout when on watchface or elsewhere
         property bool longTimeout: homeActive
-        Component.onCompleted: longTimeout = Qt.binding(function() { return homeActive && (Desktop.panelsGrid.currentVerticalPos == 0 && Desktop.panelsGrid.currentHorizontalPos == 0) })
+        Component.onCompleted: {
+            longTimeout = Qt.binding(function() {
+                return homeActive && Desktop.panelsGrid != null
+                    && Desktop.panelsGrid.currentVerticalPos == 0
+                    && Desktop.panelsGrid.currentHorizontalPos == 0
+            })
+        }
         onLongTimeoutChanged: lipstickSettings.lockscreenVisible = longTimeout
 
         // True if the home window is the topmost window
@@ -209,7 +215,7 @@ Item {
         onDisplayOff: delayTimer.start()
         onDisplayAboutToBeOn: delayTimer.stop()
 
-        onWindowAdded: {
+        onWindowAdded: (window) => {
             var isHomeWindow = window.isInProcess && comp.homeWindow == null && window.title === "Home"
             var isDialogWindow = window.category === "dialog"
             var isNotificationWindow = window.category == "notification"
@@ -229,7 +235,7 @@ Item {
             window.userData = w
 
             if (isHomeWindow) {
-                parent.z = Qt.binding(function() { return w.window.rootItem.z })
+                parent.z = Qt.binding(function() { return w.window.rootItem ? w.window.rootItem.z : 0 })
                 Desktop.desktop.aboutToOpen = Qt.binding(function() {return !homeActive && !appLayer.ready })
                 comp.homeWindow = w
                 setCurrentWindow(homeWindow)
@@ -246,9 +252,9 @@ Item {
             }
         }
 
-        onWindowRaised:  windowToFront(window.windowId)
+        onWindowRaised: (window) => windowToFront(window.windowId)
 
-        onWindowRemoved: {
+        onWindowRemoved: (window) => {
             var w = window.userData;
             if (comp.topmostWindow == w)
                 setCurrentWindow(comp.homeWindow);

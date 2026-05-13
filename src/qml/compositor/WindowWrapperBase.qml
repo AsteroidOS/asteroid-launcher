@@ -53,7 +53,11 @@ Item {
     }
     function animateIn() { fadeInAnimation.start(); }
 
-    Component.onCompleted: window.parent = wrapper
+    Component.onCompleted: {
+        window.parent = wrapper
+        window.x = 0
+        window.y = 0
+    }
 
     layer.enabled: smoothBorders && DeviceSpecs.hasRoundScreen
     layer.effect: CircleMaskShader { }
