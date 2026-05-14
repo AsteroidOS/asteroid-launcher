@@ -170,7 +170,7 @@ GestureFilterArea {
         if (panels[currentHorizontalPos + "x" + (currentVerticalPos+1)] !== undefined) panels[currentHorizontalPos + "x" + (currentVerticalPos+1)].visible = true
     }
 
-    onSwipeMoved: {
+    onSwipeMoved: (horizontal, delta) => {
         panelsHideTimeout.stop()
         if(horizontal) {
             contentX = content.x + delta
@@ -192,7 +192,7 @@ GestureFilterArea {
         bottomIndicator.animateFar()
     }
 
-    onSwipeReleased: {
+    onSwipeReleased: (horizontal, velocity, tracing) => {
         if(!tracing) {
             if(horizontal) {
                 var loc = contentX+currentHorizontalPos*panelWidth
