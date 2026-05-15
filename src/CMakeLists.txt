@@ -16,6 +16,11 @@ set(HEADERS
 
 add_executable(asteroid-launcher ${SRC} ${HEADERS} resources-qml.qrc)
 
+qt_add_shaders(
+    asteroid-launcher "asteroid-launcher_shaders"
+    FILES "qml/compositor/circlemaskshader.frag"
+)
+
 target_link_libraries(
 	asteroid-launcher
 	PRIVATE
