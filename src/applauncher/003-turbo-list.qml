@@ -90,7 +90,7 @@ ListView {
         // Rewriting Pythagoras rule: sqrt(r^2 - y^2) => sqrt(listview_height/2^2 - location_item_y^2)
         // Finally we add a small padding (Dims.w(5)) so that the item is not touching the left 'bezel'.
         property var screenRadius: appsView.height/2
-        property var itemLocationY: (launcherItem.height * (appsView.contentY/launcherItem.height - index) - launcherItem.height/2)
+        property var itemLocationY: Math.min(Math.max((launcherItem.height * (appsView.contentY/launcherItem.height - index) - launcherItem.height/2), -2 * screenRadius), 0)
         property var bezelOffset: screenRadius - Math.sqrt(Math.pow(screenRadius, 2) - Math.pow((screenRadius + itemLocationY),2))
         property var normalizedBezelOffset: 1.0 - (bezelOffset / screenRadius)
 
