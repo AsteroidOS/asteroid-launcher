@@ -40,32 +40,5 @@ ShaderEffect {
     property real end: 0.25
     property real beginning: 0.25 - smoothness
 
-    fragmentShader: "
-    #extension GL_OES_standard_derivatives: enable
-    #ifdef GL_ES
-        precision lowp float;
-    #endif // GL_ES
-    varying highp vec2 qt_TexCoord0;
-    uniform highp float qt_Opacity;
-    uniform lowp sampler2D source;
-    uniform lowp float end;
-    uniform lowp float beginning;
-    uniform bool keepInner;
-
-    void main(void) {
-        lowp float x, y;
-        x = (qt_TexCoord0.x - 0.5);
-        y = (qt_TexCoord0.y - 0.5);
-        if(keepInner) {
-            gl_FragColor = texture2D(source, qt_TexCoord0).rgba
-                * step(x * x + y * y, 0.25)
-                * smoothstep((x * x + y * y) , end, beginning)
-                * qt_Opacity;
-        } else {
-            gl_FragColor = texture2D(source, qt_TexCoord0).rgba
-                * (1.0 - (step(x * x + y * y, 0.25)
-                * smoothstep((x * x + y * y) , end, beginning)))
-                * qt_Opacity;
-        }
-    }"
+    fragmentShader: "/qml/compositor/circlemaskshader.frag.qsb"
 }
