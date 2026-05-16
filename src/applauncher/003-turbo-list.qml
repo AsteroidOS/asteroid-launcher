@@ -91,7 +91,10 @@ ListView {
         // Finally we add a small padding (Dims.w(5)) so that the item is not touching the left 'bezel'.
         property var screenRadius: appsView.height/2
         property var itemLocationY: (launcherItem.height * (appsView.contentY/launcherItem.height - index) - launcherItem.height/2)
-        property var bezelOffset: screenRadius - Math.sqrt(Math.pow(screenRadius, 2) - Math.pow((screenRadius + itemLocationY),2))
+        property var bezelOffset: {
+            var d = Math.pow(screenRadius, 2) - Math.pow(screenRadius + itemLocationY, 2)
+            return d < 0 ? screenRadius : screenRadius - Math.sqrt(d)
+        }
         property var normalizedBezelOffset: 1.0 - (bezelOffset / screenRadius)
 
         id: launcherItem
@@ -155,9 +158,11 @@ ListView {
                 width: parent.width
                 anchors.leftMargin: parent.width * 0.04
                 anchors.verticalCenter: parent.verticalCenter
-                font.pixelSize: (Math.exp((normalizedBezelOffset)) - 1) * viewScale * Dims.l(6)
-                font.letterSpacing: Dims.l(0.2)
-                font.styleName: "Bold"
+                font {
+                    pixelSize: Math.max(1, (Math.exp(normalizedBezelOffset) - 1) * viewScale * Dims.l(6))
+                    letterSpacing: Dims.l(0.2)
+                    styleName: "Bold"
+                }
                 style: (normalizedBezelOffset >= 0.99) ? Text.Outline : Text.Normal
                 styleColor: alb.centerColor(launcherModel.get(index).filePath)
                 text: model.object.title + localeManager.changesObserver
@@ -181,6 +186,6 @@ ListView {
         var lowerStop = Math.floor(contentY/(appsView.height/6))
         var upperStop = lowerStop+1
         var ratio = (contentY%appsView.height)/(appsView.height/6)
-        currentPos = Math.round(lowerStop+ratio)
+        currentPos = Math.round(lowerStop + ratio) | 0
     }
 }
