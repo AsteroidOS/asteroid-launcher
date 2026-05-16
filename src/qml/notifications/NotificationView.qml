@@ -80,9 +80,9 @@ MouseArea {
         }
     }
 
-    onPressed: prevY = mouse.y
+    onPressed: (mouse) => prevY = mouse.y
 
-    onPositionChanged: {
+    onPositionChanged: (mouse) => {
         var newY = column.y + mouse.y-prevY
         newY = Math.max(newY, -column.height+view.height)
         newY = Math.min(newY, 0)
