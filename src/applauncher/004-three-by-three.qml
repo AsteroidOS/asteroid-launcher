@@ -268,11 +268,11 @@ Item {
             clickY = Math.round(mouse.y)
             mouse.accepted = false
         }
-        onClicked: mouse.accepted = false
-        onReleased: mouse.accepted = false
-        onDoubleClicked: mouse.accepted = false
-        onPositionChanged: mouse.accepted = false
-        onPressAndHold: mouse.accepted = false
+        onClicked: (mouse) => mouse.accepted = false
+        onReleased: (mouse) => mouse.accepted = false
+        onDoubleClicked: (mouse) => mouse.accepted = false
+        onPositionChanged: (mouse) => mouse.accepted = false
+        onPressAndHold: (mouse) => mouse.accepted = false
     }
 
     Rectangle {
