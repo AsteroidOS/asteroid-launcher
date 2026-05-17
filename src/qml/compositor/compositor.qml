@@ -185,7 +185,7 @@ Item {
         property Item topmostApplicationWindow
 
         readonly property bool topmostWindowRequestsGesturesDisabled: topmostWindow && topmostWindow.window
-                                                                      && (topmostWindow.window.windowFlags & 1)
+                                                                      && topmostWindow.window.overridesSystemGestures
 
         function windowToFront(winId) {
             var o = comp.windowForId(winId)
