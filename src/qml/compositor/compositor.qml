@@ -153,7 +153,10 @@ Item {
         interval: 5000
         repeat: false
         onTriggered: {
-            Lipstick.compositor.closeClientForWindowId(comp.topmostWindow.window.windowId)
+            if (comp.ambientAppWindow) {
+                Lipstick.compositor.closeClientForWindowId(comp.ambientAppWindow.window.windowId)
+                comp.ambientAppWindow = null
+            }
             Lipstick.compositor.setAmbientUpdatesEnabled(true)
         }
     }
@@ -177,6 +180,9 @@ Item {
 
         // The application window that was most recently topmost
         property Item topmostApplicationWindow
+
+        // The application window that was visible when ambient mode was entered
+        property Item ambientAppWindow
 
         readonly property bool topmostWindowRequestsGesturesDisabled: topmostWindow && topmostWindow.window
                                                                       && (topmostWindow.window.windowFlags & 1)
@@ -207,7 +213,20 @@ Item {
         }
 
         onDisplayOff: delayTimer.start()
-        onDisplayAboutToBeOn: delayTimer.stop()
+        onDisplayAboutToBeOn: {
+            delayTimer.stop()
+            if (ambientAppWindow && !Lipstick.compositor.displayAmbient) {
+                setCurrentWindow(ambientAppWindow, true)
+                ambientAppWindow = null
+            }
+        }
+
+        onDisplayAmbientEntered: {
+            if (!homeActive) {
+                ambientAppWindow = topmostWindow
+                setCurrentWindow(homeWindow)
+            }
+        }
 
         onWindowAdded: {
             var isHomeWindow = window.isInProcess && comp.homeWindow == null && window.title === "Home"
@@ -252,6 +271,8 @@ Item {
             var w = window.userData;
             if (comp.topmostWindow == w)
                 setCurrentWindow(comp.homeWindow);
+            if (comp.ambientAppWindow == w)
+                comp.ambientAppWindow = null;
 
             if (window.userData)
                 window.userData.destroy()
