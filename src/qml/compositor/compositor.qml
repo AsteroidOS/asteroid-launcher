@@ -212,8 +212,18 @@ Item {
             }
         }
 
-        onDisplayOff: delayTimer.start()
-        onDisplayAboutToBeOn: delayTimer.stop()
+        onDisplayOff: {
+            if (Lipstick.compositor.ambientEnabled) {
+                delayTimer.start()
+            }
+        }
+        onDisplayAboutToBeOn: {
+            delayTimer.stop()
+            if (ambientAppWindow && !Lipstick.compositor.displayAmbient) {
+                setCurrentWindow(ambientAppWindow, true)
+                ambientAppWindow = null
+            }
+        }
 
         onWindowAdded: (window) => {
             var isHomeWindow = window.isInProcess && comp.homeWindow == null && window.title === "Home"
