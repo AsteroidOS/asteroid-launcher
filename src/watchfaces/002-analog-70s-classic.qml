@@ -364,12 +364,6 @@ Item {
 
             anchors.fill: parent
             visible: nightstandMode.active
-            layer {
-                enabled: true
-                samples: 4
-                smooth: true
-                textureSize: Qt.size(nightstandMode.width * 2, nightstandMode.height * 2)
-            }
 
             Repeater {
                 id: segmentedArc
@@ -382,7 +376,7 @@ Item {
                 property bool clockwise: true
                 property real arcStrokeWidth: .028
                 property real scalefactor: .42 - (arcStrokeWidth / 2)
-                property real chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
+                property int chargecolor: Math.floor(batteryChargePercentage.percent / 33.35) | 0
                 readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
                 model: segmentAmount
@@ -395,20 +389,19 @@ Item {
                     ShapePath {
                         fillColor: "transparent"
                         strokeColor: segmentedArc.colorArray[segmentedArc.chargecolor]
-                        strokeWidth: parent.height * segmentedArc.arcStrokeWidth
+                        strokeWidth: rootitem.height * segmentedArc.arcStrokeWidth
                         capStyle: ShapePath.RoundCap
                         joinStyle: ShapePath.MiterJoin
-                        startX: parent.width / 2
-                        startY: parent.height * ( .5 - segmentedArc.scalefactor)
+                        startX: rootitem.width / 2
+                        startY: rootitem.height * ( .5 - segmentedArc.scalefactor)
 
                         PathAngleArc {
-                            centerX: parent.width / 2
-                            centerY: parent.height / 2
-                            radiusX: segmentedArc.scalefactor * parent.width
-                            radiusY: segmentedArc.scalefactor * parent.height
+                            centerX: rootitem.width / 2
+                            centerY: rootitem.height / 2
+                            radiusX: segmentedArc.scalefactor * rootitem.width
+                            radiusY: segmentedArc.scalefactor * rootitem.height
                             startAngle: -90 + index * (sweepAngle + (segmentedArc.clockwise ? +segmentedArc.gap : -segmentedArc.gap)) + segmentedArc.start
-                            sweepAngle: segmentedArc.clockwise ? (segmentedArc.endFromStart / segmentedArc.segmentAmount) - segmentedArc.gap :
-                                                                 -(segmentedArc.endFromStart / segmentedArc.segmentAmount) + segmentedArc.gap
+                            sweepAngle: segmentedArc.clockwise ? (segmentedArc.endFromStart / segmentedArc.segmentAmount) - segmentedArc.gap : -(segmentedArc.endFromStart / segmentedArc.segmentAmount) + segmentedArc.gap
                             moveToStart: true
                         }
                     }
