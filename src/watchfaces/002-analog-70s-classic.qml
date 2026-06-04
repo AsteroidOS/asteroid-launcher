@@ -127,6 +127,7 @@ Item {
             font.family: "League Spartan"
             horizontalAlignment: Text.AlignHCenter
             style: Text.Outline; styleColor: Qt.rgba(0, 0, 0, .4)
+            renderType: Text.NativeRendering
             anchors {
                 horizontalCenter: parent.horizontalCenter
                 verticalCenter: parent.verticalCenter
@@ -144,6 +145,7 @@ Item {
             color: Qt.rgba(1, 1, 1, .7)
             horizontalAlignment: Text.AlignHCenter
             style: Text.Outline; styleColor: Qt.rgba(0, 0, 0, .4)
+            renderType: Text.NativeRendering
             font {
                 pixelSize: parent.height / 14
                 family: "League Spartan"
@@ -165,6 +167,7 @@ Item {
             color: Qt.rgba(1, 1, 1, .7)
             horizontalAlignment: Text.AlignHCenter
             style: Text.Outline; styleColor: Qt.rgba(0, 0, 0, .4)
+            renderType: Text.NativeRendering
             font {
                 pixelSize: parent.height / 10
                 family: "League Spartan"
@@ -183,6 +186,7 @@ Item {
             color: Qt.rgba(1, 1, 1, .7)
             horizontalAlignment: Text.AlignHCenter
             style: Text.Outline; styleColor: Qt.rgba(0, 0, 0, .4)
+            renderType: Text.NativeRendering
             font {
                 pixelSize: parent.height / 20
                 family: "League Spartan"
@@ -208,6 +212,7 @@ Item {
             visible: nightstandMode.active
             color: segmentedArc.colorArray[segmentedArc.chargecolor]
             style: Text.Outline; styleColor: Qt.rgba(0, 0, 0, .4)
+            renderType: Text.NativeRendering
             text: batteryChargePercentage.percent
         }
 
