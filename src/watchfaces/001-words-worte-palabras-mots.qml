@@ -7,12 +7,11 @@
 // SPDX-FileCopyrightText: 2014 Aleksi Suomalainen <suomalainen.aleksi@gmail.com>
 // SPDX-License-Identifier: BSD-3-Clause
 
+import Nemo.Mce
+import Qt5Compat.GraphicalEffects
 import QtQuick
 import QtQuick.Shapes
-import Qt5Compat.GraphicalEffects
 import org.asteroid.controls
-import org.asteroid.utils
-import Nemo.Mce
 
 Item {
     anchors.fill: parent
@@ -23,35 +22,42 @@ Item {
         property string localeName: Qt.locale().name
 
         anchors.centerIn: parent
-        height: parent.width > parent.height ? parent.height : parent.width
+        height: Math.min(parent.width, parent.height)
         width: height
 
         Item {
             id: watchfaceRoot
 
             anchors.centerIn: parent
-
             width: parent.width * (nightstandMode.active ? .8 : 1)
             height: width
 
+            layer.enabled: true
+            layer.effect: DropShadow {
+                transparentBorder: true
+                horizontalOffset: root.height * .01
+                verticalOffset: root.height * .01
+                radius: root.height * .014
+                samples: 9
+                color: "#60000000"
+            }
+
             Text {
+                id: timeDisplay
+
                 function generateTimeEn(time) {
                     var minutesList = ["'o clock", "five<br>past", "ten<br>past", "quarter<br>past", "twenty", "twenty<br>five", "thirty", "thirty<br>five", "forty", "quarter<br>to", "ten to", "five to", "'o clock"]
                     var hoursList = ["<b>twelve</b>", "<b>one</b>", "<b>two</b>", "<b>three</b>", "<b>four</b>", "<b>five</b>", "<b>six</b>", "<b>seven</b>", "<b>eight</b>", "<b>nine</b>", "<b>ten</b>", "<b>eleven</b>"]
                     var minutesFirst = [false, true, true, true, false, false, false, false, false, true, true, true, false]
                     var nextHour = [false, false, false, false, false, false, false, false, false, true, true, true, true]
-
                     var minutes = Math.round(time.getMinutes() / 5)
                     var hours = (time.getHours() + (nextHour[minutes] ? 1 : 0)) % 12
-
                     var newline = "<br>"
-
                     if (minutesFirst[minutes]) {
                         var generatedString = minutesList[minutes] + newline + hoursList[hours]
                     } else {
                         var generatedString = hoursList[hours] + newline + minutesList[minutes]
                     }
-
                     return generatedString
                 }
 
@@ -64,13 +70,10 @@ Item {
                     var enPunto = [true, false, false, false, false, false, false, false, false, false, false, false, true]
                     var minutes = Math.round(time.getMinutes() / 5)
                     var hours = (time.getHours() + (nextHour[minutes] ? 1 : 0)) % 12
-
                     var newline = "<br>"
-
                     if (enPunto[minutes]) {
                         var generatedString = hoursList[hours] + newline + minutesList[minutes]
                     } else {
-                        //also use next hour to decide between y or menos
                         if (nextHour[minutes]) {
                             var generatedString = hoursListmenos[hours] + newline + minutesList[minutes]
                         } else {
@@ -81,30 +84,17 @@ Item {
                 }
 
                 function generateTimeDe(time) {
-                    var nextHour   = [false, false, false, false, false, true, true, true, true, true, true, true, true]
+                    var nextHour = [false, false, false, false, false, true, true, true, true, true, true, true, true]
                     var minutes = Math.round(time.getMinutes() / 5)
                     var hours = (time.getHours() + (nextHour[minutes] ? 1 : 0)) % 12
-
                     var minutesList = ["uhr", "fünf<br>nach", "zehn<br>nach", "viertel<br>nach", "zwanzig<br>nach", "fünf<br>vor halb", "halb", "fünf<br>nach halb", "zwanzig<br>vor", "viertel<br>vor", "zehn<br>vor", "fünf<br>vor", "uhr"]
                     var hoursList = ["<b>zwölf</b>", minutesList[minutes] === "uhr" ? "<b>ein</b>" : "<b>eins</b>", "<b>zwei</b>", "<b>drei</b>", "<b>vier</b>", "<b>fünf</b>", "<b>sechs</b>", "<b>sieben</b>", "<b>acht</b>", "<b>neun</b>", "<b>zehn</b>", "<b>elf</b>"]
                     var minutesFirst = [false, true, true, true, true, true, true, true, true, true, true, true, false]
-                    var hourSuffix = [false, false, false, false ,false, false, false, false, false, false, false, false, false]
-
                     var newline = "<br>"
-
-                    if (hourSuffix[minutes]) {
-                        if (minutesFirst[minutes]) {
-                            var generatedString = minutesList[minutes] + newline + hoursList[hours] +" uhr"
-                        } else {
-                            var generatedString = hoursList[hours]+ newline + " uhr" + newline + minutesList[minutes]}
+                    if (minutesFirst[minutes]) {
+                        var generatedString = minutesList[minutes] + newline + hoursList[hours]
                     } else {
-
-                            if (minutesFirst[minutes]) {
-                                var generatedString = minutesList[minutes] + newline + hoursList[hours]
-                            } else {
-                                var generatedString = hoursList[hours] + newline + minutesList[minutes]
-                            }
-
+                        var generatedString = hoursList[hours] + newline + minutesList[minutes]
                     }
                     return generatedString
                 }
@@ -114,18 +104,14 @@ Item {
                     var hoursList = ["<b>douze</b>", "<b>une</b>", "<b>deux</b>", "<b>trois</b>", "<b>quatre</b>", "<b>cinq</b>", "<b>six</b>", "<b>sept</b>", "<b>huit</b>", "<b>neuf</b>", "<b>dix</b>", "<b>onze</b>"]
                     var minutesFirst = [false, false, false, false, false, false, false, false, false, false, false, false, false]
                     var nextHour = [false, false, false, false, false, false, false, true, true, true, true, true, true]
-
                     var minutes = Math.round(time.getMinutes() / 5)
                     var hours = (time.getHours() + (nextHour[minutes] ? 1 : 0)) % 12
-
                     var newline = "<br>"
-
                     if (minutesFirst[minutes]) {
                         var generatedString = minutesList[minutes] + newline + hoursList[hours]
                     } else {
                         var generatedString = hoursList[hours] + newline + minutesList[minutes]
                     }
-
                     return generatedString
                 }
 
@@ -134,26 +120,20 @@ Item {
                     var hoursList = ["<b>tolv</b>", "<b>et</b>", "<b>to</b>", "<b>tre</b>", "<b>fire</b>", "<b>fem</b>", "<b>seks</b>", "<b>syv</b>", "<b>otte</b>", "<b>ni</b>", "<b>ti</b>", "<b>elleve</b>"]
                     var minutesFirst = [false, true, true, true, true, false, true, false, false, true, true, true, false]
                     var nextHour = [false, false, false, false, false, false, true, false, false, true, true, true, false]
-
                     var minutes = Math.round(time.getMinutes() / 5)
                     var hours = (time.getHours() + (nextHour[minutes] ? 1 : 0)) % 12
-
                     var newline = "<br>"
-
                     if (minutesFirst[minutes]) {
                         var generatedString = minutesList[minutes] + newline + hoursList[hours]
                     } else {
                         var generatedString = hoursList[hours] + newline + minutesList[minutes]
                     }
-
                     return generatedString
                 }
 
-                id: timeDisplay
-
                 anchors {
                     verticalCenter: parent.verticalCenter
-                    verticalCenterOffset: -parent.height * .085
+                    verticalCenterOffset: -parent.height * .029
                     left: parent.left
                     right: parent.right
                 }
@@ -161,49 +141,28 @@ Item {
                 lineHeight: .64
                 color: "white"
                 textFormat: Text.StyledText
+                renderType: Text.NativeRendering
                 font {
-                    pixelSize: text.includes('veinticinco') || text.includes('moins') || text.includes('demie') || text.includes('vingt-cinq') ?
-                                       parent.height * .185 :
-                                   text.includes('nach halb') || text.includes('zwanzig') ?
-                                           parent.height * .22 :
-                                           parent.height * .24
-                    weight: Font.Light
                     family: "SourceSansPro"
+                    pixelSize: text.includes("veinticinco") || text.includes("moins") || text.includes("demie") || text.includes("vingt-cinq") ? parent.height * .185 : text.includes("nach halb") || text.includes("zwanzig") ? parent.height * .22 : parent.height * .24
+                    weight: Font.Light
                 }
-                text: root.localeName.substring(0,2) === "de" ?
-                          generateTimeDe(wallClock.time) :
-                          root.localeName.substring(0,2) === "es" ?
-                              generateTimeEs(wallClock.time) :
-                              root.localeName.substring(0,2) === "fr" ?
-                                  generateTimeFr(wallClock.time) :
-                                  root.localeName.substring(0,2) === "da" ?
-                                      generateTimeDa(wallClock.time) :
-                                      generateTimeEn(wallClock.time)
-
-
-            }
-
-            layer.enabled: true
-            layer.effect: DropShadow {
-                transparentBorder: true
-                horizontalOffset: 4
-                verticalOffset: 4
-                radius: 8.0
-                samples: 17
-                color: "#60000000"
+                text: root.localeName.substring(0,2) === "de" ? generateTimeDe(wallClock.time) : root.localeName.substring(0,2) === "es" ? generateTimeEs(wallClock.time) : root.localeName.substring(0,2) === "fr" ? generateTimeFr(wallClock.time) : root.localeName.substring(0,2) === "da" ? generateTimeDa(wallClock.time) : generateTimeEn(wallClock.time)
             }
 
             Text {
                 id: dateDisplay
 
                 anchors {
-                    topMargin: parent.width * .09
+                    topMargin: -parent.width * .019
                     top: timeDisplay.bottom
                     left: parent.left
                     right: parent.right
                 }
                 horizontalAlignment: Text.AlignHCenter
                 color: "white"
+                textFormat: Text.StyledText
+                renderType: Text.NativeRendering
                 font.pixelSize: parent.height * .07
                 text: wallClock.time.toLocaleString(Qt.locale(root.localeName), "<b>ddd</b> d MMM")
             }
@@ -221,15 +180,14 @@ Item {
                 Icon {
                     id: batteryIcon
 
-                    name: "ios-battery-charging"
                     anchors {
                         right: parent.horizontalCenter
                         rightMargin: watchfaceRoot.height * .004
-                        topMargin: watchfaceRoot.height * .005
                     }
-                    visible: nightstandMode.active
                     width: watchfaceRoot.width * .1
                     height: watchfaceRoot.height * .1
+                    visible: nightstandMode.active
+                    name: "ios-battery-charging"
                 }
 
                 Text {
@@ -239,14 +197,16 @@ Item {
                         left: parent.horizontalCenter
                         leftMargin: watchfaceRoot.height * .004
                     }
+                    visible: nightstandMode.active
+                    color: "white"
+                    style: Text.Outline
+                    styleColor: "#80000000"
+                    renderType: Text.NativeRendering
                     font {
-                        pixelSize: watchfaceRoot.width * .07
                         family: "Roboto"
+                        pixelSize: watchfaceRoot.width * .07
                         styleName: "Regular"
                     }
-                    visible: nightstandMode.active
-                    color: "#ffffffff"
-                    style: Text.Outline; styleColor: "#80000000"
                     text: batteryChargePercentage.percent + "%"
                 }
             }
@@ -272,14 +232,14 @@ Item {
                 property real arcStrokeWidth: .024
                 property real scalefactor: .45 - (arcStrokeWidth / 2)
                 property int chargecolor: Math.floor(batteryChargePercentage.percent / 33.35) | 0
-                readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
+                readonly property var colorArray: ["red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
                 model: segmentAmount
 
                 Shape {
                     id: segment
 
-                    visible: index === 0 ? true : (index/segmentedArc.segmentAmount) < segmentedArc.inputValue
+                    visible: index === 0 ? true : (index / segmentedArc.segmentAmount) < segmentedArc.inputValue
 
                     ShapePath {
                         fillColor: "transparent"
@@ -288,7 +248,7 @@ Item {
                         capStyle: ShapePath.FlatCap
                         joinStyle: ShapePath.MiterJoin
                         startX: root.width / 2
-                        startY: root.height * ( .5 - segmentedArc.scalefactor)
+                        startY: root.height * (.5 - segmentedArc.scalefactor)
 
                         PathAngleArc {
                             centerX: root.width / 2
@@ -316,8 +276,8 @@ Item {
         }
 
         Component.onCompleted: {
-            burnInProtectionManager.widthOffset = Qt.binding(function() { return width * (nightstandMode.active ? .08 : .2)})
-            burnInProtectionManager.heightOffset = Qt.binding(function() { return height * (nightstandMode.active ? .08 : .2)})
+            burnInProtectionManager.widthOffset = Qt.binding(function() { return root.width * (nightstandMode.active ? .08 : .2) })
+            burnInProtectionManager.heightOffset = Qt.binding(function() { return root.height * (nightstandMode.active ? .08 : .2) })
         }
     }
 }
