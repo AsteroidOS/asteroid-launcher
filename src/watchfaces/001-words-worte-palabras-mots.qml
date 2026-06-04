@@ -20,6 +20,8 @@ Item {
     Item {
         id: root
 
+        property string localeName: Qt.locale().name
+
         anchors.centerIn: parent
         height: parent.width > parent.height ? parent.height : parent.width
         width: height
@@ -158,6 +160,7 @@ Item {
                 horizontalAlignment: Text.AlignHCenter
                 lineHeight: .64
                 color: "white"
+                textFormat: Text.StyledText
                 font {
                     pixelSize: text.includes('veinticinco') || text.includes('moins') || text.includes('demie') || text.includes('vingt-cinq') ?
                                        parent.height * .185 :
@@ -167,13 +170,13 @@ Item {
                     weight: Font.Light
                     family: "SourceSansPro"
                 }
-                text: Qt.locale().name.substring(0,2) === "de" ?
+                text: root.localeName.substring(0,2) === "de" ?
                           generateTimeDe(wallClock.time) :
-                          Qt.locale().name.substring(0,2) === "es" ?
+                          root.localeName.substring(0,2) === "es" ?
                               generateTimeEs(wallClock.time) :
-                              Qt.locale().name.substring(0,2) === "fr" ?
+                              root.localeName.substring(0,2) === "fr" ?
                                   generateTimeFr(wallClock.time) :
-                                  Qt.locale().name.substring(0,2) === "da" ?
+                                  root.localeName.substring(0,2) === "da" ?
                                       generateTimeDa(wallClock.time) :
                                       generateTimeEn(wallClock.time)
 
@@ -202,7 +205,7 @@ Item {
                 horizontalAlignment: Text.AlignHCenter
                 color: "white"
                 font.pixelSize: parent.height * .07
-                text: wallClock.time.toLocaleString(Qt.locale(), "<b>ddd</b> d MMM")
+                text: wallClock.time.toLocaleString(Qt.locale(root.localeName), "<b>ddd</b> d MMM")
             }
 
             Item {
@@ -253,15 +256,8 @@ Item {
             id: nightstandMode
 
             readonly property bool active: nightstand
-            property int batteryPercentChanged: batteryChargePercentage.percent
 
             anchors.fill: parent
-            layer {
-                enabled: true
-                samples: 4
-                smooth: true
-                textureSize: Qt.size(nightstandMode.width * 2, nightstandMode.height * 2)
-            }
             visible: nightstandMode.active
 
             Repeater {
@@ -275,7 +271,7 @@ Item {
                 property bool clockwise: true
                 property real arcStrokeWidth: .024
                 property real scalefactor: .45 - (arcStrokeWidth / 2)
-                property real chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
+                property int chargecolor: Math.floor(batteryChargePercentage.percent / 33.35) | 0
                 readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
                 model: segmentAmount
@@ -288,20 +284,19 @@ Item {
                     ShapePath {
                         fillColor: "transparent"
                         strokeColor: segmentedArc.colorArray[segmentedArc.chargecolor]
-                        strokeWidth: parent.height * segmentedArc.arcStrokeWidth
+                        strokeWidth: root.height * segmentedArc.arcStrokeWidth
                         capStyle: ShapePath.FlatCap
                         joinStyle: ShapePath.MiterJoin
-                        startX: parent.width / 2
-                        startY: parent.height * ( .5 - segmentedArc.scalefactor)
+                        startX: root.width / 2
+                        startY: root.height * ( .5 - segmentedArc.scalefactor)
 
                         PathAngleArc {
-                            centerX: parent.width / 2
-                            centerY: parent.height / 2
-                            radiusX: segmentedArc.scalefactor * parent.width
-                            radiusY: segmentedArc.scalefactor * parent.height
+                            centerX: root.width / 2
+                            centerY: root.height / 2
+                            radiusX: segmentedArc.scalefactor * root.width
+                            radiusY: segmentedArc.scalefactor * root.height
                             startAngle: -90 + index * (sweepAngle + (segmentedArc.clockwise ? +segmentedArc.gap : -segmentedArc.gap)) + segmentedArc.start
-                            sweepAngle: segmentedArc.clockwise ? (segmentedArc.endFromStart / segmentedArc.segmentAmount) - segmentedArc.gap :
-                                                                 -(segmentedArc.endFromStart / segmentedArc.segmentAmount) + segmentedArc.gap
+                            sweepAngle: segmentedArc.clockwise ? (segmentedArc.endFromStart / segmentedArc.segmentAmount) - segmentedArc.gap : -(segmentedArc.endFromStart / segmentedArc.segmentAmount) + segmentedArc.gap
                             moveToStart: true
                         }
                     }
@@ -314,11 +309,10 @@ Item {
         }
 
         Connections {
-            target: localeManager
             function onChangesObserverChanged() {
-                timeDisplay.text = Qt.binding(function() { return generateTime(wallClock.time) })
-                dateDisplay.text = Qt.binding(function() { return wallClock.time.toLocaleString(Qt.locale(), "<b>ddd</b> d MMM") })
+                root.localeName = Qt.locale().name
             }
+            target: localeManager
         }
 
         Component.onCompleted: {
