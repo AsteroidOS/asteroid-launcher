@@ -4,12 +4,10 @@
 // SPDX-FileCopyrightText: 2017 Florent Revest <revestflo@gmail.com>
 // SPDX-License-Identifier: BSD-3-Clause
 
+import Nemo.Mce
+import Qt5Compat.GraphicalEffects
 import QtQuick
 import QtQuick.Shapes
-import Qt5Compat.GraphicalEffects
-import org.asteroid.controls
-import org.asteroid.utils
-import Nemo.Mce
 
 Item {
     anchors.fill: parent
@@ -34,7 +32,7 @@ Item {
         id: root
 
         anchors.centerIn: parent
-        height: parent.width > parent.height ? parent.height : parent.width
+        height: Math.min(parent.width, parent.height)
         width: height
 
         Item {
@@ -128,12 +126,6 @@ Item {
             readonly property bool active: nightstand
 
             anchors.fill: parent
-
-            layer {
-                enabled: true
-                samples: 4
-                smooth: true
-            }
             visible: nightstandMode.active
 
             Repeater {
@@ -147,7 +139,7 @@ Item {
                 property bool clockwise: true
                 property real arcStrokeWidth: .055
                 property real scalefactor: .45 - (arcStrokeWidth / 2)
-                property real chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
+                property int chargecolor: Math.floor(batteryChargePercentage.percent / 33.35) | 0
                 readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
                 model: segmentAmount
@@ -164,7 +156,7 @@ Item {
                         capStyle: ShapePath.FlatCap
                         joinStyle: ShapePath.MiterJoin
                         startX: root.width / 2
-                        startY: root.height * ( .5 - segmentedArc.scalefactor)
+                        startY: root.height * (.5 - segmentedArc.scalefactor)
 
                         PathAngleArc {
                             centerX: root.width / 2
@@ -172,8 +164,7 @@ Item {
                             radiusX: segmentedArc.scalefactor * root.width
                             radiusY: segmentedArc.scalefactor * root.height
                             startAngle: -90 + index * (sweepAngle + (segmentedArc.clockwise ? +segmentedArc.gap : -segmentedArc.gap)) + segmentedArc.start
-                            sweepAngle: segmentedArc.clockwise ? (segmentedArc.endFromStart / segmentedArc.segmentAmount) - segmentedArc.gap :
-                                                                 -(segmentedArc.endFromStart / segmentedArc.segmentAmount) + segmentedArc.gap
+                            sweepAngle: segmentedArc.clockwise ? (segmentedArc.endFromStart / segmentedArc.segmentAmount) - segmentedArc.gap : -(segmentedArc.endFromStart / segmentedArc.segmentAmount) + segmentedArc.gap
                             moveToStart: true
                         }
                     }
