@@ -8,31 +8,37 @@
 // SPDX-FileCopyrightText: 2012 Arto Jalkanen <ajalkane@gmail.com>
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
+import Nemo.Mce
+import Qt5Compat.GraphicalEffects
 import QtQuick
 import QtQuick.Shapes
-import Qt5Compat.GraphicalEffects
-import org.asteroid.controls
-import org.asteroid.utils
-import Nemo.Mce
 
 Item {
     anchors.fill: parent
+    Component.onCompleted: {
+        minuteArc.requestPaint();
+        burnInProtectionManager.widthOffset = Qt.binding(function() {
+            return width * 0.3;
+        });
+        burnInProtectionManager.heightOffset = Qt.binding(function() {
+            return height * 0.3;
+        });
+    }
 
     Item {
         id: root
 
-        anchors.centerIn: parent
-
         property int currentMinute: wallClock.time.getMinutes()
 
-        height: parent.width > parent.height ? parent.height : parent.width
+        anchors.centerIn: parent
+        height: Math.min(parent.width, parent.height)
         width: height
 
         Item {
             id: scaleContent
 
             anchors.centerIn: parent
-            width: parent.width * (nightstandMode.active ? .8 : 1)
+            width: parent.width * (nightstandMode.active ? 0.8 : 1)
             height: width
 
             Canvas {
@@ -45,48 +51,54 @@ Item {
                 renderStrategy: Canvas.Cooperative
                 visible: !displayAmbient && !nightstandMode.active
                 onPaint: {
-                    var ctx = getContext("2d")
-                    var rot = (wallClock.time.getMinutes() -15 ) * 6
-                    ctx.reset()
-                    ctx.lineWidth = parent.width*.0031
-                    var gradient = ctx.createConicalGradient (centerX, centerY, 90 * .01745)
-                        gradient.addColorStop(1 - (wallClock.time.getMinutes() / 60), Qt.rgba(1, 1, 1, .4))
-                        gradient.addColorStop(1 - (wallClock.time.getMinutes() / 60 / 6), Qt.rgba(1, 1, 1, 0))
-                    var gradient2 = ctx.createConicalGradient (centerX, centerY, 90 * .01745)
-                        gradient2.addColorStop(1 - (wallClock.time.getMinutes() / 60), Qt.rgba(1, 1, 1, .5))
-                        gradient2.addColorStop(1 - (wallClock.time.getMinutes() / 60 / 6), Qt.rgba(1, 1, 1, .01))
-                    ctx.fillStyle = gradient
-                    ctx.strokeStyle = gradient2
-                    ctx.beginPath()
-                    ctx.arc(centerX, centerY, width / 2.75, -90 * .017453, rot * .017453, false);
+                    var ctx = getContext("2d");
+                    var rot = (wallClock.time.getMinutes() - 15) * 6;
+                    ctx.reset();
+                    ctx.lineWidth = parent.width * 0.0031;
+                    var gradient = ctx.createConicalGradient(centerX, centerY, 90 * 0.01745);
+                    gradient.addColorStop(1 - (wallClock.time.getMinutes() / 60), Qt.rgba(1, 1, 1, 0.4));
+                    gradient.addColorStop(1 - (wallClock.time.getMinutes() / 60 / 6), Qt.rgba(1, 1, 1, 0));
+                    var gradient2 = ctx.createConicalGradient(centerX, centerY, 90 * 0.01745);
+                    gradient2.addColorStop(1 - (wallClock.time.getMinutes() / 60), Qt.rgba(1, 1, 1, 0.5));
+                    gradient2.addColorStop(1 - (wallClock.time.getMinutes() / 60 / 6), Qt.rgba(1, 1, 1, 0.01));
+                    ctx.fillStyle = gradient;
+                    ctx.strokeStyle = gradient2;
+                    ctx.beginPath();
+                    ctx.arc(centerX, centerY, width / 2.75, -90 * 0.017453, rot * 0.017453, false);
                     ctx.lineTo(centerX, centerY);
-                    ctx.fill()
-                    ctx.stroke()
+                    ctx.fill();
+                    ctx.stroke();
                 }
             }
 
             Text {
                 id: hourDisplay
 
+                renderType: Text.NativeRendering
+                color: Qt.rgba(1, 1, 1, 0.9)
+                opacity: 0.9
+                style: Text.Outline
+                styleColor: Qt.rgba(0, 0, 0, 0.2)
+                horizontalAlignment: Text.AlignHCenter
+                text: {
+                    if (use12H.value) {
+                        wallClock.time.toLocaleString(Qt.locale(), "hh ap").slice(0, 2);
+                    } else {
+                        wallClock.time.toLocaleString(Qt.locale(), "HH");
+                    }
+                }
+
                 anchors {
                     horizontalCenter: parent.horizontalCenter
                     verticalCenter: parent.verticalCenter
                 }
+
                 font {
-                    pixelSize: parent.height * .87
+                    pixelSize: parent.height * 0.87
                     family: "BebasKai"
                     weight: Font.Bold
                 }
-                renderType: Text.NativeRendering
-                color: Qt.rgba(1, 1, 1, .9)
-                opacity: .9
-                style: Text.Outline
-                styleColor: Qt.rgba(0, 0, 0, .2)
-                horizontalAlignment: Text.AlignHCenter
-                text: if (use12H.value) {
-                          wallClock.time.toLocaleString(Qt.locale(), "hh ap").slice(0, 2) }
-                      else
-                          wallClock.time.toLocaleString(Qt.locale(), "HH")
+
             }
 
             Rectangle {
@@ -96,12 +108,12 @@ Item {
                 property real centerX: parent.width / 2 - width / 2
                 property real centerY: parent.height / 2 - height / 2
 
-                x: centerX + Math.cos(rotM * 2 * Math.PI) * parent.width * .364
-                y: centerY + Math.sin(rotM * 2 * Math.PI) * parent.width * .364
+                x: centerX + Math.cos(rotM * 2 * Math.PI) * parent.width * 0.364
+                y: centerY + Math.sin(rotM * 2 * Math.PI) * parent.width * 0.364
                 width: parent.width / 4.3
                 height: width
                 radius: width / 2
-                color: Qt.rgba(.184, .184, .184, .95)
+                color: Qt.rgba(0.184, 0.184, 0.184, 0.95)
                 visible: !displayAmbient && !nightstandMode.active
             }
 
@@ -112,18 +124,21 @@ Item {
                 property real centerX: parent.width / 2 - width / 2
                 property real centerY: parent.height / 2 - height / 2
 
+                renderType: Text.NativeRendering
+                color: "white"
+                opacity: 1
+                x: centerX + Math.cos(rotM * 2 * Math.PI) * parent.width * 0.364
+                y: centerY + Math.sin(rotM * 2 * Math.PI) * parent.width * 0.364
+                text: wallClock.time.toLocaleString(Qt.locale(), "mm")
+
                 font {
                     pixelSize: parent.height / 5.24
                     family: "BebasKai"
                     styleName: "Condensed"
                 }
-                renderType: Text.NativeRendering
-                color: "white"
-                opacity: 1.00
-                x: centerX + Math.cos(rotM * 2 * Math.PI) * parent.width * .364
-                y: centerY + Math.sin(rotM * 2 * Math.PI) * parent.width * .364
-                text: wallClock.time.toLocaleString(Qt.locale(), "mm")
+
             }
+
         }
 
         Item {
@@ -133,6 +148,7 @@ Item {
 
             anchors.fill: parent
             visible: nightstandMode.active
+
             layer {
                 enabled: true
                 samples: 4
@@ -144,10 +160,10 @@ Item {
                 id: chargeArc
 
                 property real angle: batteryChargePercentage.percent * 360 / 100
-                property real arcStrokeWidth: .04
-                property real scalefactor: .49 - (arcStrokeWidth / 2)
+                property real arcStrokeWidth: 0.04
+                property real scalefactor: 0.49 - (arcStrokeWidth / 2)
                 property int chargecolor: Math.floor(batteryChargePercentage.percent / 33.35) | 0
-                readonly property var colorArray: ["red", "yellow", Qt.rgba(.318, 1, .051, .9)]
+                readonly property var colorArray: ["red", "yellow", Qt.rgba(0.318, 1, 0.051, 0.9)]
 
                 anchors.fill: parent
 
@@ -158,7 +174,7 @@ Item {
                     capStyle: ShapePath.FlatCap
                     joinStyle: ShapePath.MiterJoin
                     startX: chargeArc.width / 2
-                    startY: chargeArc.height * (.5 - chargeArc.scalefactor)
+                    startY: chargeArc.height * (0.5 - chargeArc.scalefactor)
 
                     PathAngleArc {
                         centerX: chargeArc.width / 2
@@ -169,9 +185,13 @@ Item {
                         sweepAngle: chargeArc.angle
                         moveToStart: false
                     }
+
                 }
+
             }
+
         }
+
     }
 
     MceBatteryLevel {
@@ -179,19 +199,15 @@ Item {
     }
 
     Connections {
-        target: wallClock
         function onTimeChanged() {
-            var minute = wallClock.time.getMinutes()
+            var minute = wallClock.time.getMinutes();
             if (currentMinute !== minute) {
-                currentMinute = minute
-                minuteArc.requestPaint()
+                currentMinute = minute;
+                minuteArc.requestPaint();
             }
         }
+
+        target: wallClock
     }
 
-    Component.onCompleted: {
-        minuteArc.requestPaint()
-        burnInProtectionManager.widthOffset = Qt.binding(function() { return width * .3 })
-        burnInProtectionManager.heightOffset = Qt.binding(function() { return height * .3 })
-    }
 }
