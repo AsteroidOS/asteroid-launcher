@@ -58,8 +58,9 @@ Item {
             font {
                 pixelSize: parent.height * .22
                 family: "Source Sans Pro"
-                styleName: "Light"
+                weight: Font.Light
             }
+            renderType: Text.NativeRendering
             color: nightstandMode.active || displayAmbient ? "#000" : "#fff"
             text: wallClock.time.toLocaleString(Qt.locale(), "mm")
 
@@ -125,8 +126,9 @@ Item {
                 font {
                     pixelSize: parent.width * .13
                     family: "Source Sans Pro"
-                    styleName: "Light"
+                    weight: Font.Light
                 }
+                renderType: Text.NativeRendering
                 visible: nightstandMode.active
                 color: chargeArc.colorArray[chargeArc.chargecolor]
                 text: batteryChargePercentage.percent
@@ -137,19 +139,11 @@ Item {
             id: batteryChargePercentage
         }
 
-        MceBatteryState {
-            id: batteryChargeState
-        }
-
-        MceCableState {
-            id: mceCableState
-        }
-
         Component.onCompleted: {
-            burnInProtectionManager.leftOffset = Qt.binding(function() { return width * nightstandMode.active ? .05 : .4})
-            burnInProtectionManager.rightOffset = Qt.binding(function() { return width * .05})
-            burnInProtectionManager.topOffset = Qt.binding(function() { return height * nightstandMode.active ? .05 : .4})
-            burnInProtectionManager.bottomOffset = Qt.binding(function() { return height * .05})
+            burnInProtectionManager.leftOffset = Qt.binding(function() { return width * (nightstandMode.active ? .05 : .4) })
+            burnInProtectionManager.rightOffset = Qt.binding(function() { return width * .05 })
+            burnInProtectionManager.topOffset = Qt.binding(function() { return height * (nightstandMode.active ? .05 : .4) })
+            burnInProtectionManager.bottomOffset = Qt.binding(function() { return height * .05 })
         }
     }
 }
