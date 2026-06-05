@@ -4,9 +4,9 @@
 // SPDX-FileCopyrightText: 2016 Florent Revest <revestflo@gmail.com>
 // SPDX-License-Identifier: BSD-3-Clause
 
+import Qt5Compat.GraphicalEffects
 import QtQuick
 import QtQuick.Shapes
-import Qt5Compat.GraphicalEffects
 import org.asteroid.controls
 import org.asteroid.utils
 import Nemo.Mce
@@ -18,7 +18,7 @@ Item {
         id: root
 
         anchors.centerIn: parent
-        height: parent.width > parent.height ? parent.height : parent.width
+        height: Math.min(parent.width, parent.height)
         width: height
 
         Item {
@@ -119,7 +119,6 @@ Item {
             id: nightstandMode
 
             readonly property bool active: nightstand
-            property int batteryPercentChanged: batteryChargePercentage.percent
 
             anchors.fill: parent
             visible: nightstandMode.active
@@ -128,7 +127,6 @@ Item {
                 id: chargeArc
 
                 property real angle: batteryChargePercentage.percent * 360 / 100
-                // radius of arc is scalefactor * height or width
                 property real arcStrokeWidth: .024
                 property real scalefactor: .42 - (arcStrokeWidth / 2)
                 property int chargecolor: Math.floor(batteryChargePercentage.percent / 33.35) | 0
@@ -143,7 +141,7 @@ Item {
                     capStyle: ShapePath.FlatCap
                     joinStyle: ShapePath.MiterJoin
                     startX: chargeArc.width / 2
-                    startY: chargeArc.height * ( .5 - chargeArc.scalefactor)
+                    startY: chargeArc.height * (.5 - chargeArc.scalefactor)
 
                     PathAngleArc {
                         centerX: chargeArc.width / 2
@@ -164,14 +162,16 @@ Item {
                     centerIn: parent
                     verticalCenterOffset: -parent.width * .3
                 }
+                visible: nightstandMode.active
+                color: chargeArc.colorArray[chargeArc.chargecolor]
+                style: Text.Outline
+                styleColor: "#80000000"
+                renderType: Text.NativeRendering
                 font {
                     pixelSize: parent.width / 20
                     family: "Xolonium"
-                    styleName: "Bold"
+                    weight: Font.Bold
                 }
-                visible: nightstandMode.active
-                color: chargeArc.colorArray[chargeArc.chargecolor]
-                style: Text.Outline; styleColor: "#80000000"
                 text: batteryChargePercentage.percent + "%"
             }
         }
