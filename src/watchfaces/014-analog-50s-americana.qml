@@ -29,23 +29,15 @@ Item {
         height: parent.width > parent.height ? parent.height : parent.width
         width: height
 
-        Canvas {
+        Rectangle {
             id: backCircle
 
-            anchors.fill: parent
-            antialiasing: true
-            smooth: true
-            renderStrategy: Canvas.Cooperative
+            anchors.centerIn: parent
+            width: parent.width
+            height: width
+            radius: width / 2
+            color: Qt.rgba(1, 1, 1, .20)
             visible: !displayAmbient
-            onPaint: {
-                var ctx = getContext("2d")
-                ctx.reset()
-                ctx.fillStyle = Qt.rgba(1, 1, 1, .20)
-                ctx.beginPath()
-                ctx.arc(parent.height / 2, parent.width / 2, parent.width * .5, 0*radian, 360 * radian, false);
-                ctx.fill()
-                ctx.closePath()
-            }
         }
 
         Item {
@@ -99,9 +91,11 @@ Item {
                     pixelSize: parent.width * .14
                     family: "Fyodor"
                 }
+                renderType: Text.NativeRendering
                 visible: nightstandMode.active
                 color: chargeArc.colorArray[chargeArc.chargecolor]
-                style: Text.Outline; styleColor: "#80000000"
+                style: Text.Outline
+                styleColor: "#80000000"
                 text: batteryChargePercentage.percent
             }
         }
@@ -364,8 +358,8 @@ Item {
             secondHand.requestPaint()
             minuteHand.minute = minute
             minuteHand.requestPaint()
-            hourHand.hour = hournightstandMode
+            hourHand.hour = hour
             hourHand.requestPaint()
-         }
+        }
     }
 }
