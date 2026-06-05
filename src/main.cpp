@@ -50,7 +50,7 @@
 
 int main(int argc, char **argv)
 {
-    QmlPath::append(":/qml/");
+    QmlPath::append(":/Launcher/");
     HomeApplication app(argc, argv, QString());
 
     FirstRun *firstRun = new FirstRun();
@@ -58,7 +58,7 @@ int main(int argc, char **argv)
     QObject::connect(app.localeManager(), SIGNAL(localeChanged()), launcherLocaleManager, SLOT(onLocaleChanged()));
 
     QGuiApplication::setFont(QFont("Noto Sans"));
-    app.setCompositorPath("qrc:/qml/compositor.qml");
+    app.setCompositorPath("qrc:/Launcher/compositor.qml");
     Qt::ScreenOrientation nativeOrientation = app.primaryScreen()->nativeOrientation();
     QByteArray v = qgetenv("LAUNCHER_NATIVEORIENTATION");
     if (!v.isEmpty()) {
@@ -88,7 +88,7 @@ int main(int argc, char **argv)
     qmlRegisterType<GestureFilterArea>("org.asteroid.launcher", 1, 0, "GestureFilterArea");
     qmlRegisterType<NotificationSnoozer>("org.asteroid.launcher", 1, 0, "NotificationSnoozer");
     qmlRegisterType<AppLauncher>("org.asteroid.launcher", 1, 0, "AppLauncher");
-    app.setQmlPath("qrc:/qml/MainScreen.qml");
+    app.setQmlPath("qrc:/Launcher/MainScreen.qml");
 
     // Give these to the environment inside the lipstick homescreen
     // Fixes a bug where some applications wouldn't launch, eg. terminal or browser

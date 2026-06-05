@@ -31,7 +31,7 @@ import QtQml
 import QtQuick
 import org.asteroid.controls
 import org.asteroid.utils
-import "qrc:/qml/compositor/";
+import "qrc:/Launcher/compositor/";
 import Nemo.Time
 import Nemo.Configuration
 
