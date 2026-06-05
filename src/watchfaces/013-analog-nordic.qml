@@ -19,8 +19,6 @@ import Nemo.Mce
 Item {
     anchors.fill: parent
 
-    property real radian: .01745
-
     Item {
         id: rootitem
 
@@ -100,9 +98,11 @@ Item {
                     family: "Noto Sans"
                     styleName: "ExtraCondensed"
                 }
+                renderType: Text.NativeRendering
                 visible: nightstandMode.active
                 color: chargeArc.colorArray[chargeArc.chargecolor]
-                style: Text.Outline; styleColor: "#80000000"
+                style: Text.Outline
+                styleColor: "#80000000"
                 text: batteryChargePercentage.percent
             }
         }
@@ -375,23 +375,16 @@ Item {
                 }
             }
 
-            Canvas {
+            Rectangle {
                 id: nailDot
 
-                anchors.fill: parent
-                smooth: true
-                renderStrategy: Canvas.Cooperative
-
-                onPaint: {
-                    var ctx = getContext("2d")
-                    ctx.reset()
-                    ctx.beginPath()
-                    ctx.strokeStyle = Qt.rgba(0, 0, 0, 1)
-                    ctx.lineWidth = parent.height * .0185
-                    ctx.arc(parent.width / 2, parent.height / 2, parent.height * .024, 0, 2 * Math.PI, false)
-                    ctx.stroke()
-                    ctx.closePath()
-                }
+                anchors.centerIn: parent
+                width: parent.height * .048
+                height: width
+                radius: width / 2
+                color: "transparent"
+                border.width: parent.height * .0185
+                border.color: "black"
             }
         }
 
@@ -427,8 +420,8 @@ Item {
             hourStrokes.requestPaint()
             minuteStrokes.requestPaint()
             numberStrokes.requestPaint()
-            burnInProtectionManager.widthOffset = Qt.binding(function() { return width * (nightstandMode.active ? .11 : .06)})
-            burnInProtectionManager.heightOffset = Qt.binding(function() { return height * (nightstandMode.active ? .11 : .06)})
+            burnInProtectionManager.widthOffset = Qt.binding(function() { return width * (nightstandMode.active ? .11 : .06) })
+            burnInProtectionManager.heightOffset = Qt.binding(function() { return height * (nightstandMode.active ? .11 : .06) })
         }
     }
 }
