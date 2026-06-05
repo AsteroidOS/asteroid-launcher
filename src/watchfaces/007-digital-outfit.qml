@@ -1,12 +1,10 @@
 // SPDX-FileCopyrightText: 2023 Timo Könnecke <github.com/moWerk>
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
+import Nemo.Mce
+import Qt5Compat.GraphicalEffects
 import QtQuick
 import QtQuick.Shapes
-import Qt5Compat.GraphicalEffects
-import org.asteroid.controls
-import org.asteroid.utils
-import Nemo.Mce
 
 Item {
     anchors.fill: parent
@@ -15,7 +13,7 @@ Item {
         id: root
 
         anchors.centerIn: parent
-        height: parent.width > parent.height ? parent.height : parent.width
+        height: Math.min(parent.width, parent.height)
         width: height
 
         Item {
@@ -80,6 +78,15 @@ Item {
             anchors.centerIn: root
             width: root.width * (nightstandMode.active ? .8 : 1)
             height: width
+            layer.enabled: true
+            layer.effect: DropShadow {
+                transparentBorder: true
+                horizontalOffset: watchfaceRoot.height * .01
+                verticalOffset: watchfaceRoot.height * .01
+                radius: watchfaceRoot.height * .018
+                samples: 9
+                color: "#99000000"
+            }
 
             Text {
                 id: hourDisplay
@@ -93,7 +100,7 @@ Item {
                     pixelSize: watchfaceRoot.height * .4
                     letterSpacing: watchfaceRoot.height * .006
                     family: "Outfit"
-                    styleName: "Medium"
+                    weight: Font.Medium
                 }
                 color: "#ffffff"
                 horizontalAlignment: Text.AlignHCenter
@@ -117,7 +124,6 @@ Item {
                 font {
                     pixelSize: watchfaceRoot.height * .076
                     family: "Outfit"
-                    styleName: "Regular"
                     letterSpacing: watchfaceRoot.height * .006
                 }
                 text: wallClock.time.toLocaleString(Qt.locale(), "ap").toUpperCase()
@@ -135,7 +141,7 @@ Item {
                     pixelSize: watchfaceRoot.height * .1
                     letterSpacing: watchfaceRoot.height * .006
                     family: "Outfit"
-                    styleName: "Light"
+                    weight: Font.Light
                 }
                 text: wallClock.time.toLocaleString(Qt.locale(), "MMM dd").replace(".","").toUpperCase()
             }
@@ -154,19 +160,9 @@ Item {
                     pixelSize: watchfaceRoot.height * .4
                     letterSpacing: watchfaceRoot.height * .006
                     family: "Outfit"
-                    styleName: "Light"
+                    weight: Font.Light
                 }
                 text: wallClock.time.toLocaleString(Qt.locale(), "mm")
-            }
-
-            layer.enabled: true
-            layer.effect: DropShadow {
-                transparentBorder: true
-                horizontalOffset: 4
-                verticalOffset: 4
-                radius: 7.0
-                samples: 15
-                color: "#99000000"
             }
         }
     }
