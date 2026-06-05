@@ -35,9 +35,10 @@ Item {
             font {
                 pixelSize: root.height * 0.054
                 family: "Sunflower"
-                styleName: "Light"
-                letterSpacing: root.height*0.003
+                weight: Font.Light
+                letterSpacing: root.height * 0.003
             }
+            renderType: Text.NativeRendering
             color: "white"
             opacity: 0.95
             horizontalAlignment: Text.AlignHCenter
@@ -66,8 +67,9 @@ Item {
             font {
                 pixelSize: root.height * 0.056
                 family: "Sunflower"
-                styleName: "Light"
+                weight: Font.Light
             }
+            renderType: Text.NativeRendering
             color: "white"
             opacity: 0.95
             horizontalAlignment: Text.AlignHCenter
