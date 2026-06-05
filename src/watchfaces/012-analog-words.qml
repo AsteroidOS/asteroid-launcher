@@ -96,6 +96,7 @@ Item {
 
         Rectangle {
             id: circleBack
+            // z: 2 retained — must always paint above backRectangles delegates whose z is dynamic (hour == index ? 1 : 0)
             z: 2
 
             property var toggle: 1
@@ -108,15 +109,15 @@ Item {
             radius: width * 0.5
 
             Text {
-                id: minuteDisplay
+                    id: minuteDisplay
 
-                font.pixelSize: parent.height * 0.549
-                font.family: "Montserrat"
-                font.styleName: "Regular"
-                color: "black"
-                opacity: 1
-                anchors.centerIn: parent
-                text: wallClock.time.toLocaleString(Qt.locale(), "mm")
+                    font.pixelSize: parent.height * 0.549
+                    font.family: "Montserrat"
+                    renderType: Text.NativeRendering
+                    color: "black"
+                    opacity: 1
+                    anchors.centerIn: parent
+                    text: wallClock.time.toLocaleString(Qt.locale(), "mm")
             }
         }
 
@@ -161,8 +162,9 @@ Item {
 
                     font.pixelSize: parent.height * (hour == index ? 0.70 : 0.56)
                     font.family: "SourceSansPro"
-                    font.styleName: hour == index ? "Semibold" : "Light"
+                    font.weight: hour == index ? Font.DemiBold : Font.Light
                     font.letterSpacing: hour == index ? -parent.height * 0.02 : parent.height * 0.001
+                    renderType: Text.NativeRendering
                     color: "black"
                     x: hour == index ? parent.height * 1.58 : parent.height * 1.94
                     y: ((parent.height - hourText.height) / 2) + heightFontOffest
@@ -200,7 +202,7 @@ Item {
                     transparentBorder: true
                     horizontalOffset: 3
                     verticalOffset: 3
-                    radius: 12.0
+                    radius: 12
                     samples: 17
                     color: "#50000000"
                 }
