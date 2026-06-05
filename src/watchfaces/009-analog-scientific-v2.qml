@@ -6,11 +6,9 @@
 // SPDX-FileCopyrightText: 2012 Arto Jalkanen <ajalkane@gmail.com>
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
+import Qt5Compat.GraphicalEffects
 import QtQuick
 import QtQuick.Shapes
-import Qt5Compat.GraphicalEffects
-import org.asteroid.controls
-import org.asteroid.utils
 import Nemo.Mce
 
 Item {
@@ -27,7 +25,7 @@ Item {
 
         anchors.centerIn: parent
 
-        height: parent.width > parent.height ? parent.height : parent.width
+        height: Math.min(parent.width, parent.height)
         width: height
 
         Item {
