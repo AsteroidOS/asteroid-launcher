@@ -10,13 +10,13 @@
 import QtQuick
 import QtQuick.Shapes
 import Qt5Compat.GraphicalEffects
-import org.asteroid.utils
 import Nemo.Mce
+import org.asteroid.utils
 
 Item {
-    anchors.fill: parent
-
     property string imgPath: "../watchfaces-img/numerals-duo-synth-neon-green-"
+
+    anchors.fill: parent
 
     Item {
         id: root
@@ -29,23 +29,26 @@ Item {
             id: dowDisplay
 
             visible: !displayAmbient
+            renderType: Text.NativeRendering
+            color: "white"
+            opacity: 0.95
+            horizontalAlignment: Text.AlignHCenter
+            text: wallClock.time.toLocaleString(Qt.locale(), "dddd").toUpperCase()
+            layer.enabled: true
+
             font {
                 pixelSize: root.height * 0.054
                 family: "Sunflower"
                 weight: Font.Light
                 letterSpacing: root.height * 0.003
             }
-            renderType: Text.NativeRendering
-            color: "white"
-            opacity: 0.95
-            horizontalAlignment: Text.AlignHCenter
+
             anchors {
                 bottom: root.verticalCenter
-                bottomMargin: DeviceSpecs.hasRoundScreen ? root.height*0.387 : root.height*0.402
+                bottomMargin: DeviceSpecs.hasRoundScreen ? root.height * 0.387 : root.height * 0.402
                 horizontalCenter: root.horizontalCenter
             }
-            text: wallClock.time.toLocaleString(Qt.locale(), "dddd").toUpperCase()
-            layer.enabled: true
+
             layer.effect: DropShadow {
                 transparentBorder: true
                 horizontalOffset: 0
@@ -54,28 +57,32 @@ Item {
                 samples: 16
                 color: "#fe16a2"
             }
+
         }
 
         Text {
             id: dateDisplay
 
             visible: !displayAmbient
+            renderType: Text.NativeRendering
+            color: "white"
+            opacity: 0.95
+            horizontalAlignment: Text.AlignHCenter
+            text: wallClock.time.toLocaleString(Qt.locale(), "yyyy-MM-dd")
+            layer.enabled: true
+
             font {
                 pixelSize: root.height * 0.056
                 family: "Sunflower"
                 weight: Font.Light
             }
-            renderType: Text.NativeRendering
-            color: "white"
-            opacity: 0.95
-            horizontalAlignment: Text.AlignHCenter
+
             anchors {
                 top: root.verticalCenter
-                topMargin: DeviceSpecs.hasRoundScreen ? root.height*0.394 : root.height*0.406
+                topMargin: DeviceSpecs.hasRoundScreen ? root.height * 0.394 : root.height * 0.406
                 horizontalCenter: root.horizontalCenter
             }
-            text: wallClock.time.toLocaleString(Qt.locale(), "yyyy-MM-dd")
-            layer.enabled: true
+
             layer.effect: DropShadow {
                 transparentBorder: true
                 horizontalOffset: 0
@@ -84,6 +91,7 @@ Item {
                 samples: 16
                 color: "#fe16a2"
             }
+
         }
 
         Item {
@@ -91,37 +99,56 @@ Item {
             y: DeviceSpecs.hasRoundScreen ? root.height * 0.1 : (!displayAmbient ? root.height * 0.1 : 0)
             width: DeviceSpecs.hasRoundScreen ? root.height * 0.8 : (displayAmbient ? root.height : root.height * 0.8)
             height: DeviceSpecs.hasRoundScreen ? root.height * 0.8 : (displayAmbient ? root.height : root.height * 0.8)
-            Behavior on x { NumberAnimation { duration: 150; easing.type: Easing.OutQuad } }
-            Behavior on y { NumberAnimation { duration: 150; easing.type: Easing.OutQuad } }
-            Behavior on width { NumberAnimation { duration: 150; easing.type: Easing.OutQuad } }
-            Behavior on height { NumberAnimation { duration: 150; easing.type: Easing.OutQuad } }
 
             LinearGradient {
                 id: greenColor
+
                 anchors.fill: parent
                 visible: false
                 start: Qt.point(0, 0)
                 end: Qt.point(300, 300)
+
                 gradient: Gradient {
-                    GradientStop { position: 0.0; color: "#38FF12" }
-                    GradientStop { position: 1.0; color: "#00F5FB" }
+                    GradientStop {
+                        position: 0
+                        color: "#38FF12"
+                    }
+
+                    GradientStop {
+                        position: 1
+                        color: "#00F5FB"
+                    }
+
                 }
+
             }
 
             LinearGradient {
                 id: whiteColor
+
                 anchors.fill: parent
                 visible: false
                 start: Qt.point(0, 0)
                 end: Qt.point(300, 300)
+
                 gradient: Gradient {
-                    GradientStop { position: 0.0; color: "#FFF100" }
-                    GradientStop { position: 1.0; color: "#FFFFFF" }
+                    GradientStop {
+                        position: 0
+                        color: "#FFF100"
+                    }
+
+                    GradientStop {
+                        position: 1
+                        color: "#FFFFFF"
+                    }
+
                 }
+
             }
 
             Image {
                 id: topLeft
+
                 visible: false
                 fillMode: Image.PreserveAspectFit
                 x: parseInt(parent.width * 0.135)
@@ -132,6 +159,7 @@ Item {
 
             Image {
                 id: topRight
+
                 visible: false
                 fillMode: Image.PreserveAspectFit
                 x: parseInt(parent.width / 2 + parent.width * 0.03)
@@ -142,6 +170,7 @@ Item {
 
             Image {
                 id: bottomLeft
+
                 visible: false
                 fillMode: Image.PreserveAspectFit
                 x: parseInt(parent.width * 0.135)
@@ -152,6 +181,7 @@ Item {
 
             Image {
                 id: bottomRight
+
                 visible: false
                 fillMode: Image.PreserveAspectFit
                 x: parseInt(parent.width / 2 + parent.width * 0.03)
@@ -166,6 +196,7 @@ Item {
                 source: greenColor
                 maskSource: topLeft
                 layer.enabled: true
+
                 layer.effect: DropShadow {
                     transparentBorder: true
                     horizontalOffset: 1
@@ -174,6 +205,7 @@ Item {
                     samples: 20
                     color: "#f800ff"
                 }
+
             }
 
             OpacityMask {
@@ -182,6 +214,7 @@ Item {
                 source: greenColor
                 maskSource: topRight
                 layer.enabled: true
+
                 layer.effect: DropShadow {
                     transparentBorder: true
                     horizontalOffset: -1
@@ -190,6 +223,7 @@ Item {
                     samples: 20
                     color: "#f800ff"
                 }
+
             }
 
             OpacityMask {
@@ -198,6 +232,7 @@ Item {
                 source: whiteColor
                 maskSource: bottomLeft
                 layer.enabled: true
+
                 layer.effect: DropShadow {
                     transparentBorder: true
                     horizontalOffset: -1
@@ -206,6 +241,7 @@ Item {
                     samples: 20
                     color: "#9600ff"
                 }
+
             }
 
             OpacityMask {
@@ -214,6 +250,7 @@ Item {
                 source: whiteColor
                 maskSource: bottomRight
                 layer.enabled: true
+
                 layer.effect: DropShadow {
                     transparentBorder: true
                     horizontalOffset: 1
@@ -222,7 +259,43 @@ Item {
                     samples: 20
                     color: "#9600ff"
                 }
+
             }
+
+            Behavior on x {
+                NumberAnimation {
+                    duration: 150
+                    easing.type: Easing.OutQuad
+                }
+
+            }
+
+            Behavior on y {
+                NumberAnimation {
+                    duration: 150
+                    easing.type: Easing.OutQuad
+                }
+
+            }
+
+            Behavior on width {
+                NumberAnimation {
+                    duration: 150
+                    easing.type: Easing.OutQuad
+                }
+
+            }
+
+            Behavior on height {
+                NumberAnimation {
+                    duration: 150
+                    easing.type: Easing.OutQuad
+                }
+
+            }
+
         }
+
     }
+
 }
