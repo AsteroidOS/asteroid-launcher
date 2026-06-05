@@ -83,134 +83,78 @@ Item {
             Image {
                 id: secondSVG
 
+                anchors.fill: handBox
                 visible: !displayAmbient
                 source: imgPath + "second.svg"
-                anchors.fill: handBox
 
                 transform: Rotation {
+                    id: secondRot
                     origin.x: handBox.width / 2
                     origin.y: handBox.height / 2
-                    angle: (wallClock.time.getSeconds() * 6)
-
-                    Behavior on angle {
-                        enabled: !displayAmbient
-
-                        RotationAnimation {
-                            duration: 1000
-                            direction: RotationAnimation.Clockwise
-                        }
-                    }
-                }
-
-                layer {
-                    enabled: true
-                    effect: DropShadow {
-                        transparentBorder: true
-                        horizontalOffset: 0
-                        verticalOffset: 0
-                        radius: 10.0
-                        samples: 21
-                        color: Qt.rgba(0, 0, 0, .8)
-                    }
                 }
             }
 
             Text {
                 id: secondDisplay
 
-                property real rotM: ((wallClock.time.getSeconds() - 15) / 60)
-                property real centerX: parent.width / 2 - width / 1.9
-                property real centerY: parent.height / 2 - height / 2.06
-
                 visible: !displayAmbient
-
-                font{
+                color: "white"
+                font {
                     pixelSize: parent.height * .082
                     family: "Roboto Flex"
                     letterSpacing: -parent.height * .005
-                }
-                color: "white"
-                x: centerX + Math.cos(rotM * 2 * Math.PI) * parent.width * .366
-                y: centerY + Math.sin(rotM * 2 * Math.PI) * parent.height * .366
-                text: wallClock.time.toLocaleString(Qt.locale(), "ss")
-
-                Behavior on x {
-                    enabled: !displayAmbient
-
-                    NumberAnimation {
-                        duration: 1000
-                    }
-                }
-
-                Behavior on y {
-                    enabled: !displayAmbient
-
-                    NumberAnimation {
-                        duration: 1000
-                    }
                 }
             }
 
             Image {
                 id: minuteSVG
 
-                source: imgPath + "minute.svg"
                 anchors.fill: handBox
+                source: imgPath + "minute.svg"
 
                 transform: Rotation {
+                    id: minuteRot
                     origin.x: handBox.width / 2
                     origin.y: handBox.height / 2
-                    angle: (wallClock.time.getMinutes() * 6) + (wallClock.time.getSeconds() * 6 / 60)
                 }
 
-                layer {
-                    enabled: true
-                    effect: DropShadow {
-                        transparentBorder: true
-                        horizontalOffset: 0
-                        verticalOffset: 0
-                        radius: 15.0
-                        samples: 31
-                        color: Qt.rgba(0, 0, 0, .8)
-                    }
+                layer.enabled: true
+                layer.effect: DropShadow {
+                    transparentBorder: true
+                    horizontalOffset: 0
+                    verticalOffset: 0
+                    radius: 15.0
+                    samples: 9
+                    color: Qt.rgba(0, 0, 0, .8)
                 }
             }
 
             Text {
                 id: minuteDisplay
 
-                property real rotM: ((wallClock.time.getMinutes() - 15 + (wallClock.time.getSeconds() / 60)) / 60)
-                property real centerX: parent.width / 2 - width / 1.92
-                property real centerY: parent.height / 2 - height / 2.04
-
-                font{
+                color: "black"
+                font {
                     pixelSize: parent.height * .12
                     family: "Roboto Flex"
                     styleName: "Medium"
                     letterSpacing: -parent.height * .006
                 }
-                color: "black"
-                x: centerX + Math.cos(rotM * 2 * Math.PI) * parent.height * .214
-                y: centerY + Math.sin(rotM * 2 * Math.PI) * parent.width * .214
-                text: wallClock.time.toLocaleString(Qt.locale(), "mm")
             }
 
             Image {
                 id: hourSVG
 
-                source:imgPath + "hour.svg"
                 anchors.fill: parent
+                source: imgPath + "hour.svg"
 
-                layer {
-                    enabled: true
-                    effect: DropShadow {
-                        transparentBorder: true
-                        horizontalOffset: 0
-                        verticalOffset: 0
-                        radius: 20.0
-                        samples: 41
-                        color: Qt.rgba(0, 0, 0, .8)
-                    }
+                layer.enabled: true
+                layer.effect: DropShadow {
+                    transparentBorder: true
+                    horizontalOffset: 0
+                    verticalOffset: 0
+                    radius: 20.0
+                    samples: 9
+                    color: Qt.rgba(0, 0, 0, .8)
                 }
             }
         }
@@ -234,6 +178,46 @@ Item {
                       wallClock.time.toLocaleString(Qt.locale(), "hh ap").slice(0, 2) }
                   else
                       wallClock.time.toLocaleString(Qt.locale(), "HH")
+        }
+        
+        Timer {
+            interval: 16
+            repeat: true
+            running: !displayAmbient && visible
+
+            onTriggered: {
+                var now = new Date();
+                var secMs = now.getSeconds() * 1000 + now.getMilliseconds();
+                secondRot.angle = secMs * 6 / 1000;
+                var rotS = (secMs / 1000 - 15) / 60;
+                secondDisplay.x = root.width / 2 - secondDisplay.width / 1.9 + Math.cos(rotS * 2 * Math.PI) * root.width * .366;
+                secondDisplay.y = root.height / 2 - secondDisplay.height / 2.06 + Math.sin(rotS * 2 * Math.PI) * root.height * .366;
+            }
+        }
+        
+        Connections {
+            target: wallClock
+            function onTimeChanged() {
+                var min = wallClock.time.getMinutes();
+                var sec = wallClock.time.getSeconds();
+                minuteRot.angle = min * 6 + sec * 6 / 60;
+                var rotM = (min - 15 + sec / 60) / 60;
+                minuteDisplay.x = root.width / 2 - minuteDisplay.width / 1.92 + Math.cos(rotM * 2 * Math.PI) * root.height * .214;
+                minuteDisplay.y = root.height / 2 - minuteDisplay.height / 2.04 + Math.sin(rotM * 2 * Math.PI) * root.width * .214;
+                minuteDisplay.text = wallClock.time.toLocaleString(Qt.locale(), "mm");
+                secondDisplay.text = wallClock.time.toLocaleString(Qt.locale(), "ss");
+            }
+        }
+        
+        Component.onCompleted: {
+            var min = wallClock.time.getMinutes();
+            var sec = wallClock.time.getSeconds();
+            minuteRot.angle = min * 6 + sec * 6 / 60;
+            var rotM = (min - 15 + sec / 60) / 60;
+            minuteDisplay.x = root.width / 2 - minuteDisplay.width / 1.92 + Math.cos(rotM * 2 * Math.PI) * root.height * .214;
+            minuteDisplay.y = root.height / 2 - minuteDisplay.height / 2.04 + Math.sin(rotM * 2 * Math.PI) * root.width * .214;
+            minuteDisplay.text = wallClock.time.toLocaleString(Qt.locale(), "mm");
+            secondDisplay.text = wallClock.time.toLocaleString(Qt.locale(), "ss");
         }
     }
 }
