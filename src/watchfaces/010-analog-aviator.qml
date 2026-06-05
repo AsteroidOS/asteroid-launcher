@@ -87,10 +87,10 @@ Item {
             layer.enabled: true
             layer.effect: DropShadow {
                 transparentBorder: true
-                horizontalOffset: 2
-                verticalOffset: 2
-                radius: 12.0
-                samples: 17
+                horizontalOffset: root.width * .005
+                verticalOffset: root.width * .005
+                radius: root.width * .03
+                samples: 25
                 color: "#bb000000"
             }
 
@@ -321,20 +321,21 @@ Item {
             id: hourSVG
 
             anchors.fill: root
-
             source: !displayAmbient ? imgPath + "hour-ambient.svg" : imgPath + "hour-ambient.svg"
             transform: Rotation {
-                origin.x: root.width / 2;
-                origin.y: root.height / 2;
-                angle: (wallClock.time.getHours()*30) + (wallClock.time.getMinutes() * 0.5)
+                id: hourRotation
+
+                origin.x: root.width / 2
+                origin.y: root.height / 2
+                angle: 0
             }
             layer.enabled: true
             layer.effect: DropShadow {
                 transparentBorder: true
-                horizontalOffset: 4
-                verticalOffset: 4
-                radius: 6.0
-                samples: 17
+                horizontalOffset: root.width * .01
+                verticalOffset: root.width * .01
+                radius: root.width * .015
+                samples: 13
                 color: "#22000000"
             }
             state: currentColor
@@ -350,19 +351,20 @@ Item {
             id: minuteSVG
 
             anchors.fill: root
-
             source: !displayAmbient ? imgPath + "minute-ambient.svg" : imgPath + "minute-ambient.svg"
             transform: Rotation {
-                origin.x: root.width / 2;
-                origin.y: root.height / 2;
-                angle: (wallClock.time.getMinutes()*6)+(wallClock.time.getSeconds() * 6 / 60)
+                id: minuteRotation
+
+                origin.x: root.width / 2
+                origin.y: root.height / 2
+                angle: 0
             }
             layer.enabled: true
             layer.effect: DropShadow {
                 transparentBorder: true
-                horizontalOffset: 6
-                verticalOffset: 6
-                radius: 8.0
+                horizontalOffset: root.width * .015
+                verticalOffset: root.width * .015
+                radius: root.width * .02
                 samples: 17
                 color: "#22000000"
             }
@@ -381,30 +383,22 @@ Item {
             property int toggle: 1
 
             anchors.fill: root
-
             visible: !displayAmbient
             source: imgPath + "second-ambient.svg"
             transform: Rotation {
-                origin.x: root.width / 2;
-                origin.y: root.height / 2;
-                angle: (wallClock.time.getSeconds() * 6)
-            }
-            layer.enabled: true
-            layer.effect: DropShadow {
-                transparentBorder: true
-                horizontalOffset: 8
-                verticalOffset: 8
-                radius: 9.0
-                samples: 12
-                color: "#22000000"
+                id: secondRotation
+
+                origin.x: root.width / 2
+                origin.y: root.height / 2
+                angle: 0
             }
             MouseArea {
                 anchors.fill: parent
                 onDoubleClicked: {
-                   if (secondSVG.toggle === 1) {
+                    if (secondSVG.toggle === 1) {
                         currentColor = "black"
                         secondSVG.toggle = 0
-                   } else {
+                    } else {
                         currentColor = ""
                         secondSVG.toggle = 1
                     }
@@ -418,19 +412,49 @@ Item {
                 }
             }
         }
+        
+        Connections {
+            function onTimeChanged() {
+                var hours = wallClock.time.getHours()
+                var minutes = wallClock.time.getMinutes()
+                hourRotation.angle = (hours * 30) + (minutes * .5)
+                minuteRotation.angle = (minutes * 6) + (wallClock.time.getSeconds() * .1)
+            }
+            target: wallClock
+        }
+
+        Timer {
+            interval: 16
+            repeat: true
+            running: !displayAmbient && visible
+            onTriggered: {
+                var now = new Date()
+                secondRotation.angle = (now.getSeconds() * 1000 + now.getMilliseconds()) * 6 / 1000
+            }
+        }
+
+        Component.onCompleted: {
+            var hours = wallClock.time.getHours()
+            var minutes = wallClock.time.getMinutes()
+            hourRotation.angle = (hours * 30) + (minutes * .5)
+            minuteRotation.angle = (minutes * 6) + (wallClock.time.getSeconds() * .1)
+        }
     }
 
     Connections {
+        function onDisplayAmbientEntered() {
+            if (currentColor == "black") {
+                currentColor = ""
+                userColor = "black"
+            } else {
+                userColor = ""
+            }
+        }
+        function onDisplayAmbientLeft() {
+            if (userColor == "black") {
+                currentColor = "black"
+            }
+        }
         target: compositor
-        onDisplayAmbientEntered: if (currentColor == "black") {
-                                     currentColor = ""
-                                     userColor = "black"
-                                 }
-                                 else
-                                     userColor = ""
-
-        onDisplayAmbientLeft:    if (userColor == "black") {
-                                     currentColor = "black"
-                                 }
     }
 }
