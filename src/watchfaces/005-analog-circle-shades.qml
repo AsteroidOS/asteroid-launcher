@@ -8,8 +8,8 @@
 // SPDX-FileCopyrightText: 2012 Arto Jalkanen <ajalkane@gmail.com>
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-import QtQuick
 import Qt5Compat.GraphicalEffects
+import QtQuick
 import QtQuick.Shapes
 import Nemo.Mce
 
@@ -22,7 +22,7 @@ Item {
         id: root
 
         anchors.centerIn: parent
-        height: parent.width > parent.height ? parent.height : parent.width
+        height: Math.min(parent.width, parent.height)
         width: height
 
         MceBatteryLevel {
@@ -59,7 +59,7 @@ Item {
                         capStyle: ShapePath.RoundCap
                         joinStyle: ShapePath.MiterJoin
                         startX: root.width / 2
-                        startY: root.height * ( .5 - segmentedArc.scalefactor)
+                        startY: root.height * (.5 - segmentedArc.scalefactor)
 
                         PathAngleArc {
                             centerX: root.width / 2
@@ -99,6 +99,7 @@ Item {
 
                 visible: !displayAmbient
                 color: "white"
+                renderType: Text.NativeRendering
                 font {
                     pixelSize: parent.height * .082
                     family: "Roboto Flex"
@@ -133,10 +134,11 @@ Item {
                 id: minuteDisplay
 
                 color: "black"
+                renderType: Text.NativeRendering
                 font {
                     pixelSize: parent.height * .12
                     family: "Roboto Flex"
-                    styleName: "Medium"
+                    weight: Font.Medium
                     letterSpacing: -parent.height * .006
                 }
             }
@@ -167,17 +169,15 @@ Item {
                 verticalCenterOffset: parent.height * .004
                 horizontalCenterOffset: -parent.height * .0012
             }
+            color: "black"
+            renderType: Text.NativeRendering
             font {
                 pixelSize: parent.height * .18
                 family: "Roboto Flex"
-                styleName: "Medium"
+                weight: Font.Medium
                 letterSpacing: -parent.height * .005
             }
-            color: "black"
-            text: if (use12H.value) {
-                      wallClock.time.toLocaleString(Qt.locale(), "hh ap").slice(0, 2) }
-                  else
-                      wallClock.time.toLocaleString(Qt.locale(), "HH")
+            text: use12H.value ? wallClock.time.toLocaleString(Qt.locale(), "hh ap").slice(0, 2) : wallClock.time.toLocaleString(Qt.locale(), "HH")
         }
         
         Timer {
