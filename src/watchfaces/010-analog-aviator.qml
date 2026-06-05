@@ -123,13 +123,15 @@ Item {
                     centerIn: parent
                     verticalCenterOffset: -parent.height * 0.146
                 }
-                visible: !displayAmbient
                 font {
                     pixelSize: parent.height * 0.048
                     family: "Raleway"
                 }
+                renderType: Text.NativeRendering
+                visible: !displayAmbient
                 color: "#bbffffff"
                 horizontalAlignment: Text.AlignHCenter
+                textFormat: Text.StyledText
                 text: "<b>AsteroidOS</b><br>Free Your Wrist"
                 state: currentColor
                 states: State { name: "black";
@@ -148,13 +150,15 @@ Item {
                     centerIn: parent
                     verticalCenterOffset: parent.height*0.14
                 }
-                visible: !displayAmbient
                 font {
                     pixelSize: parent.height * 0.052
                     family: "Raleway"
                 }
+                renderType: Text.NativeRendering
+                visible: !displayAmbient
                 color: "#bbffffff"
                 horizontalAlignment: Text.AlignHCenter
+                textFormat: Text.StyledText
                 text: wallClock.time.toLocaleString(Qt.locale(), "<b>dd</b> MMMM<br>yyyy")
                 state: currentColor
                 states: State { name: "black";
@@ -169,19 +173,16 @@ Item {
             Text {
                 id: apDisplay
 
-                property int day: wallClock.time.toLocaleString(Qt.locale(), "d")
-                property int month: wallClock.time.toLocaleString(Qt.locale(), "M")
-
                 anchors {
                     centerIn: parent
                     verticalCenterOffset: parent.height / 3.8
-                    horizontalCenterOffset: parent.width/3.8
+                    horizontalCenterOffset: parent.width / 3.8
                 }
                 font {
                     pixelSize: parent.height * 0.065
                     family: "PTSans"
-                    styleName: "Regular"
                 }
+                renderType: Text.NativeRendering
                 color: "white"
                 horizontalAlignment: Text.AlignHCenter
                 text: wallClock.time.toLocaleString(Qt.locale(), "ap").toUpperCase()
@@ -204,10 +205,10 @@ Item {
                     horizontalCenterOffset: -parent.width / 3.8
                 }
                 font {
-                    pixelSize: parent.height*0.065
+                    pixelSize: parent.height * 0.065
                     family: "PTSans"
-                    styleName: "Regular"
                 }
+                renderType: Text.NativeRendering
                 color: "white"
                 horizontalAlignment: Text.AlignHCenter
                 text: wallClock.time.toLocaleString(Qt.locale(), "ddd").slice(0, 2).toUpperCase()
@@ -264,6 +265,7 @@ Item {
                         pixelSize: parent.height * 0.21
                         family: "Signika"
                     }
+                    renderType: Text.NativeRendering
                     x: centerX+Math.cos(rotM * 2 * Math.PI) * parent.width * 0.35
                     y: centerY+Math.sin(rotM * 2 * Math.PI) * parent.width * 0.35
                     color: "#ccffffff"
