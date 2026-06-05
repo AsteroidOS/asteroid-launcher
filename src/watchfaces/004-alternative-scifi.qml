@@ -14,20 +14,6 @@ import Nemo.Mce
 Item {
     anchors.fill: parent
 
-    function twoDigits(x) {
-        if (x<10) return "0"+x;
-        else      return x;
-    }
-
-    function prepareContext(ctx) {
-        ctx.reset()
-        ctx.fillStyle = "white"
-        ctx.shadowColor = Qt.rgba(0, 0, 0, .80)
-        ctx.shadowOffsetX = parent.height * .00625
-        ctx.shadowOffsetY = parent.height * .00625
-        ctx.shadowBlur = parent.height * .0156
-    }
-
     Item {
         id: root
 
@@ -39,163 +25,93 @@ Item {
             id: watchfaceRoot
 
             anchors.centerIn: parent
-
             width: parent.width * (nightstandMode.active ? .8 : 1)
             height: width
+            layer.enabled: true
+            layer.effect: DropShadow {
+                horizontalOffset: root.height * .0062
+                verticalOffset: root.height * .0062
+                radius: root.height * .0166
+                samples: 12
+                color: Qt.rgba(0, 0, 0, .84)
+            }
+            
 
-            Canvas {
-                id: dowCanvas
+            Text {
+                id: dowText
 
-                anchors.fill: parent
-                renderStrategy: Canvas.Cooperative
+                x: parent.width * .373 - width / 2
+                y: parent.height * .324 - height / 2
+                visible: !nightstandMode.active
+                color: "white"
+                renderType: Text.NativeRendering
+                font {
+                    pixelSize: parent.height * .051
+                    family: "Xolonium"
+                }
+                text: Qt.formatDate(wallClock.time, "dddd").toUpperCase()
+            }
 
-                onPaint: {
-                    var ctx = getContext("2d")
-                    prepareContext(ctx)
-                    ctx.shadowBlur = parent.height * .00625
-                    ctx.textAlign = "center"
-                    ctx.textBaseline = "middle"
+            Text {
+                id: hourText
 
-                    var bold = "0 "
-                    var px = "px "
-
-                    var centerX = width * .373
-                    var centerY = height / 2 * .57
-                    var verticalOffset = height * .05
-
-                    var text;
-                    text = wallClock.time.toLocaleString(Qt.locale(), "dddd").toUpperCase()
-
-                    var fontSize = height * .051
-                    var fontFamily = "Xolonium"
-                    ctx.font = bold + fontSize + px + fontFamily;
-                    ctx.fillText(text, centerX, centerY + verticalOffset);
+                x: parent.width * .625 - width
+                y: parent.height * .61 - height * .75
+                color: "white"
+                renderType: Text.NativeRendering
+                font {
+                    pixelSize: parent.height * .36
+                    family: "Xolonium"
+                }
+                text: {
+                    var h = wallClock.time.getHours()
+                    if (use12H.value) { h = h % 12; if (h === 0) h = 12 }
+                    return h < 10 ? "0" + h : "" + h
                 }
             }
 
-            Canvas {
-                id: hourCanvas
+            Text {
+                id: minuteText
 
-                property int hour: 0
-
-                anchors.fill: parent
-                renderStrategy: Canvas.Cooperative
-
-                onPaint: {
-                    var ctx = getContext("2d")
-                    prepareContext(ctx)
-                    ctx.textAlign = "right"
-                    ctx.textBaseline = "right"
-
-                    var bold = "60 "
-                    var px = "px "
-
-                    var centerX = width / 2 * 1.25
-                    var centerY = height / 2
-                    var verticalOffset = height * .12
-
-                    var text;
-                    text = twoDigits(hour)
-
-                    var fontSize = height * .36
-                    var fontFamily = "Xolonium"
-                    ctx.font = bold + fontSize + px + fontFamily;
-                    ctx.fillText(text, centerX, centerY + verticalOffset);
+                x: parent.width * .64
+                y: parent.height * .611 - height * .75
+                color: "white"
+                renderType: Text.NativeRendering
+                font {
+                    pixelSize: parent.height * .17
+                    family: "Xolonium"
                 }
+                text: Qt.formatTime(wallClock.time, "mm")
             }
 
-            Canvas {
-                id: minuteCanvas
+            Text {
+                id: amPmText
 
-                property int minute: 0
-
-                anchors.fill: parent
-                renderStrategy: Canvas.Cooperative
-
-                onPaint: {
-                    var ctx = getContext("2d")
-                    prepareContext(ctx)
-                    ctx.shadowBlur = 3
-                    ctx.textAlign = "left"
-                    ctx.textBaseline = "left"
-
-                    var thin = "0 "
-                    var px = "px "
-
-                    var centerX = width / 2 * 1.268
-                    var centerY = height / 2
-                    var verticalOffset = height * .112
-
-                    var text;
-                    text = wallClock.time.toLocaleString(Qt.locale(), "mm")
-
-                    var fontSize = height * .17
-                    var fontFamily = "Xolonium"
-                    ctx.font = thin + fontSize + px + fontFamily;
-                    ctx.fillText(text, centerX, centerY + verticalOffset);
+                x: parent.width * .645
+                y: parent.height * .465 - height * .75
+                visible: use12H.value && !nightstandMode.active
+                color: "white"
+                renderType: Text.NativeRendering
+                font {
+                    pixelSize: parent.height * .057
+                    family: "Xolonium"
                 }
+                text: wallClock.time.toLocaleString(Qt.locale("en_EN"), "AP")
             }
 
-            Canvas {
-                id: amPmCanvas
+            Text {
+                id: dateText
 
-                property bool am: false
-
-                anchors.fill: parent
-                renderStrategy: Canvas.Cooperative
-
-                onPaint: {
-                    var ctx = getContext("2d")
-                    prepareContext(ctx)
-                    ctx.shadowBlur = parent.height*.00625 //2 px on 320x320
-                    ctx.textAlign = "left"
-                    ctx.textBaseline = "left"
-
-                    var bold = "64 "
-                    var px = "px "
-
-                    var centerX = width / 2 * 1.29
-                    var centerY = height / 2 * .83
-                    var verticalOffset = height * .05
-
-                    var text;
-                    text = wallClock.time.toLocaleString(Qt.locale("en_EN"), "ap").toUpperCase()
-
-                    var fontSize = height * .057
-                    var fontFamily = "Xolonium"
-                    ctx.font = bold + fontSize + px + fontFamily;
-                    if(use12H.value) ctx.fillText(text, centerX, centerY + verticalOffset);
+                x: parent.width * .626 - width / 2
+                y: parent.height * .675 - height / 2
+                visible: !nightstandMode.active
+                color: "white"
+                renderType: Text.NativeRendering
+                font {
+                    pixelSize: parent.height * .051
+                    family: "Xolonium"
                 }
-            }
-
-            Canvas {
-                id: dateCanvas
-
-                anchors.fill: parent
-                renderStrategy: Canvas.Cooperative
-
-                onPaint: {
-                    var ctx = getContext("2d")
-                    prepareContext(ctx)
-                    ctx.shadowBlur = parent.height*.00625
-                    ctx.textAlign = "center"
-                    ctx.textBaseline = "middle"
-
-                    var thin = "0 "
-                    var px = "px "
-
-                    var centerX = width * .626
-                    var centerY = height / 2 * 1.27
-                    var verticalOffset = height * .05
-
-                    var text;
-                    text = wallClock.time.toLocaleString(Qt.locale(), "dd MMMM").toUpperCase()
-
-                    var fontSize = height * .051
-                    var fontFamily = "Xolonium"
-                    ctx.font = thin + fontSize + px + fontFamily;
-                    ctx.fillText(text, centerX, centerY + verticalOffset);
-                }
+                text: Qt.formatDate(wallClock.time, "dd MMMM").toUpperCase()
             }
         }
 
@@ -265,60 +181,8 @@ Item {
         }
 
         Component.onCompleted: {
-            var hour = wallClock.time.getHours()
-            var minute = wallClock.time.getMinutes()
-            var am = hour < 12
-            if(use12H.value) {
-                hour = hour % 12
-                if (hour === 0) hour = 12
-            }
-            hourCanvas.hour = hour
-            hourCanvas.requestPaint()
-            minuteCanvas.minute = minute
-            minuteCanvas.requestPaint()
-            dateCanvas.requestPaint()
-            dowCanvas.requestPaint()
-            amPmCanvas.am = am
-            amPmCanvas.requestPaint()
-            burnInProtectionManager.widthOffset = Qt.binding(function() { return width * (nightstandMode.active ? .12 : .2)})
-            burnInProtectionManager.heightOffset = Qt.binding(function() { return height * (nightstandMode.active ? .12 : .2)})
-        }
-
-        Connections {
-            target: wallClock
-            function onTimeChanged() {
-                var hour = wallClock.time.getHours()
-                var minute = wallClock.time.getMinutes()
-                var date = wallClock.time.getDate()
-                var am = hour < 12
-                if(use12H.value) {
-                    hour = hour % 12
-                    if (hour === 0) hour = 12;
-                }
-                if(hourCanvas.hour !== hour) {
-                    hourCanvas.hour = hour
-                    hourCanvas.requestPaint()
-                } if(minuteCanvas.minute !== minute) {
-                    minuteCanvas.minute = minute
-                    minuteCanvas.requestPaint()
-                    dateCanvas.requestPaint()
-                    dowCanvas.requestPaint()
-                } if(amPmCanvas.am != am) {
-                    amPmCanvas.am = am
-                    amPmCanvas.requestPaint()
-                }
-            }
-        }
-
-        Connections {
-            target: localeManager
-            function onChangesObserverChanged() {
-                hourCanvas.requestPaint()
-                minuteCanvas.requestPaint()
-                dateCanvas.requestPaint()
-                dowCanvas.requestPaint()
-                amPmCanvas.requestPaint()
-            }
+            burnInProtectionManager.widthOffset = Qt.binding(function() { return width * (nightstandMode.active ? .12 : .2) })
+            burnInProtectionManager.heightOffset = Qt.binding(function() { return height * (nightstandMode.active ? .12 : .2) })
         }
     }
 }
