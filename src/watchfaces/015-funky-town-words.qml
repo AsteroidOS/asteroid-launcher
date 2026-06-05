@@ -78,30 +78,20 @@ Item {
             id: nightstandMode
 
             readonly property bool active: nightstand
-            property int batteryPercentChanged: batteryChargePercentage.percent
 
             anchors.fill: parent
             visible: nightstandMode.active
-            layer {
-                enabled: true
-                samples: 4
-                smooth: true
-                textureSize: Qt.size(nightstandMode.width * 2, nightstandMode.height * 2)
-            }
 
             Shape {
                 id: chargeArc
 
                 property real angle: batteryChargePercentage.percent * 360 / 100
-                // radius of arc is scalefactor * height or width
                 property real arcStrokeWidth: .016
                 property real scalefactor: .45 - (arcStrokeWidth / 2)
-                property real chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
-                readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
+                property int chargecolor: Math.floor(batteryChargePercentage.percent / 33.35) | 0
+                readonly property var colorArray: ["red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
                 anchors.fill: parent
-                smooth: true
-                antialiasing: true
 
                 ShapePath {
                     fillColor: "transparent"
@@ -110,7 +100,7 @@ Item {
                     capStyle: ShapePath.RoundCap
                     joinStyle: ShapePath.MiterJoin
                     startX: chargeArc.width / 2
-                    startY: chargeArc.height * ( .5 - chargeArc.scalefactor)
+                    startY: chargeArc.height * (.5 - chargeArc.scalefactor)
 
                     PathAngleArc {
                         centerX: chargeArc.width / 2
