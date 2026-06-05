@@ -23,9 +23,6 @@ Item {
 
     property string imgPath: "../watchfaces-img/analog-weather-satellite-"
 
-    // Radian per degree used by all canvas arcs
-    property real rad: .01745
-
     // Element sizes, positioning, linewidth and opacity
     property real switchSize: root.width * .1375
     property real boxSize: root.width * .35
@@ -327,42 +324,35 @@ Item {
 
                 property bool weatherSynced: maxTemp.value != 0
 
-                Canvas {
+                Rectangle {
                     id: weatherArc
 
-                    anchors.fill: weatherBox
+                    anchors.centerIn: parent
+                    width: parent.width * .86
+                    height: width
+                    radius: width / 2
+                    color: "#22ffffff"
                     opacity: inactiveArcOpacity
-                    smooth: true
                     visible: !dockMode.active
-                    renderStrategy : Canvas.Cooperative
-                    onPaint: {
-                        var ctx = getContext("2d")
-                        ctx.reset()
-                        ctx.lineWidth = outerArcLineWidth
-                        ctx.lineCap="round"
-                        ctx.strokeStyle = "#33ffffff"
-                        ctx.beginPath()
-                        ctx.arc(weatherBox.width / 2,
-                                weatherBox.height / 2,
-                                weatherBox.width * .43,
-                                270 * rad,
-                                360,
-                                false);
-                        ctx.stroke()
-                        ctx.closePath()
-                        ctx.beginPath()
-                        ctx.fillStyle = "#22ffffff"
-                        ctx.arc(weatherBox.width / 2,
-                                weatherBox.height / 2,
-                                weatherBox.width * .43,
-                                270 * rad,
-                                360,
-                                false);
-                        ctx.strokeStyle = boxColor
-                        ctx.lineWidth = innerArcLineWidth
-                        ctx.stroke()
-                        ctx.fill()
-                        ctx.closePath()
+
+                    Rectangle {
+                        anchors.centerIn: parent
+                        width: parent.width
+                        height: width
+                        radius: width / 2
+                        color: "transparent"
+                        border.width: outerArcLineWidth
+                        border.color: "#33ffffff"
+                    }
+
+                    Rectangle {
+                        anchors.centerIn: parent
+                        width: parent.width
+                        height: width
+                        radius: width / 2
+                        color: "transparent"
+                        border.width: innerArcLineWidth
+                        border.color: boxColor
                     }
                 }
 
@@ -415,42 +405,35 @@ Item {
                 width: boxSize
                 height: width
 
-                Canvas {
+                Rectangle {
                     id: dayArc
 
-                    anchors.fill: dayBox
+                    anchors.centerIn: parent
+                    width: parent.width * .86
+                    height: width
+                    radius: width / 2
+                    color: "#22ffffff"
                     opacity: inactiveArcOpacity
-                    smooth: true
                     visible: !dockMode.active
-                    renderStrategy : Canvas.Cooperative
-                    onPaint: {
-                        var ctx = getContext("2d")
-                        ctx.reset()
-                        ctx.beginPath()
-                        ctx.fillStyle = "#22ffffff"
-                        ctx.arc(dayBox.width / 2,
-                                dayBox.height / 2,
-                                dayBox.width * .43,
-                                270 * rad,
-                                360,
-                                false);
-                        ctx.strokeStyle = boxColor
-                        ctx.lineWidth = innerArcLineWidth
-                        ctx.stroke()
-                        ctx.fill()
-                        ctx.closePath()
-                        ctx.lineWidth = outerArcLineWidth
-                        ctx.lineCap="round"
-                        ctx.strokeStyle = "#33ffffff"
-                        ctx.beginPath()
-                        ctx.arc(dayBox.width / 2,
-                                dayBox.height / 2,
-                                dayBox.width * .43,
-                                270 * rad,
-                                360,
-                                false);
-                        ctx.stroke()
-                        ctx.closePath()
+
+                    Rectangle {
+                        anchors.centerIn: parent
+                        width: parent.width
+                        height: width
+                        radius: width / 2
+                        color: "transparent"
+                        border.width: outerArcLineWidth
+                        border.color: "#33ffffff"
+                    }
+
+                    Rectangle {
+                        anchors.centerIn: parent
+                        width: parent.width
+                        height: width
+                        radius: width / 2
+                        color: "transparent"
+                        border.width: innerArcLineWidth
+                        border.color: boxColor
                     }
                 }
 
@@ -514,8 +497,6 @@ Item {
 
                 property int value: batteryChargePercentage.percent
 
-                onValueChanged: batteryArc.requestPaint()
-
                 anchors {
                     centerIn: dialBox
                     verticalCenterOffset: boxPosition
@@ -524,46 +505,41 @@ Item {
                 height: width
                 visible: !dockMode.active
 
-                Canvas {
+                Rectangle {
+                    anchors.centerIn: parent
+                    width: parent.width * .86
+                    height: width
+                    radius: width / 2
+                    color: "#22ffffff"
+                    opacity: activeArcOpacity
+                    border.width: innerArcLineWidth
+                    border.color: "#77ffffff"
+                }
+
+                Shape {
                     id: batteryArc
 
-                    anchors.fill: batteryBox
+                    anchors.fill: parent
                     opacity: activeArcOpacity
-                    smooth: true
-                    renderStrategy : Canvas.Cooperative
-                    onPaint: {
-                        var ctx = getContext("2d")
-                        ctx.reset()
-                        ctx.beginPath()
-                        ctx.fillStyle = "#22ffffff"
-                        ctx.arc(batteryBox.width / 2,
-                                batteryBox.height / 2,
-                                batteryBox.width * .43,
-                                270 * rad,
-                                360,
-                                false);
-                        ctx.strokeStyle = "#77ffffff"
-                        ctx.lineWidth = innerArcLineWidth
-                        ctx.stroke()
-                        ctx.fill()
-                        ctx.closePath()
-                        ctx.lineWidth = outerArcLineWidth
-                        ctx.lineCap="round"
-                        ctx.strokeStyle = batteryBox.value < 30 ?
-                                    customRed :
-                                    batteryBox.value < 60 ?
-                                        customOrange :
-                                        customGreen
-                        ctx.beginPath()
-                        ctx.arc(batteryBox.width / 2,
-                                batteryBox.height / 2,
-                                batteryBox.width * .43,
-                                270 * rad,
-                                ((batteryBox.value/100*360)+270) * rad,
-                                false
-                                );
-                        ctx.stroke()
-                        ctx.closePath()
+
+                    ShapePath {
+                        fillColor: "transparent"
+                        strokeColor: batteryBox.value < 30 ? customRed : batteryBox.value < 60 ? customOrange : customGreen
+                        strokeWidth: outerArcLineWidth
+                        capStyle: ShapePath.RoundCap
+                        joinStyle: ShapePath.MiterJoin
+                        startX: batteryArc.width / 2
+                        startY: batteryArc.height * (.5 - .43)
+
+                        PathAngleArc {
+                            centerX: batteryBox.width / 2
+                            centerY: batteryBox.height / 2
+                            radiusX: batteryBox.width * .43
+                            radiusY: batteryBox.height * .43
+                            startAngle: -90
+                            sweepAngle: batteryBox.value / 100 * 360
+                            moveToStart: false
+                        }
                     }
                 }
 
