@@ -8,14 +8,14 @@
 // SPDX-FileCopyrightText: 2012 Arto Jalkanen <ajalkane@gmail.com>
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
+import Qt5Compat.GraphicalEffects
 import QtQuick
 import QtQuick.Shapes
 import QtSensors
-import Qt5Compat.GraphicalEffects
-import org.asteroid.controls
-import org.asteroid.utils
 import Nemo.Configuration
 import Nemo.Mce
+import org.asteroid.controls
+import org.asteroid.utils
 import 'weathericons.js' as WeatherIcons
 
 Item {
@@ -61,7 +61,7 @@ Item {
         id: root
 
         anchors.centerIn: parent
-        height: parent.width > parent.height ? parent.height : parent.width
+        height: Math.min(parent.width, parent.height)
         width: height
 
 
@@ -78,7 +78,6 @@ Item {
             id: dockMode
 
             readonly property bool active: nightstand
-            property int batteryPercentChanged: batteryChargePercentage.percent
 
             anchors.fill: root
             visible: dockMode.active
@@ -87,11 +86,10 @@ Item {
                 id: chargeArc
 
                 property real angle: batteryChargePercentage.percent * 360 / 100
-                // radius of arc is scalefactor * height or width
                 property real arcStrokeWidth: 0.016
                 property real scalefactor: 0.39 - (arcStrokeWidth / 2)
                 property int chargecolor: Math.floor(batteryChargePercentage.percent / 33.35) | 0
-                readonly property var colorArray: [ "red", "yellow", Qt.rgba(0.318, 1, 0.051, 0.9)]
+                readonly property var colorArray: ["red", "yellow", Qt.rgba(0.318, 1, 0.051, 0.9)]
 
                 anchors.fill: dockMode
 
@@ -102,7 +100,7 @@ Item {
                     capStyle: ShapePath.RoundCap
                     joinStyle: ShapePath.MiterJoin
                     startX: chargeArc.width / 2
-                    startY: chargeArc.height * ( 0.5 - chargeArc.scalefactor)
+                    startY: chargeArc.height * (0.5 - chargeArc.scalefactor)
 
                     PathAngleArc {
                         centerX: dockMode.width / 2
@@ -130,7 +128,8 @@ Item {
                 }
                 visible: dockMode.active
                 color: chargeArc.colorArray[chargeArc.chargecolor]
-                style: Text.Outline; styleColor: "#80000000"
+                style: Text.Outline
+                styleColor: "#80000000"
                 renderType: Text.NativeRendering
                 text: batteryChargePercentage.percent
             }
@@ -368,7 +367,6 @@ Item {
                 }
 
                 Icon {
-                    // WeatherIcons depends on import 'weathericons.js' as WeatherIcons
                     id: iconDisplay
 
                     anchors {
