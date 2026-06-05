@@ -18,7 +18,7 @@ Item {
         id: root
 
         anchors.centerIn: parent
-        height: parent.width > parent.height ? parent.height : parent.width
+        height: Math.min(parent.width, parent.height)
         width: height
 
         Item {
@@ -28,7 +28,6 @@ Item {
 
             width: parent.width * (nightstandMode.active ? .8 : 1)
             height: width
-            
             layer.enabled: true
             layer.effect: DropShadow {
                 color: Qt.rgba(0, 0, 0, .80)
@@ -160,7 +159,6 @@ Item {
             id: nightstandMode
 
             readonly property bool active: nightstand
-            property int batteryPercentChanged: batteryChargePercentage.percent
 
             anchors.fill: parent
             visible: nightstandMode.active
@@ -177,14 +175,14 @@ Item {
                 property real arcStrokeWidth: .05
                 property real scalefactor: .46 - (arcStrokeWidth / 2)
                 property int chargecolor: Math.floor(batteryChargePercentage.percent / 33.35) | 0
-                readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
+                readonly property var colorArray: ["red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
                 model: segmentAmount
 
                 Shape {
                     id: segment
 
-                    visible: index === 0 ? true : (index/segmentedArc.segmentAmount) < segmentedArc.inputValue
+                    visible: index === 0 ? true : (index / segmentedArc.segmentAmount) < segmentedArc.inputValue
 
                     ShapePath {
                         fillColor: "transparent"
@@ -193,7 +191,7 @@ Item {
                         capStyle: ShapePath.FlatCap
                         joinStyle: ShapePath.MiterJoin
                         startX: root.width / 2
-                        startY: root.height * ( .5 - segmentedArc.scalefactor)
+                        startY: root.height * (.5 - segmentedArc.scalefactor)
 
                         PathAngleArc {
                             centerX: root.width / 2
