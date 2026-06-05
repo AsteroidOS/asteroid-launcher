@@ -207,12 +207,6 @@ Item {
 
             anchors.fill: parent
             visible: nightstandMode.active
-            layer {
-                enabled: true
-                samples: 4
-                smooth: true
-                textureSize: Qt.size(nightstandMode.width * 2, nightstandMode.height * 2)
-            }
 
             Shape {
                 id: chargeArc
@@ -221,17 +215,15 @@ Item {
                 // radius of arc is scalefactor * height or width
                 property real arcStrokeWidth: .024
                 property real scalefactor: .42 - (arcStrokeWidth / 2)
-                property var chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
+                property int chargecolor: Math.floor(batteryChargePercentage.percent / 33.35) | 0
                 readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
                 anchors.fill: parent
-                smooth: true
-                antialiasing: true
 
                 ShapePath {
                     fillColor: "transparent"
                     strokeColor: chargeArc.colorArray[chargeArc.chargecolor]
-                    strokeWidth: parent.height * chargeArc.arcStrokeWidth
+                    strokeWidth: chargeArc.height * chargeArc.arcStrokeWidth
                     capStyle: ShapePath.FlatCap
                     joinStyle: ShapePath.MiterJoin
                     startX: chargeArc.width / 2
