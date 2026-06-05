@@ -131,6 +131,7 @@ Item {
                 visible: dockMode.active
                 color: chargeArc.colorArray[chargeArc.chargecolor]
                 style: Text.Outline; styleColor: "#80000000"
+                renderType: Text.NativeRendering
                 text: batteryChargePercentage.percent
             }
         }
@@ -187,7 +188,6 @@ Item {
                     property real centerX: root.width / 2 - width / 2
                     property real centerY: root.height / 2 - height / 2
 
-                    antialiasing : true
                     font {
                         pixelSize: root.height * .06
                         family: "Noto Sans"
@@ -195,8 +195,10 @@ Item {
                     }
                     x: centerX + Math.cos(rotM * 2 * Math.PI) * root.width * .46
                     y: centerY + Math.sin(rotM * 2 * Math.PI) * root.width * .46
+                    antialiasing: true
                     color: hourSVG.toggle24h && index === 0 ? customGreen : "white"
                     opacity: inactiveContentOpacity
+                    renderType: Text.NativeRendering
                     text: (index === 0 ? 12 : index)
 
                     transform: Rotation {
@@ -238,6 +240,7 @@ Item {
                         letterSpacing: -digitalBox.width * .001
                     }
                     color: "#ccffffff"
+                    renderType: Text.NativeRendering
                     text: if (use12H.value) {
                               wallClock.time.toLocaleString(Qt.locale(), "hh ap").slice(0, 2)}
                           else
@@ -259,6 +262,7 @@ Item {
                         letterSpacing: -digitalBox.width * .001
                     }
                     color: "#ddffffff"
+                    renderType: Text.NativeRendering
                     text: wallClock.time.toLocaleString(Qt.locale(), "mm")
                 }
 
@@ -278,6 +282,7 @@ Item {
                     }
                     visible: use12H.value
                     color: "#ddffffff"
+                    renderType: Text.NativeRendering
                     text: wallClock.time.toLocaleString(Qt.locale(), "ap").toUpperCase()
                 }
             }
@@ -390,6 +395,8 @@ Item {
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                     opacity: activeContentOpacity
+                    renderType: Text.NativeRendering
+                    textFormat: Text.StyledText
                     font {
                         family: "Barlow"
                         styleName: weatherBox.weatherSynced ? "Medium" : "Bold"
@@ -463,15 +470,15 @@ Item {
                     }
                     color: "#ffffffff"
                     opacity: displayAmbient ? inactiveArcOpacity : activeContentOpacity
+                    renderType: Text.NativeRendering
                     text: wallClock.time.toLocaleString(Qt.locale(), "ddd").slice(0, 3).toUpperCase()
                 }
 
                 Text {
                     id: dayNumber
 
-                    anchors {
-                        centerIn: dayBox
-                    }
+                    anchors.centerIn: dayBox
+                    
                     font {
                         pixelSize: dayBox.width * .38
                         family: "Noto Sans"
@@ -479,6 +486,7 @@ Item {
                     }
                     color: "#ffffffff"
                     opacity: activeContentOpacity
+                    renderType: Text.NativeRendering
                     text: wallClock.time.toLocaleString(Qt.locale(), "dd").slice(0, 2).toUpperCase()
                 }
 
@@ -496,6 +504,7 @@ Item {
                     }
                     color: "#ffffffff"
                     opacity: displayAmbient ? inactiveArcOpacity : activeContentOpacity
+                    renderType: Text.NativeRendering
                     text: wallClock.time.toLocaleString(Qt.locale(), "MMM").slice(0, 3).toUpperCase()
                 }
             }
@@ -587,6 +596,7 @@ Item {
                     }
                     color: "#ffffffff"
                     opacity: activeContentOpacity
+                    renderType: Text.NativeRendering
                     text: batteryBox.value
                 }
 
@@ -604,6 +614,7 @@ Item {
                     }
                     color: "#ffffffff"
                     opacity: inactiveContentOpacity
+                    renderType: Text.NativeRendering
                     text: "%"
                 }
             }
