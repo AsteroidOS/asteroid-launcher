@@ -11,7 +11,7 @@
 import QtQuick
 import QtQuick.Shapes
 import QtSensors
-import Qt5compat.GraphicalEffects
+import Qt5Compat.GraphicalEffects
 import org.asteroid.controls
 import org.asteroid.utils
 import Nemo.Configuration
@@ -82,12 +82,6 @@ Item {
 
             anchors.fill: root
             visible: dockMode.active
-            layer {
-                enabled: true
-                samples: 4
-                smooth: true
-                textureSize: Qt.size(dockMode.width * 2, dockMode.height * 2)
-            }
 
             Shape {
                 id: chargeArc
@@ -96,7 +90,7 @@ Item {
                 // radius of arc is scalefactor * height or width
                 property real arcStrokeWidth: 0.016
                 property real scalefactor: 0.39 - (arcStrokeWidth / 2)
-                property var chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
+                property int chargecolor: Math.floor(batteryChargePercentage.percent / 33.35) | 0
                 readonly property var colorArray: [ "red", "yellow", Qt.rgba(0.318, 1, 0.051, 0.9)]
 
                 anchors.fill: dockMode
@@ -107,8 +101,8 @@ Item {
                     strokeWidth: dockMode.height * chargeArc.arcStrokeWidth
                     capStyle: ShapePath.RoundCap
                     joinStyle: ShapePath.MiterJoin
-                    startX: width / 2
-                    startY: height * ( 0.5 - chargeArc.scalefactor)
+                    startX: chargeArc.width / 2
+                    startY: chargeArc.height * ( 0.5 - chargeArc.scalefactor)
 
                     PathAngleArc {
                         centerX: dockMode.width / 2
@@ -631,31 +625,21 @@ Item {
                 width: handBox.width
                 height: handBox.height
                 source: imgPath + "hour-12h.svg"
-                antialiasing: true
-                smooth: true
 
                 transform: Rotation {
+                    id: hourRot
                     origin.x: handBox.width / 2
                     origin.y: handBox.height / 2
-                    angle: hourSVG.toggle24h ?
-                               (wallClock.time.getHours() * 15) + (wallClock.time.getMinutes() * .25) :
-                               (wallClock.time.getHours() * 30) + (wallClock.time.getMinutes() * .5)
                 }
 
-                layer {
-                    enabled: true
-                    samples: 4
-                    smooth: true
-                    textureSize: Qt.size(root.width * 2, root.height * 2)
-                    // DropShadow depends on import Qt5Compat.GraphicalEffects
-                    effect: DropShadow {
-                        transparentBorder: true
-                        horizontalOffset: 3
-                        verticalOffset: 3
-                        radius: 8.0
-                        samples: 17
-                        color: Qt.rgba(0, 0, 0, .2)
-                    }
+                layer.enabled: true
+                layer.effect: DropShadow {
+                    transparentBorder: true
+                    horizontalOffset: 3
+                    verticalOffset: 3
+                    radius: 8.0
+                    samples: 9
+                    color: Qt.rgba(0, 0, 0, .2)
                 }
             }
 
@@ -666,71 +650,70 @@ Item {
                 width: handBox.width
                 height: handBox.height
                 source: imgPath + "minute.svg"
-                antialiasing: true
-                smooth: true
 
                 transform: Rotation {
+                    id: minuteRot
                     origin.x: handBox.width / 2
                     origin.y: handBox.height / 2
-                    angle: (wallClock.time.getMinutes() * 6) + (wallClock.time.getSeconds() * 6 / 60)
                 }
 
-                layer {
-                    enabled: true
-                    samples: 4
-                    smooth: true
-                    textureSize: Qt.size(root.width * 2, root.height * 2)
-                    effect: DropShadow {
-                        transparentBorder: true
-                        horizontalOffset: 5
-                        verticalOffset: 5
-                        radius: 10.0
-                        samples: 21
-                        color: Qt.rgba(0, 0, 0, .2)
-                    }
+                layer.enabled: true
+                layer.effect: DropShadow {
+                    transparentBorder: true
+                    horizontalOffset: 5
+                    verticalOffset: 5
+                    radius: 10.0
+                    samples: 9
+                    color: Qt.rgba(0, 0, 0, .2)
                 }
             }
 
+            // second hand has no layer — continuous 60fps rotation would force constant recomposite
             Image {
                 id: secondSVG
 
                 anchors.centerIn: handBox
                 width: handBox.width
                 height: handBox.height
-                source: imgPath + "second.svg"
-                antialiasing: true
-                smooth: true
                 visible: !displayAmbient && !dockMode.active
+                source: imgPath + "second.svg"
 
                 transform: Rotation {
+                    id: secondRot
                     origin.x: handBox.width / 2
                     origin.y: handBox.height / 2
-                    angle: wallClock.time.getSeconds() * 6
-
-                    Behavior on angle {
-                        enabled: !displayAmbient && !nightstand
-                        RotationAnimation {
-                            duration: 1000
-                            direction: RotationAnimation.Clockwise
-                        }
-                    }
-                }
-
-                layer {
-                    enabled: true
-                    samples: 4
-                    smooth: true
-                    textureSize: Qt.size(root.width * 2, root.height * 2)
-                    effect: DropShadow {
-                        transparentBorder: true
-                        horizontalOffset: 5
-                        verticalOffset: 5
-                        radius: 10.0
-                        samples: 21
-                        color: Qt.rgba(0, 0, 0, .2)
-                    }
                 }
             }
+        }
+        
+        Timer {
+            interval: 16
+            repeat: true
+            running: !displayAmbient && !dockMode.active && visible
+
+            onTriggered: {
+                var now = new Date();
+                secondRot.angle = (now.getSeconds() * 1000 + now.getMilliseconds()) * 6 / 1000;
+            }
+        }
+        
+        Connections {
+            target: wallClock
+            function onTimeChanged() {
+                var h = wallClock.time.getHours();
+                var min = wallClock.time.getMinutes();
+                var sec = wallClock.time.getSeconds();
+                hourRot.angle = hourSVG.toggle24h ? h * 15 + min * .25 : h * 30 + min * .5;
+                minuteRot.angle = min * 6 + sec * 6 / 60;
+            }
+        }
+
+        Component.onCompleted: {
+            var h = wallClock.time.getHours();
+            var min = wallClock.time.getMinutes();
+            var sec = wallClock.time.getSeconds();
+            hourRot.angle = hourSVG.toggle24h ? h * 15 + min * .25 : h * 30 + min * .5;
+            minuteRot.angle = min * 6 + sec * 6 / 60;
         }
     }
 }
