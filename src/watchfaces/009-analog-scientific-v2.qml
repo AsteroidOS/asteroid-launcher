@@ -17,7 +17,6 @@ Item {
     anchors.fill: parent
 
     property string imgPath: "../watchfaces-img/analog-scientific-v2-"
-    property real rad: .01745
 
     MceBatteryLevel {
         id: batteryChargePercentage
@@ -95,8 +94,8 @@ Item {
                     font {
                         pixelSize: parent.height * .088
                         family: "Outfit"
-                        styleName: "Regular"
                     }
+                    renderType: Text.NativeRendering
                     horizontalAlignment: Text.AlignHCenter
                     color: "#ffffffff"
                     text: index === 0 ? "12" : index
@@ -128,9 +127,11 @@ Item {
                         pixelSize: parent.height * .31
                         family: "Raleway"
                     }
+                    renderType: Text.NativeRendering
                     visible: !displayAmbient
                     color: "white"
                     horizontalAlignment: Text.AlignHCenter
+                    textFormat: Text.StyledText
                     text: "<b>AsteroidOS</b><br>Free Your Wrist"
                 }
                 MouseArea {
@@ -153,9 +154,9 @@ Item {
                 font {
                     pixelSize: parent.height * .15
                     family: "Open Sans"
-                    styleName: "Regular"
                     letterSpacing: -parent.width * .001
                 }
+                renderType: Text.NativeRendering
                 color: "#bbffffff"
                 text: if (use12H.value) {
                           wallClock.time.toLocaleString(Qt.locale(), "hh ap").slice(0, 2)}
@@ -174,9 +175,10 @@ Item {
                 font {
                     pixelSize: root.height * .15
                     family: "Open Sans"
-                    styleName: "Light"
+                    weight: Font.Light
                     letterSpacing: -parent.width * .001
                 }
+                renderType: Text.NativeRendering
                 color: "#ccffffff"
                 text: wallClock.time.toLocaleString(Qt.locale(), "mm")
             }
@@ -193,8 +195,8 @@ Item {
                 font {
                     pixelSize: root.height * .06
                     family: "Open Sans Condensed"
-                    styleName: "Regular"
                 }
+                renderType: Text.NativeRendering
                 visible: use12H.value
                 color: "#ddffffff"
                 text: wallClock.time.toLocaleString(Qt.locale(), "ap").toUpperCase()
@@ -203,9 +205,7 @@ Item {
             Item {
                 id: dayBox
 
-                property var day: wallClock.time.toLocaleString(Qt.locale(), "dd")
-
-                onDayChanged: dayArc.requestPaint()
+                property int currentDayOfWeek: wallClock.time.getDay()
 
                 anchors {
                     centerIn: parent
@@ -215,41 +215,48 @@ Item {
                 width: parent.width * .22
                 height: parent.height * .22
 
-                Canvas {
+                Rectangle {
                     id: dayArc
 
+                    anchors.centerIn: parent
+                    width: parent.width * .9
+                    height: width
+                    radius: width / 2
+                    color: "#22ffffff"
+                    opacity: !displayAmbient ? 1 : .3
+
+                    Rectangle {
+                        anchors.centerIn: parent
+                        width: parent.width
+                        height: width
+                        radius: width / 2
+                        color: "transparent"
+                        border.width: root.height * .002
+                        border.color: "#77ffffff"
+                    }
+                }
+
+                Shape {
                     anchors.fill: parent
                     opacity: !displayAmbient ? 1 : .3
-                    smooth: true
-                    renderStrategy: Canvas.Cooperative
-                    onPaint: {
-                        var ctx = getContext("2d")
-                        ctx.reset()
-                        ctx.beginPath()
-                        ctx.fillStyle = "#22ffffff"
-                        ctx.arc(parent.width / 2,
-                                parent.height / 2,
-                                parent.width * .45,
-                                270 * rad,
-                                360,
-                                false);
-                        ctx.strokeStyle = "#77ffffff"
-                        ctx.lineWidth = root.height * .002
-                        ctx.stroke()
-                        ctx.fill()
-                        ctx.closePath()
-                        ctx.lineWidth = root.height * .005
-                        ctx.lineCap="round"
-                        ctx.strokeStyle = "#ff98E2C6"
-                        ctx.beginPath()
-                        ctx.arc(parent.width / 2,
-                                parent.height / 2,
-                                parent.width * .456,
-                                169 * rad,
-                                ((wallClock.time.getDay() / 7 * 360) + 169) * rad,
-                                false);
-                        ctx.stroke()
-                        ctx.closePath()
+
+                    ShapePath {
+                        fillColor: "transparent"
+                        strokeColor: "#ff98E2C6"
+                        strokeWidth: root.height * .005
+                        capStyle: ShapePath.RoundCap
+                        startX: dayBox.width / 2
+                        startY: dayBox.height * (.5 - .456)
+
+                        PathAngleArc {
+                            centerX: dayBox.width / 2
+                            centerY: dayBox.height / 2
+                            radiusX: dayBox.width * .456
+                            radiusY: dayBox.height * .456
+                            startAngle: 169
+                            sweepAngle: dayBox.currentDayOfWeek / 7 * 360
+                            moveToStart: true
+                        }
                     }
                 }
 
@@ -276,10 +283,9 @@ Item {
                             pixelSize: currentDayHighlight ? root.height * .036 : root.height * .03
                             letterSpacing: parent.width * .004
                             family: "Outfit"
-                            styleName: currentDayHighlight ?
-                                            "Bold" :
-                                            "Regular"
+                            weight: currentDayHighlight ? Font.Bold : Font.Normal
                         }
+                        renderType: Text.NativeRendering
                         text: new Date(2017, 1, index).toLocaleString(Qt.locale(), "ddd").slice(0, 2).toUpperCase()
                         transform: Rotation {
                             origin.x: width / 2
@@ -301,6 +307,7 @@ Item {
                         family: "Noto Sans"
                         styleName: "Condensed Light"
                     }
+                    renderType: Text.NativeRendering
                     color: "#ffffffff"
                     text: wallClock.time.toLocaleString(Qt.locale(), "dd").slice(0, 2).toUpperCase()
                 }
@@ -309,9 +316,7 @@ Item {
             Item {
                 id: monthBox
 
-                property var month: wallClock.time.toLocaleString(Qt.locale(), "mm")
-
-                onMonthChanged: monthArc.requestPaint()
+                property int currentMonth: wallClock.time.getMonth() + 1
 
                 anchors {
                     centerIn: parent
@@ -321,41 +326,48 @@ Item {
                 width: parent.width * .22
                 height: parent.height * .22
 
-                Canvas {
+                Rectangle {
                     id: monthArc
 
+                    anchors.centerIn: parent
+                    width: parent.width * .9
+                    height: width
+                    radius: width / 2
+                    color: "#22ffffff"
+                    opacity: !displayAmbient ? 1 : .3
+
+                    Rectangle {
+                        anchors.centerIn: parent
+                        width: parent.width
+                        height: width
+                        radius: width / 2
+                        color: "transparent"
+                        border.width: root.height * .002
+                        border.color: "#77ffffff"
+                    }
+                }
+
+                Shape {
                     anchors.fill: parent
                     opacity: !displayAmbient ? 1 : .3
-                    smooth: true
-                    renderStrategy: Canvas.Cooperative
-                    onPaint: {
-                        var ctx = getContext("2d")
-                        ctx.reset()
-                        ctx.beginPath()
-                        ctx.fillStyle = "#22ffffff"
-                        ctx.arc(parent.width / 2,
-                                parent.height / 2,
-                                parent.width * .45,
-                                270 * rad,
-                                360,
-                                false);
-                        ctx.strokeStyle = "#77ffffff"
-                        ctx.lineWidth = root.height * .002
-                        ctx.stroke()
-                        ctx.fill()
-                        ctx.closePath()
-                        ctx.lineWidth = root.height * .005
-                        ctx.lineCap="round"
-                        ctx.strokeStyle = "#ff98E2C6"
-                        ctx.beginPath()
-                        ctx.arc(parent.width / 2,
-                                parent.height / 2,
-                                parent.width * .456,
-                                270 * rad,
-                                ((wallClock.time.toLocaleString(Qt.locale(),"MM") / 12 * 360) + 270) * rad,
-                                false);
-                        ctx.stroke()
-                        ctx.closePath()
+
+                    ShapePath {
+                        fillColor: "transparent"
+                        strokeColor: "#ff98E2C6"
+                        strokeWidth: root.height * .005
+                        capStyle: ShapePath.RoundCap
+                        startX: monthBox.width / 2
+                        startY: monthBox.height * (.5 - .456)
+
+                        PathAngleArc {
+                            centerX: monthBox.width / 2
+                            centerY: monthBox.height / 2
+                            radiusX: monthBox.width * .456
+                            radiusY: monthBox.height * .456
+                            startAngle: -90
+                            sweepAngle: monthBox.currentMonth / 12 * 360
+                            moveToStart: false
+                        }
                     }
                 }
 
@@ -376,15 +388,12 @@ Item {
                         antialiasing: true
                         opacity: !displayAmbient ? 1 : .6
                         font {
-                            pixelSize: currentMonthHighlight ?
-                                           root.height * .036 :
-                                           root.height * .03
+                            pixelSize: currentMonthHighlight ? root.height * .036 : root.height * .03
                             letterSpacing: parent.width * .004
                             family: "Outfit"
-                            styleName: currentMonthHighlight ?
-                                           "Bold" :
-                                           "Regular"
+                            weight: currentMonthHighlight ? Font.Bold : Font.Normal
                         }
+                        renderType: Text.NativeRendering
                         color:  currentMonthHighlight ?
                                     "#ffffffff" :
                                     "#88ffffff"
@@ -416,10 +425,6 @@ Item {
             Item {
                 id: batteryBox
 
-                property int value: batteryChargePercentage.percent
-
-                onValueChanged: batteryArc.requestPaint()
-
                 anchors {
                     centerIn: parent
                     verticalCenterOffset: parent.width * .206
@@ -427,67 +432,49 @@ Item {
                 width: parent.width * .26
                 height: parent.height * .26
 
-                Canvas {
+                Rectangle {
                     id: batteryArc
 
-                    property int hour: 0
-
+                    anchors.centerIn: parent
+                    width: parent.width * .9
+                    height: width
+                    radius: width / 2
+                    color: "#22ffffff"
                     opacity: !displayAmbient ? 1 : .3
+
+                    Rectangle {
+                        anchors.centerIn: parent
+                        width: parent.width
+                        height: width
+                        radius: width / 2
+                        color: "transparent"
+                        border.width: root.height * .002
+                        border.color: "#77ffffff"
+                    }
+                }
+
+                Shape {
                     anchors.fill: parent
-                    smooth: true
-                    renderStrategy: Canvas.Cooperative
-                    onPaint: {
-                        var ctx = getContext("2d")
-                        ctx.reset()
-                        ctx.beginPath()
-                        ctx.fillStyle = "#22ffffff"
-                        ctx.arc(parent.width / 2,
-                                parent.height / 2,
-                                parent.width * .45,
-                                270 * rad,
-                                360,
-                                false);
-                        ctx.strokeStyle = "#77ffffff"
-                        ctx.lineWidth = root.height * .002
-                        ctx.stroke()
-                        ctx.fill()
-                        ctx.closePath()
-                        var gradient = ctx.createRadialGradient (parent.width / 2,
-                                                                 parent.height / 2,
-                                                                 0,
-                                                                 parent.width / 2,
-                                                                 parent.height / 2,
-                                                                 parent.width * .46
-                                                                 )
-                        gradient.addColorStop(.44,
-                                              batteryChargePercentage.percent < 30 ?
-                                                  "#00EF476F" :
-                                                  batteryChargePercentage.percent < 60 ?
-                                                      "#00D0E562" :
-                                                      "#0023F0C7"
-                                              )
-                        gradient.addColorStop(.97,
-                                              batteryChargePercentage.percent < 30 ?
-                                                  "#ffEF476F" :
-                                                  batteryChargePercentage.percent < 60 ?
-                                                      "#ffD0E562" :
-                                                      "#ff23F0C7"
-                                              )
-                        ctx.lineWidth = root.height * .005
-                        ctx.lineCap="round"
-                        ctx.strokeStyle = gradient
-                        ctx.beginPath()
-                        ctx.arc(parent.width / 2,
-                                parent.height / 2,
-                                parent.width * .456,
-                                270 * rad,
-                                ((batteryChargePercentage.percent/100*360)+270) * rad,
-                                false
-                                );
-                        ctx.lineTo(parent.width / 2,
-                                   parent.height / 2)
-                        ctx.stroke()
-                        ctx.closePath()
+                    opacity: !displayAmbient ? 1 : .3
+
+                    ShapePath {
+                        fillColor: "transparent"
+                        strokeColor: batteryChargePercentage.percent < 30 ? "#EF476F" :
+                                     batteryChargePercentage.percent < 60 ? "#D0E562" : "#23F0C7"
+                        strokeWidth: root.height * .005
+                        capStyle: ShapePath.RoundCap
+                        startX: batteryBox.width / 2
+                        startY: batteryBox.height * (.5 - .456)
+
+                        PathAngleArc {
+                            centerX: batteryBox.width / 2
+                            centerY: batteryBox.height / 2
+                            radiusX: batteryBox.width * .456
+                            radiusY: batteryBox.height * .456
+                            startAngle: -90
+                            sweepAngle: batteryChargePercentage.percent / 100 * 360
+                            moveToStart: false
+                        }
                     }
                 }
 
@@ -499,7 +486,7 @@ Item {
                     font {
                         pixelSize: parent.height * (batteryDisplay.text === "100" ? 0.46 : .48)
                         family: "Outfit"
-                        styleName:"Thin"
+                        weight: Font.Thin
                     }
                     color: "#ffffffff"
                     text: batteryChargePercentage.percent
@@ -514,7 +501,6 @@ Item {
                          font {
                              pixelSize: parent.height * .194
                              family: "Open Sans"
-                             styleName:"Regular"
                          }
                          renderType: Text.NativeRendering
                          horizontalAlignment: Text.AlignHCenter
