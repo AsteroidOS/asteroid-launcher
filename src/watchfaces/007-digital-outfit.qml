@@ -33,17 +33,17 @@ Item {
                 property int gap: 6
                 property int endFromStart: 360
                 property bool clockwise: true
-                property real arcStrokeWidth: .05
-                property real scalefactor: .46 - (arcStrokeWidth / 2)
+                property real arcStrokeWidth: 0.05
+                property real scalefactor: 0.46 - (arcStrokeWidth / 2)
                 property int chargecolor: Math.floor(batteryChargePercentage.percent / 33.35) | 0
-                readonly property var colorArray: ["red", "yellow", Qt.rgba(.318, 1, .051, .9)]
+                readonly property var colorArray: ["red", "yellow", Qt.rgba(0.318, 1, 0.051, 0.9)]
 
                 model: segmentAmount
 
                 Shape {
                     id: segment
 
-                    visible: index === 0 ? true : (index/segmentedArc.segmentAmount) < segmentedArc.inputValue
+                    visible: index === 0 ? true : (index / segmentedArc.segmentAmount) < segmentedArc.inputValue
 
                     ShapePath {
                         fillColor: "transparent"
@@ -52,7 +52,7 @@ Item {
                         capStyle: ShapePath.FlatCap
                         joinStyle: ShapePath.MiterJoin
                         startX: root.width / 2
-                        startY: root.height * (.5 - segmentedArc.scalefactor)
+                        startY: root.height * (0.5 - segmentedArc.scalefactor)
 
                         PathAngleArc {
                             centerX: root.width / 2
@@ -63,9 +63,13 @@ Item {
                             sweepAngle: segmentedArc.clockwise ? (segmentedArc.endFromStart / segmentedArc.segmentAmount) - segmentedArc.gap : -(segmentedArc.endFromStart / segmentedArc.segmentAmount) + segmentedArc.gap
                             moveToStart: true
                         }
+
                     }
+
                 }
+
             }
+
         }
 
         MceBatteryLevel {
@@ -76,94 +80,106 @@ Item {
             id: watchfaceRoot
 
             anchors.centerIn: root
-            width: root.width * (nightstandMode.active ? .8 : 1)
+            width: root.width * (nightstandMode.active ? 0.8 : 1)
             height: width
             layer.enabled: true
-            layer.effect: DropShadow {
-                transparentBorder: true
-                horizontalOffset: watchfaceRoot.height * .01
-                verticalOffset: watchfaceRoot.height * .01
-                radius: watchfaceRoot.height * .018
-                samples: 9
-                color: "#99000000"
-            }
 
             Text {
                 id: hourDisplay
 
+                renderType: Text.NativeRendering
+                color: "#ffffff"
+                horizontalAlignment: Text.AlignHCenter
+                text: use12H.value ? wallClock.time.toLocaleString(Qt.locale(), "hh ap").slice(0, 2) : wallClock.time.toLocaleString(Qt.locale(), "HH")
+
                 anchors {
                     centerIn: watchfaceRoot
-                    verticalCenterOffset: -watchfaceRoot.height * .218
+                    verticalCenterOffset: -watchfaceRoot.height * 0.218
                 }
-                renderType: Text.NativeRendering
+
                 font {
-                    pixelSize: watchfaceRoot.height * .4
-                    letterSpacing: watchfaceRoot.height * .006
+                    pixelSize: watchfaceRoot.height * 0.4
+                    letterSpacing: watchfaceRoot.height * 0.006
                     family: "Outfit"
                     weight: Font.Medium
                 }
-                color: "#ffffff"
-                horizontalAlignment: Text.AlignHCenter
-                text: use12H.value ?
-                          wallClock.time.toLocaleString(Qt.locale(), "hh ap").slice(0, 2) :
-                          wallClock.time.toLocaleString(Qt.locale(), "HH")
+
             }
 
             Text {
                 id: apDisplay
 
-                anchors {
-                    left: hourDisplay.right
-                    leftMargin: watchfaceRoot.height * .01
-                    bottom: watchfaceRoot.verticalCenter
-                    bottomMargin: watchfaceRoot.height * .22
-                }
                 renderType: Text.NativeRendering
                 visible: use12H.value
                 color: "#ddffffff"
-                font {
-                    pixelSize: watchfaceRoot.height * .076
-                    family: "Outfit"
-                    letterSpacing: watchfaceRoot.height * .006
-                }
                 text: wallClock.time.toLocaleString(Qt.locale(), "ap").toUpperCase()
+
+                anchors {
+                    left: hourDisplay.right
+                    leftMargin: watchfaceRoot.height * 0.01
+                    bottom: watchfaceRoot.verticalCenter
+                    bottomMargin: watchfaceRoot.height * 0.22
+                }
+
+                font {
+                    pixelSize: watchfaceRoot.height * 0.076
+                    family: "Outfit"
+                    letterSpacing: watchfaceRoot.height * 0.006
+                }
+
             }
 
             Text {
                 id: monthDisplay
 
                 anchors.centerIn: watchfaceRoot
-
                 renderType: Text.NativeRendering
                 color: "#ddffffff"
                 horizontalAlignment: Text.AlignHCenter
+                text: wallClock.time.toLocaleString(Qt.locale(), "MMM dd").replace(".", "").toUpperCase()
+
                 font {
-                    pixelSize: watchfaceRoot.height * .1
-                    letterSpacing: watchfaceRoot.height * .006
+                    pixelSize: watchfaceRoot.height * 0.1
+                    letterSpacing: watchfaceRoot.height * 0.006
                     family: "Outfit"
                     weight: Font.Light
                 }
-                text: wallClock.time.toLocaleString(Qt.locale(), "MMM dd").replace(".","").toUpperCase()
+
             }
 
             Text {
                 id: minuteDisplay
 
-                anchors {
-                    centerIn: watchfaceRoot
-                    verticalCenterOffset: watchfaceRoot.height * .21
-                }
                 renderType: Text.NativeRendering
                 color: "#ffffff"
                 horizontalAlignment: Text.AlignHCenter
+                text: wallClock.time.toLocaleString(Qt.locale(), "mm")
+
+                anchors {
+                    centerIn: watchfaceRoot
+                    verticalCenterOffset: watchfaceRoot.height * 0.21
+                }
+
                 font {
-                    pixelSize: watchfaceRoot.height * .4
-                    letterSpacing: watchfaceRoot.height * .006
+                    pixelSize: watchfaceRoot.height * 0.4
+                    letterSpacing: watchfaceRoot.height * 0.006
                     family: "Outfit"
                     weight: Font.Light
                 }
-                text: wallClock.time.toLocaleString(Qt.locale(), "mm")
+
             }
+
+            layer.effect: DropShadow {
+                transparentBorder: true
+                horizontalOffset: watchfaceRoot.height * 0.01
+                verticalOffset: watchfaceRoot.height * 0.01
+                radius: watchfaceRoot.height * 0.018
+                samples: 9
+                color: "#99000000"
+            }
+
         }
+
     }
+
 }
