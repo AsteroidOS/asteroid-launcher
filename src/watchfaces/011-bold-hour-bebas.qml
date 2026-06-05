@@ -23,6 +23,8 @@ Item {
 
         anchors.centerIn: parent
 
+        property int currentMinute: wallClock.time.getMinutes()
+
         height: parent.width > parent.height ? parent.height : parent.width
         width: height
 
@@ -66,7 +68,6 @@ Item {
             Text {
                 id: hourDisplay
 
-                renderType: Text.NativeRendering
                 anchors {
                     horizontalCenter: parent.horizontalCenter
                     verticalCenter: parent.verticalCenter
@@ -74,11 +75,12 @@ Item {
                 font {
                     pixelSize: parent.height * .87
                     family: "BebasKai"
-                    styleName:"Bold"
+                    weight: Font.Bold
                 }
+                renderType: Text.NativeRendering
                 color: Qt.rgba(1, 1, 1, .9)
                 opacity: .9
-                style: Text.Outline;
+                style: Text.Outline
                 styleColor: Qt.rgba(0, 0, 0, .2)
                 horizontalAlignment: Text.AlignHCenter
                 text: if (use12H.value) {
@@ -87,31 +89,20 @@ Item {
                           wallClock.time.toLocaleString(Qt.locale(), "HH")
             }
 
-            Canvas {
+            Rectangle {
                 id: minuteCircle
 
-                property int minute: 0
                 property real rotM: (wallClock.time.getMinutes() - 15) / 60
-                property real centerX: parent.width / 2
-                property real centerY: parent.height / 2
-                property real minuteX: centerX+Math.cos(rotM * 2 * Math.PI) * width / 2.75
-                property real minuteY: centerY+Math.sin(rotM * 2 * Math.PI) * height / 2.75
+                property real centerX: parent.width / 2 - width / 2
+                property real centerY: parent.height / 2 - height / 2
 
-                anchors.fill: parent
-                renderStrategy: Canvas.Cooperative
-                onPaint: {
-                    var ctx = getContext("2d")
-                    var rot1 = (0 -15 ) * 6 * .01745
-                    var rot2 = (60 -15 ) * 6 * .01745
-                    ctx.reset()
-                    ctx.lineWidth = 3
-                    ctx.fillStyle = Qt.rgba(.184, .184, .184, .95)
-                    ctx.beginPath()
-                    ctx.moveTo(minuteX, minuteY)
-                    ctx.arc(minuteX, minuteY, width / 8.6, rot1, rot2, false);
-                    ctx.lineTo(minuteX, minuteY);
-                    ctx.fill();
-                }
+                x: centerX + Math.cos(rotM * 2 * Math.PI) * parent.width * .364
+                y: centerY + Math.sin(rotM * 2 * Math.PI) * parent.width * .364
+                width: parent.width / 4.3
+                height: width
+                radius: width / 2
+                color: Qt.rgba(.184, .184, .184, .95)
+                visible: !displayAmbient && !nightstandMode.active
             }
 
             Text {
@@ -124,12 +115,13 @@ Item {
                 font {
                     pixelSize: parent.height / 5.24
                     family: "BebasKai"
-                    styleName:'Condensed'
+                    styleName: "Condensed"
                 }
+                renderType: Text.NativeRendering
                 color: "white"
                 opacity: 1.00
                 x: centerX + Math.cos(rotM * 2 * Math.PI) * parent.width * .364
-                y: centerY+Math.sin(rotM * 2 * Math.PI) * parent.width * .364
+                y: centerY + Math.sin(rotM * 2 * Math.PI) * parent.width * .364
                 text: wallClock.time.toLocaleString(Qt.locale(), "mm")
             }
         }
@@ -189,26 +181,17 @@ Item {
     Connections {
         target: wallClock
         function onTimeChanged() {
-            var hour = wallClock.time.getHours()
             var minute = wallClock.time.getMinutes()
-
-            if(minuteCircle.minute !== minute) {
-                minuteCircle.minute = minute
-                minuteCircle.requestPaint()
+            if (currentMinute !== minute) {
+                currentMinute = minute
                 minuteArc.requestPaint()
             }
         }
     }
 
     Component.onCompleted: {
-        var hour = wallClock.time.getHours()
-        var minute = wallClock.time.getMinutes()
-
-        minuteCircle.minute = minute
-        minuteCircle.requestPaint()
         minuteArc.requestPaint()
-
-        burnInProtectionManager.widthOffset = Qt.binding(function() { return width * .3})
-        burnInProtectionManager.heightOffset = Qt.binding(function() { return height * .3})
+        burnInProtectionManager.widthOffset = Qt.binding(function() { return width * .3 })
+        burnInProtectionManager.heightOffset = Qt.binding(function() { return height * .3 })
     }
 }
