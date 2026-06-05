@@ -37,13 +37,12 @@ Item {
             anchors.fill: root
 
             layer.enabled: true
-            layer.samples: 2
             layer.effect: DropShadow {
                 transparentBorder: true
-                horizontalOffset: 2
-                verticalOffset: 2
-                radius: 5.0
-                samples: 11
+                horizontalOffset: root.width * .005
+                verticalOffset: root.width * .005
+                radius: root.width * .013
+                samples: 9
                 color: "#99000000"
             }
 
@@ -540,35 +539,23 @@ Item {
 
                 anchors.centerIn: handBox
                 source: imgPath + (displayAmbient ? "hour-bw.svg" : "hour.svg")
-                antialiasing: true
                 width: handBox.width
                 height: handBox.height
                 transform: Rotation {
+                    id: hourRotation
+
                     origin.x: handBox.width / 2
                     origin.y: handBox.height / 2
-                    angle: hourSVG.toggle24h ?
-                               (wallClock.time.getHours() * 15) + (wallClock.time.getMinutes() * .25) :
-                               (wallClock.time.getHours() * 30) + (wallClock.time.getMinutes() * .5)
-                    Behavior on angle {
-                        RotationAnimation {
-                            duration: 500
-                            direction: RotationAnimation.Clockwise
-                            easing.type: Easing.InOutQuad
-                        }
-                    }
+                    angle: 0
                 }
-                layer {
-                    enabled: true
-                    samples: 2
-                    textureSize: Qt.size(root.width * 2, root.height * 2)
-                    effect: DropShadow {
-                        transparentBorder: true
-                        horizontalOffset: 4
-                        verticalOffset: 4
-                        radius: 7.0
-                        samples: 15
-                        color: Qt.rgba(0, 0, 0, .2)
-                    }
+                layer.enabled: true
+                layer.effect: DropShadow {
+                    transparentBorder: true
+                    horizontalOffset: root.width * .01
+                    verticalOffset: root.width * .01
+                    radius: root.width * .018
+                    samples: 9
+                    color: Qt.rgba(0, 0, 0, .2)
                 }
             }
 
@@ -577,32 +564,23 @@ Item {
 
                 anchors.centerIn: handBox
                 source: imgPath + (displayAmbient ? "minute-bw.svg" : "minute.svg")
-                antialiasing: true
                 width: handBox.width
                 height: handBox.height
                 transform: Rotation {
+                    id: minuteRotation
+
                     origin.x: handBox.width / 2
                     origin.y: handBox.height / 2
-                    angle: (wallClock.time.getMinutes() * 6) + (wallClock.time.getSeconds() * 6 / 60)
-                    Behavior on angle {
-                        RotationAnimation {
-                            duration: 1000
-                            direction: RotationAnimation.Clockwise
-                        }
-                    }
+                    angle: 0
                 }
-                layer {
-                    enabled: true
-                    samples: 2
-                    textureSize: Qt.size(root.width * 2, root.height * 2)
-                    effect: DropShadow {
-                        transparentBorder: true
-                        horizontalOffset: 5
-                        verticalOffset: 5
-                        radius: 9.0
-                        samples: 19
-                        color: Qt.rgba(0, 0, 0, .2)
-                    }
+                layer.enabled: true
+                layer.effect: DropShadow {
+                    transparentBorder: true
+                    horizontalOffset: root.width * .012
+                    verticalOffset: root.width * .012
+                    radius: root.width * .022
+                    samples: 9
+                    color: Qt.rgba(0, 0, 0, .2)
                 }
             }
 
@@ -611,30 +589,50 @@ Item {
 
                 anchors.centerIn: handBox
                 source: imgPath + "second.svg"
-                antialiasing: true
                 visible: !displayAmbient
                 width: handBox.width
                 height: handBox.height
                 transform: Rotation {
+                    id: secondRotation
+
                     origin.x: handBox.width / 2
                     origin.y: handBox.height / 2
-                    angle: (wallClock.time.getSeconds() * 6)
-                }
-                layer {
-                    enabled: true
-                    samples: 2
-                    textureSize: Qt.size(root.width * 2, root.height * 2)
-                    effect: DropShadow {
-                        transparentBorder: true
-                        horizontalOffset: 7
-                        verticalOffset: 7
-                        radius: 10.0
-                        samples: 21
-                        color: Qt.rgba(0, 0, 0, .2)
-                    }
+                    angle: 0
                 }
             }
+            
+            Connections {
+                function onTimeChanged() {
+                    var hours = wallClock.time.getHours()
+                    var minutes = wallClock.time.getMinutes()
+                    hourRotation.angle = use12H.value ?
+                        (hours % 12 * 30) + (minutes * .5) :
+                        (hours * 15) + (minutes * .25)
+                    minuteRotation.angle = (minutes * 6) + (wallClock.time.getSeconds() * .1)
+                }
+                target: wallClock
+            }
+
+            Timer {
+                interval: 16
+                repeat: true
+                running: !displayAmbient && visible
+                onTriggered: {
+                    var now = new Date()
+                    secondRotation.angle = (now.getSeconds() * 1000 + now.getMilliseconds()) * 6 / 1000
+                }
+            }
+
+            Component.onCompleted: {
+                var hours = wallClock.time.getHours()
+                var minutes = wallClock.time.getMinutes()
+                hourRotation.angle = use12H.value ?
+                    (hours % 12 * 30) + (minutes * .5) :
+                    (hours * 15) + (minutes * .25)
+                minuteRotation.angle = (minutes * 6) + (wallClock.time.getSeconds() * .1)
+            }
         }
+        
         Item {
             id: nightstandMode
 
