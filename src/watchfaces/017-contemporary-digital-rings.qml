@@ -117,10 +117,10 @@ Item {
             id: hourDisplay
 
             anchors {
-                right: parent.horizontalCenter
-                rightMargin: -parent.height * .0938
+                horizontalCenter: parent.horizontalCenter
+                horizontalCenterOffset: -parent.width * .1085
                 verticalCenter: parent.verticalCenter
-                verticalCenterOffset: parent.height * .0281
+                verticalCenterOffset: -parent.height * .03
             }
             font {
                 pixelSize: parent.height * .375
@@ -141,17 +141,14 @@ Item {
         Text {
             id: minuteDisplay
 
-            property real rotM: (wallClock.time.getMinutes() - 12.1) / 60
-
             anchors {
-                top: hourDisplay.top;
-                topMargin: -parent.height * .015625
-                leftMargin: parent.width * .025
-                left: hourDisplay.right;
+                left: parent.horizontalCenter
+                leftMargin: parent.width * .117
+                verticalCenter: parent.verticalCenter
+                verticalCenterOffset: -parent.height * .085
             }
             font {
                 pixelSize: parent.height * .1375
-                weight: Font.DemiBold
                 letterSpacing: -1
             }
             renderType: Text.NativeRendering
@@ -165,10 +162,10 @@ Item {
             id: secondDisplay
 
             anchors {
-                bottom: hourDisplay.bottom;
-                bottomMargin: parent.height * .059375
-                leftMargin: parent.width * .025
-                left: hourDisplay.right;
+                left: parent.horizontalCenter
+                leftMargin: parent.width * .1175
+                verticalCenter: parent.verticalCenter
+                verticalCenterOffset: parent.height * .0665
             }
             font {
                 pixelSize: parent.height * .1375
@@ -181,17 +178,18 @@ Item {
             style: Text.Outline
             styleColor: Qt.rgba(0, 0, 0, .5)
             horizontalAlignment: Text.AlignHCenter
-            text: wallClock.time.toLocaleString(Qt.locale(), "ss")
             visible: !displayAmbient
+            text: wallClock.time.toLocaleString(Qt.locale(), "ss")
         }
 
         Text {
             id: dowDisplay
 
             anchors {
-                bottom: hourDisplay.top
-                left: parent.left
-                right: parent.right
+                horizontalCenter: parent.horizontalCenter
+                horizontalCenterOffset: -parent.width * .002
+                verticalCenter: parent.verticalCenter
+                verticalCenterOffset: -parent.height * .2165
             }
             font {
                 pixelSize: parent.height * .084375
@@ -206,37 +204,52 @@ Item {
             text: wallClock.time.toLocaleString(Qt.locale(), "dddd")
         }
 
-        Text {
+        Row {
             id: dateDisplay
-
+            
             anchors {
-                topMargin: -parent.height * .05
-                top: hourDisplay.bottom
-                left: parent.left
-                right: parent.right
+                horizontalCenter: parent.horizontalCenter
+                horizontalCenterOffset: parent.width * .002
+                verticalCenter: parent.verticalCenter
+                verticalCenterOffset: parent.height * .20
             }
-            font {
-                pixelSize: parent.height * .084375
-                family: "Titillium"
-                weight: Font.Thin
+            spacing: parent.width * .018
+
+            Text {
+                font {
+                    pixelSize: parent.parent.height * .084375
+                    family: "Titillium"
+                    weight: Font.Medium
+                }
+                renderType: Text.NativeRendering
+                color: Qt.rgba(1, 1, 1, 1)
+                style: Text.Outline
+                styleColor: Qt.rgba(0, 0, 0, .5)
+                text: wallClock.time.toLocaleString(Qt.locale(), "dd")
             }
-            renderType: Text.NativeRendering
-            color: Qt.rgba(1, 1, 1, 1)
-            style: Text.Outline
-            styleColor: Qt.rgba(0, 0, 0, .5)
-            horizontalAlignment: Text.AlignHCenter
-            textFormat: Text.StyledText
-            text: wallClock.time.toLocaleString(Qt.locale(), "<b>dd</b> MMMM")
+
+            Text {
+                font {
+                    pixelSize: parent.parent.height * .084375
+                    family: "Titillium"
+                    weight: Font.Thin
+                }
+                renderType: Text.NativeRendering
+                color: Qt.rgba(1, 1, 1, 1)
+                style: Text.Outline
+                styleColor: Qt.rgba(0, 0, 0, .5)
+                text: wallClock.time.toLocaleString(Qt.locale(), "MMMM")
+            }
         }
 
         Text {
             id: pmDisplay
 
             anchors {
-                bottomMargin: +parent.height * .018
-                bottom: dowDisplay.top
-                left: parent.left
-                right: parent.right
+                horizontalCenter: parent.horizontalCenter
+                horizontalCenterOffset: -parent.width * .0015
+                verticalCenter: parent.verticalCenter
+                verticalCenterOffset: -parent.height * .2975
             }
             font {
                 pixelSize: parent.height * .05
