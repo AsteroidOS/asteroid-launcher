@@ -51,6 +51,10 @@ install(
 	DESTINATION ${CMAKE_INSTALL_DATADIR}/asteroid-launcher
 )
 install(
+	DIRECTORY shaders
+	DESTINATION ${CMAKE_INSTALL_DATADIR}/asteroid-launcher
+)
+install(
 	DIRECTORY applauncher
 	DESTINATION ${CMAKE_INSTALL_DATADIR}/asteroid-launcher
 )
