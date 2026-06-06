@@ -11,12 +11,12 @@
 // Based on a fragmentShader example from doc.qt.io. Design is heavily
 // inspired by Jollas "The Bold Font" watchface.
 
+import Qt5Compat.GraphicalEffects
 import QtQuick
 import QtQuick.Shapes
-import Qt5Compat.GraphicalEffects
-import org.asteroid.controls
-import org.asteroid.utils
 import Nemo.Mce
+import org.asteroid.utils
+
 
 Item {
     anchors.fill: parent
@@ -26,7 +26,7 @@ Item {
     Item {
         anchors.centerIn: parent
 
-        height: parent.width > parent.height ? parent.height : parent.width
+        height: Math.min(parent.width, parent.height)
         width: height
 
         Rectangle {
@@ -165,7 +165,7 @@ Item {
             layer.samplerName: "maskSource"
             layer.effect: ShaderEffect {
                 property variant source: layer2mask
-                property bool keepInner: displayAmbient
+                property bool keepInner: false
                 fragmentShader: "qrc:/shaders/masked-spartan.frag.qsb"
             }
         }
@@ -174,16 +174,9 @@ Item {
             id: nightstandMode
 
             readonly property bool active: nightstand
-            property int batteryPercentChanged: batteryChargePercentage.percent
 
             anchors.fill: parent
             visible: nightstandMode.active
-            layer {
-                enabled: true
-                samples: 4
-                smooth: true
-                textureSize: Qt.size(nightstandMode.width * 2, nightstandMode.height * 2)
-            }
 
             Shape {
                 id: chargeArc
@@ -192,12 +185,10 @@ Item {
                 // radius of arc is scalefactor * height or width
                 property real arcStrokeWidth: .022
                 property real scalefactor: .45 - (arcStrokeWidth / 2)
-                property real chargecolor: Math.floor(batteryChargePercentage.percent / 33.35)
-                readonly property var colorArray: [ "red", "yellow", Qt.rgba(.318, 1, .051, .9)]
+                property int chargecolor: Math.floor(batteryChargePercentage.percent / 33.35) | 0
+                readonly property var colorArray: ["red", "yellow", Qt.rgba(.318, 1, .051, .9)]
 
                 anchors.fill: parent
-                smooth: true
-                antialiasing: true
 
                 ShapePath {
                     fillColor: "transparent"
@@ -206,7 +197,7 @@ Item {
                     capStyle: ShapePath.FlatCap
                     joinStyle: ShapePath.MiterJoin
                     startX: chargeArc.width / 2
-                    startY: chargeArc.height * ( .5 - chargeArc.scalefactor)
+                    startY: chargeArc.height * (.5 - chargeArc.scalefactor)
 
                     PathAngleArc {
                         centerX: chargeArc.width / 2
