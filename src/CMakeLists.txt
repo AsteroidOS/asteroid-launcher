@@ -18,7 +18,9 @@ add_executable(asteroid-launcher ${SRC} ${HEADERS} resources-qml.qrc)
 
 qt_add_shaders(
     asteroid-launcher "asteroid-launcher_shaders"
-    FILES "qml/compositor/circlemaskshader.frag"
+    FILES
+        "qml/compositor/circlemaskshader.frag"
+        "shaders/masked-spartan.frag"
 )
 
 target_link_libraries(
