@@ -125,9 +125,10 @@ Item {
             font {
                 pixelSize: parent.height * .375
                 family: "Titillium"
-                styleName: 'Bold'
+                weight: Font.Bold
                 letterSpacing: -3
             }
+            renderType: Text.NativeRendering
             color: Qt.rgba(1, 1, 1, 1)
             style: Text.Outline
             styleColor: Qt.rgba(0, 0, 0, .5)
@@ -150,9 +151,10 @@ Item {
             }
             font {
                 pixelSize: parent.height * .1375
-                styleName: 'Semibold'
+                weight: Font.DemiBold
                 letterSpacing: -1
             }
+            renderType: Text.NativeRendering
             color: Qt.rgba(1, 1, 1, 1)
             style: Text.Outline
             styleColor: Qt.rgba(0, 0, 0, .5)
@@ -171,9 +173,10 @@ Item {
             font {
                 pixelSize: parent.height * .1375
                 family: "Titillium"
-                styleName: 'Thin'
+                weight: Font.Thin
                 letterSpacing: -1
             }
+            renderType: Text.NativeRendering
             color: Qt.rgba(1, 1, 1, 1)
             style: Text.Outline
             styleColor: Qt.rgba(0, 0, 0, .5)
@@ -193,8 +196,9 @@ Item {
             font {
                 pixelSize: parent.height * .084375
                 family: "Titillium"
-                styleName: 'Thin'
+                weight: Font.Thin
             }
+            renderType: Text.NativeRendering
             color: Qt.rgba(1, 1, 1, 1)
             style: Text.Outline
             styleColor: Qt.rgba(0, 0, 0, .5)
@@ -212,14 +216,16 @@ Item {
                 right: parent.right
             }
             font {
-                pixelSize: parent.height*.084375
+                pixelSize: parent.height * .084375
                 family: "Titillium"
-                styleName:'Thin'
+                weight: Font.Thin
             }
+            renderType: Text.NativeRendering
             color: Qt.rgba(1, 1, 1, 1)
             style: Text.Outline
             styleColor: Qt.rgba(0, 0, 0, .5)
             horizontalAlignment: Text.AlignHCenter
+            textFormat: Text.StyledText
             text: wallClock.time.toLocaleString(Qt.locale(), "<b>dd</b> MMMM")
         }
 
@@ -235,12 +241,14 @@ Item {
             font {
                 pixelSize: parent.height * .05
                 family: "Titillium"
-                styleName: 'Semibold'
+                weight: Font.DemiBold
             }
+            renderType: Text.NativeRendering
             color: Qt.rgba(1, 1, 1, 1)
             style: Text.Outline
             styleColor: Qt.rgba(0, 0, 0, .5)
             horizontalAlignment: Text.AlignHCenter
+            textFormat: Text.StyledText
             visible: use12H.value
             text: wallClock.time.toLocaleString(Qt.locale(), "<b>ap</b>")
         }
@@ -317,9 +325,11 @@ Item {
                     family: "Titillium"
                     styleName: "ExtraCondensed"
                 }
+                renderType: Text.NativeRendering
                 visible: nightstandMode.active
                 color: chargeArc.colorArray[chargeArc.chargecolor]
-                style: Text.Outline; styleColor: "#80000000"
+                style: Text.Outline
+                styleColor: "#80000000"
                 text: batteryChargePercentage.percent + "%"
             }
         }
@@ -358,9 +368,8 @@ Item {
             minuteCanvas.requestPaint()
             hourCanvas.hour = hour
             hourCanvas.requestPaint()
-
-            burnInProtectionManager.widthOffset = Qt.binding(function() { return width * nightstandMode.active ? .08 : .3})
-            burnInProtectionManager.heightOffset = Qt.binding(function() { return height * nightstandMode.active ? .08 : .3})
+            burnInProtectionManager.widthOffset = Qt.binding(function() { return width * (nightstandMode.active ? .08 : .3) })
+            burnInProtectionManager.heightOffset = Qt.binding(function() { return height * (nightstandMode.active ? .08 : .3) })
         }
     }
 }
