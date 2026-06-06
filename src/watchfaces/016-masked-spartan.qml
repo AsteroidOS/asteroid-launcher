@@ -19,156 +19,155 @@ import org.asteroid.utils
 
 
 Item {
-    anchors.fill: parent
+    id: faceRoot
 
-    property string imgPath: "../watchfaces-img/funky-town-words-"
+    anchors.fill: parent
+    
+    Rectangle {
+        id: layer2mask
+
+        anchors.fill: parent
+        color: Qt.rgba(0, 0, 0, 0.75)
+        visible: true
+        opacity: 0
+        layer.enabled: true
+        layer.smooth: true
+        radius: DeviceSpecs.hasRoundScreen || nightstand ? faceRoot.width : 0
+    }
+
+    Rectangle {
+        id: _mask
+
+        anchors.fill: layer2mask
+        color: Qt.rgba(0, 1, 0, 0)
+        visible: true
+        opacity: displayAmbient ? 0.75 : 1
+        layer.enabled: !displayAmbient
+
+        Text {
+            property real voffset: parent.height * .01
+
+            renderType: Text.NativeRendering
+            font {
+                pixelSize: parent.height * .58
+                letterSpacing: -parent.width * .08
+                family: "League Spartan"
+            }
+            color: Qt.rgba(1, 1, 1, 1)
+            y: parent.height / 3 - height / 2 + voffset
+            x: -parent.width * .055
+            text: if (use12H.value) {
+                      wallClock.time.toLocaleString(Qt.locale(), "hh ap").slice(0, 2).replace(/1/g," 1 ") }
+                  else
+                      wallClock.time.toLocaleString(Qt.locale(), "HH").replace(/1/g," 1 ")
+
+
+        }
+
+        Text {
+            property real voffset: parent.height * .075
+
+            renderType: Text.NativeRendering
+            font {
+                pixelSize: parent.height * .58
+                letterSpacing: -parent.width * .06
+                family: "League Spartan"
+            }
+            color: Qt.rgba(1, 1, 1, 1)
+            y: parent.height / 1.3 - height / 2 + voffset
+            x: parent.width*.25
+            text: wallClock.time.toLocaleString(Qt.locale(), "<b>mm</b>").replace(/1/g,"&nbsp;1")
+        }
+
+        Text {
+            renderType: Text.NativeRendering
+            anchors {
+                bottom: parent.verticalCenter
+                bottomMargin: -parent.height * .05
+                left: parent.horizontalCenter
+                leftMargin: parent.height * .19
+            }
+            font {
+                pixelSize: parent.height * .24
+                letterSpacing: -parent.width * .025
+                family: "League Spartan"
+            }
+            color: Qt.rgba(1, 1, 1, 1)
+            visible: !displayAmbient
+            text: wallClock.time.toLocaleString(Qt.locale(), "<b>ss</b>").replace(/1/g,"&nbsp;1")
+        }
+
+        Text {
+            renderType: Text.NativeRendering
+            anchors {
+                bottom: parent.verticalCenter
+                bottomMargin: parent.height * .25
+                left: parent.horizontalCenter
+                leftMargin: parent.height * .222
+            }
+            font {
+                pixelSize: parent.height * .1
+                letterSpacing: -parent.width * .01
+                family: "League Spartan"
+            }
+            visible: use12H.value
+            lineHeight: .9
+            color: Qt.rgba(1, 1, 1, 1)
+            horizontalAlignment: Text.AlignRight
+            text: wallClock.time.toLocaleString(Qt.locale("en_EN"), "ap").toLowerCase()
+        }
+
+        Text {
+            renderType: Text.NativeRendering
+            anchors {
+                top: parent.verticalCenter
+                topMargin: parent.height * .02
+                right: parent.horizontalCenter
+                rightMargin: parent.height * .24
+            }
+            font{
+                pixelSize: parent.height * .24
+                letterSpacing: -parent.width * .025
+                family: "League Spartan"
+            }
+            lineHeight: .7
+            color: Qt.rgba(1, 1, 1, 1)
+            horizontalAlignment: Text.AlignRight
+            text: wallClock.time.toLocaleString(Qt.locale(), "<b>dd</b>").toLowerCase()
+        }
+
+        Text {
+            renderType: Text.NativeRendering
+            anchors {
+                top: parent.verticalCenter
+                topMargin: parent.height * .235
+                right: parent.horizontalCenter
+                rightMargin: parent.height * .23
+            }
+            font {
+                pixelSize: parent.height*.1
+                letterSpacing: -parent.width * .01
+                family: "League Spartan"
+            }
+            lineHeight: .7
+            color: Qt.rgba(1, 1, 1, 1)
+            horizontalAlignment: Text.AlignRight
+            text: wallClock.time.toLocaleString(Qt.locale(), "MMM").toLowerCase()
+        }
+
+        layer.samplerName: "maskSource"
+        layer.effect: ShaderEffect {
+            property variant source: layer2mask
+            property bool keepInner: false
+            fragmentShader: "qrc:/shaders/masked-spartan.frag.qsb"
+        }
+    }
 
     Item {
         anchors.centerIn: parent
 
         height: Math.min(parent.width, parent.height)
         width: height
-
-        Rectangle {
-            id: layer2mask
-
-            anchors.centerIn: parent
-            width: parent.width * (nightstand ? .86 : 1)
-            height: width
-            color: displayAmbient ? Qt.rgba(1, 1, 1, .8) : Qt.rgba(0, 0, 0, .8)
-            visible: true
-            opacity: .0
-            layer.enabled: true
-            layer.smooth: true
-            radius: DeviceSpecs.hasRoundScreen || nightstand ? width : 0
-        }
-
-        Rectangle {
-            id: _mask
-
-            anchors.fill: layer2mask
-            color: Qt.rgba(0, 1, 0, 0)
-            visible: true
-
-            Text {
-                property real voffset: parent.height * .01
-
-                renderType: Text.NativeRendering
-                font {
-                    pixelSize: parent.height * .58
-                    letterSpacing: -parent.width * .08
-                    family: "League Spartan"
-                }
-                color: Qt.rgba(1, 1, 1, 1)
-                y: parent.height / 3 - height / 2 + voffset
-                x: -parent.width * .055
-                text: if (use12H.value) {
-                          wallClock.time.toLocaleString(Qt.locale(), "hh ap").slice(0, 2).replace(/1/g," 1 ") }
-                      else
-                          wallClock.time.toLocaleString(Qt.locale(), "HH").replace(/1/g," 1 ")
-
-
-            }
-
-            Text {
-                property real voffset: parent.height * .075
-
-                renderType: Text.NativeRendering
-                font {
-                    pixelSize: parent.height * .58
-                    letterSpacing: -parent.width * .06
-                    family: "League Spartan"
-                }
-                color: Qt.rgba(1, 1, 1, 1)
-                y: parent.height / 1.3 - height / 2 + voffset
-                x: parent.width*.25
-                text: wallClock.time.toLocaleString(Qt.locale(), "<b>mm</b>").replace(/1/g,"&nbsp;1")
-            }
-
-            Text {
-                renderType: Text.NativeRendering
-                anchors {
-                    bottom: parent.verticalCenter
-                    bottomMargin: -parent.height * .05
-                    left: parent.horizontalCenter
-                    leftMargin: parent.height * .19
-                }
-                font {
-                    pixelSize: parent.height * .24
-                    letterSpacing: -parent.width * .025
-                    family: "League Spartan"
-                }
-                color: Qt.rgba(1, 1, 1, 1)
-                visible: !displayAmbient
-                text: wallClock.time.toLocaleString(Qt.locale(), "<b>ss</b>").replace(/1/g,"&nbsp;1")
-            }
-
-            Text {
-                renderType: Text.NativeRendering
-                anchors {
-                    bottom: parent.verticalCenter
-                    bottomMargin: parent.height * .25
-                    left: parent.horizontalCenter
-                    leftMargin: parent.height * .222
-                }
-                font {
-                    pixelSize: parent.height * .1
-                    letterSpacing: -parent.width * .01
-                    family: "League Spartan"
-                }
-                visible: use12H.value
-                lineHeight: .9
-                color: Qt.rgba(1, 1, 1, 1)
-                horizontalAlignment: Text.AlignRight
-                text: wallClock.time.toLocaleString(Qt.locale("en_EN"), "ap").toLowerCase()
-            }
-
-            Text {
-                renderType: Text.NativeRendering
-                anchors {
-                    top: parent.verticalCenter
-                    topMargin: parent.height * .02
-                    right: parent.horizontalCenter
-                    rightMargin: parent.height * .24
-                }
-                font{
-                    pixelSize: parent.height * .24
-                    letterSpacing: -parent.width * .025
-                    family: "League Spartan"
-                }
-                lineHeight: .7
-                color: Qt.rgba(1, 1, 1, 1)
-                horizontalAlignment: Text.AlignRight
-                text: wallClock.time.toLocaleString(Qt.locale(), "<b>dd</b>").toLowerCase()
-            }
-
-            Text {
-                renderType: Text.NativeRendering
-                anchors {
-                    top: parent.verticalCenter
-                    topMargin: parent.height * .235
-                    right: parent.horizontalCenter
-                    rightMargin: parent.height * .23
-                }
-                font {
-                    pixelSize: parent.height*.1
-                    letterSpacing: -parent.width * .01
-                    family: "League Spartan"
-                }
-                lineHeight: .7
-                color: Qt.rgba(1, 1, 1, 1)
-                horizontalAlignment: Text.AlignRight
-                text: wallClock.time.toLocaleString(Qt.locale(), "MMM").toLowerCase()
-            }
-
-            layer.enabled: true
-            layer.samplerName: "maskSource"
-            layer.effect: ShaderEffect {
-                property variant source: layer2mask
-                property bool keepInner: false
-                fragmentShader: "qrc:/shaders/masked-spartan.frag.qsb"
-            }
-        }
 
         Item {
             id: nightstandMode
