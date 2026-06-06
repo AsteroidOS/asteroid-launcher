@@ -66,7 +66,9 @@ asteroid_app_qml_module(asteroid-launcher ${QML_FILES})
 
 qt_add_shaders(
     asteroid-launcher "asteroid-launcher_shaders"
-    FILES "qml/compositor/circlemaskshader.frag"
+    FILES
+        "qml/compositor/circlemaskshader.frag"
+        "shaders/masked-spartan.frag"
 )
 
 target_link_libraries(
