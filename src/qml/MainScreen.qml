@@ -34,7 +34,7 @@ import Nemo.Time
 import Nemo.Configuration
 import Nemo.Mce
 import org.nemomobile.lipstick
-import org.nemomobile.systemsettings
+import org.asteroid.settings
 import org.asteroid.controls
 import org.asteroid.utils
 import org.asteroid.launcher

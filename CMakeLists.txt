@@ -23,7 +23,7 @@ find_package(Timed REQUIRED)
 pkg_check_modules(mlite6 REQUIRED mlite6)
 
 ecm_find_qmlmodule(org.nemomobile.calendar 1.0)
-ecm_find_qmlmodule(org.nemomobile.systemsettings 1.0)
+ecm_find_qmlmodule(org.asteroid.settings 1.0)
 ecm_find_qmlmodule(Nemo.Mce 1.0)
 ecm_find_qmlmodule(Nemo.DBus 2.0)
 ecm_find_qmlmodule(Nemo.Configuration 1.0)
