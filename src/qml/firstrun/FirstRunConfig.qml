@@ -31,7 +31,7 @@
 import QtQuick
 import org.asteroid.controls
 import Nemo.Time
-import org.nemomobile.systemsettings
+import org.asteroid.settings
 import Nemo.Configuration
 import "desktop.js" as Desktop
 import Nemo.DBus
