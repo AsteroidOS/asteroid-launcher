@@ -1,0 +1,19 @@
+#!/bin/sh
+
+if [ -n "$1" ]
+then
+  SCREENSHOTPATH="$1"
+else
+  SCREENSHOTPATH="${HOME}/Pictures/`date +%Y%m%d%H%M%S`.png"
+fi
+
+if [ -n "$2" ]
+then
+  DELAY="$2"
+else
+  DELAY=10
+fi
+
+sleep "${DELAY}"
+dbus-send --system --type=method_call --dest=org.nemomobile.lipstick /org/nemomobile/lipstick/screenshot org.nemomobile.lipstick.saveScreenshot "string:${SCREENSHOTPATH}"
+notificationtool -o add -c device.added "" "" "" "Screenshot saved to $SCREENSHOTPATH"

@@ -1,0 +1,26 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+  <interface name="org.nemomobile.compositor">
+    <method name="ambientSupported">
+      <arg name="enabled" type="b" direction="out"/>
+    </method>
+    <method name="setAmbientEnabled">
+      <arg name="enabled" type="b" direction="in"/>
+    </method>
+    <signal name="ambientEnabled">
+      <arg name="enabled" type="b"/>
+    </signal>
+    <method name="setAmbientUpdatesEnabled">
+      <arg name="enabled" type="b" direction="in"/>
+    </method>
+    <method name="setUpdatesEnabled">
+      <arg name="enabled" type="b" direction="in"/>
+    </method>
+    <method name="privateTopmostWindowProcessId">
+      <arg name="pid" type="i" direction="out"/>
+    </method>
+    <signal name="privateTopmostWindowProcessIdChanged">
+      <arg name="pid" type="i"/>
+    </signal>
+  </interface>
+</node>
