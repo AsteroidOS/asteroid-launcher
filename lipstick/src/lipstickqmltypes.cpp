@@ -1,4 +1,3 @@
-
 // This file is part of lipstick, a QML desktop library
 //
 // This library is free software; you can redistribute it and/or
@@ -14,9 +13,14 @@
 //
 // Copyright (c) 2012, Timur Kristóf <venemo@fedoraproject.org>
 
-#include "lipstickplugin.h"
+#include "lipstickqmltypes.h"
 
 #include <QtQml>
+#include <QQmlParserStatus>
+#include <QQuickWindow>
+#include <QWaylandSurface>
+#include <components/launchermodel.h>
+#include <components/launcherfoldermodel.h>
 #include <components/launcheritem.h>
 #include <components/launcherwatchermodel.h>
 #include <notifications/notificationpreviewpresenter.h>
@@ -33,20 +37,41 @@
 #include <compositor/windowpixmapitem.h>
 #include <lipstickapi.h>
 
+class LauncherModelType : public LauncherModel, public QQmlParserStatus
+{
+    Q_OBJECT
+    Q_INTERFACES(QQmlParserStatus)
+public:
+    explicit LauncherModelType(QObject *parent = 0)
+        : LauncherModel(DeferInitialization, parent)
+    {
+    }
+
+    void classBegin() {}
+    void componentComplete() { initialize(); }
+};
+
+class LauncherFolderModelType : public LauncherFolderModel, public QQmlParserStatus
+{
+    Q_OBJECT
+    Q_INTERFACES(QQmlParserStatus)
+public:
+    explicit LauncherFolderModelType(QObject *parent = 0)
+        : LauncherFolderModel(DeferInitialization, parent)
+    {
+    }
+
+    void classBegin() {}
+    void componentComplete() { initialize(); }
+};
+
 static QObject *lipstickApi_callback(QQmlEngine *e, QJSEngine *)
 {
     return new LipstickApi(e);
 }
 
-LipstickPlugin::LipstickPlugin(QObject *parent) :
-    QQmlExtensionPlugin(parent)
+void registerLipstickTypes()
 {
-}
-
-void LipstickPlugin::registerTypes(const char *uri)
-{
-    Q_UNUSED(uri);
-
     qmlRegisterType<LauncherModelType>("org.nemomobile.lipstick", 0, 1, "LauncherModel");
     qmlRegisterType<LauncherWatcherModel>("org.nemomobile.lipstick", 0, 1, "LauncherWatcherModel");
     qmlRegisterType<NotificationListModel>("org.nemomobile.lipstick", 0, 1, "NotificationListModel");
@@ -71,3 +96,5 @@ void LipstickPlugin::registerTypes(const char *uri)
 
     qmlRegisterUncreatableType<BluetoothAgent>("org.nemomobile.lipstick", 0, 1, "BluetoothAgent", "This type is created by lipstick");
 }
+
+#include "lipstickqmltypes.moc"

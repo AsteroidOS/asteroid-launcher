@@ -83,11 +83,10 @@ target_link_libraries(
 		Qt6::Quick
 		Qt6::WaylandCompositor
 		Qt6::DBus
-		Lipstick::Lipstick
+		lipstick
 		Timed::Timed
-		${mlite6_LIBRARIES}
+		PkgConfig::mlite6
 )
-target_include_directories(asteroid-launcher PRIVATE ${mlite6_INCLUDE_DIRS})
 
 install(
 	TARGETS asteroid-launcher
