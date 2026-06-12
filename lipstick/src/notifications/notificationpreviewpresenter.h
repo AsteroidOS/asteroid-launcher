@@ -16,7 +16,6 @@
 #ifndef NOTIFICATIONPREVIEWPRESENTER_H
 #define NOTIFICATIONPREVIEWPRESENTER_H
 
-#include "lipstickglobal.h"
 #include "lipsticknotification.h"
 #include <QObject>
 
@@ -34,7 +33,7 @@ class QMceDisplay;
  * Creates a transparent notification window which can be used to show
  * notification previews.
  */
-class LIPSTICK_EXPORT NotificationPreviewPresenter : public QObject
+class NotificationPreviewPresenter : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(LipstickNotification *notification READ notification NOTIFY notificationChanged)

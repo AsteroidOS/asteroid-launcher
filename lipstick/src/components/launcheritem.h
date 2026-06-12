@@ -32,11 +32,10 @@
 #endif
 
 #include "launchermodel.h"
-#include "lipstickglobal.h"
 
 class MDesktopEntry;
 
-class LIPSTICK_EXPORT LauncherItem : public QObject
+class LauncherItem : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY(LauncherItem)

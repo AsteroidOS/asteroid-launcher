@@ -17,11 +17,10 @@
 #define NOTIFICATIONLISTMODEL_H
 
 #include "qobjectlistmodel.h"
-#include "lipstickglobal.h"
 
 class LipstickNotification;
 
-class LIPSTICK_EXPORT NotificationListModel : public QObjectListModel
+class NotificationListModel : public QObjectListModel
 {
     Q_OBJECT
     Q_PROPERTY(bool populated READ populated NOTIFY populatedChanged)

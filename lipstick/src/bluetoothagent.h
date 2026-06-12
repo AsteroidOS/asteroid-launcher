@@ -24,11 +24,10 @@
 #include <QDBusObjectPath>
 #include <QDBusServiceWatcher>
 #include <QDBusMessage>
-#include "lipstickglobal.h"
 
 class HomeWindow;
 
-class LIPSTICK_EXPORT BluetoothAgent : public QObject, protected QDBusContext
+class BluetoothAgent : public QObject, protected QDBusContext
 {
     Q_OBJECT
     Q_ENUMS(State);

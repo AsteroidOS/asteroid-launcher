@@ -51,7 +51,6 @@ qt6_generate_wayland_protocol_server_sources(lipstick
 	FILES ${CMAKE_CURRENT_SOURCE_DIR}/wayland-protocols/asteroid-gestures-unstable-v1.xml)
 
 target_compile_definitions(lipstick PUBLIC
-	LIPSTICK_BUILD_LIBRARY
 	QT_COMPOSITOR_QUICK
 	VERSION="${PROJECT_VERSION}")
 

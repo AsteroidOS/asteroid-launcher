@@ -17,9 +17,8 @@
 #define LIPSTICKAPI_H
 
 #include <QObject>
-#include "lipstickglobal.h"
 
-class LIPSTICK_EXPORT LipstickApi : public QObject
+class LipstickApi : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool active READ active NOTIFY activeChanged)

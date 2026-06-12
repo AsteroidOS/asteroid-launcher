@@ -16,7 +16,6 @@
 #ifndef NOTIFICATIONFEEDBACKPLAYER_H
 #define NOTIFICATIONFEEDBACKPLAYER_H
 
-#include "lipstickglobal.h"
 #include <QObject>
 #include <QHash>
 
@@ -30,7 +29,7 @@ namespace Ngf {
  *
  * \brief Plays non-graphical feedback for notifications.
  */
-class LIPSTICK_EXPORT NotificationFeedbackPlayer : public QObject
+class NotificationFeedbackPlayer : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(int minimumPriority READ minimumPriority WRITE setMinimumPriority NOTIFY minimumPriorityChanged)

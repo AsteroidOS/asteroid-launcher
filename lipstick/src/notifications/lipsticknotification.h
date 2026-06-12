@@ -16,7 +16,6 @@
 #ifndef LIPSTICKNOTIFICATION_H
 #define LIPSTICKNOTIFICATION_H
 
-#include "lipstickglobal.h"
 #include <QStringList>
 #include <QDateTime>
 #include <QVariantHash>
@@ -26,7 +25,7 @@ class QDBusArgument;
 /*!
  * An object for storing information about a single notification.
  */
-class LIPSTICK_EXPORT LipstickNotification : public QObject
+class LipstickNotification : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString appName READ appName CONSTANT)
@@ -273,7 +272,7 @@ bool operator<(const LipstickNotification &lhs, const LipstickNotification &rhs)
 
 Q_DECLARE_METATYPE(LipstickNotification)
 
-class LIPSTICK_EXPORT NotificationList
+class NotificationList
 {
 public:
     NotificationList();

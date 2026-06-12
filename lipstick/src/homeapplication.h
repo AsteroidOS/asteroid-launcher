@@ -15,7 +15,6 @@
 
 #include <signal.h>
 #include <QGuiApplication>
-#include "lipstickglobal.h"
 
 class QQmlEngine;
 class HomeWindow;
@@ -30,7 +29,7 @@ class LocaleManager;
 /*!
  * Extends QApplication with features necessary to create a desktop.
  */
-class LIPSTICK_EXPORT HomeApplication : public QGuiApplication
+class HomeApplication : public QGuiApplication
 {
     Q_OBJECT
 

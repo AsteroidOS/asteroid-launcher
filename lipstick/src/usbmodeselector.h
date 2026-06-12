@@ -19,12 +19,11 @@
 #include <QObject>
 #include <QMap>
 #include <QStringList>
-#include "lipstickglobal.h"
 
 class HomeWindow;
 class QUsbModed;
 
-class LIPSTICK_EXPORT USBModeSelector : public QObject
+class USBModeSelector : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool windowVisible READ windowVisible WRITE setWindowVisible NOTIFY windowVisibleChanged)

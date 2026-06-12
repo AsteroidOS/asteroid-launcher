@@ -18,7 +18,6 @@
 
 #include <QTimer>
 #include <QObject>
-#include "lipstickglobal.h"
 
 class HomeWindow;
 class PulseAudioControl;
@@ -33,7 +32,7 @@ class MDConfItem;
  * Creates a transparent window which can be used to show
  * the current volume level.
  */
-class LIPSTICK_EXPORT VolumeControl : public QObject
+class VolumeControl : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(int volume READ volume WRITE setVolume NOTIFY volumeChanged)

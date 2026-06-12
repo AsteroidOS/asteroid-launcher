@@ -21,9 +21,8 @@
 #include <QString>
 #include <QUrl>
 
-#include "lipstickglobal.h"
 
-class LIPSTICK_EXPORT QmlPath {
+class QmlPath {
 public:
     /*!
      * Add a new path to the Lipstick QML search path
