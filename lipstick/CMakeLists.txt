@@ -68,7 +68,6 @@ target_link_libraries(lipstick PUBLIC
 	Qt6::Quick
 	Qt6::Qml
 	Qt6::DBus
-	Qt6::Xml
 	Qt6::Sql
 	Qt6::Gui
 	Qt6::Sensors

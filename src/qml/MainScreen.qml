@@ -82,7 +82,7 @@ Item {
     Component.onCompleted: {
         Desktop.desktop = desktop
         Desktop.panelsGrid = grid
-        LipstickSettings.lockScreen(true)
+        lipstickSettings.lockScreen(true)
         if(firstRun.isFirstRun())
             firstRunComponent.createObject(desktop)
     }
