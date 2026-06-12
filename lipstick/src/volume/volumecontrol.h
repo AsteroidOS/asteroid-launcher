@@ -19,7 +19,6 @@
 #include <QTimer>
 #include <QObject>
 
-class HomeWindow;
 class PulseAudioControl;
 class VolumeKeyListener;
 class MDConfItem;
@@ -27,10 +26,10 @@ class MDConfItem;
 /*!
  * \class VolumeControl
  *
- * \brief Shows a window for displaying the volume level.
+ * \brief Tracks and sets the audio volume.
  *
- * Creates a transparent window which can be used to show
- * the current volume level.
+ * Exposes the current and maximum volume and the volume-key events to
+ * QML (the launcher's QuickPanel renders the volume slider).
  */
 class VolumeControl : public QObject
 {
@@ -39,7 +38,6 @@ class VolumeControl : public QObject
     Q_PROPERTY(int maximumVolume READ maximumVolume NOTIFY maximumVolumeChanged)
     Q_PROPERTY(int safeVolume READ safeVolume NOTIFY safeVolumeChanged)
     Q_PROPERTY(int restrictedVolume READ restrictedVolume NOTIFY restrictedVolumeChanged)
-    Q_PROPERTY(bool windowVisible READ windowVisible WRITE setWindowVisible NOTIFY windowVisibleChanged)
     Q_PROPERTY(bool callActive READ callActive NOTIFY callActiveChanged)
     Q_PROPERTY(int mediaState READ mediaState NOTIFY mediaStateChanged)
     Q_ENUMS(MediaState)
@@ -101,20 +99,6 @@ public:
     int restrictedVolume() const;
 
     /*!
-     * Returns whether the volume window is visible or not.
-     *
-     * \return \c true if the volume window is visible, \c false otherwise
-     */
-    bool windowVisible() const;
-
-    /*!
-     * Sets the visibility of the volume window.
-     *
-     * \param visible \c true if the volume window should be visible, \c false otherwise
-     */
-    void setWindowVisible(bool visible);
-
-    /*!
      * Returns whether a call is active or not.
      *
      * \return \c true if a call is active, \c false otherwise
@@ -144,8 +128,6 @@ signals:
     //! Sent when the restricted volume has changed.
     void restrictedVolumeChanged();
 
-    //! Sent when the visibility of the volume window has changed.
-    void windowVisibleChanged();
 
     //! Sent when the call activity status has changed.
     void callActiveChanged();
@@ -182,14 +164,10 @@ private slots:
 
     void handleMediaStateChanged(const QString &state);
 
-    void createWindow();
 
 private:
     //! Returns whether the audio warning has been acknowledged by user.
     bool warningAcknowledged() const;
-
-    //! The volume control window
-    HomeWindow *window;
 
     //! PulseAudio volume controller
     PulseAudioControl *pulseAudioControl;
