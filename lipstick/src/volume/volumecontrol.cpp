@@ -16,19 +16,15 @@
 #include <dbus/dbus.h>
 #include <linux/input.h>
 #include <QGuiApplication>
-#include "homewindow.h"
 #include <QQmlContext>
 #include <QScreen>
 #include <QKeyEvent>
 #include <MDConfItem>
-#include "utilities/closeeventeater.h"
 #include "pulseaudiocontrol.h"
 #include "volumecontrol.h"
-#include "lipstickqmlpath.h"
 
 VolumeControl::VolumeControl(QObject *parent) :
     QObject(parent),
-    window(0),
     pulseAudioControl(new PulseAudioControl(this)),
     volume_(0),
     maximumVolume_(0),
@@ -48,12 +44,10 @@ VolumeControl::VolumeControl(QObject *parent) :
     pulseAudioControl->update();
 
     qApp->installEventFilter(this);
-    QTimer::singleShot(0, this, SLOT(createWindow()));
 }
 
 VolumeControl::~VolumeControl()
 {
-    delete window;
 }
 
 int VolumeControl::volume() const
@@ -75,8 +69,6 @@ void VolumeControl::setVolume(int volume)
         pulseAudioControl->setVolume(volume_);
         emit volumeChanged();
     }
-
-    setWindowVisible(true);
 }
 
 int VolumeControl::maximumVolume() const
@@ -92,24 +84,6 @@ int VolumeControl::safeVolume() const
 int VolumeControl::restrictedVolume() const
 {
     return !warningAcknowledged() ? safeVolume() : maximumVolume();
-}
-
-void VolumeControl::setWindowVisible(bool visible)
-{
-    if (visible) {
-        if (window && !window->isVisible()) {
-            window->show();
-            emit windowVisibleChanged();
-        }
-    } else if (window != 0 && window->isVisible()) {
-        window->hide();
-        emit windowVisibleChanged();
-    }
-}
-
-bool VolumeControl::windowVisible() const
-{
-    return window != 0 && window->isVisible();
 }
 
 bool VolumeControl::warningAcknowledged() const
@@ -177,7 +151,6 @@ void VolumeControl::handleLongListeningTime(int listeningTime)
         return;
 
     setWarningAcknowledged(false);
-    setWindowVisible(true);
 
     // If safe volume step is not defined for this route (safeVolume() returns 0), use
     // maximum volume as the upper bound, otherwise use safe volume step as the upper
@@ -218,17 +191,6 @@ void VolumeControl::handleMediaStateChanged(const QString &state)
         mediaState_ = newValue;
         emit mediaStateChanged();
     }
-}
-
-void VolumeControl::createWindow()
-{
-    window = new HomeWindow();
-    window->setGeometry(QRect(QPoint(), QGuiApplication::primaryScreen()->size()));
-    window->setCategory(QLatin1String("notification"));
-    window->setWindowTitle("Volume");
-    window->setContextProperty("initialSize", QGuiApplication::primaryScreen()->size());
-    window->setSource(QmlPath::to("volumecontrol/VolumeControl.qml"));
-    window->installEventFilter(new CloseEventEater(this));
 }
 
 bool VolumeControl::eventFilter(QObject *, QEvent *event)
