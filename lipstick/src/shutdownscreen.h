@@ -17,13 +17,12 @@
 #define SHUTDOWNSCREEN_H
 
 #include <QObject>
-#include <QDBusContext>
 #include "lipstickglobal.h"
 #include <qmsystemstate.h>
 
 class HomeWindow;
 
-class LIPSTICK_EXPORT ShutdownScreen : public QObject, protected QDBusContext
+class LIPSTICK_EXPORT ShutdownScreen : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool windowVisible READ windowVisible WRITE setWindowVisible NOTIFY windowVisibleChanged)
@@ -44,13 +43,6 @@ public:
      * \param visible \c true if the window should be visible, \c false otherwise
      */
     void setWindowVisible(bool visible);
-
-    /*!
-     * Sets the shutdown mode for showing the shutdown screen.
-     *
-     * \param mode a UI frontend specific shutdown mode identifier
-     */
-    void setShutdownMode(const QString &mode);
 
 signals:
     //! Sent when the visibility of the window has changed.
@@ -86,8 +78,6 @@ private:
 #ifdef UNIT_TEST
     friend class Ut_ShutdownScreen;
 #endif
-
-    bool isPrivileged();
 };
 
 #endif // SHUTDOWNSCREEN_H

@@ -42,7 +42,6 @@
 #include "bluetoothagent.h"
 #include "localemanager.h"
 #include "shutdownscreen.h"
-#include "shutdownscreenadaptor.h"
 #include "screenshotservice.h"
 #include "screenshotserviceadaptor.h"
 
@@ -94,7 +93,6 @@ HomeApplication::HomeApplication(int &argc, char **argv, const QString &qmlPath)
     bluetoothAgent = new BluetoothAgent(this);
     shutdownScreen = new ShutdownScreen(this);
     localeMngr = new LocaleManager(this);
-    new ShutdownScreenAdaptor(shutdownScreen);
 
     // MCE and usb-moded expect services to be registered on the system bus
     QDBusConnection systemBus = QDBusConnection::systemBus();
@@ -103,7 +101,6 @@ HomeApplication::HomeApplication(int &argc, char **argv, const QString &qmlPath)
     }
 
     registerDBusObject(systemBus, LIPSTICK_DBUS_SCREENLOCK_PATH, screenLock);
-    registerDBusObject(systemBus, LIPSTICK_DBUS_SHUTDOWN_PATH, shutdownScreen);
 
     m_screenshotService = new ScreenshotService(this);
     new ScreenshotServiceAdaptor(m_screenshotService);
