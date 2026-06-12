@@ -35,8 +35,6 @@
 
 class LipstickCompositorWindow;
 class LipstickCompositorProcWindow;
-class QOrientationSensor;
-class LipstickRecorderManager;
 class AsteroidGesturesManager;
 
 class LipstickCompositor : public QWaylandQuickCompositor
@@ -52,7 +50,6 @@ class LipstickCompositor : public QWaylandQuickCompositor
     Q_PROPERTY(int topmostWindowId READ topmostWindowId WRITE setTopmostWindowId NOTIFY topmostWindowIdChanged)
     Q_PROPERTY(Qt::ScreenOrientation topmostWindowOrientation READ topmostWindowOrientation WRITE setTopmostWindowOrientation NOTIFY topmostWindowOrientationChanged)
     Q_PROPERTY(Qt::ScreenOrientation screenOrientation READ screenOrientation WRITE setScreenOrientation NOTIFY screenOrientationChanged)
-    Q_PROPERTY(Qt::ScreenOrientation sensorOrientation READ sensorOrientation NOTIFY sensorOrientationChanged)
     Q_PROPERTY(QObject* clipboard READ clipboard CONSTANT)
     Q_PROPERTY(QVariant orientationLock READ orientationLock NOTIFY orientationLockChanged)
     Q_PROPERTY(bool displayDimmed READ displayDimmed NOTIFY displayDimmedChanged)
@@ -91,7 +88,6 @@ public:
     Qt::ScreenOrientation screenOrientation() const { return m_screenOrientation; }
     void setScreenOrientation(Qt::ScreenOrientation screenOrientation);
 
-    Qt::ScreenOrientation sensorOrientation() const { return m_sensorOrientation; }
 
     QVariant orientationLock() const { return m_orientationLock->value("dynamic"); }
 
@@ -148,7 +144,6 @@ signals:
     void privateTopmostWindowProcessIdChanged(int pid);
     void topmostWindowOrientationChanged();
     void screenOrientationChanged();
-    void sensorOrientationChanged();
     void orientationLockChanged();
     void displayDimmedChanged();
 
@@ -179,7 +174,6 @@ private slots:
     void reactOnDisplayStateChanges(QMceDisplay::State state);
     void onDisplayStateChanged();
     void homeApplicationAboutToDestroy();
-    void setScreenOrientationFromSensor();
     void clipboardDataChanged();
     void onVisibleChanged(bool visible);
     void onSurfaceDying();
@@ -224,9 +218,7 @@ private:
     int m_topmostWindowProcessId;
     Qt::ScreenOrientation m_topmostWindowOrientation;
     Qt::ScreenOrientation m_screenOrientation;
-    Qt::ScreenOrientation m_sensorOrientation;
     QMceDisplay *m_displayState;
-    QOrientationSensor* m_orientationSensor;
     QPointer<QMimeData> m_retainedSelection;
     MDConfItem *m_orientationLock;
     QMceDisplay::State m_currentDisplayState;
