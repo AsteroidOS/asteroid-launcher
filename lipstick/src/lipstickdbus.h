@@ -28,9 +28,6 @@
 #define LIPSTICK_DBUS_LAUNCHER_MODEL_UPDATING_FINISHED "updatingFinished"
 #define LIPSTICK_DBUS_LAUNCHER_MODEL_SHOW_UPDATING_PROGRESS "showUpdatingProgress"
 
-#define LIPSTICK_DBUS_WINDOW_MODEL_PATH "/WindowModel"
-#define LIPSTICK_DBUS_WINDOW_MODEL_INTERFACE "local.Lipstick.WindowModel"
-
 #define LIPSTICK_DBUS_SCREENLOCK_PATH "/screenlock"
 #define LIPSTICK_DBUS_SHUTDOWN_PATH "/shutdown"
 #define LIPSTICK_DBUS_SCREENSHOT_PATH "/org/nemomobile/lipstick/screenshot"

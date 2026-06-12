@@ -93,8 +93,6 @@ private slots:
 
 private:
     friend class LipstickCompositor;
-    friend class WindowModel;
-    friend class WindowPixmapItem;
     void imageAddref(QQuickItem *item);
     void imageRelease(QQuickItem *item);
 
