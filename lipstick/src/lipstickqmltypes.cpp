@@ -20,9 +20,7 @@
 #include <QQuickWindow>
 #include <QWaylandSurface>
 #include <components/launchermodel.h>
-#include <components/launcherfoldermodel.h>
 #include <components/launcheritem.h>
-#include <components/launcherwatchermodel.h>
 #include <notifications/notificationpreviewpresenter.h>
 #include <notifications/notificationfeedbackplayer.h>
 #include <notifications/notificationlistmodel.h>
@@ -51,20 +49,6 @@ public:
     void componentComplete() { initialize(); }
 };
 
-class LauncherFolderModelType : public LauncherFolderModel, public QQmlParserStatus
-{
-    Q_OBJECT
-    Q_INTERFACES(QQmlParserStatus)
-public:
-    explicit LauncherFolderModelType(QObject *parent = 0)
-        : LauncherFolderModel(DeferInitialization, parent)
-    {
-    }
-
-    void classBegin() {}
-    void componentComplete() { initialize(); }
-};
-
 static QObject *lipstickApi_callback(QQmlEngine *e, QJSEngine *)
 {
     return new LipstickApi(e);
@@ -73,12 +57,9 @@ static QObject *lipstickApi_callback(QQmlEngine *e, QJSEngine *)
 void registerLipstickTypes()
 {
     qmlRegisterType<LauncherModelType>("org.nemomobile.lipstick", 0, 1, "LauncherModel");
-    qmlRegisterType<LauncherWatcherModel>("org.nemomobile.lipstick", 0, 1, "LauncherWatcherModel");
     qmlRegisterType<NotificationListModel>("org.nemomobile.lipstick", 0, 1, "NotificationListModel");
     qmlRegisterType<LipstickNotification>("org.nemomobile.lipstick", 0, 1, "Notification");
     qmlRegisterType<LauncherItem>("org.nemomobile.lipstick", 0, 1, "LauncherItem");
-    qmlRegisterType<LauncherFolderModelType>("org.nemomobile.lipstick", 0, 1, "LauncherFolderModel");
-    qmlRegisterType<LauncherFolderItem>("org.nemomobile.lipstick", 0, 1, "LauncherFolderItem");
 
     qmlRegisterUncreatableType<NotificationPreviewPresenter>("org.nemomobile.lipstick", 0, 1, "NotificationPreviewPresenter", "This type is initialized by HomeApplication");
     qmlRegisterUncreatableType<NotificationFeedbackPlayer>("org.nemomobile.lipstick", 0, 1, "NotificationFeedbackPlayer", "This type is initialized by HomeApplication");
