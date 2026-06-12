@@ -36,19 +36,11 @@ public:
     LauncherDBus(LauncherModel *model = 0);
     ~LauncherDBus();
 
-    void requestLaunch(QString packageName);
-
     void registerModel(LauncherModel *model);
     void deregisterModel(LauncherModel *model);
 
 public slots:
-    void updatingStarted(QString packageName, QString label, QString iconPath, QString desktopFile);
-    void updatingProgress(QString packageName, int progress);
-    void updatingFinished(QString packageName);
     void notifyLaunching(const QString &desktopFile);
-
-signals:
-    void showUpdatingProgress(QString packageName);
 
 private:
     QList<LauncherModel *> m_models;
