@@ -20,56 +20,15 @@
 #include <QMap>
 #include <QStringList>
 
-class HomeWindow;
 class QUsbModed;
 
 class USBModeSelector : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(bool windowVisible READ windowVisible WRITE setWindowVisible NOTIFY windowVisibleChanged)
-    Q_PROPERTY(QStringList supportedUSBModes READ supportedUSBModes NOTIFY supportedUSBModesChanged)
 
 public:
 
     explicit USBModeSelector(QObject *parent = 0);
-    
-    /*!
-     * Returns whether the window is visible or not.
-     *
-     * \return \c true if the window is visible, \c false otherwise
-     */
-    bool windowVisible() const;
-
-    /*!
-     * Sets the visibility of the window.
-     *
-     * \param visible \c true if the window should be visible, \c false otherwise
-     */
-    void setWindowVisible(bool visible);
-
-    /*!
-     * Returns the supported USB modes.
-     *
-     * \return a list of numbers of the supported USB modes
-     */
-    QStringList supportedUSBModes() const;
-
-    /*!
-     * Sets the USB mode to the given mode.
-     *
-     * \param mode the mode to set
-     */
-    Q_INVOKABLE void setUSBMode(QString mode);
-
-signals:
-    //! Signaled when the USB mode dialog is shown.
-    void dialogShown();
-
-    //! Sent when the visibility of the window has changed.
-    void windowVisibleChanged();
-
-    //! Sent when the supported USB modes have changed.
-    void supportedUSBModesChanged();
 
 private slots:
     /*!
@@ -105,10 +64,7 @@ private:
     //! Error code to translation ID mapping
     static QMap<QString, QString> errorCodeToTranslationID;
 
-    //! The volume control window
-    HomeWindow *window;
-
-    //! For getting and setting the USB mode
+    //! For getting the USB mode
     QUsbModed *usbMode;
 
 #ifdef UNIT_TEST

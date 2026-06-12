@@ -24,7 +24,6 @@ set(QML_FILES
 	qml/misc/Splash.qml
 	qml/misc/PanelsGrid.qml
 	qml/misc/ShutdownScreen.qml
-	qml/misc/USBModeSelector.qml
 	qml/misc/BluetoothAgent.qml
 	qml/misc/desktop.js
 	qml/notifications/NotificationActions.qml
@@ -49,7 +48,6 @@ set_source_files_properties(qml/compositor/CircleMaskShader.qml      PROPERTIES 
 set_source_files_properties(qml/misc/Splash.qml                      PROPERTIES QT_RESOURCE_ALIAS Splash.qml)
 set_source_files_properties(qml/misc/PanelsGrid.qml                  PROPERTIES QT_RESOURCE_ALIAS PanelsGrid.qml)
 set_source_files_properties(qml/misc/ShutdownScreen.qml              PROPERTIES QT_RESOURCE_ALIAS system/ShutdownScreen.qml)
-set_source_files_properties(qml/misc/USBModeSelector.qml             PROPERTIES QT_RESOURCE_ALIAS connectivity/USBModeSelector.qml)
 set_source_files_properties(qml/misc/BluetoothAgent.qml              PROPERTIES QT_RESOURCE_ALIAS connectivity/BluetoothAgent.qml)
 set_source_files_properties(qml/misc/desktop.js                      PROPERTIES QT_RESOURCE_ALIAS desktop.js)
 set_source_files_properties(qml/notifications/NotificationActions.qml   PROPERTIES QT_RESOURCE_ALIAS NotificationActions.qml)
