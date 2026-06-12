@@ -14,20 +14,16 @@
 **
 ****************************************************************************/
 #include <QGuiApplication>
-#include "homewindow.h"
 #include <QQmlContext>
 #include <QScreen>
-#include "utilities/closeeventeater.h"
 #include <qusbmoded.h>
 #include "notifications/notificationmanager.h"
 #include "usbmodeselector.h"
-#include "lipstickqmlpath.h"
 
 QMap<QString, QString> USBModeSelector::errorCodeToTranslationID;
 
 USBModeSelector::USBModeSelector(QObject *parent) :
     QObject(parent),
-    window(0),
     usbMode(new QUsbModed(this))
 {
     if (errorCodeToTranslationID.isEmpty()) {
@@ -37,7 +33,6 @@ USBModeSelector::USBModeSelector(QObject *parent) :
 
     connect(usbMode, SIGNAL(currentModeChanged()), this, SLOT(applyCurrentUSBMode()));
     connect(usbMode, SIGNAL(usbStateError(QString)), this, SLOT(showError(QString)));
-    connect(usbMode, SIGNAL(supportedModesChanged()), this, SIGNAL(supportedUSBModesChanged()));
 
     // Lazy initialize to improve startup time
     QTimer::singleShot(500, this, SLOT(applyCurrentUSBMode()));
@@ -48,52 +43,14 @@ void USBModeSelector::applyCurrentUSBMode()
     applyUSBMode(usbMode->currentMode());
 }
 
-void USBModeSelector::setWindowVisible(bool visible)
-{
-    if (visible) {
-        emit dialogShown();
-
-        if (window == 0) {
-            window = new HomeWindow();
-            window->setGeometry(QRect(QPoint(), QGuiApplication::primaryScreen()->size()));
-            window->setCategory(QLatin1String("dialog"));
-            window->setWindowTitle("USB Mode");
-            window->setContextProperty("initialSize", QGuiApplication::primaryScreen()->size());
-            window->setContextProperty("usbModeSelector", this);
-            window->setContextProperty("USBMode", usbMode);
-            window->setSource(QmlPath::to("connectivity/USBModeSelector.qml"));
-            window->installEventFilter(new CloseEventEater(this));
-        }
-
-        if (!window->isVisible()) {
-            window->show();
-            emit windowVisibleChanged();
-        }
-    } else if (window != 0 && window->isVisible()) {
-        window->hide();
-        emit windowVisibleChanged();
-    }
-}
-
-bool USBModeSelector::windowVisible() const
-{
-    return window != 0 && window->isVisible();
-}
-
-QStringList USBModeSelector::supportedUSBModes() const
-{
-    return usbMode->supportedModes();
-}
-
 void USBModeSelector::applyUSBMode(QString mode)
 {
-    if (mode == QUsbModed::Mode::Ask ||
-        mode == QUsbModed::Mode::ModeRequest) {
-        setWindowVisible(true);
-    } else if (mode != QUsbModed::Mode::Charging &&
-               mode != QUsbModed::Mode::Undefined) {
-        // Hide the mode selection dialog and show a mode notification
-        setWindowVisible(false);
+    // No mode-selection dialog (usb-moded is configured with a fixed mode,
+    // never "ask"); just notify the user which mode the cable activated.
+    if (mode != QUsbModed::Mode::Charging &&
+        mode != QUsbModed::Mode::Undefined &&
+        mode != QUsbModed::Mode::Ask &&
+        mode != QUsbModed::Mode::ModeRequest) {
         showNotification(mode);
     }
 }
@@ -157,9 +114,4 @@ void USBModeSelector::showError(const QString &errorCode)
         hints.insert(NotificationManager::HINT_PREVIEW_BODY, qtTrId(errorCodeToTranslationID.value(errorCode).toUtf8().constData()));
         manager->Notify(qApp->applicationName(), 0, QString(), QString(), QString(), QStringList(), hints, -1);
     }
-}
-
-void USBModeSelector::setUSBMode(QString mode)
-{
-    usbMode->setCurrentMode(mode);
 }
