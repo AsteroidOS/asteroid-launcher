@@ -22,7 +22,7 @@
 #include <QDebug>
 
 #include <mce/mode-names.h>
-#include <qmdisplaystate.h>
+#include <qmcedisplay.h>
 
 #include "homeapplication.h"
 #include "screenlock.h"
@@ -39,9 +39,9 @@ ScreenLock::ScreenLock(QObject* parent) :
 {
     // No explicit API in tklock for disabling event eater. Monitor display
     // state changes, and remove event eater if display becomes undimmed.
-    MeeGo::QmDisplayState *displayState = new MeeGo::QmDisplayState(this);
-    connect(displayState, &MeeGo::QmDisplayState::displayStateChanged,
-            this, &ScreenLock::handleDisplayStateChange);
+    QMceDisplay *displayState = new QMceDisplay(this);
+    connect(displayState, &QMceDisplay::stateChanged, this,
+            [this, displayState] { handleDisplayStateChange(displayState->state()); });
 
     qApp->installEventFilter(this);
 
@@ -179,8 +179,7 @@ void ScreenLock::hideEventEater()
 
 void ScreenLock::handleDisplayStateChange(int displayState)
 {
-    MeeGo::QmDisplayState::DisplayState state = static_cast<MeeGo::QmDisplayState::DisplayState>(displayState);
-    if (state == MeeGo::QmDisplayState::Dimmed)
+    if (displayState == QMceDisplay::DisplayDim)
         return;
 
     // Eating an event is meaningful only when the display is dimmed

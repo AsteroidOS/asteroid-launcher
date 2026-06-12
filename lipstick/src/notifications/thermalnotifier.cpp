@@ -16,47 +16,50 @@
 #include "homeapplication.h"
 #include "thermalnotifier.h"
 
+#include <QDBusConnection>
+#include <qmcedisplay.h>
+#include <dsme/thermalmanager_dbus_if.h>
+
 ThermalNotifier::ThermalNotifier(QObject *parent) :
     QObject(parent),
-    thermalState(new MeeGo::QmThermal(this)),
-    displayState(new MeeGo::QmDisplayState(this)),
-    thermalStateNotifiedWhileScreenIsOn(MeeGo::QmThermal::Normal)
+    displayState(new QMceDisplay(this)),
+    thermalState(thermalmanager_thermal_status_normal),
+    thermalStateNotifiedWhileScreenIsOn(thermalmanager_thermal_status_normal)
 {
-    connect(thermalState, SIGNAL(thermalChanged(MeeGo::QmThermal::ThermalState)), this, SLOT(applyThermalState(MeeGo::QmThermal::ThermalState)));
-    connect(displayState, SIGNAL(displayStateChanged(MeeGo::QmDisplayState::DisplayState)), this, SLOT(applyDisplayState(MeeGo::QmDisplayState::DisplayState)));
+    QDBusConnection::systemBus().connect(thermalmanager_service,
+                                         thermalmanager_path,
+                                         thermalmanager_interface,
+                                         thermalmanager_state_change_ind,
+                                         this, SLOT(applyThermalState(QString)));
+    connect(displayState, &QMceDisplay::stateChanged,
+            this, &ThermalNotifier::applyDisplayState);
 }
 
-void ThermalNotifier::applyThermalState(MeeGo::QmThermal::ThermalState state)
+void ThermalNotifier::applyThermalState(const QString &state)
 {
-    switch (state) {
-    case MeeGo::QmThermal::Warning:
+    thermalState = state;
+
+    if (state == thermalmanager_thermal_status_warning) {
         //% "Device getting hot. Close all apps."
         createAndPublishNotification("x-nemo.battery.temperature", qtTrId("qtn_shut_high_temp_warning"));
-        break;
-    case MeeGo::QmThermal::Alert:
+    } else if (state == thermalmanager_thermal_status_alert) {
         //% "Device overheating. Turn it off."
         createAndPublishNotification("x-nemo.battery.temperature", qtTrId("qtn_shut_high_temp_alert"));
-        break;
-    case MeeGo::QmThermal::LowTemperatureWarning:
+    } else if (state == thermalmanager_thermal_status_low) {
         //% "The device is too cold"
         createAndPublishNotification("x-nemo.battery.temperature", qtTrId("qtn_shut_low_temp_warning"));
-        break;
-    default:
-        break;
     }
 
-    if (displayState->get() != MeeGo::QmDisplayState::Off) {
+    if (displayState->state() != QMceDisplay::DisplayOff) {
         thermalStateNotifiedWhileScreenIsOn = state;
     }
 }
 
-void ThermalNotifier::applyDisplayState(MeeGo::QmDisplayState::DisplayState state)
+void ThermalNotifier::applyDisplayState()
 {
-    if (state == MeeGo::QmDisplayState::On) {
-        MeeGo::QmThermal::ThermalState currentThermalState = thermalState->get();
-        if (thermalStateNotifiedWhileScreenIsOn != currentThermalState) {
-            applyThermalState(currentThermalState);
-        }
+    if (displayState->state() == QMceDisplay::DisplayOn &&
+            thermalStateNotifiedWhileScreenIsOn != thermalState) {
+        applyThermalState(thermalState);
     }
 }
 

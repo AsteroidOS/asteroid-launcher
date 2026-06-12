@@ -28,7 +28,7 @@
 #include <QPointer>
 #include <QTimer>
 #include <MDConfItem>
-#include <qmdisplaystate.h>
+#include <qmcedisplay.h>
 
 #include <timed-qt6/interface>
 #include <timed-qt6/exception>
@@ -96,7 +96,7 @@ public:
 
     QVariant orientationLock() const { return m_orientationLock->value("dynamic"); }
 
-    bool displayDimmed() const { return m_currentDisplayState == MeeGo::QmDisplayState::Dimmed; }
+    bool displayDimmed() const { return m_currentDisplayState == QMceDisplay::DisplayDim; }
 
     QObject *clipboard() const;
 
@@ -121,7 +121,7 @@ public:
     bool ambientEnabled() const { return m_ambientModeEnabled; }
     Q_INVOKABLE void setAmbientUpdatesEnabled(bool enabled);
 
-    bool displayAmbient() const { return (m_currentDisplayState == MeeGo::QmDisplayState::Off) && ambientEnabled(); }
+    bool displayAmbient() const { return (m_currentDisplayState == QMceDisplay::DisplayOff) && ambientEnabled(); }
     Q_INVOKABLE void setUpdatesEnabled(bool enabled, bool inAmbientMode = false);
     LipstickCompositorWindow *createView(QWaylandSurface *surf);
 
@@ -177,7 +177,8 @@ private slots:
     void surfaceDamaged(const QRegion &);
     void windowSwapped();
     void windowDestroyed();
-    void reactOnDisplayStateChanges(MeeGo::QmDisplayState::DisplayState state);
+    void reactOnDisplayStateChanges(QMceDisplay::State state);
+    void onDisplayStateChanged();
     void homeApplicationAboutToDestroy();
     void setScreenOrientationFromSensor();
     void clipboardDataChanged();
@@ -225,11 +226,11 @@ private:
     Qt::ScreenOrientation m_topmostWindowOrientation;
     Qt::ScreenOrientation m_screenOrientation;
     Qt::ScreenOrientation m_sensorOrientation;
-    MeeGo::QmDisplayState *m_displayState;
+    QMceDisplay *m_displayState;
     QOrientationSensor* m_orientationSensor;
     QPointer<QMimeData> m_retainedSelection;
     MDConfItem *m_orientationLock;
-    MeeGo::QmDisplayState::DisplayState m_currentDisplayState;
+    QMceDisplay::State m_currentDisplayState;
     bool m_updatesEnabled;
     bool m_completed;
     int m_onUpdatesDisabledUnfocusedWindowId;

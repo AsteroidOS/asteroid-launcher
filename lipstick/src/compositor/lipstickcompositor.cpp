@@ -54,7 +54,7 @@ LipstickCompositor::LipstickCompositor()
     , m_sensorOrientation(Qt::PrimaryOrientation)
     , m_displayState(0)
     , m_retainedSelection(0)
-    , m_currentDisplayState(MeeGo::QmDisplayState::Unknown)
+    , m_currentDisplayState(QMceDisplay::DisplayOn)
     , m_updatesEnabled(true)
     , m_completed(false)
     , m_onUpdatesDisabledUnfocusedWindowId(0)
@@ -279,12 +279,9 @@ void LipstickCompositor::clearKeyboardFocus()
 
 void LipstickCompositor::setDisplayOff()
 {
-    if (!m_displayState) {
-        qWarning() << "No display";
-        return;
-    }
-
-    m_displayState->set(MeeGo::QmDisplayState::Off);
+    QDBusMessage message = QDBusMessage::createMethodCall(MCE_SERVICE,
+            MCE_REQUEST_PATH, MCE_REQUEST_IF, MCE_DISPLAY_OFF_REQ);
+    QDBusConnection::systemBus().asyncCall(message);
 }
 
 void LipstickCompositor::surfaceDamaged(const QRegion &)
@@ -361,10 +358,10 @@ void LipstickCompositor::onSurfaceDying()
 
 void LipstickCompositor::initialize()
 {
-    m_displayState = new MeeGo::QmDisplayState(this);
-    MeeGo::QmDisplayState::DisplayState displayState = m_displayState->get();
-    reactOnDisplayStateChanges(displayState);
-    connect(m_displayState, SIGNAL(displayStateChanged(MeeGo::QmDisplayState::DisplayState)), this, SLOT(reactOnDisplayStateChanges(MeeGo::QmDisplayState::DisplayState)));
+    m_displayState = new QMceDisplay(this);
+    reactOnDisplayStateChanges(m_displayState->state());
+    connect(m_displayState, &QMceDisplay::stateChanged,
+            this, &LipstickCompositor::onDisplayStateChanged);
 
     new LipstickCompositorAdaptor(this);
 
@@ -579,26 +576,31 @@ void LipstickCompositor::setScreenOrientation(Qt::ScreenOrientation screenOrient
     }
 }
 
-void LipstickCompositor::reactOnDisplayStateChanges(MeeGo::QmDisplayState::DisplayState state)
+void LipstickCompositor::onDisplayStateChanged()
+{
+    reactOnDisplayStateChanges(m_displayState->state());
+}
+
+void LipstickCompositor::reactOnDisplayStateChanges(QMceDisplay::State state)
 {
     if (m_currentDisplayState == state) {
         return;
     }
 
-    if (state == MeeGo::QmDisplayState::On) {
+    if (state == QMceDisplay::DisplayOn) {
         m_window->setVisible(true);
         emit displayOn();
-    } else if (state == MeeGo::QmDisplayState::Off) {
+    } else if (state == QMceDisplay::DisplayOff) {
         QCoreApplication::postEvent(this, new QTouchEvent(QEvent::TouchCancel));
         emit displayOff();
     }
 
-    bool changeInDimming = (state == MeeGo::QmDisplayState::Dimmed) != (m_currentDisplayState == MeeGo::QmDisplayState::Dimmed);
+    bool changeInDimming = (state == QMceDisplay::DisplayDim) != (m_currentDisplayState == QMceDisplay::DisplayDim);
 
-    bool changeInAmbient = ((state == MeeGo::QmDisplayState::Off) != (m_currentDisplayState == MeeGo::QmDisplayState::Off)) && ambientEnabled();
+    bool changeInAmbient = ((state == QMceDisplay::DisplayOff) != (m_currentDisplayState == QMceDisplay::DisplayOff)) && ambientEnabled();
 
-    bool enterAmbient = changeInAmbient && (state == MeeGo::QmDisplayState::Off);
-    bool leaveAmbient = changeInAmbient && (state != MeeGo::QmDisplayState::Off);
+    bool enterAmbient = changeInAmbient && (state == QMceDisplay::DisplayOff);
+    bool leaveAmbient = changeInAmbient && (state != QMceDisplay::DisplayOff);
 
     m_currentDisplayState = state;
 
@@ -684,7 +686,7 @@ void LipstickCompositor::setAmbientEnabled(bool enabled)
     emit ambientEnabledChanged();
 
     // Make window visible.
-    reactOnDisplayStateChanges(MeeGo::QmDisplayState::On);
+    reactOnDisplayStateChanges(QMceDisplay::DisplayOn);
     // Fire events because enabled changes are not incorporated in above function.
     emit displayAmbientChanged();
     emit displayAmbientLeft();
@@ -760,7 +762,7 @@ void LipstickCompositor::scheduleAmbientUpdate()
 void LipstickCompositor::setAmbientUpdatesEnabled(bool enabled)
 {
     if (enabled) {
-        if (m_currentDisplayState == MeeGo::QmDisplayState::On) {
+        if (m_currentDisplayState == QMceDisplay::DisplayOn) {
             return;
         }
         if (!ambientEnabled()) {

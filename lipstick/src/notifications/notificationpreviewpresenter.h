@@ -23,10 +23,8 @@
 class HomeWindow;
 class NotificationFeedbackPlayer;
 
-namespace MeeGo {
-class QmLocks;
-class QmDisplayState;
-}
+class QMceTkLock;
+class QMceDisplay;
 
 /*!
  * \class NotificationPreviewPresenter
@@ -115,10 +113,10 @@ private:
     NotificationFeedbackPlayer *notificationFeedbackPlayer;
 
     //! For getting information about the touch screen lock state
-    MeeGo::QmLocks *locks;
+    QMceTkLock *locks;
 
     //! For getting information about the display state
-    MeeGo::QmDisplayState *displayState;
+    QMceDisplay *displayState;
 
 #ifdef UNIT_TEST
     friend class Ut_NotificationPreviewPresenter;

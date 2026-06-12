@@ -18,7 +18,6 @@
 
 #include <QObject>
 #include "lipstickglobal.h"
-#include <qmsystemstate.h>
 
 class HomeWindow;
 
@@ -49,13 +48,20 @@ signals:
     void windowVisibleChanged();
 
 private slots:
-    /*!
-     * Reacts to system state changes by showing the shutdown screen or a
-     * related notification.
-     *
-     * \param what how the system state has changed
-     */
-    void applySystemState(MeeGo::QmSystemState::StateIndication what);
+    //! DSME is shutting the system down: show the shutdown screen
+    void handleShutdown();
+
+    //! DSME denied a shutdown/reboot request, e.g. because USB is connected
+    void handleShutdownDenied(const QString &reqType, const QString &reason);
+
+    //! DSME is shutting down because the battery is empty
+    void handleBatteryEmpty();
+
+    //! DSME announced a state change (e.g. "REBOOT")
+    void handleStateChange(const QString &state);
+
+    //! DSME's thermal manager reported a new thermal state
+    void handleThermalStateChange(const QString &state);
 
 private:
     /*!
@@ -66,11 +72,8 @@ private:
      */
     void createAndPublishNotification(const QString &category, const QString &body);
 
-    //! The volume control window
+    //! The shutdown screen window
     HomeWindow *window;
-
-    //! For getting the system state
-    MeeGo::QmSystemState *systemState;
 
     //! The shutdown mode to be communicated to the UI
     QString shutdownMode;

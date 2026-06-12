@@ -23,12 +23,25 @@
 #include "shutdownscreen.h"
 #include "lipstickqmlpath.h"
 
+#include <QDBusConnection>
+#include <dsme/dsme_dbus_if.h>
+#include <dsme/thermalmanager_dbus_if.h>
+
 ShutdownScreen::ShutdownScreen(QObject *parent) :
     QObject(parent),
-    window(0),
-    systemState(new MeeGo::QmSystemState(this))
+    window(0)
 {
-    connect(systemState, SIGNAL(systemStateChanged(MeeGo::QmSystemState::StateIndication)), this, SLOT(applySystemState(MeeGo::QmSystemState::StateIndication)));
+    QDBusConnection bus = QDBusConnection::systemBus();
+    bus.connect(dsme_service, dsme_sig_path, dsme_sig_interface,
+                dsme_shutdown_ind, this, SLOT(handleShutdown()));
+    bus.connect(dsme_service, dsme_sig_path, dsme_sig_interface,
+                dsme_state_req_denied_ind, this, SLOT(handleShutdownDenied(QString,QString)));
+    bus.connect(dsme_service, dsme_sig_path, dsme_sig_interface,
+                dsme_battery_empty_ind, this, SLOT(handleBatteryEmpty()));
+    bus.connect(dsme_service, dsme_sig_path, dsme_sig_interface,
+                dsme_state_change_ind, this, SLOT(handleStateChange(QString)));
+    bus.connect(thermalmanager_service, thermalmanager_path, thermalmanager_interface,
+                thermalmanager_state_change_ind, this, SLOT(handleThermalStateChange(QString)));
 }
 
 void ShutdownScreen::setWindowVisible(bool visible)
@@ -61,40 +74,42 @@ bool ShutdownScreen::windowVisible() const
     return window != 0 && window->isVisible();
 }
 
-void ShutdownScreen::applySystemState(MeeGo::QmSystemState::StateIndication what)
+void ShutdownScreen::handleShutdown()
 {
-    switch (what) {
-        case MeeGo::QmSystemState::Shutdown:
-            // To avoid early quitting on shutdown
-            HomeApplication::instance()->restoreSignalHandlers();
-            setWindowVisible(true);
-            break;
+    // To avoid early quitting on shutdown
+    HomeApplication::instance()->restoreSignalHandlers();
+    setWindowVisible(true);
+}
 
-        case MeeGo::QmSystemState::ThermalStateFatal:
-            //% "Temperature too high. Device shutting down."
-            createAndPublishNotification("x-nemo.battery.temperature", qtTrId("qtn_shut_high_temp"));
-            break;
+void ShutdownScreen::handleShutdownDenied(const QString &reqType, const QString &reason)
+{
+    if (reason == "usb" && reqType == "shutdown") {
+        //% "USB cable plugged in. Unplug it to shut down device."
+        createAndPublishNotification("device.added", qtTrId("qtn_shut_unplug_usb"));
+    }
+}
 
-        case MeeGo::QmSystemState::ShutdownDeniedUSB:
-            //% "USB cable plugged in. Unplug it to shut down device."
-            createAndPublishNotification("device.added", qtTrId("qtn_shut_unplug_usb"));
-            break;
+void ShutdownScreen::handleBatteryEmpty()
+{
+    //% "Battery empty. Device shutting down."
+    createAndPublishNotification("x-nemo.battery.shutdown", qtTrId("qtn_shut_batt_empty"));
+}
 
-        case MeeGo::QmSystemState::BatteryStateEmpty:
-            //% "Battery empty. Device shutting down."
-            createAndPublishNotification("x-nemo.battery.shutdown", qtTrId("qtn_shut_batt_empty"));
-            break;
+void ShutdownScreen::handleStateChange(const QString &state)
+{
+    // Set shutdown mode unless already set explicitly
+    if (state == "REBOOT" && shutdownMode.isEmpty()) {
+        shutdownMode = "reboot";
+        if (window)
+            window->setContextProperty("shutdownMode", shutdownMode);
+    }
+}
 
-        case MeeGo::QmSystemState::Reboot:
-            // Set shutdown mode unless already set explicitly
-            if (shutdownMode.isEmpty()) {
-                shutdownMode = "reboot";
-                window->setContextProperty("shutdownMode", shutdownMode);
-            }
-            break;
-
-        default:
-            break;
+void ShutdownScreen::handleThermalStateChange(const QString &state)
+{
+    if (state == thermalmanager_thermal_status_fatal) {
+        //% "Temperature too high. Device shutting down."
+        createAndPublishNotification("x-nemo.battery.temperature", qtTrId("qtn_shut_high_temp"));
     }
 }
 

@@ -24,8 +24,8 @@
 #include "notificationpreviewpresenter.h"
 #include "lipstickqmlpath.h"
 
-#include <qmdisplaystate.h>
-#include <qmlocks.h>
+#include <qmcedisplay.h>
+#include <qmcetklock.h>
 
 #include <mce/dbus-names.h>
 
@@ -58,8 +58,8 @@ NotificationPreviewPresenter::NotificationPreviewPresenter(QObject *parent) :
     window(0),
     currentNotification(0),
     notificationFeedbackPlayer(new NotificationFeedbackPlayer(this)),
-    locks(new MeeGo::QmLocks(this)),
-    displayState(new MeeGo::QmDisplayState(this))
+    locks(new QMceTkLock(this)),
+    displayState(new QMceDisplay(this))
 {
     connect(NotificationManager::instance(), SIGNAL(notificationAdded(uint)), this, SLOT(updateNotification(uint)));
     connect(NotificationManager::instance(), SIGNAL(notificationRemoved(uint)), this, SLOT(removeNotification(uint)));
@@ -90,7 +90,7 @@ void NotificationPreviewPresenter::showNextNotification()
     } else {
         LipstickNotification *notification = notificationQueue.takeFirst();
 
-        const bool screenLocked = locks->getState(MeeGo::QmLocks::TouchAndKeyboard) == MeeGo::QmLocks::Locked && displayState->get() == MeeGo::QmDisplayState::Off;
+        const bool screenLocked = locks->locked() && displayState->state() == QMceDisplay::DisplayOff;
         const bool notificationIsCritical = notification->urgency() >= 2 || notification->hints().value(NotificationManager::HINT_DISPLAY_ON).toBool();
 
         bool show = true;
@@ -190,7 +190,7 @@ bool NotificationPreviewPresenter::notificationShouldBeShown(LipstickNotificatio
     if (notification->hidden() || notification->restored() || (notification->previewBody().isEmpty() && notification->previewSummary().isEmpty()))
         return false;
 
-    const bool screenLocked = locks->getState(MeeGo::QmLocks::TouchAndKeyboard) == MeeGo::QmLocks::Locked;
+    const bool screenLocked = locks->locked();
     const bool notificationIsCritical = notification->urgency() >= 2 || notification->hints().value(NotificationManager::HINT_DISPLAY_ON).toBool();
 
     uint mode = AllNotificationsEnabled;
