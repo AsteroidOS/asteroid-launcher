@@ -1,6 +1,6 @@
 /***************************************************************************
 **
-** Copyright (C) 2012-2014 Jolla Ltd.
+** Copyright (C) 2012 Jolla Ltd.
 ** Contact: Robin Burchell <robin.burchell@jollamobile.com>
 **
 ** This file is part of lipstick.
@@ -15,8 +15,10 @@
 #ifndef THERMALNOTIFIER_H
 #define THERMALNOTIFIER_H
 
-#include <qmthermal.h>
-#include <qmdisplaystate.h>
+#include <QObject>
+#include <QString>
+
+class QMceDisplay;
 
 class ThermalNotifier : public QObject
 {
@@ -29,17 +31,16 @@ private slots:
      * Reacts to thermal state changes by showing the
      * related notification.
      *
-     * \param state the new thermal state
+     * \param state the new thermal state, as reported by DSME's
+     * thermal manager ("low", "normal", "warning", "alert", "fatal")
      */
-    void applyThermalState(MeeGo::QmThermal::ThermalState state);
+    void applyThermalState(const QString &state);
 
     /*!
      * Reacts to display state changes by showing the
      * related notification if not displayed yet.
-     *
-     * \param state the new display state
      */
-    void applyDisplayState(MeeGo::QmDisplayState::DisplayState state);
+    void applyDisplayState();
 
 private:
     /*!
@@ -50,18 +51,14 @@ private:
      */
     void createAndPublishNotification(const QString &category, const QString &body);
 
-    //! For getting the thermal state
-    MeeGo::QmThermal *thermalState;
-
     //! For getting the display state
-    MeeGo::QmDisplayState *displayState;
+    QMceDisplay *displayState;
+
+    //! The current thermal state as last reported over D-Bus
+    QString thermalState;
 
     //! Thermal state for which a notification has been displayed while the screen was on
-    MeeGo::QmThermal::ThermalState thermalStateNotifiedWhileScreenIsOn;
-
-#ifdef UNIT_TEST
-    friend class Ut_ThermalNotifier;
-#endif
+    QString thermalStateNotifiedWhileScreenIsOn;
 };
 
 #endif // THERMALNOTIFIER_H
