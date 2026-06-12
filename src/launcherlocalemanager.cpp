@@ -53,6 +53,6 @@ void LauncherLocaleManager::onLocaleChanged()
     QDBusInterface systemdInterface("org.freedesktop.systemd1", "/org/freedesktop/systemd1", "org.freedesktop.systemd1.Manager", QDBusConnection::sessionBus());
 
     systemdInterface.call("SetEnvironment", QStringList() << ("LANG=" + QString::fromLocal8Bit(qgetenv("LANG"))));
-    systemdInterface.call("RestartUnit", "booster-qtcomponents-qt5.service", "replace");
+    systemdInterface.call("RestartUnit", "booster-asteroid-qt6.service", "replace");
 }
 
