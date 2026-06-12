@@ -16,7 +16,6 @@
 #define LOCALEMANAGER_H
 
 #include <QObject>
-#include <QTranslator>
 #include <QDBusAbstractAdaptor>
 
 #include <homeapplication.h>
@@ -40,7 +39,6 @@ signals:
 
 private:
     HomeApplication *m_app;
-    QTranslator *m_translator;
 };
 
 #endif // LOCALEMANAGER_H

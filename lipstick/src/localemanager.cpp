@@ -20,9 +20,6 @@
 LocaleManager::LocaleManager(HomeApplication *app) : QDBusAbstractAdaptor(app)
 {
     m_app = app;
-    m_translator = new QTranslator(this);
-    m_translator->load(QLocale(), "lipstick", "-", "/usr/share/translations");
-    m_app->installTranslator(m_translator);
 
     QDBusConnection::systemBus().registerObject("/org/nemomobile/lipstick/localemanager", this, QDBusConnection::ExportAllSlots);
 }
@@ -36,10 +33,6 @@ void LocaleManager::selectLocale(QString locale)
 {
     QLocale::setDefault(QLocale(locale));
     qputenv("LANG", locale.toUtf8());
-
-    m_app->removeTranslator(m_translator);
-    m_translator->load(QLocale(), "lipstick", "-", "/usr/share/translations");
-    m_app->installTranslator(m_translator);
 
     emit localeChanged();
     emit emptyStringChanged();
