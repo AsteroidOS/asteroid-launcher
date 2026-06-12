@@ -22,7 +22,6 @@
 #include <QSet>
 #include <QDBusContext>
 
-class AndroidPriorityStore;
 class CategoryDefinitionStore;
 class QSqlDatabase;
 
@@ -453,9 +452,6 @@ private:
 
     //! The category definition store
     CategoryDefinitionStore *categoryDefinitionStore;
-
-    //! The Android application priority store
-    AndroidPriorityStore *androidPriorityStore;
 
     //! Database for the notifications
     QSqlDatabase *database;

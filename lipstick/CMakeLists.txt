@@ -23,7 +23,6 @@ set(LIPSTICK_SRC
 	src/notifications/batterynotifier.cpp
 	src/notifications/diskspacenotifier.cpp
 	src/notifications/thermalnotifier.cpp
-	src/notifications/androidprioritystore.cpp
 	src/notifications/notificationfeedbackplayer.cpp
 	src/screenlock/screenlock.cpp
 	src/volume/volumecontrol.cpp
@@ -96,8 +95,6 @@ add_subdirectory(tools/notificationtool)
 
 install(FILES src/lipstick.conf
 	DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/dbus-1/system.d)
-install(FILES src/androidnotificationpriorities
-	DESTINATION ${CMAKE_INSTALL_DATADIR}/lipstick)
 file(GLOB NOTIFICATION_CATEGORY_FILES src/notificationcategories/*.conf)
 install(FILES ${NOTIFICATION_CATEGORY_FILES}
 	DESTINATION ${CMAKE_INSTALL_DATADIR}/lipstick/notificationcategories)
