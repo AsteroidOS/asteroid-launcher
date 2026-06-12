@@ -14,7 +14,6 @@
 ****************************************************************************/
 
 #include "homewindow.h"
-#include "lipsticksettings.h"
 #include "utilities/closeeventeater.h"
 #include "notifications/notificationmanager.h"
 #include "notifications/notificationfeedbackplayer.h"
@@ -178,7 +177,6 @@ void NotificationPreviewPresenter::createWindowIfNecessary()
     window->setCategory(QLatin1String("notification"));
     window->setWindowTitle("Notification");
     window->setContextProperty("initialSize", QGuiApplication::primaryScreen()->size());
-    window->setContextProperty("LipstickSettings", LipstickSettings::instance());
     window->setContextProperty("notificationPreviewPresenter", this);
     window->setContextProperty("notificationFeedbackPlayer", notificationFeedbackPlayer);
     window->setSource(QmlPath::to("notifications/NotificationPreview.qml"));

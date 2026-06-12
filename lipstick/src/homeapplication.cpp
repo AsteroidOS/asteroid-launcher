@@ -110,7 +110,6 @@ HomeApplication::HomeApplication(int &argc, char **argv, const QString &qmlPath)
     // Setting up the context and engine things
     qmlEngine->rootContext()->setContextProperty("initialSize", QGuiApplication::primaryScreen()->size());
     qmlEngine->rootContext()->setContextProperty("lipstickSettings", LipstickSettings::instance());
-    qmlEngine->rootContext()->setContextProperty("LipstickSettings", LipstickSettings::instance());
     qmlEngine->rootContext()->setContextProperty("volumeControl", volumeControl);
     qmlEngine->rootContext()->setContextProperty("localeManager", localeMngr);
 
