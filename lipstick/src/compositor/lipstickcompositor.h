@@ -18,7 +18,6 @@
 
 #include <QQuickWindow>
 #include <QWaylandSurface>
-#include "lipstickglobal.h"
 #include <QWaylandQuickCompositor>
 #include <QWaylandQuickOutput>
 #include <QWaylandXdgShell>
@@ -40,7 +39,7 @@ class QOrientationSensor;
 class LipstickRecorderManager;
 class AsteroidGesturesManager;
 
-class LIPSTICK_EXPORT LipstickCompositor : public QWaylandQuickCompositor
+class LipstickCompositor : public QWaylandQuickCompositor
 {
     Q_OBJECT
 

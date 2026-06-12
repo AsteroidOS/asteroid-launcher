@@ -16,7 +16,6 @@
 #ifndef NOTIFICATIONMANAGER_H
 #define NOTIFICATIONMANAGER_H
 
-#include "lipstickglobal.h"
 #include "lipsticknotification.h"
 #include <QObject>
 #include <QTimer>
@@ -37,7 +36,7 @@ class QSqlDatabase;
  * The service is registered as org.freedesktop.Notifications on the D-Bus
  * session bus in the path /org/freedesktop/Notifications.
  */
-class LIPSTICK_EXPORT NotificationManager : public QObject, public QDBusContext
+class NotificationManager : public QObject, public QDBusContext
 {
     Q_OBJECT
 

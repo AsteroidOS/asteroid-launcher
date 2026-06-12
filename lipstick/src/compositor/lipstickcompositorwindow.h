@@ -18,9 +18,8 @@
 
 #include <QWaylandQuickItem>
 #include <QWaylandBufferRef>
-#include "lipstickglobal.h"
 
-class LIPSTICK_EXPORT LipstickCompositorWindow : public QWaylandQuickItem
+class LipstickCompositorWindow : public QWaylandQuickItem
 {
     Q_OBJECT
 

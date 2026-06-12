@@ -20,11 +20,10 @@
 #include <QObject>
 #include <QMetaType>
 #include <QSize>
-#include "lipstickglobal.h"
 
 class ScreenLock;
 
-class LIPSTICK_EXPORT LipstickSettings : public QObject
+class LipstickSettings : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool lockscreenVisible READ lockscreenVisible WRITE setLockscreenVisible NOTIFY lockscreenVisibleChanged)

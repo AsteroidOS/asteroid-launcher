@@ -18,14 +18,13 @@
 #define CLOSEEVENTEATER_H_
 
 #include <QObject>
-#include "lipstickglobal.h"
 
 /*!
  * Close event eater is an object that "eats" QCloseEvents by accepting them.
  * It can be installed to windows so that they will not react to CTRL-Q
  * presses.
  */
-class LIPSTICK_EXPORT CloseEventEater : public QObject
+class CloseEventEater : public QObject
 {
     Q_OBJECT
 

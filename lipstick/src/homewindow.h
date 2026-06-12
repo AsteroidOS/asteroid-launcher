@@ -17,7 +17,6 @@
 #define HOMEWINDOW_H
 
 #include <QObject>
-#include "lipstickglobal.h"
 
 class QQmlError;
 class QQmlEngine;
@@ -25,7 +24,7 @@ class QQuickItem;
 class QQuickView;
 class HomeWindowPrivate;
 
-class LIPSTICK_EXPORT HomeWindow : public QObject
+class HomeWindow : public QObject
 {
     Q_OBJECT
 public:

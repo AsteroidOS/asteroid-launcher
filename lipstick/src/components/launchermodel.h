@@ -22,13 +22,12 @@
 #include <QFileSystemWatcher>
 
 #include "qobjectlistmodel.h"
-#include "lipstickglobal.h"
 #include "launchermonitor.h"
 #include "launcherdbus.h"
 
 class LauncherItem;
 
-class LIPSTICK_EXPORT LauncherModel : public QObjectListModel
+class LauncherModel : public QObjectListModel
 {
     Q_OBJECT
     Q_DISABLE_COPY(LauncherModel)

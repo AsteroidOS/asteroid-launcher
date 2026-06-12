@@ -17,11 +17,10 @@
 #define SHUTDOWNSCREEN_H
 
 #include <QObject>
-#include "lipstickglobal.h"
 
 class HomeWindow;
 
-class LIPSTICK_EXPORT ShutdownScreen : public QObject
+class ShutdownScreen : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool windowVisible READ windowVisible WRITE setWindowVisible NOTIFY windowVisibleChanged)
