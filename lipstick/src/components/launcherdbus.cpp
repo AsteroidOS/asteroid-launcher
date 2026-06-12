@@ -52,32 +52,6 @@ void LauncherDBus::deregisterModel(LauncherModel *model)
     m_models.removeOne(model);
 }
 
-void LauncherDBus::requestLaunch(QString packageName)
-{
-    emit showUpdatingProgress(packageName);
-}
-
-void LauncherDBus::updatingStarted(QString packageName, QString label, QString iconPath, QString desktopFile)
-{
-    foreach (LauncherModel *model, m_models) {
-        model->updatingStarted(packageName, label, iconPath, desktopFile, message().service());
-    }
-}
-
-void LauncherDBus::updatingProgress(QString packageName, int progress)
-{
-    foreach (LauncherModel *model, m_models) {
-        model->updatingProgress(packageName, progress, message().service());
-    }
-}
-
-void LauncherDBus::updatingFinished(QString packageName)
-{
-    foreach (LauncherModel *model, m_models) {
-        model->updatingFinished(packageName, message().service());
-    }
-}
-
 void LauncherDBus::notifyLaunching(const QString &desktopFile)
 {
     foreach (LauncherModel *model, m_models) {
