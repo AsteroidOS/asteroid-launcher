@@ -48,8 +48,6 @@ qt6_add_dbus_adaptor(LIPSTICK_SRC src/screenlock/screenlock.xml
 	screenlock.h ScreenLock screenlock/screenlockadaptor ScreenLockAdaptor)
 qt6_add_dbus_adaptor(LIPSTICK_SRC src/screenshotservice.xml
 	screenshotservice.h ScreenshotService screenshotserviceadaptor ScreenshotServiceAdaptor)
-qt6_add_dbus_adaptor(LIPSTICK_SRC src/shutdownscreen.xml
-	shutdownscreen.h ShutdownScreen shutdownscreenadaptor ShutdownScreenAdaptor)
 qt6_add_dbus_adaptor(LIPSTICK_SRC src/compositor/compositor.xml
 	lipstickcompositor.h LipstickCompositor lipstickcompositoradaptor LipstickCompositorAdaptor)
 

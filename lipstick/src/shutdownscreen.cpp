@@ -14,9 +14,6 @@
 **
 ****************************************************************************/
 #include <QGuiApplication>
-#include <QDBusContext>
-#include <QDBusConnectionInterface>
-#include <QFileInfo>
 #include "homewindow.h"
 #include <QQmlContext>
 #include <QScreen>
@@ -28,7 +25,6 @@
 
 ShutdownScreen::ShutdownScreen(QObject *parent) :
     QObject(parent),
-    QDBusContext(),
     window(0),
     systemState(new MeeGo::QmSystemState(this))
 {
@@ -109,34 +105,4 @@ void ShutdownScreen::createAndPublishNotification(const QString &category, const
     hints.insert(NotificationManager::HINT_CATEGORY, category);
     hints.insert(NotificationManager::HINT_PREVIEW_BODY, body);
     manager->Notify(qApp->applicationName(), 0, QString(), QString(), QString(), QStringList(), hints, -1);
-}
-
-void ShutdownScreen::setShutdownMode(const QString &mode)
-{
-    if (!isPrivileged())
-        return;
-
-    shutdownMode = mode;
-    applySystemState(MeeGo::QmSystemState::Shutdown);
-}
-
-bool ShutdownScreen::isPrivileged()
-{
-    if (!calledFromDBus()) {
-        // Local function calls are always privileged
-        return true;
-    }
-
-    // Get the PID of the calling process
-    pid_t pid = connection().interface()->servicePid(message().service());
-
-    // The /proc/<pid> directory is owned by EUID:EGID of the process
-    QFileInfo info(QString("/proc/%1").arg(pid));
-    if (info.group() != "privileged" && info.owner() != "root") {
-        sendErrorReply(QDBusError::AccessDenied,
-                QString("PID %1 is not in privileged group").arg(pid));
-        return false;
-    }
-
-    return true;
 }
