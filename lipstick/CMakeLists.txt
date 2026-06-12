@@ -70,7 +70,6 @@ target_link_libraries(lipstick PUBLIC
 	Qt6::DBus
 	Qt6::Sql
 	Qt6::Gui
-	Qt6::Sensors
 	Qt6::WaylandCompositor
 	Qt6::CorePrivate
 	Qt6::GuiPrivate

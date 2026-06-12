@@ -15,7 +15,6 @@
 
 #include <QWaylandSeat>
 #include <QDesktopServices>
-#include <QtSensors/QOrientationSensor>
 #include <QClipboard>
 #include <QSettings>
 #include <QMimeData>
@@ -51,7 +50,6 @@ LipstickCompositor::LipstickCompositor()
     , m_topmostWindowProcessId(0)
     , m_topmostWindowOrientation(Qt::PrimaryOrientation)
     , m_screenOrientation(Qt::PrimaryOrientation)
-    , m_sensorOrientation(Qt::PrimaryOrientation)
     , m_displayState(0)
     , m_retainedSelection(0)
     , m_currentDisplayState(QMceDisplay::DisplayOn)
@@ -94,14 +92,6 @@ LipstickCompositor::LipstickCompositor()
     connect(m_window, SIGNAL(visibleChanged(bool)), this, SLOT(onVisibleChanged(bool)));
     QObject::connect(HomeApplication::instance(), SIGNAL(aboutToDestroy()), this, SLOT(homeApplicationAboutToDestroy()));
 
-    m_orientationSensor = new QOrientationSensor(this);
-    /*QObject::connect(m_orientationSensor, SIGNAL(readingChanged()), this, SLOT(setScreenOrientationFromSensor()));
-    if (!m_orientationSensor->connectToBackend()) {
-        qWarning() << "Could not connect to the orientation sensor backend";
-    } else {
-        if (!m_orientationSensor->start())
-            qWarning() << "Could not start the orientation sensor";
-    }*/
     emit HomeApplication::instance()->homeActiveChanged();
 
     QDesktopServices::setUrlHandler("http", this, "openUrl");
@@ -615,43 +605,6 @@ void LipstickCompositor::reactOnDisplayStateChanges(QMceDisplay::State state)
     }
     if (leaveAmbient) {
         emit displayAmbientLeft();
-    }
-}
-
-void LipstickCompositor::setScreenOrientationFromSensor()
-{
-    QOrientationReading* reading = m_orientationSensor->reading();
-
-    if (debug())
-        qDebug() << "Screen orientation changed " << reading->orientation();
-
-    Qt::ScreenOrientation sensorOrientation = m_sensorOrientation;
-    switch (reading->orientation()) {
-        case QOrientationReading::TopUp:
-            sensorOrientation = Qt::PortraitOrientation;
-            break;
-        case QOrientationReading::TopDown:
-            sensorOrientation = Qt::InvertedPortraitOrientation;
-            break;
-        case QOrientationReading::LeftUp:
-            sensorOrientation = Qt::InvertedLandscapeOrientation;
-            break;
-        case QOrientationReading::RightUp:
-            sensorOrientation = Qt::LandscapeOrientation;
-            break;
-        case QOrientationReading::FaceUp:
-        case QOrientationReading::FaceDown:
-            /* Keep screen orientation at previous state */
-            break;
-        case QOrientationReading::Undefined:
-        default:
-            sensorOrientation = Qt::PrimaryOrientation;
-            break;
-    }
-
-    if (sensorOrientation != m_sensorOrientation) {
-        m_sensorOrientation = sensorOrientation;
-        emit sensorOrientationChanged();
     }
 }
 
