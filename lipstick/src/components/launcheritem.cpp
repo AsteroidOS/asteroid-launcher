@@ -25,10 +25,6 @@
 #include <QRegularExpressionMatch>
 #include <mdesktopentry.h>
 
-#ifdef HAVE_CONTENTACTION
-#include <contentaction.h>
-#endif
-
 #include "launcheritem.h"
 #include "launchermodel.h"
 
@@ -169,11 +165,6 @@ void LauncherItem::launchApplication()
     if (_desktopEntry.isNull())
         return;
 
-#if defined(HAVE_CONTENTACTION)
-    LAUNCHER_DEBUG("launching content action for" << _desktopEntry->name());
-    ContentAction::Action action = ContentAction::Action::launcherAction(_desktopEntry, QStringList());
-    action.trigger();
-#else
     LAUNCHER_DEBUG("launching exec line for" << _desktopEntry->name());
 
     // Get the command text from the desktop entry
@@ -194,7 +185,6 @@ void LauncherItem::launchApplication()
     QStringList commandTokens = QProcess::splitCommand(QStringView(commandText));
     // Launch the application
     QProcess::startDetached(commandTokens.takeFirst(), commandTokens);
-#endif
 
     setIsLaunching(true);
 }
