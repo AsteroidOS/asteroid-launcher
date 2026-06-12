@@ -35,6 +35,14 @@
 
 LauncherLocaleManager::LauncherLocaleManager()
 {
+    // English fallback catalog, so that ids missing from the current locale's
+    // catalog (or locales without a catalog at all) render as English text
+    // instead of raw message ids. Installed first: translators are searched
+    // most-recently-installed first, so the locale catalog below wins.
+    m_fallbackTranslator = new QTranslator(this);
+    if (m_fallbackTranslator->load("asteroid-launcher.en", "/usr/share/translations"))
+        qApp->installTranslator(m_fallbackTranslator);
+
     m_translator = new QTranslator(this);
     if (!m_translator->load(QLocale(), "asteroid-launcher", ".", "/usr/share/translations", ".qm")) {
         qDebug() << "asteroid-launcher: Failed to load" << QLocale().name() << "translations";

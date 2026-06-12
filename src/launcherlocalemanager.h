@@ -45,6 +45,7 @@ public slots:
 
 private:
     QTranslator *m_translator;
+    QTranslator *m_fallbackTranslator;
 };
 
 #endif // LAUNCHERLOCALEMANAGER_H
