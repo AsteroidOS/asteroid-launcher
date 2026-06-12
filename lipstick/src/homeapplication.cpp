@@ -30,8 +30,6 @@
 #include "notifications/thermalnotifier.h"
 #include "screenlock/screenlock.h"
 #include "screenlock/screenlockadaptor.h"
-#include "devicelock/devicelock.h"
-#include "devicelock/devicelockadaptor.h"
 #include "lipsticksettings.h"
 #include "homeapplication.h"
 #include "homewindow.h"
@@ -89,9 +87,6 @@ HomeApplication::HomeApplication(int &argc, char **argv, const QString &qmlPath)
     LipstickSettings::instance()->setScreenLock(screenLock);
     new ScreenLockAdaptor(screenLock);
 
-    deviceLock = new DeviceLock(this);
-    new DeviceLockAdaptor(deviceLock);
-
     volumeControl = new VolumeControl;
     new BatteryNotifier(this);
     new DiskSpaceNotifier(this);
@@ -110,7 +105,6 @@ HomeApplication::HomeApplication(int &argc, char **argv, const QString &qmlPath)
     }
 
     registerDBusObject(systemBus, LIPSTICK_DBUS_SCREENLOCK_PATH, screenLock);
-    registerDBusObject(systemBus, LIPSTICK_DBUS_DEVICELOCK_PATH, deviceLock);
     registerDBusObject(systemBus, LIPSTICK_DBUS_SHUTDOWN_PATH, shutdownScreen);
 
     m_screenshotService = new ScreenshotService(this);
@@ -122,7 +116,6 @@ HomeApplication::HomeApplication(int &argc, char **argv, const QString &qmlPath)
     qmlEngine->rootContext()->setContextProperty("initialSize", QGuiApplication::primaryScreen()->size());
     qmlEngine->rootContext()->setContextProperty("lipstickSettings", LipstickSettings::instance());
     qmlEngine->rootContext()->setContextProperty("LipstickSettings", LipstickSettings::instance());
-    qmlEngine->rootContext()->setContextProperty("deviceLock", deviceLock);
     qmlEngine->rootContext()->setContextProperty("volumeControl", volumeControl);
     qmlEngine->rootContext()->setContextProperty("localeManager", localeMngr);
 
@@ -243,8 +236,6 @@ void HomeApplication::setCompositorPath(const QString &path)
 
         if (LipstickCompositor::instance()) {
             LipstickCompositor::instance()->quickWindow()->setGeometry(QRect(QPoint(0, 0), QGuiApplication::primaryScreen()->size()));
-            connect(usbModeSelector, SIGNAL(showUnlockScreen()),
-                    LipstickCompositor::instance(), SIGNAL(showUnlockScreen()));
             compositor->setParentItem(LipstickCompositor::instance()->quickWindow()->contentItem());
         }
 

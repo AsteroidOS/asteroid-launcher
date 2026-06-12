@@ -18,7 +18,6 @@
 #include <QQmlContext>
 #include <QScreen>
 #include "utilities/closeeventeater.h"
-#include <qmlocks.h>
 #include <qusbmoded.h>
 #include "notifications/notificationmanager.h"
 #include "usbmodeselector.h"
@@ -29,8 +28,7 @@ QMap<QString, QString> USBModeSelector::errorCodeToTranslationID;
 USBModeSelector::USBModeSelector(QObject *parent) :
     QObject(parent),
     window(0),
-    usbMode(new QUsbModed(this)),
-    locks(new MeeGo::QmLocks(this))
+    usbMode(new QUsbModed(this))
 {
     if (errorCodeToTranslationID.isEmpty()) {
         errorCodeToTranslationID.insert("qtn_usb_filessystem_inuse", "qtn_usb_filessystem_inuse");
@@ -89,24 +87,8 @@ QStringList USBModeSelector::supportedUSBModes() const
 
 void USBModeSelector::applyUSBMode(QString mode)
 {
-    if (mode == QUsbModed::Mode::Connected) {
-        if (locks->getState(MeeGo::QmLocks::Device) == MeeGo::QmLocks::Locked) {
-            // When the device lock is on and USB is connected, always pretend that the USB mode selection dialog is shown to unlock the touch screen lock
-            emit dialogShown();
-
-            if (usbMode->configMode() != QUsbModed::Mode::Charging) {
-                // Show a notification instead if configured USB mode is not charging only.
-                NotificationManager *manager = NotificationManager::instance();
-                QVariantHash hints;
-                hints.insert(NotificationManager::HINT_CATEGORY, "x-nemo.device.locked");
-                //% "Unlock device first"
-                hints.insert(NotificationManager::HINT_PREVIEW_BODY, qtTrId("qtn_usb_device_locked"));
-                manager->Notify(qApp->applicationName(), 0, QString(), QString(), QString(), QStringList(), hints, -1);
-                emit showUnlockScreen();
-            }
-        }
-    } else if (mode == QUsbModed::Mode::Ask ||
-               mode == QUsbModed::Mode::ModeRequest) {
+    if (mode == QUsbModed::Mode::Ask ||
+        mode == QUsbModed::Mode::ModeRequest) {
         setWindowVisible(true);
     } else if (mode != QUsbModed::Mode::Charging &&
                mode != QUsbModed::Mode::Undefined) {

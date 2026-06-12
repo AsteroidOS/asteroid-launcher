@@ -20,7 +20,6 @@
 class QQmlEngine;
 class HomeWindow;
 class ScreenLock;
-class DeviceLock;
 class VolumeControl;
 class USBModeSelector;
 class ShutdownScreen;
@@ -156,9 +155,6 @@ private:
 
     //! Logic for locking and unlocking the screen
     ScreenLock *screenLock;
-
-    //! Logic for locking and unlocking the device
-    DeviceLock *deviceLock;
 
     //! Logic for setting the device volume
     VolumeControl *volumeControl;
