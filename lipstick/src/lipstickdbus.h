@@ -32,7 +32,6 @@
 #define LIPSTICK_DBUS_WINDOW_MODEL_INTERFACE "local.Lipstick.WindowModel"
 
 #define LIPSTICK_DBUS_SCREENLOCK_PATH "/screenlock"
-#define LIPSTICK_DBUS_DEVICELOCK_PATH "/devicelock"
 #define LIPSTICK_DBUS_SHUTDOWN_PATH "/shutdown"
 #define LIPSTICK_DBUS_SCREENSHOT_PATH "/org/nemomobile/lipstick/screenshot"
 

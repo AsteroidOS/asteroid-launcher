@@ -170,7 +170,6 @@ signals:
 
     void completedChanged();
 
-    void showUnlockScreen();
 
 private slots:
     void onHasContentChanged();

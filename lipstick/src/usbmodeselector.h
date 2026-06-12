@@ -24,10 +24,6 @@
 class HomeWindow;
 class QUsbModed;
 
-namespace MeeGo {
-class QmLocks;
-}
-
 class LIPSTICK_EXPORT USBModeSelector : public QObject
 {
     Q_OBJECT
@@ -76,8 +72,6 @@ signals:
     //! Sent when the supported USB modes have changed.
     void supportedUSBModesChanged();
 
-    void showUnlockScreen();
-
 private slots:
     /*!
      * Shows the USB dialog/banners based on the given USB mode.
@@ -117,9 +111,6 @@ private:
 
     //! For getting and setting the USB mode
     QUsbModed *usbMode;
-
-    //! For getting information about the device lock state
-    MeeGo::QmLocks *locks;
 
 #ifdef UNIT_TEST
     friend class Ut_USBModeSelector;

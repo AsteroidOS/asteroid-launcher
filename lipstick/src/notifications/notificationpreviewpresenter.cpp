@@ -34,7 +34,6 @@
 #include <QDBusPendingCall>
 #include <QGuiApplication>
 #include <QQmlContext>
-#include <QSettings>
 
 namespace {
 
@@ -51,9 +50,6 @@ enum PreviewMode {
     SystemNotificationsDisabled,
     AllNotificationsDisabled
 };
-
-const QString DEVICE_LOCK_SETTINGS_FILE(QStringLiteral("/usr/share/lipstick/devicelock/devicelock_settings.conf"));
-const QString DEVICE_LOCK_SHOW_NOTIFICATIONS(QStringLiteral("/desktop/nemo/devicelock/show_notification"));
 
 }
 
@@ -95,24 +91,11 @@ void NotificationPreviewPresenter::showNextNotification()
         LipstickNotification *notification = notificationQueue.takeFirst();
 
         const bool screenLocked = locks->getState(MeeGo::QmLocks::TouchAndKeyboard) == MeeGo::QmLocks::Locked && displayState->get() == MeeGo::QmDisplayState::Off;
-        const bool deviceLocked = locks->getState(MeeGo::QmLocks::Device) == MeeGo::QmLocks::Locked;
         const bool notificationIsCritical = notification->urgency() >= 2 || notification->hints().value(NotificationManager::HINT_DISPLAY_ON).toBool();
 
         bool show = true;
-        if (deviceLocked) {
-            if (!notificationIsCritical) {
-                show = false;
-            } else {
-                const QString enabled(QStringLiteral("1"));
-
-                // Only show if notification banners are enabled within device lock
-                const QSettings settings(DEVICE_LOCK_SETTINGS_FILE, QSettings::IniFormat);
-                show = settings.value(DEVICE_LOCK_SHOW_NOTIFICATIONS, enabled).toString() == enabled;
-            }
-        } else if (screenLocked) {
-            if (!notificationIsCritical) {
-                show = false;
-            }
+        if (screenLocked && !notificationIsCritical) {
+            show = false;
         }
 
         if (!show) {
@@ -208,7 +191,6 @@ bool NotificationPreviewPresenter::notificationShouldBeShown(LipstickNotificatio
         return false;
 
     const bool screenLocked = locks->getState(MeeGo::QmLocks::TouchAndKeyboard) == MeeGo::QmLocks::Locked;
-    const bool deviceLocked = locks->getState(MeeGo::QmLocks::Device) == MeeGo::QmLocks::Locked;
     const bool notificationIsCritical = notification->urgency() >= 2 || notification->hints().value(NotificationManager::HINT_DISPLAY_ON).toBool();
 
     uint mode = AllNotificationsEnabled;
@@ -217,7 +199,7 @@ bool NotificationPreviewPresenter::notificationShouldBeShown(LipstickNotificatio
         mode = win->windowProperties().value("NOTIFICATION_PREVIEWS_DISABLED", uint(AllNotificationsEnabled)).toUInt();
     }
 
-    return ((!screenLocked && !deviceLocked) || notificationIsCritical) &&
+    return (!screenLocked || notificationIsCritical) &&
             (mode == AllNotificationsEnabled ||
              (mode == ApplicationNotificationsDisabled && notificationIsCritical) ||
              (mode == SystemNotificationsDisabled && !notificationIsCritical));
