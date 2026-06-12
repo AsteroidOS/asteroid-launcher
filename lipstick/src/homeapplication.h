@@ -23,7 +23,6 @@ class ScreenLock;
 class VolumeControl;
 class USBModeSelector;
 class ShutdownScreen;
-class ConnectionSelector;
 class ScreenshotService;
 class BluetoothAgent;
 class LocaleManager;
@@ -170,9 +169,6 @@ private:
 
     //! Logic for showing the shutdown screen and related notifications
     ShutdownScreen *shutdownScreen;
-
-    //! Login for showing the connection selector
-    ConnectionSelector *connectionSelector;
 
     //! Whether the home ready signal has been sent or not
     bool homeReadySent;

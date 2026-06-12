@@ -28,7 +28,6 @@ set(QML_FILES
 	qml/misc/ShutdownScreen.qml
 	qml/misc/VolumeControl.qml
 	qml/misc/USBModeSelector.qml
-	qml/misc/ConnectionSelector.qml
 	qml/misc/BluetoothAgent.qml
 	qml/misc/desktop.js
 	qml/notifications/NotificationActions.qml
@@ -55,7 +54,6 @@ set_source_files_properties(qml/misc/PanelsGrid.qml                  PROPERTIES 
 set_source_files_properties(qml/misc/ShutdownScreen.qml              PROPERTIES QT_RESOURCE_ALIAS system/ShutdownScreen.qml)
 set_source_files_properties(qml/misc/VolumeControl.qml               PROPERTIES QT_RESOURCE_ALIAS volumecontrol/VolumeControl.qml)
 set_source_files_properties(qml/misc/USBModeSelector.qml             PROPERTIES QT_RESOURCE_ALIAS connectivity/USBModeSelector.qml)
-set_source_files_properties(qml/misc/ConnectionSelector.qml          PROPERTIES QT_RESOURCE_ALIAS connectivity/ConnectionSelector.qml)
 set_source_files_properties(qml/misc/BluetoothAgent.qml              PROPERTIES QT_RESOURCE_ALIAS connectivity/BluetoothAgent.qml)
 set_source_files_properties(qml/misc/desktop.js                      PROPERTIES QT_RESOURCE_ALIAS desktop.js)
 set_source_files_properties(qml/notifications/NotificationActions.qml   PROPERTIES QT_RESOURCE_ALIAS NotificationActions.qml)

@@ -32,7 +32,6 @@ set(LIPSTICK_SRC
 	src/bluetoothagent.cpp
 	src/localemanager.cpp
 	src/shutdownscreen.cpp
-	src/connectionselector.cpp
 	src/screenshotservice.cpp
 	src/qmsystem2/qmactivity.cpp
 	src/qmsystem2/qmdisplaystate.cpp
