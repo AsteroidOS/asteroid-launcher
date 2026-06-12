@@ -1,9 +1,0 @@
-liblipstick.*
-liblipstick-qt5.*
-pkgconfig
-*.ts
-*.qm
-compositor/lipstickcompositoradaptor.*
-screenshotserviceadaptor.*
-shutdownscreenadaptor.*
-.moc
