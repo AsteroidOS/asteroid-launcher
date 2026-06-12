@@ -34,7 +34,6 @@
 #include <timed-qt6/exception>
 #include <timed-qt6/event-declarations.h>
 
-class WindowModel;
 class LipstickCompositorWindow;
 class LipstickCompositorProcWindow;
 class QOrientationSensor;
@@ -191,7 +190,6 @@ private slots:
 private:
     friend class LipstickCompositorWindow;
     friend class LipstickCompositorProcWindow;
-    friend class WindowModel;
     friend class NotificationPreviewPresenter;
     friend class NotificationFeedbackPlayer;
 
@@ -216,7 +214,6 @@ private:
     QHash<int, LipstickCompositorWindow *> m_windows;
 
     int m_nextWindowId;
-    QList<WindowModel *> m_windowModels;
 
     bool m_homeActive;
 

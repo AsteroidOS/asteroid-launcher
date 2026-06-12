@@ -31,8 +31,6 @@
 #include <bluetoothagent.h>
 #include <compositor/lipstickcompositor.h>
 #include <compositor/lipstickcompositorwindow.h>
-#include <compositor/windowmodel.h>
-#include <compositor/windowpixmapitem.h>
 #include <lipstickapi.h>
 
 class LauncherModelType : public LauncherModel, public QQmlParserStatus
@@ -69,8 +67,6 @@ void registerLipstickTypes()
 
     qmlRegisterType<LipstickCompositor>("org.nemomobile.lipstick", 0, 1, "Compositor");
     qmlRegisterUncreatableType<QWaylandSurface>("org.nemomobile.lipstick", 0, 1, "WaylandSurface", "This type is created by the compositor");
-    qmlRegisterType<WindowModel>("org.nemomobile.lipstick", 0, 1, "WindowModel");
-    qmlRegisterType<WindowPixmapItem>("org.nemomobile.lipstick", 0, 1, "WindowPixmapItem");
     qmlRegisterSingletonType<LipstickApi>("org.nemomobile.lipstick", 0, 1, "Lipstick", lipstickApi_callback);
 
     qmlRegisterRevision<QQuickWindow,1>("org.nemomobile.lipstick", 0, 1);

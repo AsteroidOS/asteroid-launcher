@@ -14,8 +14,6 @@ set(LIPSTICK_SRC
 	src/compositor/lipstickcompositor.cpp
 	src/compositor/lipstickcompositorwindow.cpp
 	src/compositor/lipstickcompositorprocwindow.cpp
-	src/compositor/windowmodel.cpp
-	src/compositor/windowpixmapitem.cpp
 	src/compositor/asteroidgesturesextension.cpp
 	src/notifications/notificationmanager.cpp
 	src/notifications/lipsticknotification.cpp

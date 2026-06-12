@@ -25,7 +25,6 @@
 #include <QMimeData>
 #include <QtGui/qpa/qplatformnativeinterface.h>
 #include "homeapplication.h"
-#include "windowmodel.h"
 #include "lipstickcompositorprocwindow.h"
 #include "lipstickcompositor.h"
 #include "lipstickcompositoradaptor.h"
@@ -459,8 +458,6 @@ void LipstickCompositor::surfaceTitleChanged()
 
         int windowId = window->windowId();
 
-        for (int ii = 0; ii < m_windowModels.count(); ++ii)
-            m_windowModels.at(ii)->titleChanged(windowId);
     }
 }
 
@@ -521,14 +518,10 @@ void LipstickCompositor::surfaceUnmapped(LipstickCompositorWindow *item)
 
 void LipstickCompositor::windowAdded(int id)
 {
-    for (int ii = 0; ii < m_windowModels.count(); ++ii)
-        m_windowModels.at(ii)->addItem(id);
 }
 
 void LipstickCompositor::windowRemoved(int id)
 {
-    for (int ii = 0; ii < m_windowModels.count(); ++ii)
-        m_windowModels.at(ii)->remItem(id);
 }
 
 QQmlComponent *LipstickCompositor::shaderEffectComponent()
