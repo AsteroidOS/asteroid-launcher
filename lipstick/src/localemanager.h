@@ -17,6 +17,7 @@
 
 #include <QObject>
 #include <QDBusAbstractAdaptor>
+#include <QTranslator>
 
 #include <homeapplication.h>
 
@@ -38,7 +39,11 @@ signals:
     void emptyStringChanged();
 
 private:
+    void loadLocaleCatalog();
+
     HomeApplication *m_app;
+    QTranslator *m_translator;
+    QTranslator *m_fallbackTranslator;
 };
 
 #endif // LOCALEMANAGER_H

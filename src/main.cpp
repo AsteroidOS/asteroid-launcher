@@ -44,7 +44,6 @@
 
 #include "applauncherbackground.h"
 #include "firstrun.h"
-#include "launcherlocalemanager.h"
 #include "gesturefilterarea.h"
 #include "notificationsnoozer.h"
 #include "applauncher.h"
@@ -58,8 +57,6 @@ int main(int argc, char **argv)
     HomeApplication app(argc, argv, QString());
 
     FirstRun *firstRun = new FirstRun();
-    LauncherLocaleManager *launcherLocaleManager = new LauncherLocaleManager();
-    QObject::connect(app.localeManager(), SIGNAL(localeChanged()), launcherLocaleManager, SLOT(onLocaleChanged()));
 
     QGuiApplication::setFont(QFont("Noto Sans"));
     app.setCompositorPath("qrc:/Launcher/compositor.qml");

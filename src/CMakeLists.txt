@@ -3,14 +3,12 @@ set(SRC
 	applauncherbackground.cpp
 	firstrun.cpp
 	gesturefilterarea.cpp
-	launcherlocalemanager.cpp
 	applauncher.cpp
 	notificationsnoozer.cpp)
 set(HEADERS
 	applauncherbackground.h
 	firstrun.h
 	gesturefilterarea.h
-	launcherlocalemanager.h
 	applauncher.h
 	notificationsnoozer.h)
 

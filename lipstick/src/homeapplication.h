@@ -97,8 +97,6 @@ public:
 
     void takeScreenshot(const QString &path);
 
-    LocaleManager *localeManager();
-
 signals:
     /*!
      * Emitted whenever the home active flag changes.

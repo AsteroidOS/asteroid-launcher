@@ -280,8 +280,3 @@ void HomeApplication::takeScreenshot(const QString &path)
 {
     m_screenshotService->saveScreenshot(path);
 }
-
-LocaleManager *HomeApplication::localeManager()
-{
-    return localeMngr;
-}
