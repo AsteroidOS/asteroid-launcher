@@ -9,10 +9,8 @@ set(LIPSTICK_SRC
 	src/utilities/closeeventeater.cpp
 	src/components/launcheritem.cpp
 	src/components/launchermodel.cpp
-	src/components/launcherwatchermodel.cpp
 	src/components/launchermonitor.cpp
 	src/components/launcherdbus.cpp
-	src/components/launcherfoldermodel.cpp
 	src/compositor/lipstickcompositor.cpp
 	src/compositor/lipstickcompositorwindow.cpp
 	src/compositor/lipstickcompositorprocwindow.cpp
@@ -30,7 +28,6 @@ set(LIPSTICK_SRC
 	src/notifications/androidprioritystore.cpp
 	src/notifications/notificationfeedbackplayer.cpp
 	src/screenlock/screenlock.cpp
-	src/devicelock/devicelock.cpp
 	src/volume/volumecontrol.cpp
 	src/volume/pulseaudiocontrol.cpp
 	src/usbmodeselector.cpp
@@ -52,8 +49,6 @@ qt6_add_dbus_adaptor(LIPSTICK_SRC src/notifications/notificationmanager.xml
 	notificationmanager.h NotificationManager notificationmanageradaptor NotificationManagerAdaptor)
 qt6_add_dbus_adaptor(LIPSTICK_SRC src/screenlock/screenlock.xml
 	screenlock.h ScreenLock screenlock/screenlockadaptor ScreenLockAdaptor)
-qt6_add_dbus_adaptor(LIPSTICK_SRC src/devicelock/devicelock.xml
-	devicelock.h DeviceLock devicelock/devicelockadaptor DeviceLockAdaptor)
 qt6_add_dbus_adaptor(LIPSTICK_SRC src/screenshotservice.xml
 	screenshotservice.h ScreenshotService screenshotserviceadaptor ScreenshotServiceAdaptor)
 qt6_add_dbus_adaptor(LIPSTICK_SRC src/shutdownscreen.xml
@@ -76,7 +71,6 @@ target_include_directories(lipstick PUBLIC
 	src/3rdparty
 	src/components
 	src/compositor
-	src/devicelock
 	src/notifications
 	src/qmsystem2
 	src/screenlock
