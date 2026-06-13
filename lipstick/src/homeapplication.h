@@ -22,6 +22,7 @@ class ScreenLock;
 class VolumeControl;
 class USBModeSelector;
 class ShutdownScreen;
+class NotificationPreviewPresenter;
 class ScreenshotService;
 class BluetoothAgent;
 class LocaleManager;
@@ -166,6 +167,9 @@ private:
 
     //! Logic for showing the shutdown screen and related notifications
     ShutdownScreen *shutdownScreen;
+
+    //! Tracks which notification should currently be previewed
+    NotificationPreviewPresenter *notificationPreviewPresenter;
 
     //! Whether the home ready signal has been sent or not
     bool homeReadySent;

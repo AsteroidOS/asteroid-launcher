@@ -37,6 +37,7 @@ Item {
 
     width: initialSize.width
     height: width
+    visible: bluetoothAgent.windowVisible
 
     Item {
         id: circleWrapper
@@ -121,7 +122,7 @@ Item {
         anchors.horizontalCenterOffset: -Dims.w(12)
         anchors.bottom: parent.bottom
         anchors.bottomMargin: Dims.h(21)
-        onClicked: agent.userCancels()
+        onClicked: bluetoothAgent.userCancels()
     }
 
     IconButton {
@@ -133,11 +134,11 @@ Item {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: Dims.h(21)
         onClicked: {
-            if(agent.state == BluetoothAgent.ReqPinCode)
-                agent.pinCode = Number(inputField.text)
-            if(agent.state == BluetoothAgent.ReqPasskey)
-                agent.passkey = inputField.text
-            agent.userAccepts()
+            if(bluetoothAgent.state == BluetoothAgent.ReqPinCode)
+                bluetoothAgent.pinCode = Number(inputField.text)
+            if(bluetoothAgent.state == BluetoothAgent.ReqPasskey)
+                bluetoothAgent.passkey = inputField.text
+            bluetoothAgent.userAccepts()
         }
     }
 
@@ -150,13 +151,13 @@ Item {
     }
 
     Connections {
-        target: agent
+        target: bluetoothAgent
         function onStateChanged() {
-            switch(agent.state) {
+            switch(bluetoothAgent.state) {
                 case BluetoothAgent.AuthService:
                     //% "Authorize:"
                     summary.text = qsTrId("id-btagent-authorize") + localeManager.changesObserver
-                    body.text = agent.pinCode
+                    body.text = bluetoothAgent.pinCode
                     text.visible = true
                     inputField.text = ""
                     inputField.previewText = ""
@@ -180,7 +181,7 @@ Item {
                 case BluetoothAgent.ReqConfirmation:
                     //% "Confirm:"
                     summary.text = qsTrId("id-btagent-confirm") + localeManager.changesObserver
-                    body.text = ("000000" + agent.passkey).substr(-6,6)  // padded to 6 digits
+                    body.text = ("000000" + bluetoothAgent.passkey).substr(-6,6)  // padded to 6 digits
                     text.visible = true
                     inputField.text = ""
                     inputField.previewText = ""
@@ -192,7 +193,7 @@ Item {
                 case BluetoothAgent.DispPasskey:
                     //% "Pass Key:"
                     summary.text = qsTrId("id-btagent-passkey") + localeManager.changesObserver
-                    body.text = ("000000" + agent.passkey).substr(-6,6)  // padded to 6 digits
+                    body.text = ("000000" + bluetoothAgent.passkey).substr(-6,6)  // padded to 6 digits
                     text.visible = true
                     inputField.text = ""
                     inputField.previewText = ""
@@ -216,7 +217,7 @@ Item {
                 case BluetoothAgent.DispPinCode:
                     //% "PIN Code:"
                     summary.text = qsTrId("id-btagent-pincode") + localeManager.changesObserver
-                    body.text = agent.pinCode
+                    body.text = bluetoothAgent.pinCode
                     text.visible = true
                     inputField.text = ""
                     inputField.previewText = ""
@@ -248,7 +249,7 @@ Item {
                     inputField.visible = false
                     cancelButton.visible = false
                     confirmButton.visible = false
-                    agent.windowVisible = false
+                    bluetoothAgent.windowVisible = false
                     break;
             }
         }

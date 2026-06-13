@@ -25,8 +25,6 @@
 #include <QDBusServiceWatcher>
 #include <QDBusMessage>
 
-class HomeWindow;
-
 class BluetoothAgent : public QObject, protected QDBusContext
 {
     Q_OBJECT
@@ -78,7 +76,7 @@ signals:
 private:
     QDBusInterface *m_mceDbus;
     QString mPath;
-    HomeWindow *window;
+    bool m_visible = false;
     State state;
     bool reqConfirm, reqAuth;
     QString pinCode;

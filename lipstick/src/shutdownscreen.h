@@ -18,8 +18,6 @@
 
 #include <QObject>
 
-class HomeWindow;
-
 class ShutdownScreen : public QObject
 {
     Q_OBJECT
@@ -28,22 +26,14 @@ class ShutdownScreen : public QObject
 public:
     explicit ShutdownScreen(QObject *parent = 0);
 
-    /*!
-     * Returns whether the window is visible or not.
-     *
-     * \return \c true if the window is visible, \c false otherwise
-     */
+    //! Returns whether the shutdown screen overlay should be shown.
     bool windowVisible() const;
 
-    /*!
-     * Sets the visibility of the window.
-     *
-     * \param visible \c true if the window should be visible, \c false otherwise
-     */
+    //! Sets whether the shutdown screen overlay should be shown.
     void setWindowVisible(bool visible);
 
 signals:
-    //! Sent when the visibility of the window has changed.
+    //! Sent when the visibility of the overlay has changed.
     void windowVisibleChanged();
 
 private slots:
@@ -71,8 +61,8 @@ private:
      */
     void createAndPublishNotification(const QString &category, const QString &body);
 
-    //! The shutdown screen window
-    HomeWindow *window;
+    //! Whether the shutdown screen overlay should be shown
+    bool m_visible = false;
 
     //! The shutdown mode to be communicated to the UI
     QString shutdownMode;

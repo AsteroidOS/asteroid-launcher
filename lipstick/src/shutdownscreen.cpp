@@ -14,22 +14,16 @@
 **
 ****************************************************************************/
 #include <QGuiApplication>
-#include "homewindow.h"
-#include <QQmlContext>
-#include <QScreen>
-#include "utilities/closeeventeater.h"
 #include "notifications/notificationmanager.h"
 #include "homeapplication.h"
 #include "shutdownscreen.h"
-#include "lipstickqmlpath.h"
 
 #include <QDBusConnection>
 #include <dsme/dsme_dbus_if.h>
 #include <dsme/thermalmanager_dbus_if.h>
 
 ShutdownScreen::ShutdownScreen(QObject *parent) :
-    QObject(parent),
-    window(0)
+    QObject(parent)
 {
     QDBusConnection bus = QDBusConnection::systemBus();
     bus.connect(dsme_service, dsme_sig_path, dsme_sig_interface,
@@ -46,32 +40,15 @@ ShutdownScreen::ShutdownScreen(QObject *parent) :
 
 void ShutdownScreen::setWindowVisible(bool visible)
 {
-    if (visible) {
-        if (window == 0) {
-            window = new HomeWindow();
-            window->setGeometry(QRect(QPoint(), QGuiApplication::primaryScreen()->size()));
-            window->setCategory(QLatin1String("notification"));
-            window->setWindowTitle("Shutdown");
-            window->setContextProperty("initialSize", QGuiApplication::primaryScreen()->size());
-            window->setContextProperty("shutdownScreen", this);
-            window->setContextProperty("shutdownMode", shutdownMode);
-            window->setSource(QmlPath::to("system/ShutdownScreen.qml"));
-            window->installEventFilter(new CloseEventEater(this));
-        }
-
-        if (!window->isVisible()) {
-            window->show();
-            emit windowVisibleChanged();
-        }
-    } else if (window != 0 && window->isVisible()) {
-        window->hide();
+    if (visible != m_visible) {
+        m_visible = visible;
         emit windowVisibleChanged();
     }
 }
 
 bool ShutdownScreen::windowVisible() const
 {
-    return window != 0 && window->isVisible();
+    return m_visible;
 }
 
 void ShutdownScreen::handleShutdown()
@@ -100,8 +77,6 @@ void ShutdownScreen::handleStateChange(const QString &state)
     // Set shutdown mode unless already set explicitly
     if (state == "REBOOT" && shutdownMode.isEmpty()) {
         shutdownMode = "reboot";
-        if (window)
-            window->setContextProperty("shutdownMode", shutdownMode);
     }
 }
 

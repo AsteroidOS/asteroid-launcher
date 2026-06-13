@@ -19,7 +19,6 @@
 #include "lipsticknotification.h"
 #include <QObject>
 
-class HomeWindow;
 class NotificationFeedbackPlayer;
 
 class QMceTkLock;
@@ -30,8 +29,8 @@ class QMceDisplay;
  *
  * \brief Presents notification previews one at a time.
  *
- * Creates a transparent notification window which can be used to show
- * notification previews.
+ * Tracks which notification (if any) should currently be previewed; the
+ * preview overlay in the compositor scene renders it.
  */
 class NotificationPreviewPresenter : public QObject
 {
@@ -68,9 +67,8 @@ signals:
 
 public slots:
     /*!
-     * Shows the next notification to be shown, if any. If the notification
-     * window is not yet visible, shows the window. If there is no
-     * notification to be shown but the window is visible, hides the window.
+     * Advances to the next notification to be previewed, if any, or clears
+     * the current notification when the queue is empty.
      */
     void showNextNotification();
 
@@ -89,18 +87,12 @@ private slots:
      */
     void removeNotification(uint id, bool onlyFromQueue = false);
 
-    //! Creates the notification window if it has not been created yet.
-    void createWindowIfNecessary();
-
 private:
     //! Checks whether the given notification has a preview body and a preview summary.
     bool notificationShouldBeShown(LipstickNotification *notification);
 
     //! Sets the given notification as the current notification
     void setCurrentNotification(LipstickNotification *notification);
-
-    //! The notification window
-    HomeWindow *window;
 
     //! Notifications to be shown
     QList<LipstickNotification *> notificationQueue;

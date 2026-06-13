@@ -67,16 +67,25 @@ Item {
         rotation: Screen.angleBetween(Lipstick.compositor.screenOrientation, Screen.primaryScreen)
     }
 
-    Item {
-        id: notificationLayer
+    // Launcher overlays, rendered directly in the compositor scene as
+    // z-ordered items instead of in-process "windows". Each is fed by a C++
+    // object exposed as a context property; the QML gates its own visibility.
+    Loader {
         z: 3
         anchors.fill: parent
+        source: "notifications/NotificationPreview.qml"
     }
 
-    Item {
-        id: agentLayer
+    Loader {
+        z: 3
+        anchors.fill: parent
+        source: "system/ShutdownScreen.qml"
+    }
+
+    Loader {
         z: 4
         anchors.fill: parent
+        source: "connectivity/BluetoothAgent.qml"
     }
 
     BorderGestureArea {
@@ -216,20 +225,12 @@ Item {
         onDisplayAboutToBeOn: delayTimer.stop()
 
         onWindowAdded: (window) => {
+            // The only in-process window left is the Home screen; everything
+            // else is a Wayland client application (the launcher's own
+            // overlays are plain z-ordered items, not windows).
             var isHomeWindow = window.isInProcess && comp.homeWindow == null && window.title === "Home"
             var isDialogWindow = window.category === "dialog"
-            var isNotificationWindow = window.category == "notification"
-            var isAgentWindow = window.category == "agent"
-            var parent = null
-            if (isHomeWindow) {
-                parent = homeLayer
-            } else if (isNotificationWindow) {
-                parent = notificationLayer
-            } else if (isAgentWindow) {
-                parent = agentLayer
-            } else {
-                parent = appLayer
-            }
+            var parent = isHomeWindow ? homeLayer : appLayer
 
             var w = windowWrapper.createObject(parent, { window: window })
             window.userData = w
@@ -239,7 +240,7 @@ Item {
                 Desktop.desktop.aboutToOpen = Qt.binding(function() {return !homeActive && !appLayer.ready })
                 comp.homeWindow = w
                 setCurrentWindow(homeWindow)
-            } else if (!isNotificationWindow && !isAgentWindow && !isDialogWindow) {
+            } else if (!isDialogWindow) {
                 if (topmostApplicationWindow != null) {
                     Lipstick.compositor.closeClientForWindowId(topmostApplicationWindow.window.windowId)
                 }
