@@ -13,15 +13,12 @@
 **
 ****************************************************************************/
 
-#include "homewindow.h"
-#include "utilities/closeeventeater.h"
 #include "notifications/notificationmanager.h"
 #include "notifications/notificationfeedbackplayer.h"
 #include <QScreen> // should be included by lipstickcompositor.h
 #include "compositor/lipstickcompositor.h"
 #include "compositor/lipstickcompositorwindow.h"
 #include "notificationpreviewpresenter.h"
-#include "lipstickqmlpath.h"
 
 #include <qmcedisplay.h>
 #include <qmcetklock.h>
@@ -31,8 +28,6 @@
 #include <QDBusMessage>
 #include <QDBusConnection>
 #include <QDBusPendingCall>
-#include <QGuiApplication>
-#include <QQmlContext>
 
 namespace {
 
@@ -54,7 +49,6 @@ enum PreviewMode {
 
 NotificationPreviewPresenter::NotificationPreviewPresenter(QObject *parent) :
     QObject(parent),
-    window(0),
     currentNotification(0),
     notificationFeedbackPlayer(new NotificationFeedbackPlayer(this)),
     locks(new QMceTkLock(this)),
@@ -63,13 +57,10 @@ NotificationPreviewPresenter::NotificationPreviewPresenter(QObject *parent) :
     connect(NotificationManager::instance(), SIGNAL(notificationAdded(uint)), this, SLOT(updateNotification(uint)));
     connect(NotificationManager::instance(), SIGNAL(notificationRemoved(uint)), this, SLOT(removeNotification(uint)));
     connect(this, SIGNAL(notificationPresented(uint)), notificationFeedbackPlayer, SLOT(addNotification(uint)));
-
-    QTimer::singleShot(0, this, SLOT(createWindowIfNecessary()));
 }
 
 NotificationPreviewPresenter::~NotificationPreviewPresenter()
 {
-    delete window;
 }
 
 void NotificationPreviewPresenter::showNextNotification()
@@ -80,11 +71,7 @@ void NotificationPreviewPresenter::showNextNotification()
     }
 
     if (notificationQueue.isEmpty()) {
-        // No more notifications to show: hide the notification window if it's visible
-        if (window != 0 && window->isVisible()) {
-            window->hide();
-        }
-
+        // No more notifications to show
         setCurrentNotification(0);
     } else {
         LipstickNotification *notification = notificationQueue.takeFirst();
@@ -105,11 +92,8 @@ void NotificationPreviewPresenter::showNextNotification()
 
             showNextNotification();
         } else {
-            // Show the notification window and the first queued notification in it
-            if (!window->isVisible()) {
-                window->show();
-            }
-
+            // Present the first queued notification; the overlay reacts to
+            // notificationChanged and animates it in.
             emit notificationPresented(notification->replacesId());
 
             setCurrentNotification(notification);
@@ -164,23 +148,6 @@ void NotificationPreviewPresenter::removeNotification(uint id, bool onlyFromQueu
             emit notificationChanged();
         }
     }
-}
-
-void NotificationPreviewPresenter::createWindowIfNecessary()
-{
-    if (window != 0) {
-        return;
-    }
-
-    window = new HomeWindow();
-    window->setGeometry(QRect(QPoint(), QGuiApplication::primaryScreen()->size()));
-    window->setCategory(QLatin1String("notification"));
-    window->setWindowTitle("Notification");
-    window->setContextProperty("initialSize", QGuiApplication::primaryScreen()->size());
-    window->setContextProperty("notificationPreviewPresenter", this);
-    window->setContextProperty("notificationFeedbackPlayer", notificationFeedbackPlayer);
-    window->setSource(QmlPath::to("notifications/NotificationPreview.qml"));
-    window->installEventFilter(new CloseEventEater(this));
 }
 
 bool NotificationPreviewPresenter::notificationShouldBeShown(LipstickNotification *notification)

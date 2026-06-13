@@ -18,20 +18,12 @@
 #include <QDBusInterface>
 #include <QDBusPendingCall>
 #include <QDBusVariant>
-#include <QGuiApplication>
-#include <QQmlContext>
-#include <QScreen>
-#include <QPoint>
-#include <QRect>
 
-#include "utilities/closeeventeater.h"
-#include "homewindow.h"
-#include "lipstickqmlpath.h"
 #include "bluetoothagent.h"
 
 #define AGENT_CAPABILITY        "DisplayYesNo"
 
-BluetoothAgent::BluetoothAgent(QObject *parent) : QObject(parent), window(0)
+BluetoothAgent::BluetoothAgent(QObject *parent) : QObject(parent)
 {
     m_mceDbus = new QDBusInterface("com.nokia.mce", "/com/nokia/mce/request", "com.nokia.mce.request", QDBusConnection::systemBus());
     QDBusConnection bus = QDBusConnection::systemBus();
@@ -122,37 +114,26 @@ void BluetoothAgent::setPasskey(quint32 pk)
 
 bool BluetoothAgent::windowVisible() const
 {
-    return window != 0 && window->isVisible();
+    return m_visible;
 }
 
 void BluetoothAgent::setWindowVisible(bool visible)
 {
-    if (visible) {
-        if (window == 0) {
-            window = new HomeWindow();
-            window->setGeometry(QRect(QPoint(), QGuiApplication::primaryScreen()->size()));
-            window->setCategory(QLatin1String("agent"));
-            window->setWindowTitle("Bluetooth Pairing");
-            window->setContextProperty("initialSize", QGuiApplication::primaryScreen()->size());
-            window->setContextProperty("agent", this);
-            window->setSource(QmlPath::to("connectivity/BluetoothAgent.qml"));
-            window->installEventFilter(new CloseEventEater(this));
-        }
+    if (visible == m_visible)
+        return;
 
-        if (!window->isVisible()) {
-            window->show();
-            m_mceDbus->asyncCall("set_config", QDBusObjectPath("/system/osso/dsm/display/inhibit_blank_mode").path(), QVariant::fromValue(QDBusVariant(3)));
-            m_mceDbus->asyncCall("req_tklock_mode_change", "unlocked");
-            m_mceDbus->asyncCall("set_config", QDBusObjectPath("/system/osso/dsm/locks/tklock_blank_disable").path(), QVariant::fromValue(QDBusVariant(1)));
-            emit windowVisibleChanged();
-        }
-    } else if (window != 0 && window->isVisible()) {
-        window->hide();
+    m_visible = visible;
+    if (visible) {
+        // Keep the screen on and unlocked for the duration of the pairing
+        m_mceDbus->asyncCall("set_config", QDBusObjectPath("/system/osso/dsm/display/inhibit_blank_mode").path(), QVariant::fromValue(QDBusVariant(3)));
+        m_mceDbus->asyncCall("req_tklock_mode_change", "unlocked");
+        m_mceDbus->asyncCall("set_config", QDBusObjectPath("/system/osso/dsm/locks/tklock_blank_disable").path(), QVariant::fromValue(QDBusVariant(1)));
+    } else {
         m_mceDbus->asyncCall("set_config", QDBusObjectPath("/system/osso/dsm/display/inhibit_blank_mode").path(), QVariant::fromValue(QDBusVariant(0)));
         m_mceDbus->asyncCall("req_tklock_mode_change", "locked");
         m_mceDbus->asyncCall("set_config", QDBusObjectPath("/system/osso/dsm/locks/tklock_blank_disable").path(), QVariant::fromValue(QDBusVariant(0)));
-        emit windowVisibleChanged();
     }
+    emit windowVisibleChanged();
 }
 
 void BluetoothAgent::userAccepts()

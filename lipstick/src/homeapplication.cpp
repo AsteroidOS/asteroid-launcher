@@ -75,7 +75,7 @@ HomeApplication::HomeApplication(int &argc, char **argv, const QString &qmlPath)
 
     // Initialize the notification manager
     NotificationManager::instance();
-    new NotificationPreviewPresenter(this);
+    notificationPreviewPresenter = new NotificationPreviewPresenter(this);
 
     // Export screen size / geometry as dconf keys
     LipstickSettings::instance()->exportScreenSize();
@@ -112,6 +112,10 @@ HomeApplication::HomeApplication(int &argc, char **argv, const QString &qmlPath)
     qmlEngine->rootContext()->setContextProperty("lipstickSettings", LipstickSettings::instance());
     qmlEngine->rootContext()->setContextProperty("volumeControl", volumeControl);
     qmlEngine->rootContext()->setContextProperty("localeManager", localeMngr);
+    // Overlays rendered directly in the compositor scene (compositor.qml)
+    qmlEngine->rootContext()->setContextProperty("notificationPreviewPresenter", notificationPreviewPresenter);
+    qmlEngine->rootContext()->setContextProperty("shutdownScreen", shutdownScreen);
+    qmlEngine->rootContext()->setContextProperty("bluetoothAgent", bluetoothAgent);
 
     connect(this, SIGNAL(homeReady()), this, SLOT(sendStartupNotifications()));
 }
