@@ -1,7 +1,6 @@
 set(LIPSTICK_SRC
 	src/homeapplication.cpp
 	src/lipsticksettings.cpp
-	src/lipstickqmlpath.cpp
 	src/lipstickqmltypes.cpp
 	src/lipstickapi.cpp
 	src/utilities/qobjectlistmodel.cpp

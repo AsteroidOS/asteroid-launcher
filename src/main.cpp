@@ -36,7 +36,6 @@
 #include <QTranslator>
 #include <QProcess>
 
-#include <lipstickqmlpath.h>
 #include <lipstickqmltypes.h>
 #include <homeapplication.h>
 #include <localemanager.h>
@@ -52,7 +51,6 @@ int main(int argc, char **argv)
     // Registers the org.nemomobile.lipstick QML types, previously provided
     // by lipstick's QML extension plugin.
     registerLipstickTypes();
-    QmlPath::append(":/Launcher/");
     HomeApplication app(argc, argv);
 
     FirstRun *firstRun = new FirstRun();
