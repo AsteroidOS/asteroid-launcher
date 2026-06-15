@@ -15,9 +15,6 @@
 // Copyright (c) 2012, Robin Burchell <robin+nemo@viroteck.net>
 //
 
-#include <QGuiApplication>
-#include <QScreen>
-#include <MDConfItem>
 #include "screenlock/screenlock.h"
 #include "homeapplication.h"
 #include "lipsticksettings.h"
@@ -41,8 +38,6 @@ void LipstickSettings::setScreenLock(ScreenLock *screenLock)
 
     this->screenLock = screenLock;
     connect(screenLock, SIGNAL(screenIsLocked(bool)), this, SIGNAL(lockscreenVisibleChanged()));
-    connect(screenLock, SIGNAL(lowPowerModeChanged()), this, SIGNAL(lowPowerModeChanged()));
-    connect(screenLock, SIGNAL(blankingPolicyChanged(QString)), this, SIGNAL(blankingPolicyChanged()));
 }
 
 bool LipstickSettings::lockscreenVisible() const
@@ -61,44 +56,10 @@ void LipstickSettings::setLockscreenVisible(bool lockscreenVisible)
     }
 }
 
-bool LipstickSettings::lowPowerMode() const
-{
-    return (screenLock && screenLock->isLowPowerMode());
-}
-
 void LipstickSettings::lockScreen(bool immediate)
 {
     if (screenLock != 0 && (!screenLock->isScreenLocked() || immediate)) {
         screenLock->lockScreen(immediate);
     }
-}
-
-QSize LipstickSettings::screenSize()
-{
-    return QGuiApplication::primaryScreen()->size();
-}
-
-void LipstickSettings::exportScreenSize()
-{
-    const int defaultValue = 0;
-    MDConfItem widthConf("/lipstick/screen/primary/width");
-    if (widthConf.value(defaultValue) != QGuiApplication::primaryScreen()->size().width()) {
-        widthConf.set(QGuiApplication::primaryScreen()->size().width());
-        widthConf.sync();
-    }
-    MDConfItem heightConf("/lipstick/screen/primary/height");
-    if (heightConf.value(defaultValue) != QGuiApplication::primaryScreen()->size().height()) {
-        heightConf.set(QGuiApplication::primaryScreen()->size().height());
-        heightConf.sync();
-    }
-}
-
-QString LipstickSettings::blankingPolicy()
-{
-    if (screenLock) {
-        return screenLock->blankingPolicy();
-    }
-
-    return "default";
 }
 

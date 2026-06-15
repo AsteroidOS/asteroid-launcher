@@ -19,7 +19,6 @@
 
 #include <QObject>
 #include <QMetaType>
-#include <QSize>
 
 class ScreenLock;
 
@@ -27,9 +26,6 @@ class LipstickSettings : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool lockscreenVisible READ lockscreenVisible WRITE setLockscreenVisible NOTIFY lockscreenVisibleChanged)
-    Q_PROPERTY(bool lowPowerMode READ lowPowerMode NOTIFY lowPowerModeChanged)
-    Q_PROPERTY(QSize screenSize READ screenSize NOTIFY screenSizeChanged)
-    Q_PROPERTY(QString blankingPolicy READ blankingPolicy NOTIFY blankingPolicyChanged)
 
 public:
     explicit LipstickSettings();
@@ -39,20 +35,10 @@ public:
     bool lockscreenVisible() const;
     void setLockscreenVisible(bool lockscreenVisible);
 
-    bool lowPowerMode() const;
-
-    QSize screenSize();
-    void exportScreenSize();
-
-    QString blankingPolicy();
-
     Q_INVOKABLE void lockScreen(bool immediate);
 
 signals:
     void lockscreenVisibleChanged();
-    void lowPowerModeChanged();
-    void screenSizeChanged();
-    void blankingPolicyChanged();
 
 private:
     //! Logic for locking and unlocking the screen
