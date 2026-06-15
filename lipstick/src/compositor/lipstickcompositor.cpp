@@ -20,8 +20,8 @@
 #include <QMimeData>
 #include <QtGui/qpa/qplatformnativeinterface.h>
 #include "homeapplication.h"
-#include "lipstickcompositorprocwindow.h"
 #include "lipstickcompositor.h"
+#include "lipstickcompositorwindow.h"
 #include "lipstickcompositoradaptor.h"
 #include "lipsticksettings.h"
 #include "asteroidgesturesextension.h"
