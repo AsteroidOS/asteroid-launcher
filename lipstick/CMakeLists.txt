@@ -1,6 +1,5 @@
 set(LIPSTICK_SRC
 	src/homeapplication.cpp
-	src/homewindow.cpp
 	src/lipsticksettings.cpp
 	src/lipstickqmlpath.cpp
 	src/lipstickqmltypes.cpp
@@ -13,7 +12,6 @@ set(LIPSTICK_SRC
 	src/components/launcherdbus.cpp
 	src/compositor/lipstickcompositor.cpp
 	src/compositor/lipstickcompositorwindow.cpp
-	src/compositor/lipstickcompositorprocwindow.cpp
 	src/compositor/asteroidgesturesextension.cpp
 	src/notifications/notificationmanager.cpp
 	src/notifications/lipsticknotification.cpp

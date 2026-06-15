@@ -34,7 +34,6 @@
 #include <timed-qt6/event-declarations.h>
 
 class LipstickCompositorWindow;
-class LipstickCompositorProcWindow;
 class AsteroidGesturesManager;
 
 class LipstickCompositor : public QWaylandQuickCompositor
@@ -104,8 +103,6 @@ public:
     Q_INVOKABLE QVariant settingsValue(const QString &key, const QVariant &defaultValue = QVariant()) const
         { return (key == "orientationLock") ? m_orientationLock->value(defaultValue) : MDConfItem("/lipstick/" + key).value(defaultValue); }
 
-    LipstickCompositorProcWindow *mapProcWindow(const QString &title, const QString &category, const QRect &);
-    LipstickCompositorProcWindow *mapProcWindow(const QString &title, const QString &category, const QRect &, QQuickItem *rootItem);
 
     QWaylandSurface *surfaceForId(int) const;
 
@@ -183,7 +180,6 @@ private slots:
 
 private:
     friend class LipstickCompositorWindow;
-    friend class LipstickCompositorProcWindow;
     friend class NotificationPreviewPresenter;
     friend class NotificationFeedbackPlayer;
 
