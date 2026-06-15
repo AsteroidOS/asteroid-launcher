@@ -39,7 +39,6 @@
 #include <lipstickqmlpath.h>
 #include <lipstickqmltypes.h>
 #include <homeapplication.h>
-#include <homewindow.h>
 #include <localemanager.h>
 
 #include "applauncherbackground.h"
@@ -54,12 +53,11 @@ int main(int argc, char **argv)
     // by lipstick's QML extension plugin.
     registerLipstickTypes();
     QmlPath::append(":/Launcher/");
-    HomeApplication app(argc, argv, QString());
+    HomeApplication app(argc, argv);
 
     FirstRun *firstRun = new FirstRun();
 
     QGuiApplication::setFont(QFont("Noto Sans"));
-    app.setCompositorPath("qrc:/Launcher/compositor.qml");
     Qt::ScreenOrientation nativeOrientation = app.primaryScreen()->nativeOrientation();
     QByteArray v = qgetenv("LAUNCHER_NATIVEORIENTATION");
     if (!v.isEmpty()) {
@@ -89,13 +87,15 @@ int main(int argc, char **argv)
     qmlRegisterType<GestureFilterArea>("org.asteroid.launcher", 1, 0, "GestureFilterArea");
     qmlRegisterType<NotificationSnoozer>("org.asteroid.launcher", 1, 0, "NotificationSnoozer");
     qmlRegisterType<AppLauncher>("org.asteroid.launcher", 1, 0, "AppLauncher");
-    app.setQmlPath("qrc:/Launcher/MainScreen.qml");
 
-    // Give these to the environment inside the lipstick homescreen
+    // Give these to the environment inside the launcher's wayland compositor
     // Fixes a bug where some applications wouldn't launch, eg. terminal or browser
     setenv("EGL_PLATFORM", "wayland", 1);
     setenv("QT_QPA_PLATFORM", "wayland", 1);
     setenv("QT_WAYLAND_DISABLE_WINDOWDECORATION", "1", 1);
-    app.mainWindowInstance()->showFullScreen();
+
+    // Load the compositor scene last: it instantiates the home screen (and the
+    // overlays), which rely on the context properties and types set up above.
+    app.setCompositorPath("qrc:/Launcher/compositor.qml");
     return app.exec();
 }
