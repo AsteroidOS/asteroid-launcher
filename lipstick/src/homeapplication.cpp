@@ -32,7 +32,6 @@
 #include "screenlock/screenlockadaptor.h"
 #include "lipsticksettings.h"
 #include "homeapplication.h"
-#include "homewindow.h"
 #include "compositor/lipstickcompositor.h"
 #include "compositor/lipstickcompositorwindow.h"
 #include "lipstickdbus.h"
@@ -57,10 +56,8 @@ static void registerDBusObject(QDBusConnection &bus, const char *path, QObject *
     }
 }
 
-HomeApplication::HomeApplication(int &argc, char **argv, const QString &qmlPath)
+HomeApplication::HomeApplication(int &argc, char **argv)
     : QGuiApplication(argc, argv)
-    , _mainWindowInstance(0)
-    , _qmlPath(qmlPath)
     , originalSigIntHandler(signal(SIGINT, quitSignalHandler))
     , originalSigTermHandler(signal(SIGTERM, quitSignalHandler))
     , homeReadySent(false)
@@ -126,7 +123,6 @@ HomeApplication::~HomeApplication()
 
     delete volumeControl;
     delete screenLock;
-    delete _mainWindowInstance;
     delete qmlEngine;
 }
 
@@ -185,24 +181,6 @@ bool HomeApplication::event(QEvent *e)
     return rv;
 }
 
-const QString &HomeApplication::qmlPath() const
-{
-    return _qmlPath;
-}
-
-void HomeApplication::setQmlPath(const QString &path)
-{
-    _qmlPath = path;
-
-    if (_mainWindowInstance) {
-        _mainWindowInstance->setSource(path);
-        if (_mainWindowInstance->hasErrors()) {
-            qWarning() << "HomeApplication: Errors while loading" << path;
-            qWarning() << _mainWindowInstance->errors();
-        }
-    }
-}
-
 const QString &HomeApplication::compositorPath() const
 {
     return _compositorPath;
@@ -243,40 +221,20 @@ void HomeApplication::setCompositorPath(const QString &path)
             // install default incubation controller
             qmlEngine->setIncubationController(LipstickCompositor::instance()->quickWindow()->incubationController());
         }
+
+        // The home screen is part of the compositor scene now; emit homeReady
+        // once that scene has rendered its first frame.
+        connect(LipstickCompositor::instance()->quickWindow(), SIGNAL(frameSwapped()),
+                this, SLOT(sendHomeReadySignalIfNotAlreadySent()));
     } else {
         qWarning() << "HomeApplication: Error creating compositor from" << path;
         qWarning() << component.errors();
     }
 }
 
-HomeWindow *HomeApplication::mainWindowInstance()
-{
-    if (_mainWindowInstance)
-        return _mainWindowInstance;
-
-    _mainWindowInstance = new HomeWindow();
-    _mainWindowInstance->setGeometry(QRect(QPoint(), QGuiApplication::primaryScreen()->size()));
-    _mainWindowInstance->setWindowTitle("Home");
-    QObject::connect(_mainWindowInstance->engine(), SIGNAL(quit()), qApp, SLOT(quit()));
-    QObject::connect(_mainWindowInstance, SIGNAL(visibleChanged(bool)), this, SLOT(connectFrameSwappedSignal(bool)));
-
-    // Setting the source, if present
-    if (!_qmlPath.isEmpty())
-        _mainWindowInstance->setSource(_qmlPath);
-
-    return _mainWindowInstance;
-}
-
 QQmlEngine *HomeApplication::engine() const
 {
     return qmlEngine;
-}
-
-void HomeApplication::connectFrameSwappedSignal(bool mainWindowVisible)
-{
-    if (!homeReadySent && mainWindowVisible) {
-        connect(LipstickCompositor::instance()->quickWindow(), SIGNAL(frameSwapped()), this, SLOT(sendHomeReadySignalIfNotAlreadySent()));
-    }
 }
 
 void HomeApplication::takeScreenshot(const QString &path)

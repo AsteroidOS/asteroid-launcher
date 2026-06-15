@@ -44,10 +44,20 @@ Item {
     height: Dims.h(100)
     rotation: Screen.angleBetween(Screen.primaryScreen, Lipstick.compositor.screenOrientation)
 
+    // The home screen is a persistent item at the bottom of the z-stack, not
+    // an in-process "window". Its z follows MainScreen's own z (raised while
+    // the splash is up) so it can sit above running apps when needed.
     Item {
         id: homeLayer
-        z: 1
+        z: homeLoader.item ? homeLoader.item.z : 0
         anchors.fill: parent
+
+        Loader {
+            id: homeLoader
+            anchors.fill: parent
+            source: "MainScreen.qml"
+            onLoaded: item.aboutToOpen = Qt.binding(function() { return !comp.homeActive && !appLayer.ready })
+        }
     }
 
     Item {
@@ -113,7 +123,7 @@ Item {
                     swipeAnimation.valueTo = inverted ? -max : max
                     swipeAnimation.start()
                     var app = comp.topmostWindow
-                    comp.topmostWindow = comp.homeWindow
+                    comp.topmostWindow = null
                     Lipstick.compositor.closeClientForWindowId(app.window.windowId)
                 } else {
                     cancelAnimation.start()
@@ -147,7 +157,7 @@ Item {
             }
 
             ScriptAction {
-                script: comp.setCurrentWindow(comp.homeWindow)
+                script: comp.setCurrentWindow(null)
             }
         }
     }
@@ -170,9 +180,8 @@ Item {
     Compositor {
         id: comp
 
-        property Item homeWindow
-
-        // Set to the item of the current topmost window
+        // The current foreground application window, or null when the home
+        // screen (the persistent item underneath) is showing.
         property Item topmostWindow
 
         // Only used to change blank timeout when on watchface or elsewhere
@@ -186,8 +195,8 @@ Item {
         }
         onLongTimeoutChanged: lipstickSettings.lockscreenVisible = longTimeout
 
-        // True if the home window is the topmost window
-        homeActive: topmostWindow == comp.homeWindow
+        // Home is active whenever no application window is on top
+        homeActive: topmostWindow == null
         property bool appActive: !homeActive
 
         // The application window that was most recently topmost
@@ -198,22 +207,15 @@ Item {
 
         function windowToFront(winId) {
             var o = comp.windowForId(winId)
-            var window = null
-
-            if (o) window = o.userData
-            if (window == null) window = homeWindow
-
-            setCurrentWindow(window)
+            setCurrentWindow(o ? o.userData : null)
         }
 
         function setCurrentWindow(w, skipAnimation) {
-            if (w == null)
-                w = homeWindow
+            topmostWindow = w; // null => the home screen is shown
 
-            topmostWindow = w;
-
-            if (topmostWindow != homeWindow && topmostWindow != null) {
-                if (topmostApplicationWindow) topmostApplicationWindow.visible = false
+            if (topmostWindow != null) {
+                if (topmostApplicationWindow && topmostApplicationWindow != topmostWindow)
+                    topmostApplicationWindow.visible = false
                 topmostApplicationWindow = topmostWindow
                 topmostApplicationWindow.visible = true
                 if (!skipAnimation) topmostApplicationWindow.animateIn()
@@ -225,26 +227,18 @@ Item {
         onDisplayAboutToBeOn: delayTimer.stop()
 
         onWindowAdded: (window) => {
-            // The only in-process window left is the Home screen; everything
-            // else is a Wayland client application (the launcher's own
-            // overlays are plain z-ordered items, not windows).
-            var isHomeWindow = window.isInProcess && comp.homeWindow == null && window.title === "Home"
+            // The launcher's own UI (home screen + overlays) are plain items,
+            // so every window here is a Wayland client application.
             var isDialogWindow = window.category === "dialog"
-            var parent = isHomeWindow ? homeLayer : appLayer
 
-            var w = windowWrapper.createObject(parent, { window: window })
+            var w = windowWrapper.createObject(appLayer, { window: window })
             window.userData = w
 
-            if (isHomeWindow) {
-                parent.z = Qt.binding(function() { return w.window.rootItem ? w.window.rootItem.z : 0 })
-                Desktop.desktop.aboutToOpen = Qt.binding(function() {return !homeActive && !appLayer.ready })
-                comp.homeWindow = w
-                setCurrentWindow(homeWindow)
-            } else if (!isDialogWindow) {
+            if (!isDialogWindow) {
                 if (topmostApplicationWindow != null) {
                     Lipstick.compositor.closeClientForWindowId(topmostApplicationWindow.window.windowId)
                 }
-                parent.ready = false
+                appLayer.ready = false
                 w.smoothBorders = true
                 w.x = width
                 w.moveInAnim.start()
@@ -258,7 +252,7 @@ Item {
         onWindowRemoved: (window) => {
             var w = window.userData;
             if (comp.topmostWindow == w)
-                setCurrentWindow(comp.homeWindow);
+                setCurrentWindow(null); // reveal the home screen underneath
 
             if (window.userData)
                 window.userData.destroy()

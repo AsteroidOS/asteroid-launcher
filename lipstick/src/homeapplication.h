@@ -17,7 +17,6 @@
 #include <QGuiApplication>
 
 class QQmlEngine;
-class HomeWindow;
 class ScreenLock;
 class VolumeControl;
 class USBModeSelector;
@@ -34,8 +33,6 @@ class HomeApplication : public QGuiApplication
 {
     Q_OBJECT
 
-    HomeWindow *_mainWindowInstance;
-    QString _qmlPath;
     QString _compositorPath;
 
 public:
@@ -44,9 +41,8 @@ public:
      *
      * \param argc number of arguments passed to the application from the command line
      * \param argv argument strings passed to the application from the command line
-     * \param qmlPath The path of the QML file to load for the main window
      */
-    HomeApplication(int &argc, char **argv, const QString &qmlPath);
+    HomeApplication(int &argc, char **argv);
 
     /*!
      * Destroys the application object.
@@ -56,33 +52,18 @@ public:
     static HomeApplication *instance();
 
     /*!
-      * Gets the main window instance associated to this application.
-      * If it hasn't been created yet, this will create it.
-      */
-    HomeWindow *mainWindowInstance();
-
-    /*!
      * Gets the QQmlEngine used for all the windows in this application.
      */
     QQmlEngine *engine() const;
-
-    /*!
-      * Gets the path to the QML file to display.
-      */
-    const QString &qmlPath() const;
-
-    /*!
-      * Sets the path to the QML file to display.
-      */
-    void setQmlPath(const QString &path);
 
     /*!
      * Gets the path to the compositor to load.
      */
     const QString &compositorPath() const;
     /*!
-     * Sets the path to the compositor QML file to run.  This must be set before
-     * the first window is created, or the mainWindowInstance() method is called.
+     * Sets the path to the compositor QML file to run. This loads the whole
+     * UI (the home screen lives inside the compositor scene), so it must be
+     * called after the context properties and QML types the scene needs.
      */
     void setCompositorPath(const QString &path);
 
@@ -128,12 +109,6 @@ private slots:
      * been started by upstart
      */
     void sendStartupNotifications();
-
-    /*!
-     * Connects to the compositor's frame swapped signal for sending the
-     * startup notifications.
-     */
-    void connectFrameSwappedSignal(bool mainWindowVisible);
 
 private:
     friend class LipstickApi;
