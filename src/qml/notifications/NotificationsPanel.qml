@@ -41,91 +41,116 @@ Item {
 
     onForbidTopChanged: panelsGrid.changeAllowedDirections()
 
+    /*
+     * Notifications occupy a horizontal strip to the left of the watchface.
+     * The newest notification is "logical position" 0 and sits nearest the
+     * watchface; older ones extend further left. A notification at position p
+     * lives in two grid cells: its view at (colOf(p), 0) and its action panel
+     * at (colOf(p), -1).
+     *
+     * Position 0 is special: its view is not a grid cell but `firstNotifView`,
+     * a child overlaid on this panel (the grid's (-1, 0) cell), so that the
+     * empty-state indicator below can share the same cell. Its action panel is
+     * still an ordinary grid cell like every other.
+     */
+    function colOf(pos) { return -(pos + 1) }
+
+    function makeGridView(pos, notif) {
+        var view = panelsGrid.addPanel(colOf(pos), 0, notificationViewComp)
+        view.visible = false
+        view.notification = notif
+        view.panelsGrid = panelsGrid
+    }
+
+    function makeActions(pos, notif) {
+        var act = panelsGrid.addPanel(colOf(pos), -1, notificationActionsComp)
+        act.visible = false
+        act.notification = notif
+        act.panelsGrid = panelsGrid
+        act.notificationModel = notifModel
+    }
+
+    function makeFirstView(notif) {
+        firstNotifView = notificationViewComp.createObject(notifPanel)
+        firstNotifView.x = 0
+        firstNotifView.y = 0
+        firstNotifView.width = Qt.binding(function() { return notifPanel.width })
+        firstNotifView.height = Qt.binding(function() { return notifPanel.height })
+        firstNotifView.notification = notif
+        firstNotifView.panelsGrid = panelsGrid
+    }
+
+    /* Relocate the notification at position `from` to position `to`, handling
+     * the position-0 view (embedded firstNotifView) ↔ grid-cell transitions.
+     * The action panel is always an ordinary grid cell. Callers move panels in
+     * an order that never overwrites a still-occupied destination cell. */
+    function movePosition(from, to) {
+        panelsGrid.movePanel(colOf(from), -1, colOf(to), -1)
+
+        if (from === 0) {
+            // The embedded view becomes an ordinary grid cell.
+            var notif = firstNotifView.notification
+            firstNotifView.destroy()
+            firstNotifView = null
+            makeGridView(to, notif)
+        } else if (to === 0) {
+            // A grid-cell view becomes the embedded one.
+            var rec = panelsGrid.cellAt(colOf(from), 0)
+            if (rec !== undefined) {
+                var n = rec.item.notification
+                panelsGrid.removePanel(colOf(from), 0)
+                makeFirstView(n)
+            }
+        } else {
+            panelsGrid.movePanel(colOf(from), 0, colOf(to), 0)
+        }
+    }
+
+    function destroyPosition(pos) {
+        panelsGrid.removePanel(colOf(pos), -1)
+        if (pos === 0) {
+            if (firstNotifView !== null) { firstNotifView.destroy(); firstNotifView = null }
+        } else {
+            panelsGrid.removePanel(colOf(pos), 0)
+        }
+    }
+
     NotificationListModel {
         id: notifModel
         onItemAdded: {
             var index = notifModel.indexOf(item)
 
-            var leftPanelIndex = notifModel.itemCount-1
-            while(leftPanelIndex > index) {
-                if(leftPanelIndex == 1 && firstNotifView !== null) {
-                    panelsGrid.movePanel(-1, -1, -2, -1)
-                    var notif = firstNotifView.notification
-                    firstNotifView.destroy()
-                    var notifView = panelsGrid.addPanel(-2, 0, notificationViewComp)
-                    notifView.visible = false
-                    notifView.notification = notif
-                    notifView.panelsGrid = panelsGrid
-                } else if(firstNotifView !== null) {
-                    panelsGrid.movePanel(-leftPanelIndex, 0, (-leftPanelIndex-1), 0)
-                    panelsGrid.movePanel(-leftPanelIndex, -1, (-leftPanelIndex-1), -1)
-                }
+            // Shift everything from `index` outward one position to make room.
+            // Outermost first so we never move into an occupied cell.
+            for (var p = notifModel.itemCount - 2; p >= index; p--)
+                movePosition(p, p + 1)
 
-                leftPanelIndex--
-            }
-                    
-            var notifActions = panelsGrid.addPanel(-index-1, -1, notificationActionsComp)
-            notifActions.visible = false
-            notifActions.notification = item
-            notifActions.panelsGrid = panelsGrid
-            notifActions.notificationModel = notifModel
-            if(index > 0) {
-                var notifView = panelsGrid.addPanel(-index-1, 0, notificationViewComp)
-                notifView.visible = false
-                notifView.notification = item
-                notifView.panelsGrid = panelsGrid
-            } else {
-                firstNotifView = notificationViewComp.createObject(notifPanel)
-
-                firstNotifView.x = 0
-                firstNotifView.y = 0
-                firstNotifView.width = Qt.binding(function() { return notifPanel.width })
-                firstNotifView.height = Qt.binding(function() { return notifPanel.height })
-                firstNotifView.notification = item
-                firstNotifView.panelsGrid = panelsGrid
-            }
+            makeActions(index, item)
+            if (index === 0)
+                makeFirstView(item)
+            else
+                makeGridView(index, item)
 
             panelsGrid.changeAllowedDirections()
         }
 
         onRowsRemoved: {
-            for (var i = first+1 ; i <= last+1; i++) {
-                if(i!==1)
-                    panelsGrid.removePanel(-i, 0)
-                else
-                    firstNotifView.destroy()
+            var removed = last - first + 1
+            var oldCount = notifModel.itemCount + removed
 
-                panelsGrid.removePanel(-i, -1)
-            }
+            for (var p = first; p <= last; p++)
+                destroyPosition(p)
 
-            for (var i = last+2 ; i <= notifModel.itemCount+1; i++) {
-                if(i == last-first+2) {
-                    panelsGrid.removePanel(-i, 0)
-                    panelsGrid.removePanel(-i, -1)
+            // Close the gap: survivors above the removed block move inward by
+            // `removed`. Innermost (lowest destination) first so we never move
+            // into a cell that is still occupied.
+            for (var p = last + 1; p < oldCount; p++)
+                movePosition(p, p - removed)
 
-                    var notifActions = panelsGrid.addPanel(-1, -1, notificationActionsComp)
-                    notifActions.visible = false
-                    notifActions.notification = notifModel.get(0)
-                    notifActions.notificationModel = notifModel
-
-                    firstNotifView = notificationViewComp.createObject(notifPanel)
-                    firstNotifView.x = 0
-                    firstNotifView.y = 0
-                    firstNotifView.width = Qt.binding(function() { return notifPanel.width })
-                    firstNotifView.height = Qt.binding(function() { return notifPanel.height })
-                    firstNotifView.notification = notifModel.get(0)
-                    firstNotifView.panelsGrid = panelsGrid
-                } else {
-                    panelsGrid.movePanel(-i, 0, -i+(last-first+1), 0)
-                    panelsGrid.movePanel(-i, -1, -i+(last-first+1), -1)
-                }
-            }
-
-            if (first === 0 && notifModel.itemCount > 0) {
+            if (first === 0 && notifModel.itemCount > 0)
                 panelsGrid.moveTo(-1, 0)
-            } else {
+            else
                 panelsGrid.moveTo(-first, 0)
-            }
         }
     }
 
