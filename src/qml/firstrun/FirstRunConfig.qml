@@ -74,8 +74,11 @@ FlatMesh {
         delegate: SpinnerDelegate { text: langSettings.languageName(index) }
         Component.onCompleted: {
             var i = langSettings.currentIndex;
-            if(i != -1)
-                langLV.positionViewAtIndex(i, ListView.SnapPosition)
+            if(i != -1) {
+                langLV.forceLayout();
+                langLV.positionViewAtIndex(i, ListView.SnapPosition);
+                langLV.currentIndex = i;
+            }
         }
     }
 
@@ -182,7 +185,9 @@ FlatMesh {
             regionModel.append({ "name": allowlist[i], "visualName": allowlist[i], "isLeaf": false, "fullPath": "" })
         }
         regionModel.append({ "name": "Zulu", "visualName": "Zulu", "isLeaf": true, "fullPath": "Zulu" })
+        regionLV.forceLayout()
         regionLV.positionViewAtIndex(5, ListView.SnapPosition)
+        regionLV.currentIndex = 5
     }
 
     function buildCityModel(region) {
@@ -200,7 +205,9 @@ FlatMesh {
                 count++
             }
         }
+        cityLV.forceLayout()
         cityLV.positionViewAtIndex(selectIdx, ListView.SnapPosition)
+        cityLV.currentIndex = selectIdx
     }
 
     DBusInterface {
