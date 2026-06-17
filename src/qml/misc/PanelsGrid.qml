@@ -43,41 +43,62 @@ GestureFilterArea {
         onYChanged: if(normalizedHorOffset == 0) normalizedVerOffset = Math.min(Math.max(-(content.y/panelHeight), -1), 1)
     }
 
-    /* Panels handling */
+    /* Panels handling
+     *
+     * Panels live on an integer lattice (col, row). They are kept in a Map
+     * keyed by a single packed-integer hash of their coordinates, so lookups,
+     * neighbour queries and removal are all O(1) and there is no coordinate
+     * string parsing anywhere. Each entry is a {item, col, row} record; the
+     * record carries the position so geometry can be recomputed on resize
+     * without re-deriving it from the key.
+     */
 
-    property var panels: {'dummyVal': undefined} /* Map of panels, indexed by position */
+    property var panels: new Map() /* key(col,row) -> { item, col, row } */
     property alias panelWidth:  panelsGrid.width
     property alias panelHeight: panelsGrid.height
 
+    /* Pack a coordinate pair into a unique integer key. The offset keeps the
+     * hash collision-free for any |col|,|row| < 4096, far beyond what the UI
+     * ever reaches (a handful of notifications). */
+    function key(col, row) { return (col + 4096) * 8192 + (row + 4096) }
+
+    function cellAt(col, row) { return panels.get(key(col, row)) }
+
+    function placeItem(rec) {
+        rec.item.x = panelWidth  * rec.col
+        rec.item.y = panelHeight * rec.row
+        rec.item.width  = panelWidth
+        rec.item.height = panelHeight
+    }
+
     function addPanel(horizontalPos, verticalPos, component) {
         if (component.status === Component.Ready) {
-            var panel = component.createObject(content)
-
-            panel.x = panelWidth*horizontalPos
-            panel.y = panelHeight*verticalPos
-            panel.width = panelWidth
-            panel.height = panelHeight
-            if(panel.panelsGrid !== undefined)
-                panel.panelsGrid = panelsGrid
-            panels[horizontalPos + "x" + verticalPos] = panel
-            return panel
+            var rec = { item: component.createObject(content), col: horizontalPos, row: verticalPos }
+            placeItem(rec)
+            if(rec.item.panelsGrid !== undefined)
+                rec.item.panelsGrid = panelsGrid
+            panels.set(key(horizontalPos, verticalPos), rec)
+            return rec.item
         }
     }
 
     function removePanel(horizontalPos, verticalPos) {
-        var panel = panels[horizontalPos + "x" + verticalPos]
-        if(panel !== undefined)
-            panel.destroy()
-        panels[horizontalPos + "x" + verticalPos] = undefined
+        var k = key(horizontalPos, verticalPos)
+        var rec = panels.get(k)
+        if(rec !== undefined) {
+            rec.item.destroy()
+            panels.delete(k)
+        }
     }
 
     function movePanel(originHorizontalPos, originVerticalPos, destHorizontalPos, destVerticalPos) {
-        var panel = panels[originHorizontalPos + "x" + originVerticalPos]
-        if(panel !== undefined) {
-            panels[destHorizontalPos + "x" + destVerticalPos] = panel
-            panel.x = panelWidth*destHorizontalPos
-            panel.y = panelHeight*destVerticalPos
-            panels[originHorizontalPos + "x" + originVerticalPos] = undefined
+        var rec = panels.get(key(originHorizontalPos, originVerticalPos))
+        if(rec !== undefined) {
+            panels.delete(key(originHorizontalPos, originVerticalPos))
+            rec.col = destHorizontalPos
+            rec.row = destVerticalPos
+            panels.set(key(destHorizontalPos, destVerticalPos), rec)
+            placeItem(rec)
         }
     }
 
@@ -89,63 +110,32 @@ GestureFilterArea {
     }
 
     function hideOffscreen() {
-        var currentPanelName = currentHorizontalPos + "x" + currentVerticalPos
-        for(var name in panels) {
-            if(panels[name] !== undefined) {
-                if (name.localeCompare(currentPanelName) !==0)  panels[name].visible = false
-            }
-        }
+        for(var rec of panels.values())
+            if(rec.col !== currentHorizontalPos || rec.row !== currentVerticalPos)
+                rec.item.visible = false
     }
 
-    onWidthChanged: {
-        for(var name in panels) {
-            if(panels[name] !== undefined) {
-                var horizontalPos = name.split('x')[0]
-                panels[name].x = panelWidth*horizontalPos
-                panels[name].width = panelWidth
-            }
-        }
-    }
-
-    onHeightChanged: {
-        for(var name in panels) {
-            if(panels[name] !== undefined) {
-                var verticalPos = name.split('x')[1]
-                panels[name].y = panelHeight*verticalPos
-                panels[name].height = panelHeight
-            }
-        }
-    }
+    onWidthChanged:  { for(var rec of panels.values()) placeItem(rec) }
+    onHeightChanged: { for(var rec of panels.values()) placeItem(rec) }
 
     /* Possible directions handling */
     property int currentVerticalPos:   0
     property int currentHorizontalPos: 0
 
     function changeAllowedDirections() {
-        var currentPanel = panels[currentHorizontalPos + "x" + currentVerticalPos]
-        if(currentPanel === undefined) return
+        var current = cellAt(currentHorizontalPos, currentVerticalPos)
+        if(current === undefined) return
 
-        var currentPanelName = currentHorizontalPos + "x" + currentVerticalPos
-        var topPanelName =     currentHorizontalPos + "x" + (currentVerticalPos-1)
-        var bottomPanelName =  currentHorizontalPos + "x" + (currentVerticalPos+1)
-        var leftPanelName =    (currentHorizontalPos-1) + "x" + currentVerticalPos
-        var rightPanelName =   (currentHorizontalPos+1) + "x" + currentVerticalPos
+        /* A move towards a neighbour is allowed when that neighbour exists and
+         * the current panel does not forbid leaving in that direction. Note the
+         * naming: revealing the panel *above* means the content slides down, so
+         * an existing top neighbour enables toBottomAllowed, and so on. */
+        toBottomAllowed = cellAt(currentHorizontalPos,   currentVerticalPos-1) !== undefined && current.item.forbidTop    !== true
+        toTopAllowed    = cellAt(currentHorizontalPos,   currentVerticalPos+1) !== undefined && current.item.forbidBottom !== true
+        toRightAllowed  = cellAt(currentHorizontalPos-1, currentVerticalPos)   !== undefined && current.item.forbidLeft   !== true
+        toLeftAllowed   = cellAt(currentHorizontalPos+1, currentVerticalPos)   !== undefined && current.item.forbidRight  !== true
 
-        toTopAllowed    = false
-        toBottomAllowed = false
-        toRightAllowed  = false
-        toLeftAllowed   = false
-
-        for(var name in panels) {
-            if(panels[name] !== undefined) {
-                if(name.localeCompare(topPanelName)===0 && currentPanel.forbidTop !== true)            toBottomAllowed = true
-                else if(name.localeCompare(bottomPanelName)===0 && currentPanel.forbidBottom !== true) toTopAllowed = true
-                else if(name.localeCompare(leftPanelName)===0 && currentPanel.forbidLeft !== true)     toRightAllowed = true
-                else if(name.localeCompare(rightPanelName)===0 && currentPanel.forbidRight !== true)   toLeftAllowed = true
-
-                if (name.localeCompare(currentPanelName)===0) panels[name].visible = true
-            }
-        }
+        current.item.visible = true
     }
 
     onCurrentVerticalPosChanged:   changeAllowedDirections()
@@ -156,18 +146,23 @@ GestureFilterArea {
     property alias contentX: content.x
     property alias contentY: content.y
 
+    function revealNeighbour(col, row) {
+        var rec = cellAt(col, row)
+        if (rec !== undefined) rec.item.visible = true
+    }
+
     onContentXChanged: {
         if (displayAmbient) return
         panelsHideTimeout.restart()
-        if (panels[(currentHorizontalPos+1) + "x" + currentVerticalPos] !== undefined) panels[(currentHorizontalPos+1) + "x" + currentVerticalPos].visible = true
-        if (panels[(currentHorizontalPos-1) + "x" + currentVerticalPos] !== undefined) panels[(currentHorizontalPos-1) + "x" + currentVerticalPos].visible = true
+        revealNeighbour(currentHorizontalPos+1, currentVerticalPos)
+        revealNeighbour(currentHorizontalPos-1, currentVerticalPos)
     }
 
     onContentYChanged: {
         if (displayAmbient) return
         panelsHideTimeout.restart()
-        if (panels[currentHorizontalPos + "x" + (currentVerticalPos-1)] !== undefined) panels[currentHorizontalPos + "x" + (currentVerticalPos-1)].visible = true
-        if (panels[currentHorizontalPos + "x" + (currentVerticalPos+1)] !== undefined) panels[currentHorizontalPos + "x" + (currentVerticalPos+1)].visible = true
+        revealNeighbour(currentHorizontalPos, currentVerticalPos-1)
+        revealNeighbour(currentHorizontalPos, currentVerticalPos+1)
     }
 
     onSwipeMoved: (horizontal, delta) => {
