@@ -137,7 +137,11 @@ Item {
     }
 
     NonGraphicalFeedback { id: feedback; event: "press" }
-    ProfileControl { id: profileControl }
+    ConfigurationValue {
+        id: vibrationEnabled
+        key: "/desktop/asteroid/vibration"
+        defaultValue: true
+    }
     DisplaySettings { id: displaySettings }
 
     SoundEffect {
@@ -585,13 +589,13 @@ Item {
         QuickPanelToggle {
             icon: "ios-watch-vibrating"
             checkable: true
-            checked: profileControl.profile == "general"
+            checked: vibrationEnabled.value
 
             onClicked: {
                 if(checked) {
-                    profileControl.profile = "silent"
+                    vibrationEnabled.value = false
                 } else {
-                    profileControl.profile = "general";
+                    vibrationEnabled.value = true;
                     feedbackDelayTimer.start();
                 }
             }
