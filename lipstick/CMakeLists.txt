@@ -80,7 +80,7 @@ target_link_libraries(lipstick PUBLIC
 	PkgConfig::keepalive
 	PkgConfig::dbus-1
 	PkgConfig::dbus-glib-1
-	${ngf-qt6_LIBRARIES}
+	PkgConfig::ngf-qt6
 	PkgConfig::libsystemd
 	PkgConfig::dsme_dbus_if
 	PkgConfig::thermalmanager_dbus_if
