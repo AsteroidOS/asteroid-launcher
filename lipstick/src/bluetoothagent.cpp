@@ -16,6 +16,8 @@
  */
 
 #include <QDBusInterface>
+#include <QDBusConnectionInterface>
+#include <QDBusReply>
 #include <QDBusPendingCall>
 #include <QDBusVariant>
 
@@ -34,8 +36,7 @@ BluetoothAgent::BluetoothAgent(QObject *parent) : QObject(parent)
     connect(mWatcher, SIGNAL(serviceRegistered(const QString&)), this, SLOT(serviceRegistered(const QString&)));
     connect(mWatcher, SIGNAL(serviceUnregistered(const QString&)), this, SLOT(serviceUnregistered(const QString&)));
 
-    QDBusInterface remoteOm("org.bluez", "/", "org.bluez.AgentManager1", bus);
-    if(remoteOm.isValid())
+    if(bus.interface()->isServiceRegistered("org.bluez").value())
         serviceRegistered("org.bluez");
 
     state = Idle;
