@@ -17,7 +17,18 @@ include(ECMFindQmlModule)
 include(Asteroid6CMakeSettings)
 include(Asteroid6Translations)
 
-find_package(Qt6 COMPONENTS REQUIRED Quick WaylandCompositor DBus ShaderTools Sql)
+find_package(Qt6 COMPONENTS REQUIRED
+	CorePrivate
+	GuiPrivate
+	QmlPrivate
+	QuickPrivate
+	WaylandCompositorPrivate
+	Quick
+	WaylandCompositor
+	DBus
+	ShaderTools
+	Sql
+)
 find_package(Timed REQUIRED)
 pkg_check_modules(mlite6 REQUIRED IMPORTED_TARGET mlite6)
 
