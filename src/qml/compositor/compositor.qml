@@ -124,7 +124,8 @@ Item {
                     swipeAnimation.start()
                     var app = comp.topmostWindow
                     comp.topmostWindow = null
-                    Lipstick.compositor.closeClientForWindowId(app.window.windowId)
+                    if (app && app.window)
+                        Lipstick.compositor.closeClientForWindowId(app.window.windowId)
                 } else {
                     cancelAnimation.start()
                 }
@@ -172,7 +173,8 @@ Item {
         interval: 5000
         repeat: false
         onTriggered: {
-            Lipstick.compositor.closeClientForWindowId(comp.topmostWindow.window.windowId)
+            if (comp.topmostWindow && comp.topmostWindow.window)
+                Lipstick.compositor.closeClientForWindowId(comp.topmostWindow.window.windowId)
             Lipstick.compositor.setAmbientUpdatesEnabled(true)
         }
     }
