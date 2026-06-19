@@ -33,14 +33,18 @@ import org.asteroid.launcher
 GestureFilterArea {
     id: panelsGrid
 
-    property real normalizedHorOffset: 0
-    property real normalizedVerOffset: 0
+    /* Fraction of a panel the content is shifted from the grid origin, clamped
+     * to [-1, 1]. Kept as pure bindings on the content position so they can
+     * never get out of sync: every consumer (parallax, wallpaper darkener,
+     * background colours) derives from these and re-evaluates automatically.
+     * Panels live on the axes through the origin, so at most one of the two is
+     * ever non-zero during normal use - no orthogonality bookkeeping needed. */
+    property real normalizedHorOffset: panelWidth  > 0 ? Math.max(-1, Math.min(1, -content.x/panelWidth))  : 0
+    property real normalizedVerOffset: panelHeight > 0 ? Math.max(-1, Math.min(1, -content.y/panelHeight)) : 0
 
     /* Item that will move according to the user's needs */
     Item {
         id: content
-        onXChanged: if(normalizedVerOffset == 0) normalizedHorOffset = Math.min(Math.max(-(content.x/panelWidth),  -1), 1)
-        onYChanged: if(normalizedHorOffset == 0) normalizedVerOffset = Math.min(Math.max(-(content.y/panelHeight), -1), 1)
     }
 
     /* Panels handling

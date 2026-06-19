@@ -54,14 +54,39 @@ Item {
     property var defaultCenterColor: alb.centerColor("/usr/share/asteroid-launcher/default-colors.desktop")
     property var defaultOuterColor: alb.outerColor("/usr/share/asteroid-launcher/default-colors.desktop")
 
-    property var bgCenterColor: defaultCenterColor
-    property var bgOuterColor: defaultOuterColor
-
     property var launcherCenterColor: defaultCenterColor
     property var launcherOuterColor: defaultOuterColor
     property var launcherColorOverride: false
 
     property var displayAmbient: Lipstick.compositor.displayAmbient
+
+    /* Background gradient colours handed to the wallpaper. While scrolling down
+     * to the launcher (normalizedVerOffset in (0,1]) they fade from the default
+     * colours towards the launcher's colours; everywhere else, and whenever an
+     * app launcher overrides the colours itself, they stay at the defaults.
+     * Pure bindings, so they always match the current grid position. */
+    function mixColor(a, b, t) {
+        return Qt.rgba(a.r*t + b.r*(1-t), a.g*t + b.g*(1-t), a.b*t + b.b*(1-t), a.a*t + b.a*(1-t))
+    }
+    property var bgCenterColor: (!launcherColorOverride && grid.normalizedVerOffset > 0)
+                              ? mixColor(launcherCenterColor, defaultCenterColor, grid.normalizedVerOffset)
+                              : defaultCenterColor
+    property var bgOuterColor: (!launcherColorOverride && grid.normalizedVerOffset > 0)
+                             ? mixColor(launcherOuterColor, defaultOuterColor, grid.normalizedVerOffset)
+                             : defaultOuterColor
+
+    /* Wallpaper darkening overlay opacity, expressed as the maximum of two
+     * independent, declarative contributions so it can never get stranded the
+     * way the old imperative signal handlers could:
+     *  - scrollDarken tracks the grid offset (instant, follows the finger).
+     *    The launcher page (verOffset > 0) is intentionally not darkened unless
+     *    a launcher overrides the background colours.
+     *  - ambientDarken is toggled by the ambient signals and fades over 300ms. */
+    property real scrollDarken: displayAmbient ? 0.0
+                              : (grid.normalizedVerOffset > 0 && !launcherColorOverride) ? 0.0
+                              : Math.max(Math.abs(grid.normalizedHorOffset), Math.abs(grid.normalizedVerOffset)) * 0.4
+    property real ambientDarken: 0.0
+    Behavior on ambientDarken { NumberAnimation { duration: 300 } }
 
     property var compositor: Lipstick.compositor
 
@@ -207,12 +232,11 @@ Item {
         function onDisplayAboutToBeOff() { wallClock.enabled = false }
         function onDisplayOn() {
             grid.animateIndicators()
-            wallpaperDarkener.opacity = 0
+            ambientDarken = 0
             if (Lipstick.compositor.ambientEnabled) grid.moveTo(0, 0)
         }
-        function onDisplayAmbientChanged() { wallpaperAnimation.duration = 300 }
         function onDisplayAmbientEntered() {
-            wallpaperDarkener.opacity = 1
+            ambientDarken = 1
             grid.hideOffscreen();
         }
         function onDisplayAmbientLeft() {
@@ -383,20 +407,6 @@ Item {
         }
     }
 
-    onLauncherColorOverrideChanged: {
-        if (launcherColorOverride) {
-            bgCenterColor = Qt.binding(function() { return defaultCenterColor })
-            bgOuterColor = Qt.binding(function() { return defaultOuterColor })
-            wallpaperDarkener.opacity = Math.abs(grid.normalizedVerOffset)*0.4
-        } else {
-            if (grid.normalizedVerOffset > 0) {
-                bgCenterColor = Qt.binding(function() { return launcherCenterColor })
-                bgOuterColor = Qt.binding(function() { return launcherOuterColor })
-            }
-            wallpaperDarkener.opacity = 0
-        }
-    }
-
     PanelsGrid {
         id: grid 
         anchors.fill: parent
@@ -413,45 +423,6 @@ Item {
             bottomIndicator.visible = Qt.binding(function() { return ((grid.toTopAllowed    || (grid.currentVerticalPos == 1 && al.toTopAllowed ))    && !displayAmbient)})
 
             leftIndicator.keepExpanded = Qt.binding(function() { return !np.modelEmpty && grid.currentHorizontalPos == 0 && grid.currentVerticalPos == 0 })
-        }
-
-        onNormalizedHorOffsetChanged: {
-            if (displayAmbient) return
-            wallpaperAnimation.duration = 0
-
-            wallpaper.anchors.horizontalCenterOffset = normalizedHorOffset*width*(-0.05)
-            wallpaperDarkener.opacity = Math.abs(normalizedHorOffset)*0.4
-        }
-        onNormalizedVerOffsetChanged: {
-            if (!displayAmbient) {
-                wallpaperAnimation.duration = 0
-
-                wallpaper.anchors.verticalCenterOffset = height*normalizedVerOffset*(-0.05)
-            }
-
-            if(normalizedVerOffset == 1 && !launcherColorOverride) {
-                bgCenterColor = Qt.binding(function() { return launcherCenterColor })
-                bgOuterColor = Qt.binding(function() { return launcherOuterColor })
-            }
-
-            else if(normalizedVerOffset > 0 && !launcherColorOverride) {
-                bgCenterColor = Qt.rgba(
-                            launcherCenterColor.r * normalizedVerOffset + defaultCenterColor.r * (1-normalizedVerOffset),
-                            launcherCenterColor.g * normalizedVerOffset + defaultCenterColor.g * (1-normalizedVerOffset),
-                            launcherCenterColor.b * normalizedVerOffset + defaultCenterColor.b * (1-normalizedVerOffset)
-                        );
-
-                bgOuterColor = Qt.rgba(
-                            launcherOuterColor.r * normalizedVerOffset + defaultOuterColor.r * (1-normalizedVerOffset),
-                            launcherOuterColor.g * normalizedVerOffset + defaultOuterColor.g * (1-normalizedVerOffset),
-                            launcherOuterColor.b * normalizedVerOffset + defaultOuterColor.b * (1-normalizedVerOffset)
-                        );
-            }
-            else {
-                bgCenterColor = Qt.binding(function() { return defaultCenterColor })
-                bgOuterColor = Qt.binding(function() { return defaultOuterColor })
-                if (!displayAmbient) wallpaperDarkener.opacity = Math.abs(normalizedVerOffset)*0.4
-            }
         }
     }
 
@@ -511,6 +482,11 @@ Item {
         z: -100
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
+        // Parallax: shift the wallpaper by 5% of the screen against the scroll
+        // direction. Pure bindings on the grid offset, so they always settle to
+        // the right place no matter how the position was reached.
+        anchors.horizontalCenterOffset: grid.normalizedHorOffset * grid.width  * (-0.05)
+        anchors.verticalCenterOffset:   grid.normalizedVerOffset * grid.height * (-0.05)
         Behavior on opacity { NumberAnimation { duration: 400 } }
 
         Component {
@@ -529,8 +505,7 @@ Item {
         anchors.fill: wallpaper
         z: -99
         color: "#000000"
-        opacity: 0.0
+        opacity: Math.max(scrollDarken, ambientDarken)
         visible: opacity != 0.0
-        Behavior on opacity { NumberAnimation { id:wallpaperAnimation } }
     }
 }
