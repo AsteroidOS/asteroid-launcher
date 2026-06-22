@@ -31,7 +31,6 @@
 
 import QtQuick
 import Qt5Compat.GraphicalEffects
-import QtMultimedia
 import org.asteroid.controls
 import org.asteroid.utils
 import org.asteroid.launcher
@@ -144,10 +143,14 @@ Item {
     }
     DisplaySettings { id: displaySettings }
 
-    SoundEffect {
-        id: unmuteSound
-        source: "file:///usr/share/sounds/notification.wav"
-        volume: 0.8
+    // Play the un-mute confirmation through ngf rather than a QtMultimedia
+    // SoundEffect: a SoundEffect holds a PulseAudio stream open for its whole
+    // lifetime, preventing the audio sink from suspending (constant battery
+    // drain). ngfd plays via a short-lived GStreamer pipeline so the sink can
+    // suspend again at idle. Reuses the "notification" ngf event.
+    NonGraphicalFeedback {
+        id: unmuteFeedback
+        event: "notification"
     }
 
     NetworkTechnology {
@@ -704,7 +707,7 @@ Item {
                 id: soundDelayTimer
                 interval: 150
                 repeat: false
-                onTriggered: unmuteSound.play()
+                onTriggered: unmuteFeedback.play()
             }
 
             Connections {

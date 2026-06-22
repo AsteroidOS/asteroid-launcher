@@ -29,7 +29,7 @@
 
 import QtQuick
 import org.asteroid.controls
-import QtMultimedia
+import Nemo.Ngf
 
 MouseArea {
     id: view
@@ -39,9 +39,16 @@ MouseArea {
     property bool forbidTop: column.y < 0
     property real prevY: 0
 
-    SoundEffect {
-        id: notifSound
-        source: "file:///usr/share/sounds/notification.wav"
+    // Play the notification sound through ngf instead of a QtMultimedia
+    // SoundEffect. A SoundEffect opens a PulseAudio stream on construction and
+    // holds it for the object's whole lifetime, which keeps the audio sink (and
+    // its power rail) from ever suspending -- a constant standby battery drain.
+    // ngfd plays the sound through a short-lived GStreamer pipeline instead, so
+    // the sink suspends again at idle. It also routes through the profile
+    // plugin, so the sound now honours silent mode.
+    NonGraphicalFeedback {
+        id: notifFeedback
+        event: "notification"
     }
 
     onNotificationChanged: {
@@ -49,7 +56,7 @@ MouseArea {
             appName.text = notification.appName
             summary.text = notification.summary
             body.text = notification.body
-            notifSound.play()
+            notifFeedback.play()
             updateTimestamp()
         }
     }
