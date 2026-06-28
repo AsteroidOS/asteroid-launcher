@@ -29,7 +29,6 @@
 
 import QtQuick
 import org.asteroid.controls
-import QtMultimedia
 
 MouseArea {
     id: view
@@ -39,7 +38,7 @@ MouseArea {
     property bool forbidTop: column.y < 0
     property real prevY: 0
 
-    SoundEffect {
+    OneShotSound {
         id: notifSound
         source: "file:///usr/share/sounds/notification.wav"
     }
