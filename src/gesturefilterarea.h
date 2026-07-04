@@ -86,10 +86,15 @@ signals:
 private:
     bool m_toRightAllowed, m_toLeftAllowed, m_toBottomAllowed, m_toTopAllowed;
 
-    bool m_horizontal, m_pressed, m_tracing;
+    bool m_horizontal, m_pressed, m_tracing, m_grabbed;
     unsigned int m_counter;
     QPointF m_prevPos;
     qreal m_velocityX, m_velocityY, m_threshold;
+
+    /* Shared gesture state machine, positions in GFA-local coordinates */
+    void beginTracking(const QPointF &pos);
+    bool trackMove(const QPointF &pos);   // returns true when the exclusive grab is wanted
+    void finishTracking();                // emits swipeReleased when appropriate
 
 protected:
     virtual bool childMouseEventFilter(QQuickItem *, QEvent *);
@@ -97,8 +102,11 @@ protected:
     virtual void mouseMoveEvent(QMouseEvent *event);
     virtual void mouseReleaseEvent(QMouseEvent *event);
     virtual void mouseUngrabEvent();
+    virtual void touchEvent(QTouchEvent *event);
+    virtual void touchUngrabEvent();
     virtual void geometryChange(const QRectF &newGeometry, const QRectF &oldGeometry);
     bool filterMouseEvent(QQuickItem *item, QMouseEvent *event);
+    bool filterTouchEvent(QQuickItem *item, QTouchEvent *event);
 };
 
 #endif // GESTUREFILTERAREA_H
