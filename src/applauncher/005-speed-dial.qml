@@ -179,33 +179,7 @@ Item {
         }
         layer.enabled: true
         layer.effect: ShaderEffect {
-
-            fragmentShader: "
-                #ifdef GL_ES
-                precision mediump float;
-                #endif
-                varying highp vec2 qt_TexCoord0;
-                uniform sampler2D source;
-                void main(void)
-                {
-                    vec4 sourceColor = texture2D(source, qt_TexCoord0);
-                    float alpha = 1.0;
-                    float x = qt_TexCoord0.x - 0.5;
-                    float y = qt_TexCoord0.y - 0.5;
-
-                    // Behind the bar, hide all items.
-                    if (abs(y) < 0.125 && x < 0.0) {
-                        alpha = 0.0;
-                    }
-
-                    // Soften the transition between the bar and above/below it.
-                    if (abs(y) > 0.125 && x < 0.0) {
-                        alpha = abs(y) * 5.0;
-                    }
-
-                    if (alpha > 1.0) alpha = 1.0;
-                    gl_FragColor = sourceColor * alpha;
-                }"
+            fragmentShader: "qrc:/shaders/speed-dial-mask.frag.qsb"
         }
         Item {
             id: barLeft

@@ -69,6 +69,7 @@ qt_add_shaders(
     FILES
         "qml/compositor/circlemaskshader.frag"
         "shaders/masked-spartan.frag"
+        "shaders/speed-dial-mask.frag"
 )
 
 target_link_libraries(
