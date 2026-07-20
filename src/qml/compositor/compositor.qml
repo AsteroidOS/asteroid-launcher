@@ -241,7 +241,9 @@ Item {
                     Lipstick.compositor.closeClientForWindowId(topmostApplicationWindow.window.windowId)
                 }
                 appLayer.ready = false
-                w.smoothBorders = true
+                w.smoothBorders = Qt.binding(function() {
+                    return gestureArea.active || appLayer.opacity < 1.0 || !appLayer.ready
+                })
                 w.x = width
                 w.moveInAnim.start()
                 cancelAnimation.start()
