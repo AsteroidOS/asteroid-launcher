@@ -81,7 +81,6 @@ target_link_libraries(lipstick PUBLIC
 	PkgConfig::dbus-glib-1
 	PkgConfig::ngf-qt6
 	PkgConfig::libsystemd
-	PkgConfig::dsme_dbus_if
 	PkgConfig::usb-moded-qt6)
 
 add_subdirectory(tools/notificationtool)

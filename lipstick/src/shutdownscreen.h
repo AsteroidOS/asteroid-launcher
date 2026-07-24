@@ -17,6 +17,7 @@
 #define SHUTDOWNSCREEN_H
 
 #include <QObject>
+#include <QDBusUnixFileDescriptor>
 
 class ShutdownScreen : public QObject
 {
@@ -37,35 +38,24 @@ signals:
     void windowVisibleChanged();
 
 private slots:
-    //! DSME is shutting the system down: show the shutdown screen
-    void handleShutdown();
-
-    //! DSME denied a shutdown/reboot request, e.g. because USB is connected
-    void handleShutdownDenied(const QString &reqType, const QString &reason);
-
-    //! DSME is shutting down because the battery is empty
-    void handleBatteryEmpty();
-
-    //! DSME announced a state change (e.g. "REBOOT")
-    void handleStateChange(const QString &state);
-
-    //! DSME's thermal manager reported a new thermal state
-    void handleThermalStateChange(const QString &state);
+    //! systemd-logind is about to shut the system down: show the shutdown screen
+    void handlePrepareForShutdown(bool start);
 
 private:
-    /*!
-     * Shows a system notification.
-     *
-     * \param category the category of the notification
-     * \param body the body text of the notification
-     */
-    void createAndPublishNotification(const QString &category, const QString &body);
+    //! Show the shutdown screen overlay
+    void showShutdownScreen();
+
+    //! Take a logind delay inhibitor so the screen can be drawn before poweroff
+    void takeShutdownInhibitor();
+
+    //! Release the logind delay inhibitor, letting the shutdown proceed
+    void releaseShutdownInhibitor();
 
     //! Whether the shutdown screen overlay should be shown
     bool m_visible = false;
 
-    //! The shutdown mode to be communicated to the UI
-    QString shutdownMode;
+    //! Delay inhibitor lock held on org.freedesktop.login1 (empty = none)
+    QDBusUnixFileDescriptor m_inhibitFd;
 
 #ifdef UNIT_TEST
     friend class Ut_ShutdownScreen;
