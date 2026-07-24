@@ -27,7 +27,6 @@
 #include "notifications/notificationpreviewpresenter.h"
 #include "notifications/batterynotifier.h"
 #include "notifications/diskspacenotifier.h"
-#include "notifications/thermalnotifier.h"
 #include "screenlock/screenlock.h"
 #include "screenlock/screenlockadaptor.h"
 #include "lipsticksettings.h"
@@ -82,7 +81,6 @@ HomeApplication::HomeApplication(int &argc, char **argv)
     volumeControl = new VolumeControl;
     new BatteryNotifier(this);
     new DiskSpaceNotifier(this);
-    new ThermalNotifier(this);
     usbModeSelector = new USBModeSelector(this);
     bluetoothAgent = new BluetoothAgent(this);
     shutdownScreen = new ShutdownScreen(this);

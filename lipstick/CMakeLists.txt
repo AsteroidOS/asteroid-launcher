@@ -19,7 +19,6 @@ set(LIPSTICK_SRC
 	src/notifications/notificationpreviewpresenter.cpp
 	src/notifications/batterynotifier.cpp
 	src/notifications/diskspacenotifier.cpp
-	src/notifications/thermalnotifier.cpp
 	src/notifications/notificationfeedbackplayer.cpp
 	src/screenlock/screenlock.cpp
 	src/volume/volumecontrol.cpp
@@ -83,7 +82,6 @@ target_link_libraries(lipstick PUBLIC
 	PkgConfig::ngf-qt6
 	PkgConfig::libsystemd
 	PkgConfig::dsme_dbus_if
-	PkgConfig::thermalmanager_dbus_if
 	PkgConfig::usb-moded-qt6)
 
 add_subdirectory(tools/notificationtool)

@@ -42,7 +42,6 @@ pkg_check_modules(dbus-glib-1 REQUIRED IMPORTED_TARGET dbus-glib-1)
 pkg_check_modules(ngf-qt6 REQUIRED IMPORTED_TARGET ngf-qt6)
 pkg_check_modules(libsystemd REQUIRED IMPORTED_TARGET libsystemd)
 pkg_check_modules(dsme_dbus_if REQUIRED IMPORTED_TARGET dsme_dbus_if)
-pkg_check_modules(thermalmanager_dbus_if REQUIRED IMPORTED_TARGET thermalmanager_dbus_if)
 pkg_check_modules(usb-moded-qt6 REQUIRED IMPORTED_TARGET usb-moded-qt6)
 
 ecm_find_qmlmodule(org.nemomobile.calendar 1.0)
