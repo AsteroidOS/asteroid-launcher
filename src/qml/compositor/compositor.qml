@@ -263,15 +263,43 @@ Item {
         }
     }
 
-    Rectangle {
-        anchors.fill: parent
-        color: "black"
+    // Rounds off the corners of a round screen. The mask depends on nothing
+    // but the size of the screen, so rather than masking the whole screen
+    // again on every frame the system draws, it is rendered once into a
+    // texture that every later frame simply blits.
+    ShaderEffectSource {
         z: 6
+        anchors.fill: parent
         visible: DeviceSpecs.hasRoundScreen
-        layer.enabled: DeviceSpecs.hasRoundScreen
-        layer.effect: CircleMaskShader {
-            smoothness: 0.002
-            keepInner: false
+        live: false
+        hideSource: true
+        sourceItem: cornerMask
+
+        Component.onCompleted: scheduleUpdate()
+        onWidthChanged: scheduleUpdate()
+        onHeightChanged: scheduleUpdate()
+
+        Item {
+            id: cornerMask
+            anchors.fill: parent
+
+            // CircleMaskShader shades a source texture, and the source here is
+            // a constant: the corners are painted plain black. A single opaque
+            // black pixel, stretched over the item, is that constant.
+            Rectangle {
+                id: blackPixel
+                width: 1
+                height: 1
+                color: "black"
+                layer.enabled: true
+            }
+
+            CircleMaskShader {
+                anchors.fill: parent
+                smoothness: 0.002
+                keepInner: false
+                property Item source: blackPixel
+            }
         }
     }
 }
