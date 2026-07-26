@@ -33,6 +33,14 @@
 #include <mce/dbus-names.h>
 #include <mce/mode-names.h>
 
+#include <QSocketNotifier>
+#include <sys/timerfd.h>
+#include <unistd.h>
+#include <cerrno>
+#include <cstring>
+#include <ctime>
+#include <cstdint>
+
 
 #define MCE_DISPLAY_LPM_SET_SUPPORTED "set_lpm_supported"
 
@@ -57,6 +65,9 @@ LipstickCompositor::LipstickCompositor()
     , m_completed(false)
     , m_onUpdatesDisabledUnfocusedWindowId(0)
     , m_fakeRepaintTriggered(false)
+    , m_ambientModeEnabled(false)
+    , m_ambientAlarmFd(-1)
+    , m_ambientAlarmNotifier(nullptr)
 {
     m_window = new QQuickWindow();
     m_window->setColor(Qt::black);
@@ -100,11 +111,7 @@ LipstickCompositor::LipstickCompositor()
 
     connect(QGuiApplication::clipboard(), SIGNAL(dataChanged()), SLOT(clipboardDataChanged()));
 
-    m_timedDbus = new Maemo::Timed::Interface();
-    if( !m_timedDbus->isValid() )
-    {
-      qWarning() << "invalid dbus interface:" << m_timedDbus->lastError();
-    }
+    initializeAmbientAlarm();
 
     QTimer::singleShot(0, this, SLOT(initialize()));
 }
@@ -115,7 +122,10 @@ LipstickCompositor::~LipstickCompositor()
     // are destroyed, so disconnect it.
     disconnect(m_window, SIGNAL(visibleChanged(bool)), this, SLOT(onVisibleChanged(bool)));
 
-    delete m_timedDbus;
+    if (m_ambientAlarmFd >= 0) {
+        close(m_ambientAlarmFd);
+        m_ambientAlarmFd = -1;
+    }
     delete m_shaderEffect;
 }
 
@@ -635,6 +645,7 @@ void LipstickCompositor::setAmbientEnabled(bool enabled)
         QGuiApplication::platformNativeInterface()->nativeResourceForIntegration("AmbientEnable");
     } else {
         QGuiApplication::platformNativeInterface()->nativeResourceForIntegration("AmbientDisable");
+        cancelAmbientUpdates();
     }
     emit ambientEnabledChanged();
 
@@ -645,71 +656,59 @@ void LipstickCompositor::setAmbientEnabled(bool enabled)
     emit displayAmbientLeft();
 }
 
+void LipstickCompositor::initializeAmbientAlarm()
+{
+    // Requires CAP_WAKE_ALARM
+    m_ambientAlarmFd = timerfd_create(CLOCK_REALTIME_ALARM, TFD_CLOEXEC | TFD_NONBLOCK);
+    if (m_ambientAlarmFd < 0) {
+        qWarning() << "ambient: timerfd_create(CLOCK_REALTIME_ALARM) failed:" << strerror(errno);
+        return;
+    }
+
+    m_ambientAlarmNotifier = new QSocketNotifier(m_ambientAlarmFd, QSocketNotifier::Read, this);
+    connect(m_ambientAlarmNotifier, &QSocketNotifier::activated,
+            this, &LipstickCompositor::ambientAlarmFired);
+}
+
 void LipstickCompositor::scheduleAmbientUpdate()
 {
-    if (!ambientEnabled()) {
-        return;
-    }
-    QMap<QString,QVariant> match;
-    match.insert("type", QVariant(QString("wakeup")));
-    QDBusReply< QList<QVariant> > reply = m_timedDbus->query_sync(match);
-
-    if( !reply.isValid() ) {
-        qWarning() << "'query' call failed:" << m_timedDbus->lastError();
+    if (!ambientEnabled() || m_ambientAlarmFd < 0) {
         return;
     }
 
-    uint cookie = 0;
-    QList<QVariant> cookies = reply.value();
-    // Cancel all wakeup cookies except one.
-    while (!cookies.isEmpty()) {
-        bool ok = true;
-        cookie = cookies.takeFirst().toUInt(&ok);
-        if (!ok) {
-            cookie = 0;
-            continue;
-        }
-        // If the current cookie isn't the last one in the list.
-        if (!cookies.isEmpty()) {
-            QDBusReply<bool> res = m_timedDbus->cancel_sync(cookie);
-            if (!res.isValid()) {
-                qWarning() << "'cancel' call failed:" << m_timedDbus->lastError();
-            } else {
-                qWarning() << "cookie " << cookie << " deleted " << res.value();
-            }
-        }
+    time_t now = time(nullptr);
+    struct tm tmv;
+    localtime_r(&now, &tmv);
+    tmv.tm_sec = 0;
+    time_t wakeupTime = mktime(&tmv) + 60;
+
+    struct itimerspec its = {};
+    its.it_value.tv_sec = wakeupTime;
+    if (timerfd_settime(m_ambientAlarmFd, TFD_TIMER_ABSTIME | TFD_TIMER_CANCEL_ON_SET, &its, nullptr) < 0) {
+        qWarning() << "ambient: timerfd_settime failed:" << strerror(errno);
+    }
+}
+
+void LipstickCompositor::cancelAmbientUpdates()
+{
+    if (m_ambientAlarmFd >= 0) {
+        struct itimerspec its = {};
+        timerfd_settime(m_ambientAlarmFd, 0, &its, nullptr);
+    }
+}
+
+void LipstickCompositor::ambientAlarmFired()
+{
+    // An unread fd keeps the notifier firing
+    uint64_t expirations = 0;
+    ssize_t n = read(m_ambientAlarmFd, &expirations, sizeof(expirations));
+    Q_UNUSED(n);
+
+    if (m_currentDisplayState == QMceDisplay::DisplayOn || !ambientEnabled()) {
+        return;
     }
 
-    // Add new wakeup event
-    Maemo::Timed::Event wakeupEvent;
-
-    time_t currentTime;
-    struct tm* timeinfo;
-    time(&currentTime);
-    // We don't want to update the screen 60 seconds after the screen is off.
-    // The screen should be updated when the minute digit changes.
-    timeinfo = localtime(&currentTime);
-    timeinfo->tm_sec = 0;
-
-    time_t wakeupTime = mktime(timeinfo);
-    if (wakeupTime == -1) {
-        wakeupTime = currentTime;
-    }
-    wakeupTime += 60;
-    wakeupEvent.setTicker(wakeupTime);
-    wakeupEvent.setAttribute(QLatin1String("APPLICATION"), QLatin1String("wakup_alarm"));
-    wakeupEvent.setAttribute(QLatin1String("type"), QLatin1String("wakeup"));
-    wakeupEvent.setBootFlag();
-    wakeupEvent.setKeepAliveFlag();
-    wakeupEvent.setReminderFlag();
-    wakeupEvent.setAlarmFlag();
-    wakeupEvent.setSingleShotFlag();
-
-    if (cookie) {
-        QDBusReply<uint> res = m_timedDbus->replace_event_sync(wakeupEvent, cookie);
-    } else {
-        QDBusReply<uint> res = m_timedDbus->add_event_sync(wakeupEvent);
-    }
+    setAmbientUpdatesEnabled(true);
 }
 
 void LipstickCompositor::setAmbientUpdatesEnabled(bool enabled)
@@ -750,6 +749,9 @@ void LipstickCompositor::setUpdatesEnabled(bool enabled, bool inAmbientMode)
 
             scheduleAmbientUpdate();
         } else {
+            if (!inAmbientMode) {
+                cancelAmbientUpdates();
+            }
             if (m_window->handle() && !inAmbientMode) {
                 QGuiApplication::platformNativeInterface()->nativeResourceForIntegration("DisplayOn");
             }
