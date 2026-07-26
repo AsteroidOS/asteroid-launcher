@@ -33,6 +33,14 @@
 #include <mce/dbus-names.h>
 #include <mce/mode-names.h>
 
+#include <QSocketNotifier>
+#include <sys/timerfd.h>
+#include <unistd.h>
+#include <cerrno>
+#include <cstring>
+#include <ctime>
+#include <cstdint>
+
 
 #define MCE_DISPLAY_LPM_SET_SUPPORTED "set_lpm_supported"
 
@@ -57,6 +65,9 @@ LipstickCompositor::LipstickCompositor()
     , m_completed(false)
     , m_onUpdatesDisabledUnfocusedWindowId(0)
     , m_fakeRepaintTriggered(false)
+    , m_ambientModeEnabled(false)
+    , m_ambientAlarmFd(-1)
+    , m_ambientAlarmNotifier(nullptr)
 {
     m_window = new QQuickWindow();
     m_window->setColor(Qt::black);
@@ -100,10 +111,18 @@ LipstickCompositor::LipstickCompositor()
 
     connect(QGuiApplication::clipboard(), SIGNAL(dataChanged()), SLOT(clipboardDataChanged()));
 
-    m_timedDbus = new Maemo::Timed::Interface();
-    if( !m_timedDbus->isValid() )
-    {
-      qWarning() << "invalid dbus interface:" << m_timedDbus->lastError();
+    // Alarm-class timer for the ambient (AOD) minute tick. CLOCK_REALTIME_ALARM
+    // wakes the AP out of autosleep, so the watchface still updates off-charger,
+    // and it tracks wall-clock so ticks stay aligned to :00 across NTP/timezone
+    // changes. Requires CAP_WAKE_ALARM, granted as a file capability on the
+    // asteroid-launcher binary.
+    m_ambientAlarmFd = timerfd_create(CLOCK_REALTIME_ALARM, TFD_CLOEXEC | TFD_NONBLOCK);
+    if (m_ambientAlarmFd < 0) {
+        qWarning() << "ambient: timerfd_create(CLOCK_REALTIME_ALARM) failed:" << strerror(errno);
+    } else {
+        m_ambientAlarmNotifier = new QSocketNotifier(m_ambientAlarmFd, QSocketNotifier::Read, this);
+        connect(m_ambientAlarmNotifier, &QSocketNotifier::activated,
+                this, &LipstickCompositor::ambientAlarmFired);
     }
 
     QTimer::singleShot(0, this, SLOT(initialize()));
@@ -115,7 +134,10 @@ LipstickCompositor::~LipstickCompositor()
     // are destroyed, so disconnect it.
     disconnect(m_window, SIGNAL(visibleChanged(bool)), this, SLOT(onVisibleChanged(bool)));
 
-    delete m_timedDbus;
+    if (m_ambientAlarmFd >= 0) {
+        close(m_ambientAlarmFd);
+        m_ambientAlarmFd = -1;
+    }
     delete m_shaderEffect;
 }
 
@@ -635,6 +657,7 @@ void LipstickCompositor::setAmbientEnabled(bool enabled)
         QGuiApplication::platformNativeInterface()->nativeResourceForIntegration("AmbientEnable");
     } else {
         QGuiApplication::platformNativeInterface()->nativeResourceForIntegration("AmbientDisable");
+        cancelAmbientUpdates();
     }
     emit ambientEnabledChanged();
 
@@ -647,69 +670,59 @@ void LipstickCompositor::setAmbientEnabled(bool enabled)
 
 void LipstickCompositor::scheduleAmbientUpdate()
 {
-    if (!ambientEnabled()) {
-        return;
-    }
-    QMap<QString,QVariant> match;
-    match.insert("type", QVariant(QString("wakeup")));
-    QDBusReply< QList<QVariant> > reply = m_timedDbus->query_sync(match);
-
-    if( !reply.isValid() ) {
-        qWarning() << "'query' call failed:" << m_timedDbus->lastError();
+    if (!ambientEnabled() || m_ambientAlarmFd < 0) {
         return;
     }
 
-    uint cookie = 0;
-    QList<QVariant> cookies = reply.value();
-    // Cancel all wakeup cookies except one.
-    while (!cookies.isEmpty()) {
-        bool ok = true;
-        cookie = cookies.takeFirst().toUInt(&ok);
-        if (!ok) {
-            cookie = 0;
-            continue;
-        }
-        // If the current cookie isn't the last one in the list.
-        if (!cookies.isEmpty()) {
-            QDBusReply<bool> res = m_timedDbus->cancel_sync(cookie);
-            if (!res.isValid()) {
-                qWarning() << "'cancel' call failed:" << m_timedDbus->lastError();
-            } else {
-                qWarning() << "cookie " << cookie << " deleted " << res.value();
-            }
-        }
+    // Fire at the next wall-clock minute boundary (:00), when the minute digit
+    // changes. Absolute CLOCK_REALTIME time, delivered even through suspend.
+    time_t now = time(nullptr);
+    struct tm tmv;
+    localtime_r(&now, &tmv);
+    tmv.tm_sec = 0;
+    time_t wakeupTime = mktime(&tmv) + 60;
+
+    struct itimerspec its;
+    memset(&its, 0, sizeof(its));
+    its.it_value.tv_sec = wakeupTime;
+    its.it_value.tv_nsec = 0;
+    if (timerfd_settime(m_ambientAlarmFd, TFD_TIMER_ABSTIME, &its, nullptr) < 0) {
+        qWarning() << "ambient: timerfd_settime failed:" << strerror(errno);
+    }
+}
+
+void LipstickCompositor::cancelAmbientUpdates()
+{
+    if (m_ambientAlarmFd >= 0) {
+        // An all-zero itimerspec disarms the timer.
+        struct itimerspec its;
+        memset(&its, 0, sizeof(its));
+        timerfd_settime(m_ambientAlarmFd, 0, &its, nullptr);
+    }
+}
+
+void LipstickCompositor::ambientAlarmFired()
+{
+    // Drain the expiration count. The QSocketNotifier is level-triggered, so an
+    // unread fd would keep re-firing activated(); read it before doing any work
+    // that might spin the event loop, to avoid re-entering this handler.
+    uint64_t expirations = 0;
+    if (read(m_ambientAlarmFd, &expirations, sizeof(expirations)) < 0) {
+        // EAGAIN on a spurious notification is harmless.
     }
 
-    // Add new wakeup event
-    Maemo::Timed::Event wakeupEvent;
-
-    time_t currentTime;
-    struct tm* timeinfo;
-    time(&currentTime);
-    // We don't want to update the screen 60 seconds after the screen is off.
-    // The screen should be updated when the minute digit changes.
-    timeinfo = localtime(&currentTime);
-    timeinfo->tm_sec = 0;
-
-    time_t wakeupTime = mktime(timeinfo);
-    if (wakeupTime == -1) {
-        wakeupTime = currentTime;
+    // If we are no longer dozing (display came on, or ambient was disabled)
+    // there is nothing to repaint; the arming side disarms on those events,
+    // but guard against a race here too.
+    if (m_currentDisplayState == QMceDisplay::DisplayOn || !ambientEnabled()) {
+        return;
     }
-    wakeupTime += 60;
-    wakeupEvent.setTicker(wakeupTime);
-    wakeupEvent.setAttribute(QLatin1String("APPLICATION"), QLatin1String("wakup_alarm"));
-    wakeupEvent.setAttribute(QLatin1String("type"), QLatin1String("wakeup"));
-    wakeupEvent.setBootFlag();
-    wakeupEvent.setKeepAliveFlag();
-    wakeupEvent.setReminderFlag();
-    wakeupEvent.setAlarmFlag();
-    wakeupEvent.setSingleShotFlag();
 
-    if (cookie) {
-        QDBusReply<uint> res = m_timedDbus->replace_event_sync(wakeupEvent, cookie);
-    } else {
-        QDBusReply<uint> res = m_timedDbus->add_event_sync(wakeupEvent);
-    }
+    // We don't take a wakelock: the alarmtimer core keeps the CPU awake for a
+    // short window around an imminent alarm (alarmtimer_suspend() refuses to
+    // re-suspend and posts a pm_wakeup_event), which is enough to composite this
+    // one frame.
+    setAmbientUpdatesEnabled(true);
 }
 
 void LipstickCompositor::setAmbientUpdatesEnabled(bool enabled)
@@ -750,6 +763,12 @@ void LipstickCompositor::setUpdatesEnabled(bool enabled, bool inAmbientMode)
 
             scheduleAmbientUpdate();
         } else {
+            if (!inAmbientMode) {
+                // Leaving ambient for a real display-on: disarm the pending
+                // minute-tick alarm, otherwise it keeps waking the CPU while
+                // the user is looking at a fully rendered screen.
+                cancelAmbientUpdates();
+            }
             if (m_window->handle() && !inAmbientMode) {
                 QGuiApplication::platformNativeInterface()->nativeResourceForIntegration("DisplayOn");
             }

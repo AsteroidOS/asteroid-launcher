@@ -29,12 +29,9 @@
 #include <MDConfItem>
 #include <qmcedisplay.h>
 
-#include <timed-qt6/interface>
-#include <timed-qt6/exception>
-#include <timed-qt6/event-declarations.h>
-
 class LipstickCompositorWindow;
 class AsteroidGesturesManager;
+class QSocketNotifier;
 
 class LipstickCompositor : public QWaylandQuickCompositor
 {
@@ -196,6 +193,8 @@ private:
     QQmlComponent *shaderEffectComponent();
 
     void scheduleAmbientUpdate();
+    void cancelAmbientUpdates();
+    void ambientAlarmFired();
 
     static LipstickCompositor *m_instance;
 
@@ -228,8 +227,11 @@ private:
     QWaylandQtWindowManager *m_wm;
     AsteroidGesturesManager *m_gesturesManager;
 
-    Maemo::Timed::Interface *m_timedDbus;
     bool m_ambientModeEnabled;
+
+    // Ambient (AOD) minute tick; see scheduleAmbientUpdate()
+    int m_ambientAlarmFd;
+    QSocketNotifier *m_ambientAlarmNotifier;
 };
 
 #endif // LIPSTICKCOMPOSITOR_H
