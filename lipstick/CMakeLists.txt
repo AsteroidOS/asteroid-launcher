@@ -72,7 +72,6 @@ target_link_libraries(lipstick PUBLIC
 	Qt6::QmlPrivate
 	Qt6::QuickPrivate
 	Qt6::WaylandCompositorPrivate
-	Timed::Timed
 	PkgConfig::mlite6
 	PkgConfig::mce
 	PkgConfig::mce-qt6

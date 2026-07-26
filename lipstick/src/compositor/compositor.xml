@@ -10,9 +10,6 @@
     <signal name="ambientEnabled">
       <arg name="enabled" type="b"/>
     </signal>
-    <method name="setAmbientUpdatesEnabled">
-      <arg name="enabled" type="b" direction="in"/>
-    </method>
     <method name="setUpdatesEnabled">
       <arg name="enabled" type="b" direction="in"/>
     </method>
