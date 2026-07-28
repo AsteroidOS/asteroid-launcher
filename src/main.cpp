@@ -45,6 +45,7 @@
 #include "gesturefilterarea.h"
 #include "notificationsnoozer.h"
 #include "applauncher.h"
+#include "watchfacereloader.h"
 
 int main(int argc, char **argv)
 {
@@ -80,6 +81,11 @@ int main(int argc, char **argv)
         nativeOrientation = app.primaryScreen()->primaryOrientation();
     app.engine()->rootContext()->setContextProperty("nativeOrientation", nativeOrientation);
     app.engine()->rootContext()->setContextProperty("firstRun", firstRun);
+
+    // Drops the QML component cache when a watchface is installed at runtime so
+    // it shows on the homescreen live, without a launcher restart.
+    WatchfaceReloader *watchfaceReloader = new WatchfaceReloader(app.engine());
+    app.engine()->rootContext()->setContextProperty("watchfaceReloader", watchfaceReloader);
 
     qmlRegisterType<AppLauncherBackground>("org.asteroid.launcher", 1, 0, "AppLauncherBackground");
     qmlRegisterType<GestureFilterArea>("org.asteroid.launcher", 1, 0, "GestureFilterArea");

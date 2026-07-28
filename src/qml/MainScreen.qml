@@ -360,6 +360,18 @@ Item {
         }
     }
 
+    Connections {
+        target: watchfaceReloader
+        // A watchface was just installed into the user folder; the C++ side has
+        // dropped the component cache, so re-trigger the loader to re-read the
+        // directory and pick the new face up live.
+        function onReloadNeeded() {
+            var watchFaceSourceBackup = watchFaceSource.value
+            watchFaceSource.value = ""
+            watchFaceSource.value = watchFaceSourceBackup
+        }
+    }
+
     Component { id: topPanel;    QuickPanel      { } }
     Component { id: leftPanel;   NotificationsPanel { panelsGrid: grid } }
     Component { id: rightPanel;  Today              { } }
