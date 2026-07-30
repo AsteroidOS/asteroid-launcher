@@ -30,7 +30,6 @@
  */
 
 import QtQuick
-import Nemo.Time
 import Nemo.Configuration
 import Nemo.Mce
 import org.nemomobile.lipstick

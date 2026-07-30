@@ -48,7 +48,6 @@ ecm_find_qmlmodule(org.asteroid.settings 1.0)
 ecm_find_qmlmodule(Nemo.Mce 1.0)
 ecm_find_qmlmodule(Nemo.DBus 2.0)
 ecm_find_qmlmodule(Nemo.Configuration 1.0)
-ecm_find_qmlmodule(Nemo.Time 1.0)
 ecm_find_qmlmodule(Nemo.Ngf 1.0)
 ecm_find_qmlmodule(Qt5Compat.GraphicalEffects 1.0)
 

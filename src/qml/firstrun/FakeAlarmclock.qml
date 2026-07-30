@@ -32,7 +32,6 @@ import QtQuick
 import org.asteroid.controls
 import org.asteroid.utils
 import "qrc:/Launcher/compositor/";
-import Nemo.Time
 import Nemo.Configuration
 
 FlatMesh {

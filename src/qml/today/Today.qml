@@ -32,7 +32,6 @@ import org.asteroid.controls
 import org.asteroid.utils
 import org.nemomobile.calendar
 import Nemo.Configuration
-import Nemo.Time
 import 'weathericons.js' as IconTools
 
 ListView {
