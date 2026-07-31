@@ -29,6 +29,7 @@
 #include <private/qguiapplication_p.h>
 #include <QtGui/qpa/qplatformintegration.h>
 #include <QWaylandQuickShellSurfaceItem>
+#include <QWaylandQtTextInputMethodManager>
 
 #include <mce/dbus-names.h>
 #include <mce/mode-names.h>
@@ -72,6 +73,8 @@ LipstickCompositor::LipstickCompositor()
     connect(m_wm, &QWaylandQtWindowManager::openUrl, this, &LipstickCompositor::openUrl);
 
     m_gesturesManager = new AsteroidGesturesManager(this);
+
+    new QWaylandQtTextInputMethodManager(this);
 
     setRetainedSelectionEnabled(true);
 
