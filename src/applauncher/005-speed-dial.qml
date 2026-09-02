@@ -182,6 +182,9 @@ Item {
         }
         layer.enabled: true
         layer.effect: ShaderEffect {
+            property real maskHalf: barLeft.height / 2 / pv.height
+            property real fadeHalf: maskHalf * 1.6
+
             fragmentShader: "qrc:/shaders/speed-dial-mask.frag.qsb"
         }
         Item {
