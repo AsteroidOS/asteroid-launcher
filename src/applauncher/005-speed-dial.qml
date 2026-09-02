@@ -20,6 +20,7 @@
 import QtQuick
 import Qt5Compat.GraphicalEffects
 import org.asteroid.controls
+import org.asteroid.utils
 
 
 Item {
@@ -54,7 +55,14 @@ Item {
 
     PathView {
         id: pv
-        property int borderRadius: pv.width*0.71
+        property real chin: DeviceSpecs.flatTireHeight * root.viewScale
+        property real baseIconRadius: pv.width/3.5 * 0.8/2
+        property real bezelClearance: pv.height/2 - pv.width * 0.71/2 - baseIconRadius
+        // Shrink factors tuned for the seams at 3 and 9 o'clock.
+        property real iconScale: 1 - 1.62 * chin/pv.height
+        property real iconRadius: baseIconRadius * iconScale
+        property real orbitRadiusX: pv.width * 0.71/2 * (1 - 1.28 * chin/pv.height)
+        property real orbitRadiusY: pv.height/2 - chin - iconRadius - bezelClearance
         property var prevOffset: 0
         anchors.fill: parent
         model: launcherModel
@@ -62,19 +70,28 @@ Item {
         pathItemCount: 8
         cacheItemCount: launcherModel.itemCount
         path: Path {
-            startX: pv.width/2-pv.borderRadius/2
-            startY: pv.height/2-pv.borderRadius/2 + pv.borderRadius/2 - 1
+            startX: pv.width/2 - pv.orbitRadiusX
+            startY: pv.height/2
             PathArc {
-                x: pv.width/2-pv.borderRadius/2
-                y: pv.height/2-pv.borderRadius/2 + pv.borderRadius/2 + 1
-                radiusX: pv.borderRadius/2
+                x: pv.width/2 + pv.orbitRadiusX
+                y: pv.height/2
+                radiusX: pv.orbitRadiusX
                 radiusY: radiusX
-                useLargeArc: true
+                direction: PathArc.Clockwise
             }
+            PathPercent { value: 0.5 }
+            PathArc {
+                x: pv.width/2 - pv.orbitRadiusX
+                y: pv.height/2
+                radiusX: pv.orbitRadiusX
+                radiusY: pv.orbitRadiusY
+                direction: PathArc.Clockwise
+            }
+            PathPercent { value: 1 }
         }
         delegate: MouseArea {
             id: launcherItem
-            width: PathView.view.width/3.5
+            width: PathView.view.width/3.5 * pv.iconScale
             height: width
             onPressed: {
                 forbidTop = true
@@ -192,8 +209,8 @@ Item {
             anchors.centerIn: parent
             anchors.horizontalCenterOffset: width/2
             clip: true
-            width: Math.ceil(root.width * 0.26)
-            height: root.width * 0.26
+            width: Math.ceil(root.width * 0.26 * pv.iconScale)
+            height: root.width * 0.26 * pv.iconScale
             Rectangle {
                 anchors.centerIn: parent
                 anchors.horizontalCenterOffset: -width/4
