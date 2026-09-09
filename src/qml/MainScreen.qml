@@ -407,6 +407,12 @@ Item {
                         watchfaceLoader.active = true
                     }
                 }
+
+                // Regenerate the preview of the now-active face at 40% of
+                // the screen width. The renderer skips a face whose preview on
+                // disk is newer than its QML, so the binding firing at boot for
+                // the unchanged current face costs nothing.
+                onSourceChanged: if (source != "") watchfacePreviewRenderer.requestPreview(source, Math.round(Dims.w(40)))
             }
         }
     }

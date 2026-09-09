@@ -46,6 +46,7 @@
 #include "notificationsnoozer.h"
 #include "applauncher.h"
 #include "watchfacereloader.h"
+#include "watchfacepreviewrenderer.h"
 
 int main(int argc, char **argv)
 {
@@ -86,6 +87,11 @@ int main(int argc, char **argv)
     // it shows on the homescreen live, without a launcher restart.
     WatchfaceReloader *watchfaceReloader = new WatchfaceReloader(app.engine());
     app.engine()->rootContext()->setContextProperty("watchfaceReloader", watchfaceReloader);
+
+    // Offscreen watchface preview renderer (see the class doc). QML requests
+    // a preview of the active face on activation.
+    WatchfacePreviewRenderer *watchfacePreviewRenderer = new WatchfacePreviewRenderer(&app);
+    app.engine()->rootContext()->setContextProperty("watchfacePreviewRenderer", watchfacePreviewRenderer);
 
     qmlRegisterType<AppLauncherBackground>("org.asteroid.launcher", 1, 0, "AppLauncherBackground");
     qmlRegisterType<GestureFilterArea>("org.asteroid.launcher", 1, 0, "GestureFilterArea");
