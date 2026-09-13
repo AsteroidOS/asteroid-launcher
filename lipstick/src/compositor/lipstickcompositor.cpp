@@ -601,8 +601,9 @@ void LipstickCompositor::reactOnDisplayStateChanges(QMceDisplay::State state)
     }
 
     bool changeInDimming = (state == QMceDisplay::DisplayDim) != (m_currentDisplayState == QMceDisplay::DisplayDim);
+    bool changeInBlanking = (state == QMceDisplay::DisplayOff) != (m_currentDisplayState == QMceDisplay::DisplayOff);
 
-    bool changeInAmbient = ((state == QMceDisplay::DisplayOff) != (m_currentDisplayState == QMceDisplay::DisplayOff)) && ambientEnabled();
+    bool changeInAmbient = changeInBlanking && ambientEnabled();
 
     bool enterAmbient = changeInAmbient && (state == QMceDisplay::DisplayOff);
     bool leaveAmbient = changeInAmbient && (state != QMceDisplay::DisplayOff);
@@ -611,6 +612,9 @@ void LipstickCompositor::reactOnDisplayStateChanges(QMceDisplay::State state)
 
     if (changeInDimming) {
         emit displayDimmedChanged();
+    }
+    if (changeInBlanking) {
+        emit displayBlankedChanged();
     }
     if (changeInAmbient) {
         emit displayAmbientChanged();

@@ -54,6 +54,7 @@ class LipstickCompositor : public QWaylandQuickCompositor
     Q_PROPERTY(bool ambientSupported READ ambientSupported CONSTANT)
     Q_PROPERTY(bool ambientEnabled READ ambientEnabled WRITE setAmbientEnabled NOTIFY ambientEnabledChanged)
     Q_PROPERTY(bool displayAmbient READ displayAmbient NOTIFY displayAmbientChanged)
+    Q_PROPERTY(bool displayBlanked READ displayBlanked NOTIFY displayBlankedChanged)
 
 public:
     LipstickCompositor();
@@ -111,6 +112,7 @@ public:
     Q_INVOKABLE void setAmbientUpdatesEnabled(bool enabled);
 
     bool displayAmbient() const { return (m_currentDisplayState == QMceDisplay::DisplayOff) && ambientEnabled(); }
+    bool displayBlanked() const { return m_currentDisplayState == QMceDisplay::DisplayOff; }
     Q_INVOKABLE void setUpdatesEnabled(bool enabled, bool inAmbientMode = false);
     LipstickCompositorWindow *createView(QWaylandSurface *surf);
 
@@ -147,6 +149,7 @@ signals:
     void displayAmbientChanged();
     // Update the screen in ambient mode.
     void displayAmbientUpdate();
+    void displayBlankedChanged();
 
     void displayOn();
     void displayOff();
