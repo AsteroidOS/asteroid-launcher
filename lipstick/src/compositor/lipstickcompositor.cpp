@@ -529,36 +529,7 @@ void LipstickCompositor::setScreenOrientation(Qt::ScreenOrientation screenOrient
         if (debug())
             qDebug() << "Setting screen orientation on QWaylandCompositor";
 
-        QSize physSize = m_output->physicalSize();
-        switch(screenOrientation) {
-        case Qt::PrimaryOrientation:
-            m_output->setTransform(QWaylandOutput::TransformNormal);
-            break;
-        case Qt::LandscapeOrientation:
-            if(physSize.width() > physSize.height())
-                m_output->setTransform(QWaylandOutput::TransformNormal);
-            else
-                m_output->setTransform(QWaylandOutput::Transform90);
-            break;
-        case Qt::PortraitOrientation:
-            if(physSize.width() > physSize.height())
-                m_output->setTransform(QWaylandOutput::Transform90);
-            else
-                m_output->setTransform(QWaylandOutput::TransformNormal);
-            break;
-        case Qt::InvertedLandscapeOrientation:
-            if(physSize.width() > physSize.height())
-                m_output->setTransform(QWaylandOutput::Transform180);
-            else
-                m_output->setTransform(QWaylandOutput::Transform270);
-            break;
-        case Qt::InvertedPortraitOrientation:
-            if(physSize.width() > physSize.height())
-                m_output->setTransform(QWaylandOutput::Transform270);
-            else
-                m_output->setTransform(QWaylandOutput::Transform180);
-            break;
-        }
+        // Rotation is applied in the compositor scene; no client handles a wl_output transform
         QWindowSystemInterface::handleScreenOrientationChange(qApp->primaryScreen(),screenOrientation);
 
         m_screenOrientation = screenOrientation;
