@@ -196,6 +196,7 @@ private:
     void scheduleAmbientUpdate();
     void cancelAmbientUpdates();
     void ambientAlarmFired();
+    void releaseAmbientWakeup();
 
     static LipstickCompositor *m_instance;
 
@@ -231,6 +232,8 @@ private:
     bool m_ambientModeEnabled;
     int m_ambientAlarmFd;
     QSocketNotifier *m_ambientAlarmNotifier;
+    int m_ambientWakeupFd = -1;
+    QTimer m_ambientWakeupTimeout;
 };
 
 #endif // LIPSTICKCOMPOSITOR_H
