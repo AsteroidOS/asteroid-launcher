@@ -34,6 +34,7 @@
 #include <mce/mode-names.h>
 
 #include <QSocketNotifier>
+#include <sys/epoll.h>
 #include <sys/timerfd.h>
 #include <unistd.h>
 #include <cerrno>
@@ -122,6 +123,10 @@ LipstickCompositor::~LipstickCompositor()
     // are destroyed, so disconnect it.
     disconnect(m_window, SIGNAL(visibleChanged(bool)), this, SLOT(onVisibleChanged(bool)));
 
+    if (m_ambientWakeupFd >= 0) {
+        close(m_ambientWakeupFd);
+        m_ambientWakeupFd = -1;
+    }
     if (m_ambientAlarmFd >= 0) {
         close(m_ambientAlarmFd);
         m_ambientAlarmFd = -1;
@@ -658,6 +663,10 @@ void LipstickCompositor::setAmbientEnabled(bool enabled)
 
 void LipstickCompositor::initializeAmbientAlarm()
 {
+    m_ambientWakeupTimeout.setSingleShot(true);
+    m_ambientWakeupTimeout.setInterval(2000);
+    connect(&m_ambientWakeupTimeout, &QTimer::timeout, this, &LipstickCompositor::releaseAmbientWakeup);
+
     // Requires CAP_WAKE_ALARM
     m_ambientAlarmFd = timerfd_create(CLOCK_REALTIME_ALARM, TFD_CLOEXEC | TFD_NONBLOCK);
     if (m_ambientAlarmFd < 0) {
@@ -668,6 +677,12 @@ void LipstickCompositor::initializeAmbientAlarm()
     m_ambientAlarmNotifier = new QSocketNotifier(m_ambientAlarmFd, QSocketNotifier::Read, this);
     connect(m_ambientAlarmNotifier, &QSocketNotifier::activated,
             this, &LipstickCompositor::ambientAlarmFired);
+
+    // Requires CAP_BLOCK_SUSPEND
+    struct epoll_event ev = {};
+    ev.events = EPOLLIN | EPOLLWAKEUP;
+    m_ambientWakeupFd = epoll_create1(EPOLL_CLOEXEC);
+    epoll_ctl(m_ambientWakeupFd, EPOLL_CTL_ADD, m_ambientAlarmFd, &ev);
 }
 
 void LipstickCompositor::scheduleAmbientUpdate()
@@ -687,6 +702,7 @@ void LipstickCompositor::scheduleAmbientUpdate()
     if (timerfd_settime(m_ambientAlarmFd, TFD_TIMER_ABSTIME | TFD_TIMER_CANCEL_ON_SET, &its, nullptr) < 0) {
         qWarning() << "ambient: timerfd_settime failed:" << strerror(errno);
     }
+    releaseAmbientWakeup();
 }
 
 void LipstickCompositor::cancelAmbientUpdates()
@@ -695,6 +711,14 @@ void LipstickCompositor::cancelAmbientUpdates()
         struct itimerspec its = {};
         timerfd_settime(m_ambientAlarmFd, 0, &its, nullptr);
     }
+    releaseAmbientWakeup();
+}
+
+void LipstickCompositor::releaseAmbientWakeup()
+{
+    m_ambientWakeupTimeout.stop();
+    struct epoll_event ev;
+    epoll_wait(m_ambientWakeupFd, &ev, 1, 0);
 }
 
 void LipstickCompositor::ambientAlarmFired()
@@ -704,6 +728,7 @@ void LipstickCompositor::ambientAlarmFired()
     ssize_t n = read(m_ambientAlarmFd, &expirations, sizeof(expirations));
     Q_UNUSED(n);
 
+    m_ambientWakeupTimeout.start();
     if (m_currentDisplayState == QMceDisplay::DisplayOn || !ambientEnabled()) {
         return;
     }
