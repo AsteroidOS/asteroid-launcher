@@ -16,7 +16,8 @@
 
 #include <QLocale>
 #include <QDBusConnection>
-#include <QDBusInterface>
+#include <QDBusMessage>
+#include <QDBusPendingCall>
 #include <QDebug>
 
 LocaleManager::LocaleManager(HomeApplication *app) : QDBusAbstractAdaptor(app)
@@ -52,6 +53,10 @@ QString LocaleManager::getEmptyString()
 
 void LocaleManager::selectLocale(QString locale)
 {
+    // Already active, skip the retranslation and booster restart
+    if (qgetenv("LANG") == locale.toUtf8())
+        return;
+
     QLocale::setDefault(QLocale(locale));
     qputenv("LANG", locale.toUtf8());
 
@@ -60,9 +65,12 @@ void LocaleManager::selectLocale(QString locale)
 
     // Propagate the locale to apps: newly spawned processes inherit it from
     // the user session, and the booster respawns with it for prelaunching
-    QDBusInterface systemdInterface("org.freedesktop.systemd1", "/org/freedesktop/systemd1", "org.freedesktop.systemd1.Manager", QDBusConnection::sessionBus());
-    systemdInterface.call("SetEnvironment", QStringList() << ("LANG=" + locale));
-    systemdInterface.call("RestartUnit", "booster-asteroid-qt6.service", "replace");
+    QDBusMessage setEnvironment = QDBusMessage::createMethodCall("org.freedesktop.systemd1", "/org/freedesktop/systemd1", "org.freedesktop.systemd1.Manager", "SetEnvironment");
+    setEnvironment << (QStringList() << ("LANG=" + locale));
+    QDBusConnection::sessionBus().asyncCall(setEnvironment);
+    QDBusMessage restartBooster = QDBusMessage::createMethodCall("org.freedesktop.systemd1", "/org/freedesktop/systemd1", "org.freedesktop.systemd1.Manager", "RestartUnit");
+    restartBooster << QString("booster-asteroid-qt6.service") << QString("replace");
+    QDBusConnection::sessionBus().asyncCall(restartBooster);
 
     emit localeChanged();
     emit emptyStringChanged();
