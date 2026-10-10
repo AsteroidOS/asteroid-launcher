@@ -279,7 +279,6 @@ FlatMesh {
                 case "LANGUAGE":
                     var locale = langSettings.locale(langLV.currentIndex)
                     langSettings.setSystemLocale(locale, LanguageModel.UpdateWithoutReboot)
-                    localeManager.selectLocale(locale)
                     
                     //% "Time Zone"
                     title.text = qsTrId("id-timezone-page") + localeManager.changesObserver
