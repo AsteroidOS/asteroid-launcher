@@ -19,6 +19,7 @@
 #include <QSettings>
 #include <QMimeData>
 #include <QtGui/qpa/qplatformnativeinterface.h>
+#include <QtGui/qpa/qplatformscreen.h>
 #include "homeapplication.h"
 #include "lipstickcompositor.h"
 #include "lipstickcompositorwindow.h"
@@ -752,6 +753,22 @@ void LipstickCompositor::setAmbientUpdatesEnabled(bool enabled)
     }
 }
 
+// The hwcomposer QPA implements the "DisplayOff"/"DisplayOn" native resources
+// used below; plain Qt eglfs (eglfs_kms on mainline kernels) ignores unknown
+// keys and would leave the panel, the DSI link and the display controller
+// powered while the compositor paints black. QPlatformScreen::setPowerState()
+// is Qt's generic hook for that: eglfs_kms maps it to the DRM connector's
+// DPMS property, which powers the whole display pipeline down and lets the
+// kernel suspend. The default implementation is a no-op, so this is safe to
+// call on every platform.
+static void setScreenPowerState(QWindow *window, QPlatformScreen::PowerState state)
+{
+    QScreen *screen = window ? window->screen() : nullptr;
+    if (screen && screen->handle()) {
+        screen->handle()->setPowerState(state);
+    }
+}
+
 void LipstickCompositor::setUpdatesEnabled(bool enabled, bool inAmbientMode)
 {
     if ((m_updatesEnabled != enabled) || inAmbientMode) {
@@ -768,6 +785,7 @@ void LipstickCompositor::setUpdatesEnabled(bool enabled, bool inAmbientMode)
             m_window->hide();
             if (m_window->handle() && !inAmbientMode) {
                 QGuiApplication::platformNativeInterface()->nativeResourceForIntegration("DisplayOff");
+                setScreenPowerState(m_window, QPlatformScreen::PowerStateOff);
             }
             // trigger frame callbacks which are pending already at this time
             surfaceCommitted();
@@ -778,6 +796,9 @@ void LipstickCompositor::setUpdatesEnabled(bool enabled, bool inAmbientMode)
                 cancelAmbientUpdates();
             }
             if (m_window->handle() && !inAmbientMode) {
+                // Power the screen up before showing the window so that the
+                // first frame goes to an active display pipeline.
+                setScreenPowerState(m_window, QPlatformScreen::PowerStateOn);
                 QGuiApplication::platformNativeInterface()->nativeResourceForIntegration("DisplayOn");
             }
             emit displayAboutToBeOn();
