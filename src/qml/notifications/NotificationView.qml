@@ -106,7 +106,7 @@ MouseArea {
 
             Label {
                 id: appName
-                width: Dims.w(56)
+                width: Dims.w(48)
                 font.pixelSize: Dims.l(6)
                 elide: Text.ElideRight
 
@@ -120,7 +120,7 @@ MouseArea {
                 id: timestamp
                 font.pixelSize: appName.font.pixelSize
                 horizontalAlignment: Text.AlignRight
-                width: Dims.w(14)
+                width: Dims.w(22)
             }
         }
 
