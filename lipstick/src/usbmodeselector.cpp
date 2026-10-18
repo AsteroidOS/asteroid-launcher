@@ -27,8 +27,10 @@ USBModeSelector::USBModeSelector(QObject *parent) :
     usbMode(new QUsbModed(this))
 {
     if (errorCodeToTranslationID.isEmpty()) {
-        errorCodeToTranslationID.insert("qtn_usb_filessystem_inuse", "qtn_usb_filessystem_inuse");
-        errorCodeToTranslationID.insert("mount_failed", "qtn_usb_mount_failed");
+        //% "Filesystem in use"
+        errorCodeToTranslationID.insert("qtn_usb_filessystem_inuse", QT_TRID_NOOP("qtn_usb_filessystem_inuse"));
+        //% "Mounting failed"
+        errorCodeToTranslationID.insert("mount_failed", QT_TRID_NOOP("qtn_usb_mount_failed"));
     }
 
     connect(usbMode, SIGNAL(currentModeChanged()), this, SLOT(applyCurrentUSBMode()));
