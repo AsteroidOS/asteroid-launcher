@@ -93,7 +93,7 @@ MouseArea {
     Column {
         id: column
         anchors.horizontalCenter: parent.horizontalCenter
-        width: view.width * 0.7
+        width: view.width * 0.9
 
         Item {
             id: spacing1
@@ -106,7 +106,7 @@ MouseArea {
 
             Label {
                 id: appName
-                width: Dims.w(48)
+                width: Dims.w(68)
                 font.pixelSize: Dims.l(6)
                 elide: Text.ElideRight
 
@@ -134,7 +134,7 @@ MouseArea {
             id: summary
             font.bold: true
             width: parent.width
-            elide: Text.ElideRight
+            wrapMode: Text.Wrap
         }
 
         Item {
@@ -145,7 +145,7 @@ MouseArea {
 
         Label {
             id: body
-            anchors.horizontalCenter: parent.horizontalCenter
+            font.pixelSize: Dims.l(9)
             wrapMode: Text.Wrap
             width: parent.width
         }
@@ -161,7 +161,7 @@ MouseArea {
             text: qsTrId("id-dismiss") + localeManager.changesObserver
             anchors.horizontalCenter: parent.horizontalCenter
             width: Dims.w(55)
-            height: Dims.h(20)
+            height: Dims.h(14)
             onClicked: if (notification !== undefined && notification.userRemovable) notification.actionInvoked("default")
         }
 
