@@ -236,21 +236,6 @@ void BatteryNotifier::scheduleStateEvaluation()
 
 void BatteryNotifier::updateDerivedProperties()
 {
-    /* Update minimum battery level we expect to see while charging.
-     *
-     * While discharging / doing battery full maintenance charging:
-     * -> track current battery level value
-     *
-     * While charging:
-     * -> track maximum battery level value
-     *
-     * Allow one to two percent drops to make false positives less likely.
-     */
-    if (m_currentState.m_chargerState == false
-        || m_currentState.m_batteryStatus == QMceBatteryStatus::Full
-        || m_currentState.m_batteryLevel > m_currentState.m_minimumBatteryLevel)
-        m_currentState.m_minimumBatteryLevel = m_currentState.m_batteryLevel - 1;
-
     /* Suppress / remove charging notifications when it is expected
      * that usb mode selection specific notifications will pop up.
      *
@@ -339,10 +324,6 @@ bool BatteryNotifier::evaluateNotificationLevel(BatteryNotifier::NotificationTyp
     case BatteryNotifier::NotificationExitingPSM:
         level = (state.m_powerSaveMode == false);
         break;
-    case BatteryNotifier::NotificationNotEnoughPower:
-        /* Battery level has dropped since charger was connected. */
-        level = (state.m_batteryLevel < state.m_minimumBatteryLevel);
-        break;
     }
     return level;
 }
@@ -428,11 +409,7 @@ void BatteryNotifier::sendNotification(BatteryNotifier::NotificationType type)
         {"x-nemo.battery.lowbattery", // NotificationLowBattery
          //% "Low battery"
          qtTrId("qtn_ener_lowbatt"),
-         ""},
-        {"x-nemo.battery.notenoughpower", // NotificationNotEnoughPower
-         //% "Not enough power to charge"
-         qtTrId("qtn_ener_nopowcharge"),
-         "icon-m-energy-management-insufficient-power"}
+         ""}
     };
     Q_ASSERT(type < sizeof(description) / sizeof(description[0]));
     NotificationInfo const &info = description[type];

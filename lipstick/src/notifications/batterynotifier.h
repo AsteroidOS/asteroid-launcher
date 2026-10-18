@@ -78,9 +78,8 @@ private:
         NotificationEnteringPSM,
         NotificationExitingPSM,
         NotificationLowBattery,
-        NotificationNotEnoughPower,
         NotificationFirst = NotificationCharging,
-        NotificationLast = NotificationNotEnoughPower,
+        NotificationLast = NotificationLowBattery,
     };
 
     struct QueuedNotification {
@@ -93,7 +92,6 @@ private:
         bool m_chargerState = false;
         QMceBatteryStatus::Status m_batteryStatus = QMceBatteryStatus::Ok;
         int m_batteryLevel = 50;
-        int m_minimumBatteryLevel = 0;
         bool m_powerSaveMode = false;
         QMceDisplay::State m_displayState = QMceDisplay::DisplayOn;
         bool m_tkLock = false;
