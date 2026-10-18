@@ -4,34 +4,34 @@
 <context>
     <name></name>
     <message id="id-btagent-authorize">
-        <location filename="../src/qml/misc/BluetoothAgent.qml" line="158"/>
-        <location filename="../src/qml/misc/BluetoothAgent.qml" line="170"/>
+        <location filename="../src/qml/misc/BluetoothAgent.qml" line="168"/>
+        <location filename="../src/qml/misc/BluetoothAgent.qml" line="180"/>
         <source>Authorize:</source>
         <translation>Autorizar:</translation>
     </message>
     <message id="id-btagent-confirm">
-        <location filename="../src/qml/misc/BluetoothAgent.qml" line="182"/>
+        <location filename="../src/qml/misc/BluetoothAgent.qml" line="192"/>
         <source>Confirm:</source>
         <translation>Confirmar:</translation>
     </message>
     <message id="id-btagent-passkey">
-        <location filename="../src/qml/misc/BluetoothAgent.qml" line="194"/>
+        <location filename="../src/qml/misc/BluetoothAgent.qml" line="204"/>
         <source>Pass Key:</source>
         <translation>Senha:</translation>
     </message>
     <message id="id-btagent-enterkey">
-        <location filename="../src/qml/misc/BluetoothAgent.qml" line="210"/>
+        <location filename="../src/qml/misc/BluetoothAgent.qml" line="220"/>
         <source>Enter Key</source>
         <translation>Digite a senha</translation>
     </message>
     <message id="id-btagent-pincode">
-        <location filename="../src/qml/misc/BluetoothAgent.qml" line="218"/>
-        <location filename="../src/qml/misc/BluetoothAgent.qml" line="230"/>
+        <location filename="../src/qml/misc/BluetoothAgent.qml" line="228"/>
+        <location filename="../src/qml/misc/BluetoothAgent.qml" line="240"/>
         <source>PIN Code:</source>
         <translation>Código PIN:</translation>
     </message>
     <message id="id-btagent-enter-pincode">
-        <location filename="../src/qml/misc/BluetoothAgent.qml" line="235"/>
+        <location filename="../src/qml/misc/BluetoothAgent.qml" line="245"/>
         <source>Enter PIN Code</source>
         <translation>Digite o código PIN</translation>
     </message>
@@ -81,49 +81,49 @@
         <translation>d</translation>
     </message>
     <message id="id-no-notifications">
-        <location filename="../src/qml/notifications/NotificationsPanel.qml" line="160"/>
+        <location filename="../src/qml/notifications/NotificationsPanel.qml" line="185"/>
         <source>No notifications</source>
         <translation>Nenhuma notificação</translation>
     </message>
     <message id="id-today">
-        <location filename="../src/qml/today/Today.qml" line="136"/>
+        <location filename="../src/qml/today/Today.qml" line="135"/>
         <source>Today</source>
         <translation>Hoje</translation>
     </message>
     <message id="id-no-events-today">
-        <location filename="../src/qml/today/Today.qml" line="207"/>
+        <location filename="../src/qml/today/Today.qml" line="206"/>
         <source>No events today</source>
         <translation>Sem eventos hoje</translation>
     </message>
     <message id="id-date-page">
-        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="320"/>
+        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="330"/>
         <source>Date</source>
         <translation>Data</translation>
     </message>
     <message id="id-add-alarm">
-        <location filename="../src/qml/firstrun/FakeAlarmclock.qml" line="85"/>
+        <location filename="../src/qml/firstrun/FakeAlarmclock.qml" line="84"/>
         <source>Add an alarm</source>
         <translation>Adicionar um alarme</translation>
     </message>
     <message id="id-time">
-        <location filename="../src/qml/firstrun/FakeAlarmclock.qml" line="125"/>
+        <location filename="../src/qml/firstrun/FakeAlarmclock.qml" line="124"/>
         <source>Time</source>
         <translation>Hora</translation>
     </message>
     <message id="id-language-page">
-        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="255"/>
+        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="266"/>
         <source>Language</source>
         <translation>Idioma</translation>
     </message>
     <message id="id-time-page">
-        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="289"/>
-        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="309"/>
+        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="299"/>
+        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="319"/>
         <source>Time</source>
         <translation>Hora</translation>
     </message>
     <message id="id-timezone-page">
-        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="274"/>
-        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="295"/>
+        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="284"/>
+        <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="305"/>
         <source>Time Zone</source>
         <oldsource>Timezone</oldsource>
         <translation type="unfinished"></translation>
@@ -215,94 +215,82 @@
         <translation>Desfrute!</translation>
     </message>
     <message id="id-brightness">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="461"/>
-        <source></source>
-        <oldsource>Brightness</oldsource>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="702"/>
+        <source>Brightness</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="id-volume">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="468"/>
-        <source></source>
-        <oldsource>Volume</oldsource>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="704"/>
+        <source>Volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="id-power-off">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="814"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="981"/>
         <source>Powering off in</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="id-tap-to-cancel">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="541"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="730"/>
         <source>Tap to cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="id-reboot">
-        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="829"/>
+        <location filename="../src/qml/quickpanel/QuickPanel.qml" line="996"/>
         <source>Rebooting in</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="qtn_ap_lipstick">
-        <location filename="../lipstick/src/homeapplication.cpp" line="78"/>
+        <location filename="../lipstick/src/homeapplication.cpp" line="66"/>
         <source>System</source>
         <translation>Sistema</translation>
     </message>
     <message id="qtn_ener_charging">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="212"/>
-        <location filename="../lipstick/tests/ut_batterynotifier/ut_batterynotifier.cpp" line="142"/>
-        <location filename="../lipstick/tests/ut_batterynotifier/ut_batterynotifier.cpp" line="166"/>
-        <location filename="../lipstick/tests/ut_batterynotifier/ut_batterynotifier.cpp" line="181"/>
-        <location filename="../lipstick/tests/ut_batterynotifier/ut_batterynotifier.cpp" line="258"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="402"/>
         <source>Charging</source>
         <translation>Carregandp</translation>
     </message>
     <message id="qtn_ener_charcomp">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="216"/>
-        <location filename="../lipstick/tests/ut_batterynotifier/ut_batterynotifier.cpp" line="114"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="406"/>
         <source>Charging complete</source>
         <translation>Carregamento completo</translation>
     </message>
     <message id="qtn_ener_remcha">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="220"/>
-        <location filename="../lipstick/tests/ut_batterynotifier/ut_batterynotifier.cpp" line="172"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="410"/>
         <source>Disconnect charger from power supply to save energy</source>
         <translation>Desconecte o carregador da tomada para poupar energia</translation>
     </message>
     <message id="qtn_ener_repcharger">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="224"/>
-        <source>Not charging. Adjust or recycle charger.</source>
-        <oldsource>Charging not started. Replace charger.</oldsource>
-        <translation>Não está carregando. Ajuste ou troque o carregador.</translation>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="414"/>
+        <source>Charging not started. Replace charger.</source>
+        <oldsource>Not charging. Adjust or recycle charger.</oldsource>
+        <translation type="unfinished">Não está carregando. Ajuste ou troque o carregador.</translation>
     </message>
     <message id="qtn_ener_rebatt">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="228"/>
-        <location filename="../lipstick/tests/ut_batterynotifier/ut_batterynotifier.cpp" line="129"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="418"/>
         <source>Recharge battery</source>
         <translation>Recarregar bateria</translation>
     </message>
     <message id="qtn_ener_ent_psnote">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="232"/>
-        <location filename="../lipstick/tests/ut_batterynotifier/ut_batterynotifier.cpp" line="205"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="422"/>
         <source>Entering power save mode</source>
         <translation>Entrando no modo de economia de energia</translation>
     </message>
     <message id="qtn_ener_exit_psnote">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="236"/>
-        <location filename="../lipstick/tests/ut_batterynotifier/ut_batterynotifier.cpp" line="213"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="426"/>
         <source>Exiting power save mode</source>
         <translation>Saindo do modo de economia de energia</translation>
     </message>
     <message id="qtn_ener_lowbatt">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="240"/>
-        <location filename="../lipstick/tests/ut_batterynotifier/ut_batterynotifier.cpp" line="101"/>
-        <source>Low battery level</source>
-        <oldsource>Low battery</oldsource>
-        <translation>Nível de bateria baixa</translation>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="430"/>
+        <source>Low battery</source>
+        <oldsource>Low battery level</oldsource>
+        <translation type="unfinished">Nível de bateria baixa</translation>
     </message>
     <message id="qtn_ener_nopowcharge">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="244"/>
-        <source>Power input below charging threshold</source>
-        <oldsource>Not enough power to charge</oldsource>
-        <translation>Entrada de energia abaixo do nível de carregamento</translation>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="434"/>
+        <source>Not enough power to charge</source>
+        <oldsource>Power input below charging threshold</oldsource>
+        <translation type="unfinished">Entrada de energia abaixo do nível de carregamento</translation>
     </message>
     <message id="qtn_memu_memlow_notification_src">
         <location filename="../lipstick/src/notifications/diskspacenotifier.cpp" line="56"/>
@@ -310,114 +298,60 @@
         <oldsource>Getting low with storage. Please check.</oldsource>
         <translation>Acabando o espaço de armazenamento.</translation>
     </message>
-    <message id="qtn_shut_high_temp_warning">
-        <location filename="../lipstick/src/notifications/thermalnotifier.cpp" line="34"/>
-        <location filename="../lipstick/tests/ut_thermalnotifier/ut_thermalnotifier.cpp" line="78"/>
-        <source>Device getting hot. Close all apps.</source>
-        <oldsource>Device is getting hot. Close all apps.</oldsource>
-        <translation>O dispositivo está ficando quente. Feche todos os apps.</translation>
-    </message>
-    <message id="qtn_shut_high_temp_alert">
-        <location filename="../lipstick/src/notifications/thermalnotifier.cpp" line="38"/>
-        <location filename="../lipstick/tests/ut_thermalnotifier/ut_thermalnotifier.cpp" line="84"/>
-        <source>Device overheating. Turn it off.</source>
-        <oldsource>Device is overheating. Turn it off.</oldsource>
-        <translation>O dispositivo está superaquecendo. Desligue-o.</translation>
-    </message>
-    <message id="qtn_shut_low_temp_warning">
-        <location filename="../lipstick/src/notifications/thermalnotifier.cpp" line="42"/>
-        <location filename="../lipstick/tests/ut_thermalnotifier/ut_thermalnotifier.cpp" line="90"/>
-        <source>The device is too cold</source>
-        <oldsource>Low temperature warning</oldsource>
-        <translation>O dispositivo está muito frio</translation>
-    </message>
-    <message id="qtn_shut_high_temp">
-        <location filename="../lipstick/src/shutdownscreen.cpp" line="79"/>
-        <location filename="../lipstick/tests/ut_shutdownscreen/ut_shutdownscreen.cpp" line="101"/>
-        <source>Temperature too high. Device shutting down.</source>
-        <translation>A temperatura está muito elevada. Desligando o dispositivo.</translation>
-    </message>
-    <message id="qtn_shut_unplug_usb">
-        <location filename="../lipstick/src/shutdownscreen.cpp" line="84"/>
-        <location filename="../lipstick/tests/ut_shutdownscreen/ut_shutdownscreen.cpp" line="108"/>
-        <source>USB cable plugged in. Unplug it to shut down device.</source>
-        <oldsource>USB cable plugged in. Unplug the USB cable to shutdown.</oldsource>
-        <translation>Cabo USB conectado. Desconecte-o para desligar.</translation>
-    </message>
-    <message id="qtn_shut_batt_empty">
-        <location filename="../lipstick/src/shutdownscreen.cpp" line="89"/>
-        <location filename="../lipstick/tests/ut_shutdownscreen/ut_shutdownscreen.cpp" line="115"/>
-        <source>Battery empty. Device shutting down.</source>
-        <translation>A bateria está vazia. Desligando o dispositivo.</translation>
-    </message>
-    <message id="qtn_usb_device_locked">
-        <location filename="../lipstick/src/usbmodeselector.cpp" line="103"/>
-        <source>Unlock device first</source>
-        <translation>Desbloqueie o dispositivo primeiro</translation>
-    </message>
     <message id="qtn_usb_disconnected">
-        <location filename="../lipstick/src/usbmodeselector.cpp" line="127"/>
-        <location filename="../lipstick/tests/ut_usbmodeselector/ut_usbmodeselector.cpp" line="180"/>
+        <location filename="../lipstick/src/usbmodeselector.cpp" line="68"/>
         <source>USB cable disconnected</source>
         <translation>Cabo USB desconectado</translation>
     </message>
     <message id="qtn_usb_connection_sharing_active">
-        <location filename="../lipstick/src/usbmodeselector.cpp" line="132"/>
-        <location filename="../lipstick/tests/ut_usbmodeselector/ut_usbmodeselector.cpp" line="189"/>
+        <location filename="../lipstick/src/usbmodeselector.cpp" line="73"/>
         <source>USB tethering in use</source>
         <translation>Tethering USB em uso</translation>
     </message>
     <message id="qtn_usb_mtp_active">
-        <location filename="../lipstick/src/usbmodeselector.cpp" line="135"/>
-        <location filename="../lipstick/tests/ut_usbmodeselector/ut_usbmodeselector.cpp" line="185"/>
+        <location filename="../lipstick/src/usbmodeselector.cpp" line="76"/>
         <source>MTP mode in use</source>
         <translation>Modo MTP em uso</translation>
     </message>
     <message id="qtn_usb_storage_active">
-        <location filename="../lipstick/src/usbmodeselector.cpp" line="138"/>
-        <location filename="../lipstick/tests/ut_usbmodeselector/ut_usbmodeselector.cpp" line="183"/>
+        <location filename="../lipstick/src/usbmodeselector.cpp" line="79"/>
         <source>Mass storage in use</source>
         <translation>Armazenamento em massa em uso</translation>
     </message>
     <message id="qtn_usb_sdk_active">
-        <location filename="../lipstick/src/usbmodeselector.cpp" line="141"/>
-        <location filename="../lipstick/tests/ut_usbmodeselector/ut_usbmodeselector.cpp" line="184"/>
+        <location filename="../lipstick/src/usbmodeselector.cpp" line="82"/>
         <source>SSH mode in use</source>
         <translation>Modo SSH em uso</translation>
     </message>
     <message id="qtn_usb_sync_active">
-        <location filename="../lipstick/src/usbmodeselector.cpp" line="144"/>
-        <location filename="../lipstick/tests/ut_usbmodeselector/ut_usbmodeselector.cpp" line="181"/>
+        <location filename="../lipstick/src/usbmodeselector.cpp" line="85"/>
         <source>Sync-and-connect in use</source>
         <oldsource>Sync and connect in use</oldsource>
         <translation>Sincronização e conectar em uso</translation>
     </message>
     <message id="qtn_usb_adb_active">
-        <location filename="../lipstick/src/usbmodeselector.cpp" line="147"/>
-        <location filename="../lipstick/tests/ut_usbmodeselector/ut_usbmodeselector.cpp" line="186"/>
+        <location filename="../lipstick/src/usbmodeselector.cpp" line="88"/>
         <source>ADB mode in use</source>
         <translation>Modo ADB em uso</translation>
     </message>
     <message id="qtn_usb_diag_active">
-        <location filename="../lipstick/src/usbmodeselector.cpp" line="150"/>
-        <location filename="../lipstick/tests/ut_usbmodeselector/ut_usbmodeselector.cpp" line="187"/>
+        <location filename="../lipstick/src/usbmodeselector.cpp" line="91"/>
         <source>Diag mode in use</source>
         <translation>Modo de diagnóstico em uso</translation>
     </message>
     <message id="qtn_usb_host_mode_active">
-        <location filename="../lipstick/src/usbmodeselector.cpp" line="153"/>
-        <location filename="../lipstick/tests/ut_usbmodeselector/ut_usbmodeselector.cpp" line="188"/>
+        <location filename="../lipstick/src/usbmodeselector.cpp" line="94"/>
         <source>USB switched to host mode (OTG)</source>
         <translation>USB alternado para modo de host (OTG)</translation>
     </message>
     <message id="qtn_usb_filessystem_inuse">
-        <location filename="../lipstick/tests/ut_usbmodeselector/ut_usbmodeselector.cpp" line="233"/>
-        <source></source>
+        <location filename="../lipstick/src/usbmodeselector.cpp" line="31"/>
+        <source>Filesystem in use</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="qtn_usb_mount_failed">
-        <location filename="../lipstick/tests/ut_usbmodeselector/ut_usbmodeselector.cpp" line="237"/>
-        <source></source>
+        <location filename="../lipstick/src/usbmodeselector.cpp" line="33"/>
+        <source>Mounting failed</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
