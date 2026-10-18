@@ -36,6 +36,24 @@ MouseArea {
 
     property QtObject panelsGrid
     property QtObject notification
+    property var appsTable: [
+            ["whatsapp", "logo-whatsapp", "#25D366", "#0F5F32"],
+            ["mail", "ios-mail", "#FF6B5E", "#6B1A14"],
+            ["signal", "logo-signal", "#5B8DF5", "#17306B"],
+            ["instagram", "logo-instagram", "#C084DC", "#4B2363"],
+            ["facebook", "logo-facebook", "#4C9BFF", "#0F3A7A"],
+            ["telegram", "ios-paper-plane", "#4FC3F7", "#0E5F85"],
+            ["linkedin", "logo-linkedin", "#6DB8F0", "#0F4C75"],
+            ["mess", "ios-chatbubbles", "#5CB3FF", "#1B4F8F"],
+            ["sms", "ios-chatbubbles", "#5CB3FF", "#1B4F8F"]
+    ]
+    function appInfo(n) {
+        var a = n ? n.toLowerCase() : ""
+        for (var i = 0; i < appsTable.length; i++)
+            if (a.indexOf(appsTable[i][0]) >= 0) return appsTable[i]
+        return ["", "ios-mail-outline", "#FFFFFF", "#000000"]
+    }
+    property color accent: appInfo(notification ? notification.appName : "")[2]
     property bool forbidTop: column.y < 0
     property real prevY: 0
 
@@ -103,10 +121,17 @@ MouseArea {
 
         Row {
             height: Dims.h(10)
-
+            spacing: Dims.w(2)
+            Icon {
+                width: Dims.h(10)
+                height: Dims.h(10)
+                name: view.appInfo(notification ? notification.appName : "")[1]
+                color: view.accent
+            }
             Label {
                 id: appName
-                width: Dims.w(68)
+                color: view.accent
+                width: Dims.w(54)
                 font.pixelSize: Dims.l(6)
                 elide: Text.ElideRight
 

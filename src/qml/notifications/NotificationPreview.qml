@@ -44,12 +44,30 @@ Item {
         enabled: state == "show"
         onClicked: notificationArea.state = "hide"
 
+        property var appsTable: [
+            ["whatsapp", "logo-whatsapp", "#25D366", "#0F5F32"],
+            ["mail", "ios-mail", "#FF6B5E", "#6B1A14"],
+            ["signal", "logo-signal", "#5B8DF5", "#17306B"],
+            ["instagram", "logo-instagram", "#C084DC", "#4B2363"],
+            ["facebook", "logo-facebook", "#4C9BFF", "#0F3A7A"],
+            ["telegram", "ios-paper-plane", "#4FC3F7", "#0E5F85"],
+            ["linkedin", "logo-linkedin", "#6DB8F0", "#0F4C75"],
+            ["mess", "ios-chatbubbles", "#5CB3FF", "#1B4F8F"],
+            ["sms", "ios-chatbubbles", "#5CB3FF", "#1B4F8F"]
+        ]
+        function appInfo(n) {
+            var a = n ? n.toLowerCase() : ""
+            for (var i = 0; i < appsTable.length; i++)
+                if (a.indexOf(appsTable[i][0]) >= 0) return appsTable[i]
+            return ["", "ios-mail-outline", "#FFFFFF", "#000000"]
+        }
         property var notif: notificationPreviewPresenter.notification
+        property var info: appInfo(notif != null ? notif.appName : "")
 
         Rectangle {
             anchors.fill: parent
-            color: "#000000"
-            opacity: notificationArea.pressed ? 0.85 : 0.8
+            color: notificationArea.info[3]
+            opacity: notificationArea.pressed ? 0.9 : 0.95
         }
 
         Item {
@@ -62,11 +80,13 @@ Item {
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: Dims.w(14)
                 height: width
-                color: "#FFFFFF"
+                color: notificationArea.info[2]
                 name: {
                     var n = notificationArea.notif;
                     if (n == null)
                         return "";
+                    if (notificationArea.info[0] !== "")
+                        return notificationArea.info[1];
                     if (n.icon !== "" && n.icon !== null && n.icon !== undefined)
                         return n.icon;
                     if (n.appIcon !== "" && n.appIcon !== null && n.appIcon !== undefined)
