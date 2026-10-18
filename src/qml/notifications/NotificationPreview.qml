@@ -44,6 +44,8 @@ Item {
         enabled: state == "show"
         onClicked: notificationArea.state = "hide"
 
+        property var notif: notificationPreviewPresenter.notification
+
         Rectangle {
             anchors.fill: parent
             color: "#000000"
@@ -51,68 +53,61 @@ Item {
         }
 
         Item {
-            anchors.verticalCenter: parent.verticalCenter
-            width: parent.width
-            height: icon.anchors.topMargin + icon.height + summary.anchors.topMargin + summary.height + body.anchors.topMargin + body.height
+            anchors.fill: parent
+            anchors.margins: Dims.w(3)
 
             Icon {
                 id: icon
                 anchors.top: parent.top
-                anchors.topMargin: Dims.iconButtonMargin
                 anchors.horizontalCenter: parent.horizontalCenter
-                width: Dims.w(20)
+                width: Dims.w(14)
                 height: width
                 color: "#FFFFFF"
                 name: {
-                    var notif = notificationPreviewPresenter.notification;
-                    if(notif==null)
+                    var n = notificationArea.notif;
+                    if (n == null)
                         return "";
-
-                    function noicon(str) {
-                        return str === "" || str === null || str === undefined;
-                    }
-                    if(noicon(notif.icon) && noicon(notif.appIcon))
-                        return "ios-mail-outline";
-                    if(noicon(notif.icon) && !noicon(notif.appIcon))
-                        return notif.appIcon;
-                    if(!noicon(notif.icon) && noicon(notif.appIcon))
-                        return notif.icon;
-
-                    return notif.icon;
+                    if (n.icon !== "" && n.icon !== null && n.icon !== undefined)
+                        return n.icon;
+                    if (n.appIcon !== "" && n.appIcon !== null && n.appIcon !== undefined)
+                        return n.appIcon;
+                    return "ios-mail-outline";
                 }
             }
 
             Label {
                 id: summary
                 anchors.top: icon.bottom
+                anchors.topMargin: text == "" ? 0 : Dims.h(1)
+                anchors.left: parent.left
+                anchors.right: parent.right
                 height: text == "" ? 0 : undefined
-                width: Dims.w(90)
                 horizontalAlignment: Text.AlignHCenter
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.topMargin: text == "" ? 0 : Dims.h(3)
                 color: "#FFFFFF"
                 font.pixelSize: Dims.l(6)
                 font.bold: true
                 clip: true
+                maximumLineCount: 2
                 elide: Text.ElideRight
-                text: notificationPreviewPresenter.notification != null ? notificationPreviewPresenter.notification.previewSummary : ""
+                wrapMode: Text.Wrap
+                text: notificationArea.notif != null ? notificationArea.notif.previewSummary : ""
             }
 
             Label {
                 id: body
                 anchors.top: summary.bottom
-                width: Dims.w(80)
-                horizontalAlignment: Text.AlignHCenter
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.topMargin: Dims.h(3)
+                anchors.topMargin: Dims.h(2)
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
+                horizontalAlignment: Text.AlignLeft
                 color: "#FFFFFF"
-                font.pixelSize: Dims.h(6)
+                font.pixelSize: Dims.h(12)
                 font.bold: summary.text == ""
                 clip: true
-                maximumLineCount: 4
                 elide: Text.ElideRight
                 wrapMode: Text.Wrap
-                text: notificationPreviewPresenter.notification != null ? notificationPreviewPresenter.notification.previewBody : ""
+                text: notificationArea.notif != null ? notificationArea.notif.previewBody : ""
             }
         }
 
@@ -166,7 +161,7 @@ Item {
 
         Timer {
             id: notificationTimer
-            interval: 5000
+            interval: 8000
             repeat: false
             onTriggered: notificationArea.state = "hide"
         }
