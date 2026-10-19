@@ -245,52 +245,46 @@
         <translation>Systém</translation>
     </message>
     <message id="qtn_ener_charging">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="402"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="383"/>
         <source>Charging</source>
         <translation>Nabíjení</translation>
     </message>
     <message id="qtn_ener_charcomp">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="406"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="387"/>
         <source>Charging complete</source>
         <translation>Nabíjení dokončeno</translation>
     </message>
     <message id="qtn_ener_remcha">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="410"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="391"/>
         <source>Disconnect charger from power supply to save energy</source>
         <translation>Šetřte energií a odpojte nabíječku ze zásuvky</translation>
     </message>
     <message id="qtn_ener_repcharger">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="414"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="395"/>
         <source>Charging not started. Replace charger.</source>
         <oldsource>Not charging. Adjust or recycle charger.</oldsource>
         <translation type="unfinished">Nabíjení nezačalo. Zkuste zahýbat s konektory nebo nabíječku vyndejte ze zásuvky a pak ji tam zase vraťte.</translation>
     </message>
     <message id="qtn_ener_rebatt">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="418"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="399"/>
         <source>Recharge battery</source>
         <translation>Nabijte akumulátor</translation>
     </message>
     <message id="qtn_ener_ent_psnote">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="422"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="403"/>
         <source>Entering power save mode</source>
         <translation>Přepíná se do režimu úspory energie</translation>
     </message>
     <message id="qtn_ener_exit_psnote">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="426"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="407"/>
         <source>Exiting power save mode</source>
         <translation>Opouští se režim úspory energie</translation>
     </message>
     <message id="qtn_ener_lowbatt">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="430"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="411"/>
         <source>Low battery</source>
         <oldsource>Low battery level</oldsource>
         <translation type="unfinished">Nízký stav nabití aku</translation>
-    </message>
-    <message id="qtn_ener_nopowcharge">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="434"/>
-        <source>Not enough power to charge</source>
-        <oldsource>Power input below charging threshold</oldsource>
-        <translation type="unfinished">Napájení nedosahuje úrovně potřebné pro nabíjení</translation>
     </message>
     <message id="qtn_memu_memlow_notification_src">
         <location filename="../lipstick/src/notifications/diskspacenotifier.cpp" line="56"/>

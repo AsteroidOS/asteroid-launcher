@@ -246,52 +246,46 @@
         <translation>Sistema</translation>
     </message>
     <message id="qtn_ener_charging">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="402"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="383"/>
         <source>Charging</source>
         <translation>Kraunasi</translation>
     </message>
     <message id="qtn_ener_charcomp">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="406"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="387"/>
         <source>Charging complete</source>
         <translation>Krovimas baigtas</translation>
     </message>
     <message id="qtn_ener_remcha">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="410"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="391"/>
         <source>Disconnect charger from power supply to save energy</source>
         <translation>Norėdami taupyti energiją, atjunkite įkroviklį nuo maitinimo šaltinio</translation>
     </message>
     <message id="qtn_ener_repcharger">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="414"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="395"/>
         <source>Charging not started. Replace charger.</source>
         <oldsource>Not charging. Adjust or recycle charger.</oldsource>
         <translation type="unfinished">Krovimas nevyksta. Sureguliuokite arba pakeiskite įkroviklį kitu.</translation>
     </message>
     <message id="qtn_ener_rebatt">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="418"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="399"/>
         <source>Recharge battery</source>
         <translation>Įkraukite bateriją</translation>
     </message>
     <message id="qtn_ener_ent_psnote">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="422"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="403"/>
         <source>Entering power save mode</source>
         <translation>Įjungiamas energijos taupymo režimas</translation>
     </message>
     <message id="qtn_ener_exit_psnote">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="426"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="407"/>
         <source>Exiting power save mode</source>
         <translation>Išjungiamas energijos taupymo rėžimas</translation>
     </message>
     <message id="qtn_ener_lowbatt">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="430"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="411"/>
         <source>Low battery</source>
         <oldsource>Low battery level</oldsource>
         <translation type="unfinished">Žemas baterijos lygis</translation>
-    </message>
-    <message id="qtn_ener_nopowcharge">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="434"/>
-        <source>Not enough power to charge</source>
-        <oldsource>Power input below charging threshold</oldsource>
-        <translation type="unfinished">Įvesties galia žemiau įkrovimo ribos</translation>
     </message>
     <message id="qtn_memu_memlow_notification_src">
         <location filename="../lipstick/src/notifications/diskspacenotifier.cpp" line="56"/>

@@ -245,52 +245,46 @@
         <translation>Система</translation>
     </message>
     <message id="qtn_ener_charging">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="402"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="383"/>
         <source>Charging</source>
         <translation>Зарядка</translation>
     </message>
     <message id="qtn_ener_charcomp">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="406"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="387"/>
         <source>Charging complete</source>
         <translation>Зарядка завершена</translation>
     </message>
     <message id="qtn_ener_remcha">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="410"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="391"/>
         <source>Disconnect charger from power supply to save energy</source>
         <translation>Від&apos;єднайте зарядний пристрій, щоб зекономити енергію</translation>
     </message>
     <message id="qtn_ener_repcharger">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="414"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="395"/>
         <source>Charging not started. Replace charger.</source>
         <oldsource>Not charging. Adjust or recycle charger.</oldsource>
         <translation type="unfinished">Не заряджається. Відрегулюйте або утилізуйте зарядний пристрій.</translation>
     </message>
     <message id="qtn_ener_rebatt">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="418"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="399"/>
         <source>Recharge battery</source>
         <translation>Зарядіть батарею</translation>
     </message>
     <message id="qtn_ener_ent_psnote">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="422"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="403"/>
         <source>Entering power save mode</source>
         <translation>Перехід у режим енергозбереження</translation>
     </message>
     <message id="qtn_ener_exit_psnote">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="426"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="407"/>
         <source>Exiting power save mode</source>
         <translation>Вихід із режиму енергозбереження</translation>
     </message>
     <message id="qtn_ener_lowbatt">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="430"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="411"/>
         <source>Low battery</source>
         <oldsource>Low battery level</oldsource>
         <translation type="unfinished">Низький заряд батареї</translation>
-    </message>
-    <message id="qtn_ener_nopowcharge">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="434"/>
-        <source>Not enough power to charge</source>
-        <oldsource>Power input below charging threshold</oldsource>
-        <translation type="unfinished">Напруга недостатньо висока для зарядки</translation>
     </message>
     <message id="qtn_memu_memlow_notification_src">
         <location filename="../lipstick/src/notifications/diskspacenotifier.cpp" line="56"/>

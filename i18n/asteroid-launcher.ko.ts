@@ -245,52 +245,46 @@
         <translation>시스템</translation>
     </message>
     <message id="qtn_ener_charging">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="402"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="383"/>
         <source>Charging</source>
         <translation>충전중</translation>
     </message>
     <message id="qtn_ener_charcomp">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="406"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="387"/>
         <source>Charging complete</source>
         <translation>충전 완료</translation>
     </message>
     <message id="qtn_ener_remcha">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="410"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="391"/>
         <source>Disconnect charger from power supply to save energy</source>
         <translation>에너지를 절약하기 위해 충전기를 전원에서 분리하세요</translation>
     </message>
     <message id="qtn_ener_repcharger">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="414"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="395"/>
         <source>Charging not started. Replace charger.</source>
         <oldsource>Not charging. Adjust or recycle charger.</oldsource>
         <translation type="unfinished">충전하지 않음, 충전기를 재조정 하거나 분리 후 다시 연결하세요.</translation>
     </message>
     <message id="qtn_ener_rebatt">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="418"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="399"/>
         <source>Recharge battery</source>
         <translation>배터리 재충전</translation>
     </message>
     <message id="qtn_ener_ent_psnote">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="422"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="403"/>
         <source>Entering power save mode</source>
         <translation>전원 절약 모드에 들어가는 중</translation>
     </message>
     <message id="qtn_ener_exit_psnote">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="426"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="407"/>
         <source>Exiting power save mode</source>
         <translation>전원 절약 모드에서 나오는 중</translation>
     </message>
     <message id="qtn_ener_lowbatt">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="430"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="411"/>
         <source>Low battery</source>
         <oldsource>Low battery level</oldsource>
         <translation type="unfinished">배터리 잔량 낮음</translation>
-    </message>
-    <message id="qtn_ener_nopowcharge">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="434"/>
-        <source>Not enough power to charge</source>
-        <oldsource>Power input below charging threshold</oldsource>
-        <translation type="unfinished">충전 가능한 전류량보다 입력 전류량이 낮음</translation>
     </message>
     <message id="qtn_memu_memlow_notification_src">
         <location filename="../lipstick/src/notifications/diskspacenotifier.cpp" line="56"/>
