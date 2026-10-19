@@ -246,52 +246,46 @@
         <translation>सिस्टम</translation>
     </message>
     <message id="qtn_ener_charging">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="402"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="383"/>
         <source>Charging</source>
         <translation>चार्जिंग</translation>
     </message>
     <message id="qtn_ener_charcomp">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="406"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="387"/>
         <source>Charging complete</source>
         <translation>चार्जिंग पूर्ण</translation>
     </message>
     <message id="qtn_ener_remcha">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="410"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="391"/>
         <source>Disconnect charger from power supply to save energy</source>
         <translation>ऊर्जा बचाने के लिए चार्जर को बिजली से डिस्कनेक्ट करें</translation>
     </message>
     <message id="qtn_ener_repcharger">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="414"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="395"/>
         <source>Charging not started. Replace charger.</source>
         <oldsource>Not charging. Adjust or recycle charger.</oldsource>
         <translation type="unfinished">चार्ज नहीं हो रहा हैं। चार्जर को एडजस्ट या रीसायकल करें।</translation>
     </message>
     <message id="qtn_ener_rebatt">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="418"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="399"/>
         <source>Recharge battery</source>
         <translation>बैटरी रिचार्ज करें</translation>
     </message>
     <message id="qtn_ener_ent_psnote">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="422"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="403"/>
         <source>Entering power save mode</source>
         <translation>पावर सेवर मोड में</translation>
     </message>
     <message id="qtn_ener_exit_psnote">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="426"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="407"/>
         <source>Exiting power save mode</source>
         <translation>पावर सेवर मोड से बाहर</translation>
     </message>
     <message id="qtn_ener_lowbatt">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="430"/>
+        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="411"/>
         <source>Low battery</source>
         <oldsource>Low battery level</oldsource>
         <translation type="unfinished">कम बैटरी स्तर</translation>
-    </message>
-    <message id="qtn_ener_nopowcharge">
-        <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="434"/>
-        <source>Not enough power to charge</source>
-        <oldsource>Power input below charging threshold</oldsource>
-        <translation type="unfinished">कम वोल्टेज/चार्जिंग सीमा से नीचे पावर इनपुट</translation>
     </message>
     <message id="qtn_memu_memlow_notification_src">
         <location filename="../lipstick/src/notifications/diskspacenotifier.cpp" line="56"/>
