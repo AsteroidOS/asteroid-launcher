@@ -170,15 +170,15 @@ bool LipstickCompositorWindow::eventFilter(QObject *obj, QEvent *event)
         }
         return false;
     }
-    if (event->type() == 6 || event->type() == 7) {
+    if (event->type() == QEvent::KeyPress || event->type() == QEvent::KeyRelease) {
         QKeyEvent *ke = static_cast<QKeyEvent *>(event);
         QWaylandSurface *m_surface = surface();
         if (m_surface) {
             QWaylandSeat *inputDevice = m_surface->compositor()->seatFor(ke);
-            if (event->type() == 6) //KeyPress
+            if (event->type() == QEvent::KeyPress)
                 inputDevice->setKeyboardFocus(m_surface);
             inputDevice->sendFullKeyEvent(ke);
-            if (event->type() == 7) //KeyRelease
+            if (event->type() == QEvent::KeyRelease)
                 qApp->removeEventFilter(this);
             return true;
         }
