@@ -32,6 +32,8 @@
 
 import QtQuick
 import QtQuick.Window
+import QtSensors
+import Nemo.Configuration
 import org.nemomobile.lipstick
 import org.asteroid.controls
 import org.asteroid.utils
@@ -40,9 +42,32 @@ import "compositor"
 
 Item {
     id: root
-    width: Dims.w(100)
-    height: Dims.h(100)
-    rotation: Screen.angleBetween(Screen.primaryScreen, Lipstick.compositor.screenOrientation)
+    readonly property bool quarterTurn: rotation % 180 !== 0
+    width: quarterTurn ? Dims.h(100) : Dims.w(100)
+    height: quarterTurn ? Dims.w(100) : Dims.h(100)
+    x: (Dims.w(100) - width) / 2
+    y: (Dims.h(100) - height) / 2
+    rotation: Screen.angleBetween(Screen.primaryOrientation, Lipstick.compositor.screenOrientation)
+
+    Behavior on rotation {
+        RotationAnimation { duration: 150; easing.type: Easing.OutQuad; direction: RotationAnimation.Shortest }
+    }
+
+    function orientationForReading(reading) {
+        var angle
+        switch (reading) {
+        case OrientationReading.RightUp: angle = 90;  break
+        case OrientationReading.TopDown: angle = 180; break
+        case OrientationReading.LeftUp:  angle = 270; break
+        default: return Qt.PrimaryOrientation
+        }
+        var candidates = [Qt.PortraitOrientation, Qt.LandscapeOrientation,
+                          Qt.InvertedPortraitOrientation, Qt.InvertedLandscapeOrientation]
+        for (var i = 0; i < candidates.length; i++)
+            if (Screen.angleBetween(Screen.primaryOrientation, candidates[i]) === angle)
+                return candidates[i]
+        return Qt.PrimaryOrientation
+    }
 
     // The home screen is a persistent item at the bottom of the z-stack, not
     // an in-process "window". Its z follows MainScreen's own z (raised while
@@ -72,9 +97,6 @@ Item {
 
         width: parent.width
         height: parent.height
-
-        // Let app deal with rotation themselves
-        rotation: Screen.angleBetween(Lipstick.compositor.screenOrientation, Screen.primaryScreen)
     }
 
     // Launcher overlays, rendered directly in the compositor scene as
@@ -179,8 +201,25 @@ Item {
         }
     }
 
+    ConfigurationValue {
+        id: nightstandRotate
+        key: "/desktop/asteroid/nightstand/rotate"
+        defaultValue: true
+    }
+
+    OrientationSensor {
+        id: orientationSensor
+        readonly property bool wanted: nightstandRotate.value
+                                       && homeLoader.item && homeLoader.item.nightstand
+        active: wanted && (comp ? !comp.displayAmbient : false)
+    }
+
     Compositor {
         id: comp
+
+        screenOrientation: orientationSensor.wanted && orientationSensor.reading
+                           ? root.orientationForReading(orientationSensor.reading.orientation)
+                           : Qt.PrimaryOrientation
 
         // The current foreground application window, or null when the home
         // screen (the persistent item underneath) is showing.
