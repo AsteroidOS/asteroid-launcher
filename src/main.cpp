@@ -41,7 +41,6 @@
 #include <localemanager.h>
 
 #include "applauncherbackground.h"
-#include "firstrun.h"
 #include "gesturefilterarea.h"
 #include "notificationsnoozer.h"
 #include "applauncher.h"
@@ -53,8 +52,6 @@ int main(int argc, char **argv)
     // by lipstick's QML extension plugin.
     registerLipstickTypes();
     HomeApplication app(argc, argv);
-
-    FirstRun *firstRun = new FirstRun();
 
     QGuiApplication::setFont(QFont("Noto Sans"));
     Qt::ScreenOrientation nativeOrientation = app.primaryScreen()->nativeOrientation();
@@ -80,7 +77,6 @@ int main(int argc, char **argv)
     if (nativeOrientation == Qt::PrimaryOrientation)
         nativeOrientation = app.primaryScreen()->primaryOrientation();
     app.engine()->rootContext()->setContextProperty("nativeOrientation", nativeOrientation);
-    app.engine()->rootContext()->setContextProperty("firstRun", firstRun);
 
     // Drops the QML component cache when a watchface is installed at runtime so
     // it shows on the homescreen live, without a launcher restart.

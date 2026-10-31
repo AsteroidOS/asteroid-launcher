@@ -1,14 +1,12 @@
 set(SRC
 	main.cpp
 	applauncherbackground.cpp
-	firstrun.cpp
 	gesturefilterarea.cpp
 	applauncher.cpp
 	notificationsnoozer.cpp
 	watchfacereloader.cpp)
 set(HEADERS
 	applauncherbackground.h
-	firstrun.h
 	gesturefilterarea.h
 	applauncher.h
 	notificationsnoozer.h

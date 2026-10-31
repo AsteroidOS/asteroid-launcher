@@ -31,6 +31,8 @@
 
 import QtQuick
 import Nemo.Configuration
+import Nemo.DBus
+import Nemo.KeepAlive 1.2
 import Nemo.Mce
 import org.nemomobile.lipstick
 import org.asteroid.settings
@@ -111,8 +113,22 @@ Item {
         Desktop.desktop = desktop
         Desktop.panelsGrid = grid
         lipstickSettings.lockScreen(true)
-        if(firstRun.isFirstRun())
+        if(!firstRunDone.value)
             firstRunComponent.createObject(desktop)
+    }
+
+    ConfigurationValue {
+        id: firstRunDone
+        key: "/org/asteroidos/launcher/firstRunDone"
+        defaultValue: false
+    }
+
+    DBusInterface {
+        id: mce
+        bus: DBus.SystemBus
+        service: "com.nokia.mce"
+        path: "/com/nokia/mce/request"
+        iface: "com.nokia.mce.request"
     }
 
     Splash {
@@ -123,9 +139,21 @@ Item {
     Component {
         id: firstRunComponent
         Item {
+            id: firstRun
             anchors.fill: parent
             z: 8
-            Tutorial { }
+
+            DisplayBlanking { preventBlanking: true }
+
+            Component.onCompleted: mce.call("req_tklock_mode_change", ["unlocked"])
+
+            Tutorial {
+                onFinished: {
+                    mce.call("req_tklock_mode_change", ["locked"])
+                    firstRunDone.value = true
+                    firstRun.destroy()
+                }
+            }
             FirstRunConfig { }
         }
     }

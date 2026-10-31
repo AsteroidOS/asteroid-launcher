@@ -39,6 +39,8 @@ Item {
     property real backgroundOpacity: 0.85
     property int pauseDuration: 1000
 
+    signal finished()
+
     state: "WELCOME"
 
     states: [
@@ -459,10 +461,7 @@ Item {
                     OpacityAnimator { target: explanations; from: 1.0; to: 0.0; duration: opacityAnimDuration }
                 }
                 ScriptAction {
-                    script: {
-                        firstRun.stopFirstRun()
-                        tuto.destroy()
-                    }
+                    script: tuto.finished()
                 }
             }
         }
