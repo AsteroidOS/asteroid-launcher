@@ -5,14 +5,16 @@ set(SRC
 	gesturefilterarea.cpp
 	applauncher.cpp
 	notificationsnoozer.cpp
-	watchfacereloader.cpp)
+	watchfacereloader.cpp
+	watchfacepreviewrenderer.cpp)
 set(HEADERS
 	applauncherbackground.h
 	firstrun.h
 	gesturefilterarea.h
 	applauncher.h
 	notificationsnoozer.h
-	watchfacereloader.h)
+	watchfacereloader.h
+	watchfacepreviewrenderer.h)
 
 add_executable(asteroid-launcher ${SRC} ${HEADERS} resources-qml.qrc)
 
@@ -78,6 +80,7 @@ target_link_libraries(
 	asteroid-launcher
 	PRIVATE
 		Qt6::Quick
+		Qt6::GuiPrivate
 		Qt6::WaylandCompositor
 		Qt6::DBus
 		lipstick
