@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2017 Florent Revest <revestflo@gmail.com>
+ * Copyright (C) 2026 berseker <1159431+berseker@users.noreply.github.com>
  * All rights reserved.
  *
  * You may use this file under the terms of BSD license as follows:

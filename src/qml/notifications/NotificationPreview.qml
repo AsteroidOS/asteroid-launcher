@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2015 Florent Revest <revestflo@gmail.com>
+ * Copyright (C) 2026 berseker <1159431+berseker@users.noreply.github.com>
  *               2014 Aleksi Suomalainen <suomalainen.aleksi@gmail.com>
  *               2012 Jolla Ltd.
  * All rights reserved.
