@@ -55,6 +55,7 @@ class LipstickCompositor : public QWaylandQuickCompositor
     Q_PROPERTY(bool ambientEnabled READ ambientEnabled WRITE setAmbientEnabled NOTIFY ambientEnabledChanged)
     Q_PROPERTY(bool displayAmbient READ displayAmbient NOTIFY displayAmbientChanged)
     Q_PROPERTY(bool displayBlanked READ displayBlanked NOTIFY displayBlankedChanged)
+    Q_PROPERTY(bool clientsRotated READ clientsRotated WRITE setClientsRotated NOTIFY clientsRotatedChanged)
 
 public:
     LipstickCompositor();
@@ -113,6 +114,9 @@ public:
 
     bool displayAmbient() const { return (m_currentDisplayState == QMceDisplay::DisplayOff) && ambientEnabled(); }
     bool displayBlanked() const { return m_currentDisplayState == QMceDisplay::DisplayOff; }
+    bool clientsRotated() const { return m_clientsRotated; }
+    void setClientsRotated(bool rotated);
+    QSize outputClientSize(QWaylandOutput *output) const;
     Q_INVOKABLE void setUpdatesEnabled(bool enabled, bool inAmbientMode = false);
     LipstickCompositorWindow *createView(QWaylandSurface *surf);
 
@@ -150,6 +154,7 @@ signals:
     // Update the screen in ambient mode.
     void displayAmbientUpdate();
     void displayBlankedChanged();
+    void clientsRotatedChanged();
 
     void displayOn();
     void displayOff();
@@ -229,6 +234,8 @@ private:
     QQuickWindow *m_window;
     QWaylandOutput *m_output;
     QWaylandXdgShell *m_xdgShell;
+    QList<QPointer<QWaylandXdgToplevel>> m_toplevels;
+    bool m_clientsRotated = false;
     QWaylandQtWindowManager *m_wm;
     AsteroidGesturesManager *m_gesturesManager;
 

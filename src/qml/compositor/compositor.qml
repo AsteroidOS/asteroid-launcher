@@ -210,6 +210,8 @@ Item {
     Compositor {
         id: comp
 
+        clientsRotated: root.quarterTurn
+
         // The current foreground application window, or null when the home
         // screen (the persistent item underneath) is showing.
         property Item topmostWindow

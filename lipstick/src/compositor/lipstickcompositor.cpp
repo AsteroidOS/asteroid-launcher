@@ -177,6 +177,28 @@ void LipstickCompositor::onToplevelCreated(QWaylandXdgToplevel * topLevel, QWayl
         connect(topLevel, &QWaylandXdgToplevel::titleChanged, this, &LipstickCompositor::surfaceTitleChanged);
         connect(topLevel, &QWaylandXdgToplevel::setFullscreen, this, &LipstickCompositor::surfaceSetFullScreen);
     }
+    m_toplevels.append(topLevel);
+    if (m_clientsRotated)
+        topLevel->sendConfigure(outputClientSize(m_output), topLevel->states());
+}
+
+QSize LipstickCompositor::outputClientSize(QWaylandOutput *output) const
+{
+    const QSize size = output->geometry().size() / output->scaleFactor();
+    return m_clientsRotated ? size.transposed() : size;
+}
+
+void LipstickCompositor::setClientsRotated(bool rotated)
+{
+    if (m_clientsRotated == rotated)
+        return;
+    m_clientsRotated = rotated;
+    // Clients size themselves to the unrotated output; tell them the rotated size instead
+    const QSize clientSize = outputClientSize(m_output);
+    m_toplevels.removeAll(nullptr);
+    for (QWaylandXdgToplevel *topLevel : std::as_const(m_toplevels))
+        topLevel->sendConfigure(clientSize, topLevel->states());
+    emit clientsRotatedChanged();
 }
 
 void LipstickCompositor::onSurfaceCreated(QWaylandSurface *surface)
@@ -459,7 +481,7 @@ void LipstickCompositor::surfaceSetFullScreen(QWaylandOutput *output)
     if (!designatedOutput)
         return;
 
-    xdgShellSurface->sendFullscreen(designatedOutput->geometry().size() / designatedOutput->scaleFactor());
+    xdgShellSurface->sendFullscreen(outputClientSize(designatedOutput));
 }
 
 void LipstickCompositor::windowSwapped()
