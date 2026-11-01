@@ -29,6 +29,7 @@
 
 import QtQuick
 import org.asteroid.controls
+import org.asteroid.utils
 import Nemo.Ngf
 
 MouseArea {
@@ -111,7 +112,9 @@ MouseArea {
     Column {
         id: column
         anchors.horizontalCenter: parent.horizontalCenter
-        width: view.width * 0.9
+        // 0.9 uses the corners a square panel has. A round one does not,
+        // so it keeps the narrower column the layout was built around.
+        width: view.width * (DeviceSpecs.hasRoundScreen ? 0.7 : 0.9)
 
         Item {
             id: spacing1
@@ -160,6 +163,7 @@ MouseArea {
             font.bold: true
             width: parent.width
             wrapMode: Text.Wrap
+            horizontalAlignment: DeviceSpecs.hasRoundScreen ? Text.AlignHCenter : Text.AlignLeft
         }
 
         Item {
@@ -173,6 +177,7 @@ MouseArea {
             font.pixelSize: Dims.l(9)
             wrapMode: Text.Wrap
             width: parent.width
+            horizontalAlignment: DeviceSpecs.hasRoundScreen ? Text.AlignHCenter : Text.AlignLeft
         }
 
         Item {

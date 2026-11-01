@@ -31,6 +31,7 @@
 
 import QtQuick
 import org.asteroid.controls
+import org.asteroid.utils
 import org.nemomobile.lipstick
 
 Item {
@@ -120,7 +121,7 @@ Item {
                 anchors.bottom: parent.bottom
                 anchors.left: parent.left
                 anchors.right: parent.right
-                horizontalAlignment: Text.AlignLeft
+                horizontalAlignment: DeviceSpecs.hasRoundScreen ? Text.AlignHCenter : Text.AlignLeft
                 color: "#FFFFFF"
                 font.pixelSize: Dims.h(12)
                 font.bold: summary.text == ""
