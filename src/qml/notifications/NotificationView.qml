@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2017 Florent Revest <revestflo@gmail.com>
+ * Copyright (C) 2026 berseker <1159431+berseker@users.noreply.github.com>
  * All rights reserved.
  *
  * You may use this file under the terms of BSD license as follows:
@@ -29,6 +30,7 @@
 
 import QtQuick
 import org.asteroid.controls
+import org.asteroid.utils
 import Nemo.Ngf
 
 MouseArea {
@@ -36,6 +38,24 @@ MouseArea {
 
     property QtObject panelsGrid
     property QtObject notification
+    property var appsTable: [
+            ["whatsapp", "logo-whatsapp", "#25D366", "#0F5F32"],
+            ["mail", "ios-mail", "#FF6B5E", "#6B1A14"],
+            ["signal", "logo-signal", "#5B8DF5", "#17306B"],
+            ["instagram", "logo-instagram", "#C084DC", "#4B2363"],
+            ["facebook", "logo-facebook", "#4C9BFF", "#0F3A7A"],
+            ["telegram", "ios-paper-plane", "#4FC3F7", "#0E5F85"],
+            ["linkedin", "logo-linkedin", "#6DB8F0", "#0F4C75"],
+            ["mess", "ios-chatbubbles", "#5CB3FF", "#1B4F8F"],
+            ["sms", "ios-chatbubbles", "#5CB3FF", "#1B4F8F"]
+    ]
+    function appInfo(n) {
+        var a = n ? n.toLowerCase() : ""
+        for (var i = 0; i < appsTable.length; i++)
+            if (a.indexOf(appsTable[i][0]) >= 0) return appsTable[i]
+        return ["", "ios-mail-outline", "#FFFFFF", "#000000"]
+    }
+    property color accent: appInfo(notification ? notification.appName : "")[2]
     property bool forbidTop: column.y < 0
     property real prevY: 0
 
@@ -93,7 +113,9 @@ MouseArea {
     Column {
         id: column
         anchors.horizontalCenter: parent.horizontalCenter
-        width: view.width * 0.7
+        // 0.9 uses the corners a square panel has. A round one does not,
+        // so it keeps the narrower column the layout was built around.
+        width: view.width * (DeviceSpecs.hasRoundScreen ? 0.7 : 0.9)
 
         Item {
             id: spacing1
@@ -103,10 +125,17 @@ MouseArea {
 
         Row {
             height: Dims.h(10)
-
+            spacing: Dims.w(2)
+            Icon {
+                width: Dims.h(10)
+                height: Dims.h(10)
+                name: view.appInfo(notification ? notification.appName : "")[1]
+                color: view.accent
+            }
             Label {
                 id: appName
-                width: Dims.w(56)
+                color: view.accent
+                width: Dims.w(54)
                 font.pixelSize: Dims.l(6)
                 elide: Text.ElideRight
 
@@ -120,7 +149,7 @@ MouseArea {
                 id: timestamp
                 font.pixelSize: appName.font.pixelSize
                 horizontalAlignment: Text.AlignRight
-                width: Dims.w(14)
+                width: Dims.w(22)
             }
         }
 
@@ -134,7 +163,8 @@ MouseArea {
             id: summary
             font.bold: true
             width: parent.width
-            elide: Text.ElideRight
+            wrapMode: Text.Wrap
+            horizontalAlignment: DeviceSpecs.hasRoundScreen ? Text.AlignHCenter : Text.AlignLeft
         }
 
         Item {
@@ -145,9 +175,10 @@ MouseArea {
 
         Label {
             id: body
-            anchors.horizontalCenter: parent.horizontalCenter
+            font.pixelSize: Dims.l(9)
             wrapMode: Text.Wrap
             width: parent.width
+            horizontalAlignment: DeviceSpecs.hasRoundScreen ? Text.AlignHCenter : Text.AlignLeft
         }
 
         Item {
@@ -161,7 +192,7 @@ MouseArea {
             text: qsTrId("id-dismiss") + localeManager.changesObserver
             anchors.horizontalCenter: parent.horizontalCenter
             width: Dims.w(55)
-            height: Dims.h(20)
+            height: Dims.h(14)
             onClicked: if (notification !== undefined && notification.userRemovable) notification.actionInvoked("default")
         }
 
