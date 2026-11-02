@@ -177,6 +177,28 @@ void LipstickCompositor::onToplevelCreated(QWaylandXdgToplevel * topLevel, QWayl
         connect(topLevel, &QWaylandXdgToplevel::titleChanged, this, &LipstickCompositor::surfaceTitleChanged);
         connect(topLevel, &QWaylandXdgToplevel::setFullscreen, this, &LipstickCompositor::surfaceSetFullScreen);
     }
+    m_toplevels.append(topLevel);
+    if (m_clientsRotated)
+        topLevel->sendConfigure(outputClientSize(m_output), topLevel->states());
+}
+
+QSize LipstickCompositor::outputClientSize(QWaylandOutput *output) const
+{
+    const QSize size = output->geometry().size() / output->scaleFactor();
+    return m_clientsRotated ? size.transposed() : size;
+}
+
+void LipstickCompositor::setClientsRotated(bool rotated)
+{
+    if (m_clientsRotated == rotated)
+        return;
+    m_clientsRotated = rotated;
+    // Clients size themselves to the unrotated output; tell them the rotated size instead
+    const QSize clientSize = outputClientSize(m_output);
+    m_toplevels.removeAll(nullptr);
+    for (QWaylandXdgToplevel *topLevel : std::as_const(m_toplevels))
+        topLevel->sendConfigure(clientSize, topLevel->states());
+    emit clientsRotatedChanged();
 }
 
 void LipstickCompositor::onSurfaceCreated(QWaylandSurface *surface)
@@ -459,7 +481,7 @@ void LipstickCompositor::surfaceSetFullScreen(QWaylandOutput *output)
     if (!designatedOutput)
         return;
 
-    xdgShellSurface->sendFullscreen(designatedOutput->geometry().size() / designatedOutput->scaleFactor());
+    xdgShellSurface->sendFullscreen(outputClientSize(designatedOutput));
 }
 
 void LipstickCompositor::windowSwapped()
@@ -542,38 +564,9 @@ void LipstickCompositor::setScreenOrientation(Qt::ScreenOrientation screenOrient
 {
     if (m_screenOrientation != screenOrientation) {
         if (debug())
-            qDebug() << "Setting screen orientation on QWaylandCompositor";
+            qDebug() << "Screen orientation changed to" << screenOrientation;
 
-        QSize physSize = m_output->physicalSize();
-        switch(screenOrientation) {
-        case Qt::PrimaryOrientation:
-            m_output->setTransform(QWaylandOutput::TransformNormal);
-            break;
-        case Qt::LandscapeOrientation:
-            if(physSize.width() > physSize.height())
-                m_output->setTransform(QWaylandOutput::TransformNormal);
-            else
-                m_output->setTransform(QWaylandOutput::Transform90);
-            break;
-        case Qt::PortraitOrientation:
-            if(physSize.width() > physSize.height())
-                m_output->setTransform(QWaylandOutput::Transform90);
-            else
-                m_output->setTransform(QWaylandOutput::TransformNormal);
-            break;
-        case Qt::InvertedLandscapeOrientation:
-            if(physSize.width() > physSize.height())
-                m_output->setTransform(QWaylandOutput::Transform180);
-            else
-                m_output->setTransform(QWaylandOutput::Transform270);
-            break;
-        case Qt::InvertedPortraitOrientation:
-            if(physSize.width() > physSize.height())
-                m_output->setTransform(QWaylandOutput::Transform270);
-            else
-                m_output->setTransform(QWaylandOutput::Transform180);
-            break;
-        }
+        // Rotation is applied in the compositor scene; no client handles a wl_output transform
         QWindowSystemInterface::handleScreenOrientationChange(qApp->primaryScreen(),screenOrientation);
 
         m_screenOrientation = screenOrientation;
@@ -601,8 +594,9 @@ void LipstickCompositor::reactOnDisplayStateChanges(QMceDisplay::State state)
     }
 
     bool changeInDimming = (state == QMceDisplay::DisplayDim) != (m_currentDisplayState == QMceDisplay::DisplayDim);
+    bool changeInBlanking = (state == QMceDisplay::DisplayOff) != (m_currentDisplayState == QMceDisplay::DisplayOff);
 
-    bool changeInAmbient = ((state == QMceDisplay::DisplayOff) != (m_currentDisplayState == QMceDisplay::DisplayOff)) && ambientEnabled();
+    bool changeInAmbient = changeInBlanking && ambientEnabled();
 
     bool enterAmbient = changeInAmbient && (state == QMceDisplay::DisplayOff);
     bool leaveAmbient = changeInAmbient && (state != QMceDisplay::DisplayOff);
@@ -611,6 +605,9 @@ void LipstickCompositor::reactOnDisplayStateChanges(QMceDisplay::State state)
 
     if (changeInDimming) {
         emit displayDimmedChanged();
+    }
+    if (changeInBlanking) {
+        emit displayBlankedChanged();
     }
     if (changeInAmbient) {
         emit displayAmbientChanged();

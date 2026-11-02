@@ -18,6 +18,8 @@
 #include <QWaylandSeat>
 #include <QTimer>
 #include <QEvent>
+#include <QtGui/private/qeventpoint_p.h>
+#include <memory>
 #include <sys/types.h>
 #include <signal.h>
 #include "lipstickcompositor.h"
@@ -158,7 +160,14 @@ bool LipstickCompositorWindow::eventFilter(QObject *obj, QEvent *event)
             // handling is maintained.
             if (te->touchPointStates() & (Qt::TouchPointPressed | Qt::TouchPointReleased))
                 return false;
-            handleTouchEvent(static_cast<QTouchEvent *>(event));
+            // Intercepted ahead of Quick's delivery, so the points are still in scene coordinates
+            std::unique_ptr<QTouchEvent> local(te->clone());
+            for (qsizetype i = 0; i < local->pointCount(); ++i) {
+                QEventPoint &p = local->point(i);
+                QMutableEventPoint::detach(p);
+                QMutableEventPoint::setPosition(p, mapFromScene(p.scenePosition()));
+            }
+            handleTouchEvent(local.get());
             return true;
         }
         case QEvent::TouchEnd: // Intentional fall through...
