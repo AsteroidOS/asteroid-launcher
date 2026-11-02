@@ -42,8 +42,6 @@ FlatMesh {
     centerColor: "#222222"
     outerColor: "#000000"
 
-    Component.onCompleted: firstRun.startFirstRun()
-
     ConfigurationValue {
         id: use12H
         key: "/org/asteroidos/settings/use-12h-format"
