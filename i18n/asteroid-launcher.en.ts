@@ -177,6 +177,11 @@
         <source>following a rightward gesture.</source>
         <translation>following a rightward gesture.</translation>
     </message>
+    <message id="id-tutorial-skip">
+        <location filename="../src/qml/firstrun/Tutorial.qml" line="531"/>
+        <source>Long press to skip</source>
+        <translation>Long press to skip</translation>
+    </message>
     <message id="id-tutorial-leaveapp-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="334"/>
         <source>Leave an app</source>
