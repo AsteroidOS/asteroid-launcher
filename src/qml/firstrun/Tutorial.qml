@@ -525,6 +525,20 @@ Item {
         }
 
         IconButton {
+            id: skipButton
+            visible: tuto.state === "WELCOME"
+            iconName: "ios-close"
+            anchors {
+                top: parent.top
+                horizontalCenter: parent.horizontalCenter
+                topMargin: Dims.iconButtonMargin
+            }
+            onClicked: {
+                tuto.state = "DONE";
+            }
+        }
+
+        IconButton {
             id: nextButton
             iconName: "ios-arrow-dropright"
             anchors { 
