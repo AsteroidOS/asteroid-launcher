@@ -524,6 +524,21 @@ Item {
             horizontalAlignment: Text.AlignHCenter
         }
 
+        Label {
+            id: skipTip
+            visible: tuto.state === "WELCOME"
+            //% "Long press to skip"
+            text: qsTrId("id-tutorial-skip")
+            font.pixelSize: Dims.l(5.0)
+            color: "#aaaaaa"
+            horizontalAlignment: Text.AlignHCenter
+            anchors {
+                bottom: nextButton.top
+                horizontalCenter: parent.horizontalCenter
+                bottomMargin: Dims.h(1.5)
+            }
+        }
+
         IconButton {
             id: nextButton
             iconName: "ios-arrow-dropright"
