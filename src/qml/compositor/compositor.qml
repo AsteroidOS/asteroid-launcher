@@ -42,22 +42,29 @@ import "compositor"
 
 Item {
     id: root
+    // 180 when the watch is worn turned around, to keep the power button
+    // off the back of the hand.
+    readonly property int wearAngle: displayRotation.value === 180 ? 180 : 0
+    // -1 where gravity says nothing: flat, face down, or no reading.
     readonly property int sensorAngle: {
         if (!orientationSensor.wanted || !orientationSensor.reading)
-            return 0
+            return -1
         switch (orientationSensor.reading.orientation) {
+        case OrientationReading.TopUp:   return 0
         case OrientationReading.RightUp: return 90
         case OrientationReading.TopDown: return 180
         case OrientationReading.LeftUp:  return 270
-        default: return 0
+        default: return -1
         }
     }
-    readonly property bool quarterTurn: sensorAngle % 180 !== 0
+    // The sensor wins while it has an answer, the wear angle when it has none.
+    readonly property int screenAngle: sensorAngle >= 0 ? sensorAngle : wearAngle
+    readonly property bool quarterTurn: screenAngle % 180 !== 0
     width: quarterTurn ? Dims.h(100) : Dims.w(100)
     height: quarterTurn ? Dims.w(100) : Dims.h(100)
     x: (Dims.w(100) - width) / 2
     y: (Dims.h(100) - height) / 2
-    rotation: sensorAngle
+    rotation: screenAngle
 
     Behavior on rotation {
         RotationAnimation { duration: 150; easing.type: Easing.OutQuad; direction: RotationAnimation.Shortest }
@@ -193,6 +200,12 @@ Item {
                 Lipstick.compositor.closeClientForWindowId(comp.topmostWindow.window.windowId)
             Lipstick.compositor.setAmbientUpdatesEnabled(true)
         }
+    }
+
+    ConfigurationValue {
+        id: displayRotation
+        key: "/desktop/asteroid/display-rotation"
+        defaultValue: 0
     }
 
     ConfigurationValue {
