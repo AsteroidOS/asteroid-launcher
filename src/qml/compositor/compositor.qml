@@ -32,6 +32,7 @@
 
 import QtQuick
 import QtQuick.Window
+import QtQuick.VirtualKeyboard
 import org.nemomobile.lipstick
 import org.asteroid.controls
 import org.asteroid.utils
@@ -261,6 +262,15 @@ Item {
             if (window.userData)
                 window.userData.destroy()
         }
+    }
+
+    InputPanel {
+        id: inputPanel
+        z: 5
+        width: DeviceSpecs.hasRoundScreen ? Math.round(parent.width * 0.86) : parent.width
+        anchors.horizontalCenter: parent.horizontalCenter
+        y: active ? parent.height - height : parent.height
+        Behavior on y { NumberAnimation { duration: 150; easing.type: Easing.InOutQuad } }
     }
 
     // Rounds off the corners of a round screen. The mask depends on nothing
