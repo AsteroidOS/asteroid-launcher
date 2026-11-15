@@ -506,8 +506,8 @@ Item {
 
     Item {
         id: wallpaper
-        width: Dims.w(110)
-        height:  Dims.h(110)
+        width: parent.width * 1.1
+        height: parent.height * 1.1
         visible: wallpaperDarkener.opacity != 1.0
         enabled: visible
         z: -100

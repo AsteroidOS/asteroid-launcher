@@ -30,7 +30,6 @@
  */
 
 import QtQuick
-import org.asteroid.controls
 import org.asteroid.utils
 
 Item {
@@ -40,8 +39,8 @@ Item {
 
     property Item window
     property bool smoothBorders: false
-    width: window !== null ? Dims.w(100) : 0
-    height: window !== null ? Dims.h(100) : 0
+    width: window !== null ? parent.width : 0
+    height: window !== null ? parent.height : 0
     NumberAnimation on x { id: moveInAnimation; running: false ; to: 0; duration: 100 }
     NumberAnimation on opacity {
         id: fadeInAnimation

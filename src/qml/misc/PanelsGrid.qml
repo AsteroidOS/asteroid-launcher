@@ -119,8 +119,14 @@ GestureFilterArea {
                 rec.item.visible = false
     }
 
-    onWidthChanged:  { for(var rec of panels.values()) placeItem(rec) }
-    onHeightChanged: { for(var rec of panels.values()) placeItem(rec) }
+    function relayout() {
+        for(var rec of panels.values()) placeItem(rec)
+        contentAnim.stop()
+        moveTo(currentHorizontalPos, currentVerticalPos)
+    }
+
+    onWidthChanged:  relayout()
+    onHeightChanged: relayout()
 
     /* Possible directions handling */
     property int currentVerticalPos:   0
