@@ -126,7 +126,7 @@
         <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="305"/>
         <source>Time Zone</source>
         <oldsource>Timezone</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Tidszon</translation>
     </message>
     <message id="id-tutorial-welcome-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="60"/>
@@ -339,12 +339,12 @@
     <message id="qtn_usb_filessystem_inuse">
         <location filename="../lipstick/src/usbmodeselector.cpp" line="31"/>
         <source>Filesystem in use</source>
-        <translation type="unfinished"></translation>
+        <translation>Filsystemet används</translation>
     </message>
     <message id="qtn_usb_mount_failed">
         <location filename="../lipstick/src/usbmodeselector.cpp" line="33"/>
         <source>Mounting failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Montering misslyckades</translation>
     </message>
 </context>
 </TS>
