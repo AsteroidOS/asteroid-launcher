@@ -177,7 +177,7 @@
         <location filename="../src/qml/firstrun/Tutorial.qml" line="173"/>
         <source>is up here.</source>
         <oldsource>are up here.</oldsource>
-        <translation type="unfinished">sono qui sopra.</translation>
+        <translation>È qui su.</translation>
     </message>
     <message id="id-tutorial-applications-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="220"/>
@@ -217,22 +217,22 @@
     <message id="id-brightness">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="702"/>
         <source>Brightness</source>
-        <translation type="unfinished"></translation>
+        <translation>Luminosità</translation>
     </message>
     <message id="id-volume">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="704"/>
         <source>Volume</source>
-        <translation type="unfinished"></translation>
+        <translation>Volume</translation>
     </message>
     <message id="id-power-off">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="981"/>
         <source>Powering off in</source>
-        <translation type="unfinished"></translation>
+        <translation>Spegnimento in</translation>
     </message>
     <message id="id-tap-to-cancel">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="730"/>
         <source>Tap to cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Tocca per annullare</translation>
     </message>
     <message id="id-reboot">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="996"/>
