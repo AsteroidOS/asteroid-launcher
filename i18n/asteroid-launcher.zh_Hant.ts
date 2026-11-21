@@ -215,6 +215,11 @@
         <source>Enjoy!</source>
         <translation>盡情地享受吧!</translation>
     </message>
+    <message id="id-tutorial-skip">
+        <location filename="../src/qml/firstrun/Tutorial.qml" line="531"/>
+        <source>Long press to skip</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message id="id-brightness">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="702"/>
         <source>Brightness</source>
