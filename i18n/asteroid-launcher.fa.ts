@@ -126,7 +126,7 @@
         <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="305"/>
         <source>Time Zone</source>
         <oldsource>Timezone</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>ناحیهٔ زمانی</translation>
     </message>
     <message id="id-tutorial-welcome-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="60"/>
@@ -217,12 +217,12 @@
     <message id="id-brightness">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="702"/>
         <source>Brightness</source>
-        <translation type="unfinished">روشنایی</translation>
+        <translation>روشنایی</translation>
     </message>
     <message id="id-volume">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="704"/>
         <source>Volume</source>
-        <translation type="unfinished">حجم صدا</translation>
+        <translation>حجم صدا</translation>
     </message>
     <message id="id-power-off">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="981"/>
@@ -247,7 +247,7 @@
     <message id="qtn_ener_charging">
         <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="383"/>
         <source>Charging</source>
-        <translation>در حال شارژ</translation>
+        <translation>شارژ کردن</translation>
     </message>
     <message id="qtn_ener_charcomp">
         <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="387"/>
@@ -257,39 +257,39 @@
     <message id="qtn_ener_remcha">
         <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="391"/>
         <source>Disconnect charger from power supply to save energy</source>
-        <translation>برای ذخیرهٔ انرژی، شارژر را جدا کنید</translation>
+        <translation>جدا کردن شارژر از برق برای ذخیرهٔ انرژی</translation>
     </message>
     <message id="qtn_ener_repcharger">
         <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="395"/>
         <source>Charging not started. Replace charger.</source>
         <oldsource>Not charging. Adjust or recycle charger.</oldsource>
-        <translation type="unfinished">شارژ نمی‌شود. شارژر را تنظیم یا دوباره وصل کنید.</translation>
+        <translation>شارژ شدن آغاز نشد. تعویض شارژر.</translation>
     </message>
     <message id="qtn_ener_rebatt">
         <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="399"/>
         <source>Recharge battery</source>
-        <translation>باتری را شارژ کنید</translation>
+        <translation>شارژ دوبارهٔ باتری</translation>
     </message>
     <message id="qtn_ener_ent_psnote">
         <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="403"/>
         <source>Entering power save mode</source>
-        <translation>در حال ورود به حالت ذخیرهٔ نیرو</translation>
+        <translation>وارد شدن به حالت ذخیرهٔ نیرو</translation>
     </message>
     <message id="qtn_ener_exit_psnote">
         <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="407"/>
         <source>Exiting power save mode</source>
-        <translation>در حال خروج از حالت ذخیرهٔ نیرو</translation>
+        <translation>خارج شدن از حالت ذخیرهٔ نیرو</translation>
     </message>
     <message id="qtn_ener_lowbatt">
         <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="411"/>
         <source>Low battery</source>
         <oldsource>Low battery level</oldsource>
-        <translation type="unfinished">سطح پایین باتری</translation>
+        <translation>باتری کم</translation>
     </message>
     <message id="qtn_memu_memlow_notification_src">
         <location filename="../lipstick/src/notifications/diskspacenotifier.cpp" line="56"/>
         <source>Storage space running out.</source>
-        <translation>فضای ذخیره در حال اتمام است.</translation>
+        <translation>تمام شدن فضای ذخیره.</translation>
     </message>
     <message id="qtn_usb_disconnected">
         <location filename="../lipstick/src/usbmodeselector.cpp" line="68"/>
@@ -339,12 +339,12 @@
     <message id="qtn_usb_filessystem_inuse">
         <location filename="../lipstick/src/usbmodeselector.cpp" line="31"/>
         <source>Filesystem in use</source>
-        <translation type="unfinished"></translation>
+        <translation>سامانه‌پرونده در حال استفاده</translation>
     </message>
     <message id="qtn_usb_mount_failed">
         <location filename="../lipstick/src/usbmodeselector.cpp" line="33"/>
         <source>Mounting failed</source>
-        <translation type="unfinished"></translation>
+        <translation>سوار کردن شکست خورد</translation>
     </message>
 </context>
 </TS>
