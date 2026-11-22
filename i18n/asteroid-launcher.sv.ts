@@ -177,7 +177,7 @@
         <location filename="../src/qml/firstrun/Tutorial.qml" line="173"/>
         <source>is up here.</source>
         <oldsource>are up here.</oldsource>
-        <translation type="unfinished">är här uppe.</translation>
+        <translation>är här uppe.</translation>
     </message>
     <message id="id-tutorial-applications-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="220"/>
@@ -217,12 +217,12 @@
     <message id="id-brightness">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="702"/>
         <source>Brightness</source>
-        <translation type="unfinished">Ljus styrka</translation>
+        <translation>Ljusstyrka</translation>
     </message>
     <message id="id-volume">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="704"/>
         <source>Volume</source>
-        <translation type="unfinished">Volym</translation>
+        <translation>Volym</translation>
     </message>
     <message id="id-power-off">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="981"/>
@@ -263,7 +263,7 @@
         <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="395"/>
         <source>Charging not started. Replace charger.</source>
         <oldsource>Not charging. Adjust or recycle charger.</oldsource>
-        <translation type="unfinished">Laddar inte. Justera eller återvinn laddaren.</translation>
+        <translation>Laddningen har inte startat. Byt ut laddaren.</translation>
     </message>
     <message id="qtn_ener_rebatt">
         <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="399"/>
@@ -284,7 +284,7 @@
         <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="411"/>
         <source>Low battery</source>
         <oldsource>Low battery level</oldsource>
-        <translation type="unfinished">Låg batterinivå</translation>
+        <translation>Låg batterinivå</translation>
     </message>
     <message id="qtn_memu_memlow_notification_src">
         <location filename="../lipstick/src/notifications/diskspacenotifier.cpp" line="56"/>
