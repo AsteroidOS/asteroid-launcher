@@ -126,7 +126,7 @@
         <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="305"/>
         <source>Time Zone</source>
         <oldsource>Timezone</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Zona Horaria</translation>
     </message>
     <message id="id-tutorial-welcome-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="60"/>
@@ -177,7 +177,7 @@
         <location filename="../src/qml/firstrun/Tutorial.qml" line="173"/>
         <source>is up here.</source>
         <oldsource>are up here.</oldsource>
-        <translation type="unfinished">están aquí arriba.</translation>
+        <translation>Es aquí arriba.</translation>
     </message>
     <message id="id-tutorial-applications-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="220"/>
@@ -218,7 +218,7 @@
     <message id="id-brightness">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="702"/>
         <source>Brightness</source>
-        <translation type="unfinished"></translation>
+        <translation>Brillo</translation>
     </message>
     <message id="id-volume">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="704"/>
@@ -228,17 +228,17 @@
     <message id="id-power-off">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="981"/>
         <source>Powering off in</source>
-        <translation type="unfinished"></translation>
+        <translation>Apagándose en</translation>
     </message>
     <message id="id-tap-to-cancel">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="730"/>
         <source>Tap to cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Tocar para cancelar</translation>
     </message>
     <message id="id-reboot">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="996"/>
         <source>Rebooting in</source>
-        <translation type="unfinished"></translation>
+        <translation>Reiniciándose en</translation>
     </message>
     <message id="qtn_ap_lipstick">
         <location filename="../lipstick/src/homeapplication.cpp" line="66"/>
@@ -264,7 +264,7 @@
         <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="395"/>
         <source>Charging not started. Replace charger.</source>
         <oldsource>Not charging. Adjust or recycle charger.</oldsource>
-        <translation type="unfinished">No está cargando. Acomoda el dispositivo o cambia el cargador.</translation>
+        <translation>La carga no se ha podido iniciar, reemplaza el cargador.</translation>
     </message>
     <message id="qtn_ener_rebatt">
         <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="399"/>
@@ -285,7 +285,7 @@
         <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="411"/>
         <source>Low battery</source>
         <oldsource>Low battery level</oldsource>
-        <translation type="unfinished">Batería baja</translation>
+        <translation>Batería baja</translation>
     </message>
     <message id="qtn_memu_memlow_notification_src">
         <location filename="../lipstick/src/notifications/diskspacenotifier.cpp" line="56"/>
@@ -340,12 +340,12 @@
     <message id="qtn_usb_filessystem_inuse">
         <location filename="../lipstick/src/usbmodeselector.cpp" line="31"/>
         <source>Filesystem in use</source>
-        <translation type="unfinished"></translation>
+        <translation>Sistema de archivos en uso</translation>
     </message>
     <message id="qtn_usb_mount_failed">
         <location filename="../lipstick/src/usbmodeselector.cpp" line="33"/>
         <source>Mounting failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Falló el Montaje</translation>
     </message>
 </context>
 </TS>
