@@ -217,7 +217,7 @@
     <message id="id-brightness">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="702"/>
         <source>Brightness</source>
-        <translation type="unfinished"></translation>
+        <translation>Brillo</translation>
     </message>
     <message id="id-volume">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="704"/>
@@ -232,7 +232,7 @@
     <message id="id-tap-to-cancel">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="730"/>
         <source>Tap to cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Toca para cancelar</translation>
     </message>
     <message id="id-reboot">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="996"/>
