@@ -223,7 +223,7 @@
     <message id="id-volume">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="704"/>
         <source>Volume</source>
-        <translation type="unfinished"></translation>
+        <translation>Volumen</translation>
     </message>
     <message id="id-power-off">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="981"/>
