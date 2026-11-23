@@ -987,7 +987,7 @@ Item {
                 service: "org.asteroidos.btsyncd"
                 path: "/org/asteroidos/btsyncd/findphone"
                 iface: "org.asteroidos.btsyncd.FindPhone"
-                bus: DBus.SystemBus
+                bus: DBus.SessionBus
                 property bool isRinging: false
             }
 
