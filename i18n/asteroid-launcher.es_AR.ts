@@ -228,12 +228,12 @@
     <message id="id-power-off">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="981"/>
         <source>Powering off in</source>
-        <translation>Apagándose en</translation>
+        <translation>Apagado en</translation>
     </message>
     <message id="id-tap-to-cancel">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="730"/>
         <source>Tap to cancel</source>
-        <translation>Tocar para cancelar</translation>
+        <translation>Toca para cancelar</translation>
     </message>
     <message id="id-reboot">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="996"/>
