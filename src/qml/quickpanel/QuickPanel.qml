@@ -191,7 +191,7 @@ Item {
     ConfigurationValue {
         id: sliderToggles
         key: "/desktop/asteroid/quickpanel/slider"
-        defaultValue: ["brightnessToggle", "bluetoothToggle", "hapticsToggle", "wifiToggle", "soundToggle", "cinemaToggle", "aodToggle", "powerOffToggle", "rebootToggle", "musicButton", "flashlightButton"]
+        defaultValue: ["brightnessToggle", "bluetoothToggle", "findPhoneToggle", "hapticsToggle", "wifiToggle", "soundToggle", "cinemaToggle", "aodToggle", "powerOffToggle", "rebootToggle", "musicButton", "flashlightButton"]
     }
 
     ConfigurationValue {
@@ -207,6 +207,7 @@ Item {
             "soundToggle": true,
             "cinemaToggle": true,
             "aodToggle": true,
+            "findPhoneToggle": true,
             "powerOffToggle": true,
             "rebootToggle": true,
             "musicButton": false,
@@ -368,6 +369,7 @@ Item {
             "cinemaToggle": cinemaToggleComponent,
             "aodToggle": aodToggleComponent,
             "powerOffToggle": powerOffToggleComponent,
+            "findPhoneToggle": findPhoneToggleComponent,
             "rebootToggle": rebootToggleComponent,
             "musicButton": musicButtonComponent,
             "flashlightButton": flashlightButtonComponent
@@ -968,6 +970,32 @@ Item {
             onClicked: {
                 alwaysOnDisplay.value = !checked;
                 displaySettings.lowPowerModeEnabled = alwaysOnDisplay.value;
+            }
+        }
+    }
+
+    Component {
+        id: findPhoneToggleComponent
+        QuickPanelToggle {
+            id: findPhoneToggle
+            icon: "ios-phone-portrait"
+            checkable: true
+            checked: findPhoneDbus.isRinging
+
+            DBusInterface {
+                id: findPhoneDbus
+                service: "org.asteroidos.btsyncd"
+                path: "/org/asteroidos/btsyncd/findphone"
+                iface: "org.asteroidos.btsyncd.FindPhone"
+                bus: DBus.SessionBus
+                property bool isRinging: false
+            }
+
+            onClicked: {
+                findPhoneDbus.call("toggleRing", undefined)
+                findPhoneDbus.call("isRinging", undefined, function(res) {
+                    findPhoneDbus.isRinging = res
+                })
             }
         }
     }
