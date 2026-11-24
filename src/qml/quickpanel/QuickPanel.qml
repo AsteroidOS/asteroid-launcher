@@ -369,7 +369,7 @@ Item {
             "cinemaToggle": cinemaToggleComponent,
             "aodToggle": aodToggleComponent,
             "powerOffToggle": powerOffToggleComponent,
-            "findPhoneToggle": findPhoneToggleComponent,
+            "findPhoneToggle": findPhoneButtonComponent,
             "rebootToggle": rebootToggleComponent,
             "musicButton": musicButtonComponent,
             "flashlightButton": flashlightButtonComponent
@@ -975,12 +975,9 @@ Item {
     }
 
     Component {
-        id: findPhoneToggleComponent
+        id: findPhoneButtonComponent
         QuickPanelToggle {
-            id: findPhoneToggle
             icon: "ios-phone-portrait"
-            checkable: true
-            checked: findPhoneDbus.isRinging
 
             DBusInterface {
                 id: findPhoneDbus
@@ -988,15 +985,9 @@ Item {
                 path: "/org/asteroidos/btsyncd/findphone"
                 iface: "org.asteroidos.btsyncd.FindPhone"
                 bus: DBus.SessionBus
-                property bool isRinging: false
             }
 
-            onClicked: {
-                findPhoneDbus.call("toggleRing", undefined)
-                findPhoneDbus.call("isRinging", undefined, function(res) {
-                    findPhoneDbus.isRinging = res
-                })
-            }
+            onClicked: findPhoneDbus.call("ringPhone", [true])
         }
     }
 
