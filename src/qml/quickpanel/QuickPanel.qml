@@ -987,7 +987,13 @@ Item {
                 bus: DBus.SessionBus
             }
 
-            onClicked: findPhoneDbus.call("ringPhone", [true])
+            onClicked: {
+                // The BLE characteristic only notifies on changes. Re-arm it so
+                // another tap can find a phone whose alarm was dismissed locally.
+                findPhoneDbus.call("ringPhone", [false], function() {
+                    findPhoneDbus.call("ringPhone", [true])
+                })
+            }
         }
     }
 
