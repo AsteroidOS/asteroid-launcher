@@ -36,6 +36,11 @@ Item {
 
     property QtObject panelsGrid
     property QtObject firstNotifView: null
+    /* Positions that already have their view and action panel. Not
+     * notifModel.itemCount: at startup the model appends all restored
+     * notifications first and only then emits itemAdded for each, so the
+     * count already includes items whose panels do not exist yet. */
+    property int placedCount: 0
     property bool forbidTop: firstNotifView !== null ? firstNotifView.forbidTop : false
     property bool modelEmpty: notifModel.itemCount === 0
 
@@ -120,9 +125,9 @@ Item {
         onItemAdded: {
             var index = notifModel.indexOf(item)
 
-            // Shift everything from `index` outward one position to make room.
-            // Outermost first so we never move into an occupied cell.
-            for (var p = notifModel.itemCount - 2; p >= index; p--)
+            // Shift everything placed from `index` outward one position to
+            // make room. Outermost first so we never move into an occupied cell.
+            for (var p = placedCount - 1; p >= index; p--)
                 movePosition(p, p + 1)
 
             makeActions(index, item)
@@ -130,6 +135,7 @@ Item {
                 makeFirstView(item)
             else
                 makeGridView(index, item)
+            placedCount++
 
             panelsGrid.changeAllowedDirections()
         }
@@ -146,6 +152,7 @@ Item {
             // into a cell that is still occupied.
             for (var p = last + 1; p < oldCount; p++)
                 movePosition(p, p - removed)
+            placedCount = notifModel.itemCount
 
             if (first === 0 && notifModel.itemCount > 0)
                 panelsGrid.moveTo(-1, 0)
