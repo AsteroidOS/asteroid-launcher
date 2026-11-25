@@ -126,7 +126,7 @@
         <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="305"/>
         <source>Time Zone</source>
         <oldsource>Timezone</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>等時帯</translation>
     </message>
     <message id="id-tutorial-welcome-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="60"/>
@@ -171,13 +171,13 @@
     <message id="id-tutorial-quickpanel-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="171"/>
         <source>Quick Panel</source>
-        <translation>クイック設定</translation>
+        <translation>クイックパネル</translation>
     </message>
     <message id="id-tutorial-quickpanel-subtitle">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="173"/>
         <source>is up here.</source>
         <oldsource>are up here.</oldsource>
-        <translation type="unfinished">ここにあります。</translation>
+        <translation>上にあります。</translation>
     </message>
     <message id="id-tutorial-applications-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="220"/>
@@ -233,7 +233,7 @@
     <message id="id-tap-to-cancel">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="730"/>
         <source>Tap to cancel</source>
-        <translation>タップして取り消す</translation>
+        <translation>タップしてキャンセル</translation>
     </message>
     <message id="id-reboot">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="996"/>
@@ -264,7 +264,7 @@
         <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="395"/>
         <source>Charging not started. Replace charger.</source>
         <oldsource>Not charging. Adjust or recycle charger.</oldsource>
-        <translation type="unfinished">充電されてません。充電器を交換してみてください。</translation>
+        <translation>充電されていません。充電器を交換してみてください。</translation>
     </message>
     <message id="qtn_ener_rebatt">
         <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="399"/>
@@ -345,7 +345,7 @@
     <message id="qtn_usb_mount_failed">
         <location filename="../lipstick/src/usbmodeselector.cpp" line="33"/>
         <source>Mounting failed</source>
-        <translation type="unfinished"></translation>
+        <translation>マウントに失敗</translation>
     </message>
 </context>
 </TS>
