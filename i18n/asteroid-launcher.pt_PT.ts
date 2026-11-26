@@ -126,7 +126,7 @@
         <location filename="../src/qml/firstrun/FirstRunConfig.qml" line="305"/>
         <source>Time Zone</source>
         <oldsource>Timezone</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Fuso horário</translation>
     </message>
     <message id="id-tutorial-welcome-title">
         <location filename="../src/qml/firstrun/Tutorial.qml" line="60"/>
@@ -223,7 +223,7 @@
     <message id="id-volume">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="704"/>
         <source>Volume</source>
-        <translation type="unfinished">Volume</translation>
+        <translation>Volume</translation>
     </message>
     <message id="id-power-off">
         <location filename="../src/qml/quickpanel/QuickPanel.qml" line="981"/>
@@ -264,7 +264,7 @@
         <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="395"/>
         <source>Charging not started. Replace charger.</source>
         <oldsource>Not charging. Adjust or recycle charger.</oldsource>
-        <translation type="unfinished">Não está a carregar. Verifique ou substitua o carregador.</translation>
+        <translation>Não começou a carregar. Substitua o carregador.</translation>
     </message>
     <message id="qtn_ener_rebatt">
         <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="399"/>
@@ -285,7 +285,7 @@
         <location filename="../lipstick/src/notifications/batterynotifier.cpp" line="411"/>
         <source>Low battery</source>
         <oldsource>Low battery level</oldsource>
-        <translation type="unfinished">Nível de bateria baixo</translation>
+        <translation>Nível de bateria baixo</translation>
     </message>
     <message id="qtn_memu_memlow_notification_src">
         <location filename="../lipstick/src/notifications/diskspacenotifier.cpp" line="56"/>
@@ -342,12 +342,12 @@
     <message id="qtn_usb_filessystem_inuse">
         <location filename="../lipstick/src/usbmodeselector.cpp" line="31"/>
         <source>Filesystem in use</source>
-        <translation type="unfinished"></translation>
+        <translation>Sistema de ficheiros em uso</translation>
     </message>
     <message id="qtn_usb_mount_failed">
         <location filename="../lipstick/src/usbmodeselector.cpp" line="33"/>
         <source>Mounting failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao montar</translation>
     </message>
 </context>
 </TS>
