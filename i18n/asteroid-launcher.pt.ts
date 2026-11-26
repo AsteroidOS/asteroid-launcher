@@ -340,12 +340,12 @@
     <message id="qtn_usb_filessystem_inuse">
         <location filename="../lipstick/src/usbmodeselector.cpp" line="31"/>
         <source>Filesystem in use</source>
-        <translation type="unfinished"></translation>
+        <translation>Sistema de ficheiros em uso</translation>
     </message>
     <message id="qtn_usb_mount_failed">
         <location filename="../lipstick/src/usbmodeselector.cpp" line="33"/>
         <source>Mounting failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao montar</translation>
     </message>
 </context>
 </TS>
