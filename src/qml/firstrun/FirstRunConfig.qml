@@ -72,16 +72,12 @@ FlatMesh {
         enabled: visible
 
         delegate: SpinnerDelegate { text: langSettings.languageName(index) }
-
-        property bool _positioned: false
-        onContentHeightChanged: {
-            if (!_positioned && contentHeight > 0) {
-                _positioned = true;
-                var i = langSettings.currentIndex;
-                if (i !== -1) {
-                    positionViewAtIndex(i, ListView.SnapPosition);
-                    currentIndex = i;
-                }
+        Component.onCompleted: {
+            var i = langSettings.currentIndex;
+            if(i != -1) {
+                langLV.forceLayout();
+                langLV.positionViewAtIndex(i, ListView.SnapPosition);
+                langLV.currentIndex = i;
             }
         }
     }
