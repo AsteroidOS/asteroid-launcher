@@ -70,20 +70,9 @@ FlatMesh {
         model: langSettings
         visible: config.state == "LANGUAGE"
         enabled: visible
+        currentIndex: langSettings.currentIndex
 
         delegate: SpinnerDelegate { text: langSettings.languageName(index) }
-
-        property bool _positioned: false
-        onContentHeightChanged: {
-            if (!_positioned && contentHeight > 0) {
-                _positioned = true;
-                var i = langSettings.currentIndex;
-                if (i !== -1) {
-                    positionViewAtIndex(i, ListView.SnapPosition);
-                    currentIndex = i;
-                }
-            }
-        }
     }
 
     DateTimeSettings { id: dtSettings }
