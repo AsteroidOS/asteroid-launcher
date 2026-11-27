@@ -32,6 +32,8 @@
 
 import QtQuick
 import QtQuick.Window
+import QtSensors
+import Nemo.Configuration
 import org.nemomobile.lipstick
 import org.asteroid.controls
 import org.asteroid.utils
@@ -40,9 +42,26 @@ import "compositor"
 
 Item {
     id: root
-    width: Dims.w(100)
-    height: Dims.h(100)
-    rotation: Screen.angleBetween(Screen.primaryScreen, Lipstick.compositor.screenOrientation)
+    readonly property int sensorAngle: {
+        if (!orientationSensor.wanted || !orientationSensor.reading)
+            return 0
+        switch (orientationSensor.reading.orientation) {
+        case OrientationReading.RightUp: return 90
+        case OrientationReading.TopDown: return 180
+        case OrientationReading.LeftUp:  return 270
+        default: return 0
+        }
+    }
+    readonly property bool quarterTurn: sensorAngle % 180 !== 0
+    width: quarterTurn ? Dims.h(100) : Dims.w(100)
+    height: quarterTurn ? Dims.w(100) : Dims.h(100)
+    x: (Dims.w(100) - width) / 2
+    y: (Dims.h(100) - height) / 2
+    rotation: sensorAngle
+
+    Behavior on rotation {
+        RotationAnimation { duration: 150; easing.type: Easing.OutQuad; direction: RotationAnimation.Shortest }
+    }
 
     // The home screen is a persistent item at the bottom of the z-stack, not
     // an in-process "window". Its z follows MainScreen's own z (raised while
@@ -72,9 +91,6 @@ Item {
 
         width: parent.width
         height: parent.height
-
-        // Let app deal with rotation themselves
-        rotation: Screen.angleBetween(Lipstick.compositor.screenOrientation, Screen.primaryScreen)
     }
 
     // Launcher overlays, rendered directly in the compositor scene as
@@ -179,8 +195,22 @@ Item {
         }
     }
 
+    ConfigurationValue {
+        id: nightstandRotate
+        key: "/desktop/asteroid/nightstand/rotate"
+        defaultValue: true
+    }
+
+    OrientationSensor {
+        id: orientationSensor
+        readonly property bool wanted: nightstandRotate.value && homeLoader.item?.nightstand === true
+        active: wanted && !comp.displayBlanked
+    }
+
     Compositor {
         id: comp
+
+        clientsRotated: root.quarterTurn
 
         // The current foreground application window, or null when the home
         // screen (the persistent item underneath) is showing.

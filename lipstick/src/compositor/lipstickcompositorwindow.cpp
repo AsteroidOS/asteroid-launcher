@@ -18,6 +18,7 @@
 #include <QWaylandSeat>
 #include <QTimer>
 #include <QEvent>
+#include <QWaylandTouch>
 #include <sys/types.h>
 #include <signal.h>
 #include "lipstickcompositor.h"
@@ -288,7 +289,8 @@ void LipstickCompositorWindow::touchEvent(QTouchEvent *event)
 
 void LipstickCompositorWindow::handleTouchEvent(QTouchEvent *event)
 {
-    QList<QTouchEvent::TouchPoint> points = event->touchPoints();
+    // Use the public points() API (in Qt 6, each element is a QEventPoint)
+    const auto &points = event->points();
 
     QWaylandSurface *m_surface = surface();
     if (!m_surface) {
@@ -296,9 +298,11 @@ void LipstickCompositorWindow::handleTouchEvent(QTouchEvent *event)
         return;
     }
 
-    if (event->touchPointStates() & Qt::TouchPointPressed) {
-        foreach (const QTouchEvent::TouchPoint &p, points) {
-            if (!m_surface->inputRegionContains(p.pos().toPoint())) {
+    // Map each point to the local coordinate system when testing
+    if (event->touchPointStates() & QEventPoint::State::Pressed) {
+        for (const auto &p : points) {
+            QPointF localPos = mapFromScene(p.scenePosition());
+            if (!m_surface->inputRegionContains(localPos.toPoint())) {
                 event->ignore();
                 return;
             }
@@ -310,23 +314,28 @@ void LipstickCompositorWindow::handleTouchEvent(QTouchEvent *event)
 
     QWaylandView *vview = view();
     if (vview && (!vview->surface() || vview->surface()->isCursorSurface()))
-        vview = Q_NULLPTR;
+        vview = nullptr;
     inputDevice->setMouseFocus(vview);
 
     QWaylandView *v = view();
     if (inputDevice->mouseFocus() != v) {
-        QPoint pointPos;
-        if (!points.isEmpty())
-            pointPos = points.at(0).pos().toPoint();
         inputDevice->setMouseFocus(v);
 
         if (m_focusOnTouch && inputDevice->keyboardFocus() != m_surface) {
             takeFocus();
         }
     }
-    inputDevice->sendFullTouchEvent(surface(), event);
-}
 
+    // Instead of sendFullTouchEvent(surface(), event), send points individually with local coordinates:
+    for (const auto &p : points) {
+        QPointF localPos = mapFromScene(p.scenePosition());
+        inputDevice->sendTouchPointEvent(m_surface, p.id(), localPos, static_cast<Qt::TouchPointState>(int(p.state())));
+    }
+    // A touch frame event must be sent when done sending points
+    if (auto *touchDevice = inputDevice->touch()) {
+        touchDevice->sendFrameEvent(m_surface->client());
+    }
+}
 void LipstickCompositorWindow::handleTouchCancel()
 {
     QWaylandSurface *m_surface = surface();
